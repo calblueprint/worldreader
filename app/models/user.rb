@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
   end
 
   def name
-	  "#{first_name} #{last_name}"
-	end
+    "#{first_name} #{last_name}"
+  end
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
