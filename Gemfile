@@ -15,6 +15,7 @@ gem 'sqlite3'
 gem 'thin'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
+gem 'isbn', '~> 2.0.10'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
