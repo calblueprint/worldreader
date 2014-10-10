@@ -17,3 +17,12 @@
 @import "base/grid-settings";
 @import "neat";
 @import "base/base";
+@import "login_page";
+
+html {
+  @include background-image(url('school_bg.png'));
+}
+
+body{
+  @include background(transparent);
+}
