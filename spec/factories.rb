@@ -6,3 +6,4 @@ FactoryGirl.define do
     role 0
   end
 end
+
