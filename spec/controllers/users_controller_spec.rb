@@ -1,5 +1,5 @@
-require 'rails_helper'
-require 'users_controller'
+require "rails_helper"
+require "users_controller"
 
 describe UsersController do
   describe "#index" do
