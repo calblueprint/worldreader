@@ -1,6 +1,6 @@
 class CreateGroupsBooks < ActiveRecord::Migration
   def change
-    create_table :groups_books, :id => false do |t|
+    create_table :groups_books, id: false do |t|
       t.references :group, :null => false
       t.references :book, :null => false
     end
