@@ -30,6 +30,9 @@ class UsersController < ApplicationController
     redirect_to users_path, :notice => "User deleted."
   end
 
+  def cart
+  end
+
   private
 
   def admin_only

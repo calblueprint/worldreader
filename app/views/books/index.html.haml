@@ -9,3 +9,6 @@
     %tr
       %td= link_to book.name, book_path(book)
       %td= book.description
+      %td
+        =link_to_if @current_user.nil?, "Login In to Add to Cart", user_session_path do
+          link_to "Add to Cart", user_cart_path(user_id: @current_user.id)

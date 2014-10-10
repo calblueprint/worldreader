@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
   devise_for :users
-  resources :users
+  
+  resources :users do
+  	post "cart"
+  end
+  
   resources :books
 
   namespace :admin do
