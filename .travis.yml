@@ -3,3 +3,5 @@ rvm:
   - 2.1.3
 before_script:
   - cp config/database.travis.yml config/database.yml
+script:
+  - bundle exec rake --trace db:migrate db:seed && bundle exec rspec spec
