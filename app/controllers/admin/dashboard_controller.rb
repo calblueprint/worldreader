@@ -1,4 +1,5 @@
 class Admin::DashboardController < ApplicationController
-	def index
-	end
+  def index
+    @partners = User.all
+  end
 end
