@@ -7,5 +7,3 @@
           - @users.each do |user|
             %tr
               = render user
-              - if user_signed_in?
-                = link_to "Sign Out", destroy_user_session_path, :method => :delete

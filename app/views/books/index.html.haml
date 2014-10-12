@@ -1,4 +1,7 @@
 %h1 Library of Books
+%p
+  - if user_signed_in? and current_user.admin?
+    = link_to "Manage Partners", admin_dashboard_index_path
 %table
   %tr
     %th Name
@@ -15,3 +18,5 @@
 %p
   - if user_signed_in?
     = link_to "Sign Out", destroy_user_session_path, :method => :delete
+  - else
+    = link_to "Sign In", new_user_session_path
