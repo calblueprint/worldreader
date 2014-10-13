@@ -13,8 +13,8 @@
       %td= link_to book.name, book_path(book)
       %td= book.description
       %td
-        =link_to_if @current_user.nil?, "Login In to Add to Cart", user_session_path do
-          =link_to "Add to Cart", user_cart_path(user_id: @current_user.id)
+        =link_to_if current_user.nil?, "Login In to Add to Cart", user_session_path do
+          =link_to "Add to Cart", user_cart_path(user_id: current_user.id)
 %p
   - if user_signed_in?
     = link_to "Sign Out", destroy_user_session_path, :method => :delete
