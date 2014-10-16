@@ -17,13 +17,5 @@ describe UsersController do
       expect(response.status).to eq(200)
       expect(assigns(:users)).to eq([user1, user2, user3])
     end
-
-    it "denies access to non-admins" do
-      user = create(:user)
-      sign_in user
-      get :index
-      expect(response.status).to eq(302)
-      expect(flash[:alert]).to eq("Access denied.")
-    end
   end
 end
