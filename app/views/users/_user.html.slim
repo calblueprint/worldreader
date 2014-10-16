@@ -6,3 +6,6 @@ td
     = f.submit 'Change Role', class: 'button-xs'
 td
   = link_to("Delete user", user_path(user), data: { confirm: "Are you sure?" }, method: :delete, class: 'button-xs') unless user == current_user
+td
+  - if user == current_user
+    = link_to "Sign Out", destroy_user_session_path, :method => :delete
