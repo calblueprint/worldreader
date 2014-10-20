@@ -9,6 +9,6 @@ FactoryGirl.define do
 
   factory :book do
     name "Day by Day"
-    description "A tale of team with nothing left to lose"
+    description "The tale of team with nothing left to lose"
   end
 end
