@@ -9,6 +9,5 @@ feature "Admin Dashboard" do
     user = create(:user)
     click_link('Manage Partners')
     expect(page).to have_content user.email
-    save_and_open_page
   end
 end
