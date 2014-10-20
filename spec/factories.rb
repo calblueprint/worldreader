@@ -6,4 +6,9 @@ FactoryGirl.define do
     password "password"
     role 0
   end
+
+  factory :book do
+    name "Day by Day"
+    description "A tale of team with nothing left to lose"
+  end
 end

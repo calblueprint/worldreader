@@ -1,13 +1,12 @@
 require 'rails_helper'
 
-describe "Books" do
-  describe "GET /books" do
-    it "displays book" do
-      Book.create! name: "Day by Day",
-                   isbn: "0486440281",
-                   description: "The story of a team that had nothing to lose."
-      visit books_path
-      expect(page).to have_content "Day by Day"
-    end
+feature "Library" do
+  scenario "User clicks on a book" do
+    book = contact = create(:book)
+    visit "/books"
+    save_and_open_page
+    first(:link, book.name).click
+    expect(page).to have_content book.name
+    expect(page).to have_content book.description
   end
 end
