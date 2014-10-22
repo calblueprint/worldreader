@@ -22,9 +22,9 @@ table
         = book.description
       td
         =link_to_if current_user.nil?, "Login In to Add to Cart", user_session_path do
-          =link_to "Add to Cart", add_to_cart_path(book.id), :method => :post
+          =link_to "Add to Cart", add_to_cart_path(book.id), method: :post
 p
   - if user_signed_in?
-    = link_to "Sign Out", destroy_user_session_path, :method => :delete
+    = link_to "Sign Out", destroy_user_session_path, method: :delete
   - else
     = link_to "Sign In", new_user_session_path
