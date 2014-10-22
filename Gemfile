@@ -30,6 +30,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rspec-rails'
+  gem 'launchy'
 end
 group :production do
   gem 'rails_12factor'
