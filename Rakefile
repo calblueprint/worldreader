@@ -25,10 +25,6 @@ task :scrape_amazon, [:isbn] => :environment do |t, args|
 end
 
 task update_books: :environment do
-  require 'nokogiri'
-  require 'open-uri'
-  require 'isbn'
-
   puts "Scraping Amazon for all book data"
 
   Book.all.each do |book|
