@@ -8,6 +8,7 @@ table
 
   - @cart_items.each do |item|
     tr
-      td= item.book.name
+      td 
+        =link_to item.book.name, book_path(item.book.id)
       td= item.book.description
       td= item.purchased_on
