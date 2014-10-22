@@ -16,8 +16,10 @@ table
 
   - @books.each do |book|
     tr
-      td= link_to book.name, book_path(book)
-      td= book.description
+      td.book_name
+        = link_to book.name, book_path(book)
+      td.book_description
+        = book.description
       td
         =link_to_if current_user.nil?, "Login In to Add to Cart", user_session_path do
           =link_to "Add to Cart", add_to_cart_path(book.id), :method => :post

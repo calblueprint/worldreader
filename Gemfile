@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 ruby '2.1.3'
 gem 'annotate'
-gem 'bourbon'
+gem 'autoprefixer-rails'
+gem 'bootstrap-sass', '~> 3.2.0'
 gem 'cancancan', '~> 1.9'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'devise'
 gem 'high_voltage'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
-gem 'neat'
 gem 'rails', '4.1.5'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
@@ -30,6 +30,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rspec-rails'
+  gem 'launchy'
 end
 group :production do
   gem 'rails_12factor'
