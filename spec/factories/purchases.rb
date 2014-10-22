@@ -6,6 +6,7 @@
 #  user_id      :integer          not null
 #  book_id      :integer          not null
 #  purchased_on :date
+#  is_purchased :boolean
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
