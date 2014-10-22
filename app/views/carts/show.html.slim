@@ -1,0 +1,13 @@
+h3 My Cart
+table
+  tr
+    th Name
+    th Description
+    th Date Purchased
+    th colspan="3"
+
+  - @cart_items.each do |item|
+    tr
+      td= item.book.name
+      td= item.book.description
+      td= item.purchased_on

@@ -13,6 +13,7 @@ class UsersController < ApplicationController
         redirect_to :back, :alert => "Access denied."
       end
     end
+    @purchases = current_user.purchases.is_purchased(true)
   end
 
   def update
@@ -28,9 +29,6 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     user.destroy
     redirect_to users_path, :notice => "User deleted."
-  end
-
-  def cart
   end
 
   private

@@ -5,11 +5,13 @@ Rails.application.routes.draw do
   end
   devise_for :users
 
-  resources :users do
-    post "cart"
-  end
+  resources :users
 
+  post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
+  
   resources :books
+
+  resources :carts
 
   namespace :admin do
     resources :dashboard
