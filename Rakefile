@@ -12,13 +12,13 @@ task :scrape_amazon, [:isbn] => :environment do |t, args|
 
   puts "Scraping Amazon for book: " + args[:isbn]
 
-  isbn = ISBN.ten(args[:isbn])
-  url = "http://www.amazon.com/dp/" + isbn
+  isbn10 = ISBN.ten(args[:isbn])
+  url = "http://www.amazon.com/dp/" + isbn10
   doc = Nokogiri::HTML(open(url))
   image = doc.css('img#imgBlkFront')[0]["src"]
   description = doc.css('#bookDescription_feature_div noscript').text
 
-  book = Book.where(isbn: isbn).first
+  book = Book.where(isbn: args[:isbn]).first
   book.image = image
   book.description = description
   book.save
@@ -31,15 +31,8 @@ task update_books: :environment do
 
   puts "Scraping Amazon for all book data"
 
-  url = "http://www.amazon.com/dp/"
-
   Book.all.each do |book|
-    doc = Nokogiri::HTML(open(url + ISBN.ten(book.isbn)))
-    image = doc.css('img#imgBlkFront')[0]["src"]
-    description = doc.css('#bookDescription_feature_div noscript').text
-
-    book.image = image
-    book.description = description
-    book.save
+    Rake::Task["scrape_amazon"].invoke(book.isbn)
+    Rake::Task["scrape_amazon"].reenable
   end
 end
