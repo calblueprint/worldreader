@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.1.3'
+gem 'annotate'
 gem 'bourbon'
 gem 'cancancan', '~> 1.9'
 gem 'coffee-rails', '~> 4.0.0'
@@ -30,6 +31,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rspec-rails'
+  gem 'launchy'
 end
 group :production do
   gem 'rails_12factor'

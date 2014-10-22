@@ -8,7 +8,7 @@
 #  purchased_on :date
 #
 
-class Purchase < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :book
+require 'rails_helper'
+
+RSpec.describe Purchase, type: :model do
 end

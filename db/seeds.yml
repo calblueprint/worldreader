@@ -1,0 +1,23 @@
+--- !map:HashWithIndifferentAccess
+
+books:
+  - name: '1984'
+    description: 'Meet Big Brother'
+  - name: 'A Brief History of Time'
+    description: 'Explore the Universe'
+  - name: 'Alice in Wonderland'
+    description: 'Go down the rabbit hole'
+  - name: 'Beloved'
+    description: 'The ghosts of slavery'
+  - name: 'Catch-22'
+    description: 'Launched its own catchphrase'
+  - name: 'The Great Gatsby'
+    description: 'The rich are different..'
+  - name: 'The Phantom Tollbooth'
+    description: 'An odd and original journey'
+  - name: 'Great Expectations'
+    description: 'Dickens best novel'
+  - name: 'Fahrenheit 451'
+    description: 'It was a pleasure to burn'
+  - name: 'Charlie and the Chocolate Factory'
+    description: 'Vintage Roald Dahl'

@@ -1,0 +1,9 @@
+Style/LineLength:
+  Description: 'Limit lines to 130 characters.'
+  Max: 130
+
+java_script:
+  enabled: true
+  config_file: config/hound_js.json
+
+ShowCopNames: true

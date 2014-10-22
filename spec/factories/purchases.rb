@@ -8,7 +8,9 @@
 #  purchased_on :date
 #
 
-class Purchase < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :book
+# Read about factories at https://github.com/thoughtbot/factory_girl
+
+FactoryGirl.define do
+  factory :purchase do
+  end
 end
