@@ -213,7 +213,6 @@ DEPENDENCIES
   devise
   factory_girl_rails
   high_voltage
-  html2haml
   isbn (~> 2.0.10)
   jbuilder (~> 2.0)
   jquery-rails
