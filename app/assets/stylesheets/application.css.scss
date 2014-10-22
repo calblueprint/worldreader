@@ -11,18 +11,17 @@
  * file per style scope.
  *
  *= require_self
+ *= require_tree .
  */
 
-@import "bourbon";
-@import "base/grid-settings";
-@import "neat";
-@import "base/base";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 @import "login_page";
 
 html {
-  @include background-image(url('school_bg.png'));
+  background: (url('school_bg.png'));
 }
 
 body{
-  @include background(transparent);
+  background: transparent;
 }
