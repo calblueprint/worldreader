@@ -28,7 +28,18 @@ task update_books: :environment do
   puts "Scraping Amazon for all book data"
 
   Book.all.each do |book|
-    Rake::Task["scrape_amazon"].invoke(book.isbn)
-    Rake::Task["scrape_amazon"].reenable
+    $done = false
+    $i = 0
+    begin
+      $i += 1
+      begin
+        Rake::Task["scrape_amazon"].invoke(book.isbn)
+        Rake::Task["scrape_amazon"].reenable
+        $done = true
+      rescue Exception => e
+        Rake::Task["scrape_amazon"].reenable
+        $done = false
+      end
+    end while $done == false && $i < 3
   end
 end
