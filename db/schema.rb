@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20141022023954) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
   end
 
   create_table "books_groups", id: false, force: true do |t|
