@@ -5,20 +5,19 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-task :scrape_amazon, [:isbn] => :environment do |t, args|
+task :scrape_amazon, [:asin] => :environment do |t, args|
   require 'nokogiri'
   require 'open-uri'
-  require 'isbn'
 
-  puts "Scraping Amazon for book: " + args[:isbn]
+  puts "Scraping Amazon for book: " + args[:asin]
 
-  isbn10 = ISBN.ten(args[:isbn])
-  url = "http://www.amazon.com/dp/" + isbn10
+  url = "http://www.amazon.com/dp/" + args[:asin]
   doc = Nokogiri::HTML(open(url))
-  image = doc.css('img#imgBlkFront')[0]["src"]
-  description = doc.css('#bookDescription_feature_div noscript').text
+  image = doc.css('div#thumbs-image img')[0]['src']
+  image.slice!('._SS30_')
+  description = doc.css('div#ps-content div#postBodyPS').text
 
-  book = Book.where(isbn: args[:isbn]).first
+  book = Book.where(asin: args[:asin]).first
   book.image = image
   book.description = description
   book.save
@@ -33,13 +32,13 @@ task update_books: :environment do
     begin
       i += 1
       begin
-        Rake::Task["scrape_amazon"].invoke(book.isbn)
+        Rake::Task["scrape_amazon"].invoke(book.asin)
         Rake::Task["scrape_amazon"].reenable
         done = true
       rescue Exception => e
         Rake::Task["scrape_amazon"].reenable
         $done = false
       end
-    end while done == false && i < 3
+    end while done == false && i < 5
   end
 end
