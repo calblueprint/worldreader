@@ -39,6 +39,6 @@ task update_books: :environment do
         Rake::Task["scrape_amazon"].reenable
         $done = false
       end
-    end while done == false && i < 3
+    end while done == false && i < 5
   end
 end
