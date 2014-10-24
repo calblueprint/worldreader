@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_scope :user do
     get "/logout" => "devise/sessions#destroy"
-    root :to => "devise/sessions#new"
+    get "/login" => "devise/sessions#new"
   end
   devise_for :users
 
@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboard
   end
+
+  root to: "books#index"
 end
