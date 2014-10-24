@@ -13,10 +13,10 @@
       li
         a href="/"  Cart
       li.end
-        a data-target="#myModal" data-toggle="modal" href="#myModal"  Log in
+        a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
     /! /.nav-collapse
 
-#myModal.modal.fade
+#LoginModal.modal.fade
   .modal-dialog
     .modal-content
       .modal-header
@@ -39,7 +39,7 @@
           = link_to "Forgot your password?", new_password_path(:user), class:"text-right"
 
           .span.navbar-right
-            = check_box_tag 'user[remember_me]'
+            = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
             = label_tag 'user[remember_me]', 'Keep me logged in'
 
         / dropdown for account?
