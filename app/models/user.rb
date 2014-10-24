@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   def send_welcome_mail
     UserMailer.welcome(self).deliver
   end
+  handle_asynchronously :send_welcome_mail
 
   def set_default_role
     self.role ||= :user
@@ -45,4 +46,6 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+
 end
