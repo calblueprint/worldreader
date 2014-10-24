@@ -1,20 +1,17 @@
-#header{
-  max-width: 100%;
-  background: white;
+.navbar{
+  background-color: #ffffff !important;
+  border-radius: 0px;
+  border: 0px;
 }
 
-li.nav-logo{
-  float: left;
+li.end{
+  margin-right: 15px;
+}
+
+a.navbar-brand{
+  padding: 0px;
 }
 
 img.header-logo{
-  height: 4rem;
-}
-
-li.nav-link{
-  text-align: center;
-  display: block;
-  float: right;
-  margin-top: 1.5rem;
-  margin-right: 1rem;
+  height: 100%;
 }
