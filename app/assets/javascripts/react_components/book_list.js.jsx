@@ -1,20 +1,40 @@
 /** @jsx React.DOM */
 var books = JSON.parse(document.getElementById("test").getAttribute("books"));
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+// TODO: figure out a way to track the currently expanded tile better
+var currentExpanded = null;
 
 var BookTile = React.createClass({
   getInitialState: function() {
     return {clicked: false};
   },
   onClick: function() {
-    this.setState({clicked: !this.state.clicked});
+    var clicked = !this.state.clicked;
+    this.setState({clicked: clicked});
+    if (clicked) {
+      if (currentExpanded) {
+        currentExpanded.setState({clicked: !currentExpanded.state.clicked});
+      }
+      currentExpanded = this;
+    } else {
+      currentExpanded = null;
+    }
   },
   render: function() {
-    var text = this.state.clicked ? "clicked" : "did not click";
+    // TODO: better stylings
+    if (this.state.clicked) {
+      return (
+        <div className="expandedTile" onClick={this.onClick}>
+          <p>{this.props.name}</p>
+          <p>{this.props.desc}</p>
+        </div>
+      )
+    }
     return (
-      <div className="bookTile">
+      <div className="collapsedTile" onClick={this.onClick}>
         <p>{this.props.name}</p>
-        <p>You {text} this.</p>
-        <button onClick={this.onClick}>click me</button>
+        <p>{this.props.desc.substring(0, 10) + "..."}</p>
       </div>
     );
   }
@@ -24,7 +44,7 @@ var BookList = React.createClass({
   render: function() {
     var bookTiles = this.props.data.map(function (book) {
       return (
-        <BookTile name={book["name"]} desc={book["description"]} />
+        <BookTile name={book["name"]} desc={book["description"]} bookList={this}/>
       );
     });
     return (
