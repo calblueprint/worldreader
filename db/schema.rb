@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20141024044423) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
+    t.string   "asin"
   end
 
   create_table "books_groups", id: false, force: true do |t|
@@ -57,6 +59,7 @@ ActiveRecord::Schema.define(version: 20141024044423) do
     t.integer "user_id",      null: false
     t.integer "book_id",      null: false
     t.date    "purchased_on"
+    t.boolean "is_purchased"
   end
 
   create_table "users", force: true do |t|

@@ -17,11 +17,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "login_page";
+@import "header";
 
 html {
   background: (url('school_bg.png'));
 }
 
 body{
-  background: transparent;
+  background: transparent !important;
 }
