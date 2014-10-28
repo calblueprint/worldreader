@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   end
   devise_for :users, controllers: { registrations: "registrations" }
 
-  devise_for :users, :skip => [:sessions] 
+  devise_for :users, :skip => [:sessions]
   as :user do
     post 'users/sign_in' => 'devise/sessions#create', :as => 'user_session'
     delete 'users/sign_out' => 'devise/sessions#destroy', as: 'destroy_user_session'
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :users
 
   post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
-  
+
   resources :books
 
   resources :carts
