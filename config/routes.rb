@@ -3,7 +3,6 @@ Rails.application.routes.draw do
     get "/logout" => "devise/sessions#destroy"
     get "/login" => "devise/sessions#new"
   end
-  devise_for :users, skip:[:sessions]
 
   devise_for :users, :skip => [:sessions] 
   as :user do
