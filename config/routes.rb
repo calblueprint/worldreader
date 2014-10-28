@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
   devise_scope :user do
     get "/logout" => "devise/sessions#destroy"
-    root :to => "devise/sessions#new"
+    get "/login" => "devise/sessions#new"
   end
-  devise_for :users
+
+  devise_for :users, :skip => [:sessions] 
+  as :user do
+    post 'users/sign_in' => 'devise/sessions#create', :as => 'user_session'
+    delete 'users/sign_out' => 'devise/sessions#destroy', as: 'destroy_user_session'
+  end
 
   resources :users
 
@@ -16,4 +21,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboard
   end
+
+  root to: "books#index"
 end
