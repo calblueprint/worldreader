@@ -8,6 +8,8 @@
 #  description :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  image       :string(255)
+#  asin        :string(255)
 #
 
 class Book < ActiveRecord::Base

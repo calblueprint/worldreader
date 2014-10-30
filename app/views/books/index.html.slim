@@ -2,11 +2,19 @@ h1 Library of Books
 p
   - if user_signed_in? and current_user.admin?
     = link_to "Manage Partners", admin_dashboard_index_path
+p
+  - if user_signed_in? and not current_user.admin?
+    = link_to "My Purchase History", user_path(current_user.id)
+p
+  - if user_signed_in? and not current_user.admin?
+    = link_to "Cart", cart_path(current_user.id)
+
 div[id="test" books="#{@books.to_json}"]
+
 p
   - if user_signed_in?
-    = link_to "Sign Out", destroy_user_session_path, :method => :delete
+    = link_to "Sign Out", destroy_user_session_path, method: :delete
   - else
-    = link_to "Sign In", new_user_session_path
+    = link_to "Sign In", "#LoginModal", data: {target: "#LoginModal", toggle: "modal"}
 
 = javascript_include_tag "react_components/book_list"
