@@ -1,0 +1,62 @@
+#navigation.navbar.navbar-default.navbar-fixed-top
+  .navbar-header
+    button.navbar-toggle data-target=".navbar-collapse" data-toggle="collapse" type="button"
+      span.icon-bar
+      span.icon-bar
+      span.icon-bar
+    a.navbar-brand href="/"
+      img.header-logo src="/assets/worldreader_logo.svg"
+  .navbar-collapse.collapse
+    ul.nav.navbar-nav.navbar-right
+      li
+        a href="/"  Library
+      li
+        a href="/"  Cart
+      li.end
+        a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
+    /! /.nav-collapse
+
+#LoginModal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-hidden="true" data-dismiss="modal" type="button"  ×
+        h4.modal-title Log-in
+
+      .modal-body
+        = form_tag session_path(:user) do
+          .form-group
+            label for="inputEmail" E-mail address
+            .input-group
+              span.input-group-addon @
+              = text_field_tag 'user[email]', nil, class: "inputEmail form-control", placeholder: "Enter email", type: "email"
+          .form-group
+            label for="inputPassword" Password
+            .input-group
+              = text_field_tag 'user[password]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
+              span.input-group-btn
+                button.btn.btn-default Sign in
+          = link_to "Forgot your password?", new_password_path(:user), class:"text-right"
+
+          .span.navbar-right
+            = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
+            = label_tag 'user[remember_me]', 'Keep me logged in'
+
+        / dropdown for account?
+        / li.dropdown
+        /   a.dropdown-toggle data-toggle="dropdown" href="#"
+        /     | My Account
+        /     span.caret
+        /   ul.dropdown-menu role="menu"
+        /     li
+        /       a href="#"  Action
+        /     li
+        /       a href="#"  Another action
+        /     li
+        /       a href="#"  Something else here
+        /     li.divider
+        /     li
+        /       a href="#"  Separated link
+
+    /! /.navbar-collapse
+  /! /.container-fluid
