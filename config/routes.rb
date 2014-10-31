@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :carts
 
   namespace :admin do
-    resources :dashboard
+    resources :dashboard do
+      collection do
+        get "display_partners", :as => "display_partners"
+      end
+    end
   end
 end

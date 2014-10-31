@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :groups
   has_many :books, through: :purchases
   has_many :purchases
+  scope :partners, -> { where role: 1 }
 
   def set_default_role
     self.role ||= :user
