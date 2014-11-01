@@ -18,6 +18,9 @@
 #  role                   :integer
 #  first_name             :string(255)
 #  last_name              :string(255)
+#  school                 :string(255)
+#  organization           :string(255)
+#  country                :string(255)
 #
 
 class User < ActiveRecord::Base

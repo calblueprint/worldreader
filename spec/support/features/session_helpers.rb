@@ -7,21 +7,21 @@ module Features
       click_button 'Sign up'
     end
 
-    def sign_in
+    def user_sign_in
       user = create(:user)
-      visit root_path
-      click_link 'Log in'
-      fill_in 'Enter email', with: user.email
-      fill_in 'Password', with: user.password
-      click_button 'Sign in'
+      sign_in(user)
     end
 
     def admin_sign_in
       user = create(:user, role: 2)
+      sign_in(user)
+    end
+
+    def sign_in(user)
       visit root_path
       click_link 'Log in'
-      fill_in 'Enter email', with: user.email
-      fill_in 'Password', with: user.password
+      first('#login').fill_in 'Enter email', with: user.email
+      first('#login').fill_in 'Password', with: user.password
       click_button 'Sign in'
     end
   end
