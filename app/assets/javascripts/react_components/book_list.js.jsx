@@ -2,53 +2,78 @@
 var books = JSON.parse(document.getElementById("test").getAttribute("books"));
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-// TODO: figure out a way to track the currently expanded tile better
-var currentExpanded = null;
-
 var BookTile = React.createClass({
-  getInitialState: function() {
-    return {clicked: false};
-  },
-  onClick: function() {
-    var clicked = !this.state.clicked;
-    this.setState({clicked: clicked});
-    if (clicked) {
-      if (currentExpanded) {
-        currentExpanded.setState({clicked: !currentExpanded.state.clicked});
-      }
-      currentExpanded = this;
-    } else {
-      currentExpanded = null;
-    }
+  handleClick: function() {
+    this.props.handleClick({bookId: this.props.book.id});
   },
   render: function() {
-    // TODO: better stylings
-    if (this.state.clicked) {
-      return (
-        <div className="expandedTile" onClick={this.onClick}>
-          <p>{this.props.name}</p>
-          <p>{this.props.desc}</p>
-        </div>
-      )
+    console.log("render BookTile " + this.props.book.id);
+    var content;
+    if (this.props.isExpanded) {
+      content = this.renderExpanded();
+    } else {
+      content = this.renderCollapsed();
     }
     return (
-      <div className="collapsedTile" onClick={this.onClick}>
-        <p>{this.props.name}</p>
-        <p>{this.props.desc.substring(0, 10) + "..."}</p>
+      <ReactCSSTransitionGroup transitionName={this.props.isExpanded ? "expand" : "collapse"} >
+        {content}
+      </ReactCSSTransitionGroup>
+    )
+  },
+  renderExpanded: function() {
+    return (
+      <div key={this.props.book.id + "-expanded"} className="expanded-book-tile"
+          onClick={this.handleClick}>
+        <div className="expanded-book-img-box pull-left">
+          <img className="expanded-book-img" src={this.props.book.image} />
+        </div>,
+        <div className="media-body">
+          <h4 className="media-heading">{this.props.book.name}</h4>
+          <span className="expanded-book-desc">{this.props.book.description}</span>
+        </div>
       </div>
-    );
+    )
+  },
+  renderCollapsed: function() {
+    return (
+      <div key={this.props.book.id + "-collapsed"} className="collapsed-book-tile"
+          onClick={this.handleClick}>
+        <div className="collapsed-book-img-box pull-left">
+          <img className="collapsed-book-img" src={this.props.book.image} />
+        </div>,
+        <div className="media-body">
+          <h4 className="media-heading">{this.props.book.name}</h4>
+          <span className="collapsed-book-desc">{this.props.book.description}</span>
+        </div>
+      </div>
+    )
   }
 });
 
 var BookList = React.createClass({
+  getInitialState: function() {
+    return {expandedBookId: null};
+  },
+  handleBookExpand: function(event) {
+    var expandedBookId = event.bookId;
+    if (this.state.expandedBookId === expandedBookId) {
+      expandedBookId = null;
+    }
+    console.log("expandedBookId=" + expandedBookId);
+    this.setState({expandedBookId: expandedBookId});
+  },
   render: function() {
-    var bookTiles = this.props.data.map(function (book) {
+    var bookTiles = this.props.books.map(function (book) {
       return (
-        <BookTile name={book["name"]} desc={book["description"]} bookList={this}/>
+        <BookTile
+          key={book.id}
+          book={book}
+          handleClick={this.handleBookExpand}
+          isExpanded={this.state.expandedBookId === book.id} />
       );
-    });
+    }.bind(this));
     return (
-      <div className="bookList">
+      <div className="media-list">
         {bookTiles}
       </div>
     );
@@ -56,6 +81,6 @@ var BookList = React.createClass({
 });
 
 React.renderComponent(
-  <BookList data={books} />,
+  <BookList books={books} />,
   document.getElementById("test")
 );

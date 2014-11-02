@@ -2,17 +2,200 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.expandedTile {
-  position: relative;
-  width: 300px;
-  height: 100px;
-  border: 2px dashed #444;
-  margin: 10px;
+.collapsed-book-tile {
+    height: 180px;
+    padding: 10px;
 }
 
-.collapsedTile {
-  position: relative;
-  width: 300px;
-  height: 50px;
-  margin: 10px;
+.collapsed-book-img-box {
+    overflow: auto;
+    width: 160px;
+    height: 160px;
+}
+
+.collapsed-book-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 160px;
+}
+
+.collapsed-book-desc {
+    white-space: nowrap;
+    display: block;
+    max-height: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.expanded-book-tile {
+    height: 340px;
+    padding: 10px;
+    outline: gray solid thin;
+    background-color: white;
+}
+
+.expanded-book-img-box {
+    overflow: auto;
+    width: 320px;
+    height: 320px;
+}
+
+.expanded-book-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 320px;
+}
+
+.expanded-book-desc {
+    display: block;
+    max-height: 150px;
+    overflow: hidden;
+}
+
+.expand-enter {
+    height: 180px;
+    overflow: hidden;
+    transition: height .5s;
+
+    .expanded-book-tile {
+        height: 180px;
+        padding: 10px;
+        transition: all .5s;
+    }
+
+    .expanded-book-img-box {
+        overflow: auto;
+        width: 160px;
+        height: 160px;
+        transition: all .5s;
+    }
+
+    .expanded-book-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 160px;
+        transition: all .5s;
+    }
+
+    .expanded-book-desc {
+        display: block;
+        max-height: 3rem;
+        overflow: hidden;
+        transition: all .5s;
+    }
+}
+
+.expand-enter.expand-enter-active {
+    height: 340px;
+
+    .expanded-book-tile {
+        height: 340px;
+        padding: 10px;
+        outline: gray solid thin;
+        background-color: white;
+    }
+
+    .expanded-book-img-box {
+        overflow: auto;
+        width: 320px;
+        height: 320px;
+    }
+
+    .expanded-book-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 320px;
+    }
+
+    .expanded-book-desc {
+        display: block;
+        max-height: 200px;
+        overflow: hidden;
+    }
+}
+
+.expand-leave {
+    opacity: 0;
+    transition: all .001s;
+}
+
+.expand-leave.expand-leave-active{
+    opacity: 0;
+}
+
+.collapse-enter {
+    height: 340px;
+    overflow: hidden;
+    transition: height .5s;
+
+    .collapsed-book-tile {
+        height: 340px;
+        padding: 10px;
+        outline: gray solid thin;
+        background-color: white;
+        transition: all .5s;
+    }
+
+    .collapsed-book-img-box {
+        overflow: auto;
+        width: 320px;
+        height: 320px;
+        transition: all .5s;
+    }
+
+    .collapsed-book-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 320px;
+        transition: all .5s;
+    }
+
+    .collapsed-book-desc {
+        display: block;
+        max-height: 200px;
+        overflow: hidden;
+        transition: all .5s;
+    }
+}
+
+.collapse-enter.collapse-enter-active {
+    height: 180px;
+
+    .collapsed-book-tile {
+        height: 180px;
+        padding: 10px;
+    }
+
+    .collapsed-book-img-box {
+        overflow: auto;
+        width: 160px;
+        height: 160px;
+    }
+
+    .collapsed-book-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 160px;
+    }
+
+    .collapsed-book-desc {
+        display: block;
+        max-height: 3rem;
+        overflow: hidden;
+    }
+}
+
+.collapse-leave {
+    opacity: 0;
+    transition: opacity .001s;
+}
+
+.collapse-leave.collapse-leave-active{
+    opacity: 0;
 }
