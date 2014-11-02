@@ -16,18 +16,18 @@
       li.end
         - if current_user.nil?
           a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in/Register
-        - if !current_user.nil?
+        - else
           a.dropdown-toggle data-toggle="dropdown" href="#" 
             | My Account
             span.caret
           ul.dropdown-menu role="menu" 
             li
-              a href="#" = link_to "My Purchase History", user_path(current_user.id)
+              a = link_to "My Purchase History", user_path(current_user.id)
             li
-              a href="#"  = link_to "Account Settings", user_path(current_user.id)
+              a = link_to "Account Settings", user_path(current_user.id)
             li.divider
             li
-              a href="#" = link_to "Sign Out", destroy_user_session_path, method: :delete
+              a = link_to "Sign Out", destroy_user_session_path, method: :delete
 
 
     /! /.nav-collapse
