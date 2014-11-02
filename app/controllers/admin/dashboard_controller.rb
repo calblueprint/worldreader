@@ -6,7 +6,8 @@ class Admin::DashboardController < ApplicationController
   def search
   end
   
-  def display_partners
+  # ordered so that partners with new purchases are first
+  def display_partners 
     partners = User.partners
     render json: partners
   end

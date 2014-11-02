@@ -17,7 +17,6 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
 gem 'therubyracer', :platforms => :ruby
-gem 'thin'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'isbn', '~> 2.0.10'
