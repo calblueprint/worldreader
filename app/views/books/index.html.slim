@@ -9,7 +9,7 @@ p
   - if user_signed_in? and not current_user.admin?
     = link_to "Cart", cart_path(current_user.id)
 
-div[id="test" books="#{@books.to_json}"]
+div[id="book-list" books="#{@books.to_json}"]
 
 p
   - if user_signed_in?

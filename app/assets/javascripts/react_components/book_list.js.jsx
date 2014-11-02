@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var books = JSON.parse(document.getElementById("test").getAttribute("books"));
+var books = JSON.parse(document.getElementById("book-list").getAttribute("books"));
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var BookTile = React.createClass({
@@ -7,7 +7,6 @@ var BookTile = React.createClass({
     this.props.handleClick({bookId: this.props.book.id});
   },
   render: function() {
-    console.log("render BookTile " + this.props.book.id);
     var content;
     if (this.props.isExpanded) {
       content = this.renderExpanded();
@@ -59,7 +58,6 @@ var BookList = React.createClass({
     if (this.state.expandedBookId === expandedBookId) {
       expandedBookId = null;
     }
-    console.log("expandedBookId=" + expandedBookId);
     this.setState({expandedBookId: expandedBookId});
   },
   render: function() {
@@ -82,5 +80,5 @@ var BookList = React.createClass({
 
 React.renderComponent(
   <BookList books={books} />,
-  document.getElementById("test")
+  document.getElementById("book-list")
 );
