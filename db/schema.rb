@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141031034747) do
+ActiveRecord::Schema.define(version: 20141102080656) do
 
   create_table "books", force: true do |t|
     t.string   "name"
@@ -47,12 +47,12 @@ ActiveRecord::Schema.define(version: 20141031034747) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "groups", force: true do |t|
-    t.integer  "user_id"
     t.string   "name"
     t.string   "country"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "purchases", force: true do |t|
@@ -60,6 +60,18 @@ ActiveRecord::Schema.define(version: 20141031034747) do
     t.integer "book_id",      null: false
     t.date    "purchased_on"
     t.boolean "is_purchased"
+  end
+
+  create_table "recommendations", force: true do |t|
+    t.integer  "book_id"
+    t.string   "level"
+    t.string   "language"
+    t.string   "genre"
+    t.string   "country"
+    t.string   "organization"
+    t.string   "school"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
