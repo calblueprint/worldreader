@@ -23,6 +23,10 @@ Rails.application.routes.draw do
       collection do
         get "display_partners", :as => "display_partners"
       end
+      member do
+        get "partner_information", :as => "partner_information"
+        get "display_groups", :as => "display_groups"
+      end
     end
   end
 

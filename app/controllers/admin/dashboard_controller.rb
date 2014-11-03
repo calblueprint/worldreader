@@ -12,4 +12,14 @@ class Admin::DashboardController < ApplicationController
     render json: partners
   end
 
+  def partner_information
+    user = User.find(params[:id])
+    render json: user
+  end
+
+  def display_groups
+    groups = Group.where("user_id = " + params[:id])
+    render json: groups
+  end
+
 end

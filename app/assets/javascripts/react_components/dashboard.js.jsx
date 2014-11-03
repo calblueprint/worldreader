@@ -22,7 +22,7 @@ var Dashboard = React.createClass({
     });
   },
   _handleOnSearchSubmit: function (search) {
-    this._fetchPartners({search: search});
+    this._fetchPartners({search_data: search});
   },
   _selectPartner: function (partnerId) {
     this.setState({selectedPartner: partnerId});
@@ -42,7 +42,7 @@ var Dashboard = React.createClass({
           </div>
           <div className="col-md-8">
             <div className="viewPurchases">
-              <PartnerDisplay partner={this.state.selectedPartner} />
+              <PartnerDisplay partnerId={this.state.selectedPartner} />
             </div>  
           </div>
         </div>
@@ -116,17 +116,23 @@ var Partner = React.createClass({
 });
 
 var PartnerDisplay = React.createClass({
+  getInitialState: function () {
+    return {selectedPage: 1};
+  },
+  componentWillReceiveProps: function (nextProps) {
+    this.setState({selectedPage: 1});
+  },
   clickInformation: function () {
-    this.setState({selected: 1});
+    this.setState({selectedPage: 1});
   },
   clickGroups: function () {
-    this.setState({selected: 2});
+    this.setState({selectedPage: 2});
   },
   clickPurchases: function () {
-    this.setState({selected: 3});
+    this.setState({selectedPage: 3});
   },
   render: function () {
-    var selectedPartner = this.props.partner;
+    var selectedPartner = this.props.partnerId;
     if (selectedPartner == null) {
       return (
         <div className="noneSelectedDisplay">
@@ -155,25 +161,143 @@ var PartnerDisplay = React.createClass({
             </div>
           </div>
         </nav>
+        <div className="mainDisplay">
+          <MainDisplay type={this.state.selectedPage} partnerId={this.props.partnerId} />
+        </div>
       </div>
     );
   }
 });
 
-var InformationDisplay = React.createClass({
-  render: function () {
+var MainDisplay = React.createClass({
+  render: function() {
+    if (this.props.type == 1) {
+      return (
+        <InformationDisplay partnerId={this.props.partnerId}/>
+      );
+    } else if (this.props.type == 2) {
+      return(
+        <GroupDisplay partnerId={this.props.partnerId}/>
+      );
+    } else {
+      return (
+        <PurchaseDisplay partnerId={this.props.partnerId}/>
+      );
+    }
+  }
+});
 
+var InformationDisplay = React.createClass({
+  getInitialState: function () {
+    var initPartner = {
+      country: "",
+      email: "",
+      first_name: "",
+      last_name: "",
+      organization: "",
+      school: "",
+    };
+    return {partnerInfo: initPartner};
+  },
+  componentDidMount: function () {
+    this._fetchPartner({id: this.props.partnerId});
+  },
+  _fetchPartner: function (id) {
+    $.ajax({
+      url: "/admin/dashboard/" + this.props.partnerId + "/partner_information",
+      dataType: 'json',
+      data: id,
+      success: function (data) {
+        console.log(data);
+        this.setState({partnerInfo: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  render: function () {
+    return (
+      <div className="PartnerInfo">
+        <div className="Name">
+          <h2> {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]} </h2>
+        </div>
+        <ul className="Info">
+          <li> Email: {this.state.partnerInfo["email"]} </li>
+          <li> Country: {this.state.partnerInfo["country"]} </li>
+          <li> Organization: {this.state.partnerInfo["organization"]} </li>
+          <li> School: {this.state.partnerInfo["school"]} </li>
+        </ul>
+      </div>
+    );
   }
 });
 
 var GroupDisplay = React.createClass({
+  getInitialState: function () {
+    var initGroup = {
+      name: "",
+      country: "",
+      description: "",
+    };
+    return {groups: [initGroup]};
+  },
+  componentDidMount: function () {
+    this._fetchGroups({id: this.props.partnerId});
+  },
+  _fetchGroups: function (id) {
+    $.ajax({
+      url: "/admin/dashboard/" + this.props.partnerId + "/display_groups",
+      dataType: 'json',
+      data: id,
+      success: function (data) {
+        console.log(data);
+        this.setState({groups: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
-
+    var allGroups = this.state.groups.map (function (group) {
+      return (
+        <ul className="GroupInfo">
+          <h2> Name: {group["name"]} </h2>
+          <li> Country: {group["country"]} </li>
+          <li> Description: {group["organization"]} </li>
+        </ul>
+      );
+    });
+    return (
+      <div className="Groups">
+        {allGroups}
+      </div>
+    );
   }
 });
 
 var PurchaseDisplay = React.createClass({
+  componentDidMount: function () {
+    this._fetchPurchases({id: this.props.partnerId});
+  },
+  _fetchPurchases: function (id) {
+    $.ajax({
+      url: "/admin/dashboard/display_partners",
+      dataType: 'json',
+      data: id,
+      success: function (data) {
+        console.log(data);
+        this.setState({purchases: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
-
+    return (
+      <h2> Purchases </h2>
+    );  
   }
 });
