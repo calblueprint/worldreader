@@ -200,16 +200,23 @@
     opacity: 0;
 }
 
-span.tag.label.label-info{
-    font-size: 100%;
-    font-weight: normal;
+#book-searchbar{
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .bootstrap-tagsinput{
-    padding: 0.75rem;
-    width: 100%;
+    padding: 0.5rem;
     margin-bottom: 0px;
-    background-color: transparent;
-    border: 0px;
+    background-color: white;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
     box-shadow: none;
+    display: block;
+}
+
+span.tag.label.label-info{
+    font-size: 100%;
+    font-weight: normal;
 }
