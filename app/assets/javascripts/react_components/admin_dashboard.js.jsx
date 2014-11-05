@@ -199,12 +199,15 @@ var InformationDisplay = React.createClass({
     };
     return {partnerInfo: initPartner};
   },
+  componentWillReceiveProps: function (nextProps) {
+    this._fetchPartner({id: nextProps.partnerId});
+  },
   componentDidMount: function () {
     this._fetchPartner({id: this.props.partnerId});
   },
   _fetchPartner: function (id) {
     $.ajax({
-      url: "/admin/dashboard/" + this.props.partnerId + "/partner_information",
+      url: "/admin/dashboard/" + id["id"] + "/partner_information",
       dataType: 'json',
       data: id,
       success: function (data) {
@@ -247,7 +250,7 @@ var GroupDisplay = React.createClass({
   },
   _fetchGroups: function (id) {
     $.ajax({
-      url: "/admin/dashboard/" + this.props.partnerId + "/display_groups",
+      url: "/admin/dashboard/" + id["id"] + "/display_groups",
       dataType: 'json',
       data: id,
       success: function (data) {
@@ -278,12 +281,15 @@ var GroupDisplay = React.createClass({
 });
 
 var PurchaseDisplay = React.createClass({
+  getInitialState: function () {
+    return {purchases: []};
+  },
   componentDidMount: function () {
     this._fetchPurchases({id: this.props.partnerId});
   },
   _fetchPurchases: function (id) {
     $.ajax({
-      url: "/admin/dashboard/display_partners",
+      url: "/admin/dashboard/" + id["id"] + "/display_purchases",
       dataType: 'json',
       data: id,
       success: function (data) {

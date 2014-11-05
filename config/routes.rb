@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       member do
         get "partner_information", :as => "partner_information"
         get "display_groups", :as => "display_groups"
+        get "display_purchases", :as => "display_purchases"
       end
     end
   end
