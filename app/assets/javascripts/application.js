@@ -1,7 +1,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require bootstrap-tagsinput
 //= require turbolinks
+//= require twitter/typeahead
 //= require react
 //= require react_ujs
 //= require components

@@ -53,6 +53,8 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
+    bootstrap-tagsinput-rails (0.4.2.1)
+      railties (>= 3.1)
     builder (3.2.2)
     cancancan (1.9.2)
     capybara (2.4.3)
@@ -228,6 +230,10 @@ GEM
       polyglot (>= 0.3.1)
     turbolinks (2.4.0)
       coffee-rails
+    twitter-typeahead-rails (0.10.5)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)
@@ -253,6 +259,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass (~> 3.2.0)
+  bootstrap-tagsinput-rails
   cancancan (~> 1.9)
   capybara
   coffee-rails (~> 4.0.0)
@@ -266,6 +273,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   launchy
+  nokogiri
   pg
   pry-rails
   pry-rescue
@@ -283,6 +291,7 @@ DEPENDENCIES
   therubyracer
   thin
   turbolinks
+  twitter-typeahead-rails
   uglifier (>= 1.3.0)
   unicorn
   whenever
