@@ -243,7 +243,7 @@ var GroupDisplay = React.createClass({
       country: "",
       description: "",
     };
-    return {groups: [initGroup]};
+    return {groups: [initGroup], showOrHide: "Hide Books"};
   },
   componentDidMount: function () {
     this._fetchGroups({id: this.props.partnerId});
@@ -262,20 +262,39 @@ var GroupDisplay = React.createClass({
       }.bind(this)
     });
   },
+  _expand: function () {
+    if (this.state.showOrHide == "Show Books") {
+      this.setState({showOrHide: "Hide Books"});
+    } else {
+      this.setState({showOrHide: "Show Books"});
+    }
+  },
   render: function() {
     var allGroups = this.state.groups.map (function (group) {
       return (
-        <ul className="GroupInfo">
-          <h2> Name: {group["name"]} </h2>
-          <li> Country: {group["country"]} </li>
-          <li> Description: {group["organization"]} </li>
-        </ul>
+        <div className="GroupContainer">
+          <ul className="GroupInfo">
+            <h2> Name: {group["name"]} </h2>
+            <li> Country: {group["country"]} </li>
+            <li> Description: {group["organization"]} </li>
+          </ul>
+          <input type="submit" value="" onClick={_expand} />
+            { {this.state.showOrHide} == "Show Books" ? <GroupBooks groupId={group["id"]} /> : null }
+        </div>
       );
     });
     return (
       <div className="Groups">
         {allGroups}
       </div>
+    );
+  }
+});
+
+var GroupBooks = React.createClass({
+  render: function () {
+    return (
+      <h2> Hello </h2>
     );
   }
 });
@@ -301,7 +320,7 @@ var PurchaseDisplay = React.createClass({
       }.bind(this)
     });
   },
-  render: function() {
+  render: function () {
     return (
       <h2> Purchases </h2>
     );  
