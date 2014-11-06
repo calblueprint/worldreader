@@ -2,18 +2,22 @@ h3.text-center Library
 - if user_signed_in? and current_user.admin?
   = link_to "Manage Partners", admin_dashboard_index_path
 
-#book-searchbar.input-group
-  input.input-block-level type="text" class="form-control" value="10-12, 12-15, Ethiopia" data-role="tagsinput" autofocus="autofocus" placeholder="Input book name or search by tag."
-  span.input-group-btn
-    button.btn.btn-default type="button"
-      span.glyphicon.glyphicon-search
 
-div[id="book-list" books="#{@books.to_json}"]
+- if user_signed_in?
+  = render "cart"
+
+.container
+  #book-searchbar.input-group
+    input.input-block-level type="text" class="form-control" value="10-12, 12-15, Ethiopia" data-role="tagsinput" autofocus="autofocus" placeholder="Input book name or search by tag."
+    span.input-group-btn
+      button.btn.btn-default type="button"
+        span.glyphicon.glyphicon-search
+
+  div[id="book-list" books="#{@books.to_json}"]
+  = javascript_include_tag "react_components/book_list"
 
 p
   - if user_signed_in?
     = link_to "Sign Out", destroy_user_session_path, method: :delete
   - else
     = link_to "Sign In", "#LoginModal", data: {target: "#LoginModal", toggle: "modal"}
-
-= javascript_include_tag "react_components/book_list"
