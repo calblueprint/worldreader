@@ -1,0 +1,6 @@
+#floating-cart
+  ul
+    h3 Your Cart
+    - current_user.cart.each do |book|
+      li
+        = book.name # TODO make this a link to the book by using the search page

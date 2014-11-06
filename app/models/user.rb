@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def cart
+    purchases.where(is_purchased: false).collect{ |purchase| purchase.book }
+  end
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

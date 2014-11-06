@@ -1,6 +1,5 @@
-// Place all the styles related to the book controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+$cart-view-width: 200px;
+
 
 .collapsed-book-tile {
     height: 180px;
@@ -219,4 +218,31 @@
 span.tag.label.label-info{
     font-size: 100%;
     font-weight: normal;
+}
+
+// Cart Styling
+
+#floating-cart {
+  position: absolute;
+  right: 10px;
+  width: $cart-view-width;
+  background-color: white;
+  top: 150px;
+  border-radius: 3px;
+  padding: 5px;
+  padding-left: 0px;
+
+  ul {
+    margin-bottom: 20px;
+  }
+
+  ul li a {
+    display:block;
+    border:1px solid #999;
+    background-color:#222;
+    border-left:6px solid #999;
+    text-decoration:none;
+    color:#ccc;
+    padding:5px 5px 5px 25px;
+  }
 }
