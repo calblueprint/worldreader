@@ -1,5 +1,7 @@
-FactoryGirl.define do  factory :recommendation do
-    
+FactoryGirl.define do
+
+  factory :recommendation do
+    # TODO create recommendation
   end
 
   factory :user do
