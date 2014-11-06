@@ -79,6 +79,6 @@ var BookList = React.createClass({
 });
 
 React.renderComponent(
-  <BookList books={books} />,
+  <BookList books={gon.books} />,
   document.getElementById("book-list")
 );
