@@ -14,13 +14,13 @@ var CartButton = React.createClass({
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-          Remove from Cart
+        Remove from Cart
         </button>
       )
     } else {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-          Add to Cart
+        Add to Cart
         </button>
       )
     }
@@ -45,6 +45,15 @@ var BookTile = React.createClass({
     )
   },
   renderExpanded: function() {
+    var cartButton;
+    if (this.props.user) {
+      cartButton = (
+        <CartButton user={this.props.user}
+                    onClick={this.props.handleCartEvent}
+                    cart={this.props.cart}
+                    book={this.props.book} />
+      )
+    }
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile"
           onClick={this.handleClick}>
@@ -54,8 +63,8 @@ var BookTile = React.createClass({
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="expanded-book-desc">{this.props.book.description}</span>
+          {cartButton}
         </div>
-        <CartButton onClick={this.props.handleCartEvent} cart={this.props.cart} book={this.props.book} />
       </div>
     )
   },
@@ -87,6 +96,7 @@ var BookList = React.createClass({
     var bookTiles = this.props.books.map(function (book) {
       return (
         <BookTile
+          user={this.props.user}
           key={book.id}
           book={book}
           cart={this.props.cart}
