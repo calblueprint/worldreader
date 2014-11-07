@@ -15,8 +15,18 @@ var CartItem = React.createClass({
 });
 
 var Cart = React.createClass({
+  viewMoreClicked: function(event) {
+    console.log('clicked')
+    this.props.handleCartEvent({SEE_MORE_CART_ITEMS: 1});
+  },
   render: function() {
-    var displayCart = _.last(this.props.cart, 5).reverse();
+    var displayCart = _.last(this.props.cart, this.props.numVisibleCartItems).reverse();
+    var viewMore;
+    if (this.props.cart.length > this.props.numVisibleCartItems) {
+      viewMore = (
+        <a onClick={this.viewMoreClicked}>View More</a>
+      );
+    }
     var cartItems = displayCart.map(function(cartItem) {
       return (
         <div>
@@ -29,6 +39,7 @@ var Cart = React.createClass({
       <div>
         <h3>Your Cart</h3>
         {cartItems}
+        {viewMore}
       </div>
     );
   }

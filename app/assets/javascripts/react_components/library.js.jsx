@@ -1,11 +1,19 @@
 /** @jsx React.DOM */
 
+// Cart Variables
 var ADD_BOOK_TO_CART = "add";
 var REMOVE_BOOK_FROM_CART = "remove";
+var SEE_MORE_CART_ITEMS = "see more";
+var NUM_VISIBLE_CART_ITEMS = 5;
 
 var Library = React.createClass({
   getInitialState: function() {
-    return {cart: gon.cart};
+    return {cart: gon.cart,
+            numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
+  },
+  updateNumVisibleCartItems: function() {
+    this.setState({numVisibleCartItems:
+                  _.min([this.state.numVisibleCartItems + 5, this.state.cart.length])});
   },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
@@ -13,6 +21,7 @@ var Library = React.createClass({
       var cart = _.reject(this.state.cart, function(el) {
         return el.id == bookId;
       });
+      this.updateNumVisibleCartItems();
       this.setState({cart: cart});
       this.removeBook(bookId);
     } else if (event.ADD_BOOK_TO_CART) {
@@ -21,6 +30,8 @@ var Library = React.createClass({
       cart.push(book);
       this.setState({cart: cart});
       this.addBook(book.id);
+    } else if (event.SEE_MORE_CART_ITEMS) {
+      this.updateNumVisibleCartItems();
     }
   },
   removeBook: function(bookId) {
@@ -52,7 +63,9 @@ var Library = React.createClass({
     if (this.props.user) {
       cart = (
         <div id="floating-cart">
-          <Cart cart={this.state.cart} handleCartEvent={this.handleCartEvent} />
+          <Cart cart={this.state.cart}
+                handleCartEvent={this.handleCartEvent}
+                numVisibleCartItems={this.state.numVisibleCartItems} />
         </div>
       )
     }
