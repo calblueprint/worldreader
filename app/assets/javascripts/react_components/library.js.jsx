@@ -13,7 +13,8 @@ var Library = React.createClass({
   },
   updateNumVisibleCartItems: function() {
     this.setState({numVisibleCartItems:
-                  _.min([this.state.numVisibleCartItems + 5, this.state.cart.length])});
+                  _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
+                        this.state.cart.length])});
   },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
