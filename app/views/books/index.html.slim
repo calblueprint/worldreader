@@ -2,10 +2,6 @@ h3.text-center Library
 - if user_signed_in? and current_user.admin?
   = link_to "Manage Partners", admin_dashboard_index_path
 
-
-/,- if user_signed_in?
-/  = render "cart"
-
 .container
   #book-searchbar.input-group
     input.input-block-level type="text" class="form-control" value="10-12, 12-15, Ethiopia" data-role="tagsinput" autofocus="autofocus" placeholder="Input book name or search by tag."
