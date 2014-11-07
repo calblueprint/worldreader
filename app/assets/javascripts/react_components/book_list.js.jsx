@@ -2,6 +2,24 @@
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+var CartButton = React.createClass({
+  render: function() {
+    if (this.props.book in this.props.cart) {
+      return (
+        <button onClick={this.props.onClick}>
+          Add to Cart
+        </button>
+      )
+    } else {
+      return (
+        <button onClick={this.props.onClick}>
+          Remove from Cart
+        </button>
+      )
+    }
+  }
+});
+
 var BookTile = React.createClass({
   handleClick: function() {
     this.props.handleClick({bookId: this.props.book.id});
@@ -30,6 +48,7 @@ var BookTile = React.createClass({
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="expanded-book-desc">{this.props.book.description}</span>
         </div>
+        <CartButton onClick={this.props.handleCartEvent} cart={this.props.cart} book={this.props.book} />
       </div>
     )
   },
@@ -66,7 +85,9 @@ var BookList = React.createClass({
         <BookTile
           key={book.id}
           book={book}
+          cart={this.props.cart}
           handleClick={this.handleBookExpand}
+          handleCartEvent={this.props.handleCartEvent}
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));
