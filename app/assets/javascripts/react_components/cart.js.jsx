@@ -16,7 +16,6 @@ var CartItem = React.createClass({
 
 var Cart = React.createClass({
   viewMoreClicked: function(event) {
-    console.log('clicked')
     this.props.handleCartEvent({SEE_MORE_CART_ITEMS: 1});
   },
   render: function() {
