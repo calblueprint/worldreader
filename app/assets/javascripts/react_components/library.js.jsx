@@ -22,10 +22,10 @@ var Library = React.createClass({
   render: function() {
     return (
       <div>
-      <BookList books={this.props.books} cart={this.state.cart} handleCartEvent={this.handleCartEvent} />
-      <div className="cart">
-        <Cart cart={this.state.cart} handleCartEvent={this.handleCartEvent} />
-      </div>
+        <BookList books={this.props.books} cart={this.state.cart} handleCartEvent={this.handleCartEvent} />
+        <div id="floating-cart">
+          <Cart cart={this.state.cart} handleCartEvent={this.handleCartEvent} />
+        </div>
       </div>
     );
   }

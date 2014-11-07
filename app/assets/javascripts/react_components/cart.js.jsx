@@ -15,13 +15,16 @@ var Cart = React.createClass({
     var displayCart = _.last(this.props.cart, 5).reverse();
     var cartItems = displayCart.map(function(cartItem) {
       return (
-        <CartItem book={cartItem} className="cart-item-ting" />
+        <li>
+          <CartItem book={cartItem} />
+        </li>
       );
     }.bind(this));
     return (
-      <div>
+      <ul>
+        <h3>Your Cart</h3>
         {cartItems}
-      </div>
+      </ul>
     );
   }
 });

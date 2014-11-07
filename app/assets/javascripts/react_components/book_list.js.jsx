@@ -3,7 +3,7 @@
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var CartButton = React.createClass({
-  handleClick: function() {
+  handleClick: function(event) {
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       this.props.onClick({REMOVE_BOOK_FROM_CART: this.props.book});
     } else {
@@ -13,13 +13,13 @@ var CartButton = React.createClass({
   render: function() {
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       return (
-        <button onClick={this.handleClick}>
+        <button className="btn cart-button" onClick={this.handleClick}>
           Remove from Cart
         </button>
       )
     } else {
       return (
-        <button onClick={this.handleClick}>
+        <button className="btn cart-button" onClick={this.handleClick}>
           Add to Cart
         </button>
       )
@@ -81,9 +81,6 @@ var BookList = React.createClass({
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
-    if (this.state.expandedBookId === expandedBookId) {
-      expandedBookId = null;
-    }
     this.setState({expandedBookId: expandedBookId});
   },
   render: function() {
