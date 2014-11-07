@@ -3,7 +3,7 @@
 var CartItem = React.createClass({
   render: function() {
     return (
-      <div>
+      <div className="cart-item">
         {this.props.book.name}
       </div>
     );
@@ -15,7 +15,7 @@ var Cart = React.createClass({
     var displayCart = _.last(this.props.cart, 5).reverse();
     var cartItems = displayCart.map(function(cartItem) {
       return (
-        <CartItem book={cartItem} />
+        <CartItem book={cartItem} className="cart-item-ting" />
       );
     }.bind(this));
     return (
