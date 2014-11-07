@@ -11,18 +11,15 @@ var Library = React.createClass({
     return {cart: gon.cart,
             numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
   },
-  updateNumVisibleCartItems: function() {
-    this.setState({numVisibleCartItems:
-                  _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
-                        this.state.cart.length])});
-  },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
       var bookId = event.REMOVE_BOOK_FROM_CART.id;
       var cart = _.reject(this.state.cart, function(el) {
         return el.id == bookId;
       });
-      this.updateNumVisibleCartItems();
+      this.setState({numVisibleCartItems:
+                    _.min([NUM_VISIBLE_CART_ITEMS,
+                          this.state.cart.length])});
       this.setState({cart: cart});
       this.removeBook(bookId);
     } else if (event.ADD_BOOK_TO_CART) {
@@ -32,7 +29,9 @@ var Library = React.createClass({
       this.setState({cart: cart});
       this.addBook(book.id);
     } else if (event.SEE_MORE_CART_ITEMS) {
-      this.updateNumVisibleCartItems();
+      this.setState({numVisibleCartItems:
+                    _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
+                          this.state.cart.length])});
     }
   },
   removeBook: function(bookId) {
