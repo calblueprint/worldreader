@@ -59,7 +59,7 @@ var BookTile = React.createClass({
           onClick={this.handleClick}>
         <div className="expanded-book-img-box pull-left">
           <img className="expanded-book-img" src={this.props.book.image} />
-        </div>,
+        </div>
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="expanded-book-desc">{this.props.book.description}</span>
@@ -74,7 +74,7 @@ var BookTile = React.createClass({
           onClick={this.handleClick}>
         <div className="collapsed-book-img-box pull-left">
           <img className="collapsed-book-img" src={this.props.book.image} />
-        </div>,
+        </div>
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
