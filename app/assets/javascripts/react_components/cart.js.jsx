@@ -12,7 +12,8 @@ var CartItem = React.createClass({
 
 var Cart = React.createClass({
   render: function() {
-    var cartItems = this.props.cart.map(function(cartItem) {
+    var displayCart = _.last(this.props.cart, 5).reverse();
+    var cartItems = displayCart.map(function(cartItem) {
       return (
         <CartItem book={cartItem} />
       );
