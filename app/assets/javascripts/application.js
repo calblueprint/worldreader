@@ -17,4 +17,5 @@
 //= require turbolinks
 //= require twitter/typeahead
 //= require react
+//= require underscore
 //= require_tree .
