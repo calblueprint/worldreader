@@ -3,8 +3,8 @@ h3.text-center Library
   = link_to "Manage Partners", admin_dashboard_index_path
 
 
-- if user_signed_in?
-  = render "cart"
+/,- if user_signed_in?
+/  = render "cart"
 
 .container
   #book-searchbar.input-group
@@ -13,8 +13,8 @@ h3.text-center Library
       button.btn.btn-default type="button"
         span.glyphicon.glyphicon-search
 
-  div[id="book-list"]
-  = javascript_include_tag "react_components/book_list"
+  div[id="library"]
+  = javascript_include_tag "react_components/library"
 
 p
   - if user_signed_in?

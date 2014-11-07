@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var books = JSON.parse(document.getElementById("book-list").getAttribute("books"));
+
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var BookTile = React.createClass({
@@ -77,8 +77,3 @@ var BookList = React.createClass({
     );
   }
 });
-
-React.renderComponent(
-  <BookList books={gon.books} />,
-  document.getElementById("book-list")
-);
