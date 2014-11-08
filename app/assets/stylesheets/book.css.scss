@@ -222,11 +222,9 @@ span.tag.label.label-info{
 // Cart Styling
 
 #floating-cart {
-  position: absolute;
   right: 10px;
   width: $cart-view-width;
   background-color: white;
-  top: 150px;
   border-radius: 3px;
   padding: 10px;
 
@@ -255,6 +253,7 @@ span.tag.label.label-info{
     text-decoration: none;
     border: none;
     background: white;
+    float: left;
     padding-right: 5px;
   }
 }

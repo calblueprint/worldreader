@@ -106,7 +106,7 @@ var BookList = React.createClass({
       );
     }.bind(this));
     return (
-      <div className="media-list">
+      <div className="media-list col-md-8 col-md-offset-2">
         {bookTiles}
       </div>
     );

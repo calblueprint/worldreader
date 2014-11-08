@@ -62,7 +62,7 @@ var Library = React.createClass({
     var cart;
     if (this.props.user) {
       cart = (
-        <div id="floating-cart">
+        <div id="floating-cart" className="col-md-2">
           <Cart cart={this.state.cart}
                 handleCartEvent={this.handleCartEvent}
                 numVisibleCartItems={this.state.numVisibleCartItems} />
