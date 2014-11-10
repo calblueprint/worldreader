@@ -12,11 +12,14 @@ Rails.application.routes.draw do
 
   resources :users
 
-  post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
+  # post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
 
   resources :books
 
-  resources :carts
+  resources :carts do
+    post "add/:book_id" => "carts#add"
+    post "remove/:book_id" => "cards#remove"
+  end
 
   namespace :admin do
     resources :dashboard do
@@ -29,6 +32,18 @@ Rails.application.routes.draw do
         get "display_purchases", :as => "display_purchases"
         get "display_books", :as => "display_books"
         get "display_book", :as => "display_book"
+      end
+    end
+  end
+
+  # API routes for react updates
+  namespace :api do
+    namespace :v1 do
+      resources :carts do
+        collection do
+          post "add/:book_id" => "carts#add"
+          post "remove/:book_id" => "carts#remove"
+        end
       end
     end
   end

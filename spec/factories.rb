@@ -1,4 +1,9 @@
 FactoryGirl.define do
+
+  factory :recommendation do
+    # TODO create recommendation
+  end
+
   factory :user do
     first_name "John"
     last_name "Du"
