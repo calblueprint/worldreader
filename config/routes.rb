@@ -27,6 +27,8 @@ Rails.application.routes.draw do
         get "partner_information", :as => "partner_information"
         get "display_groups", :as => "display_groups"
         get "display_purchases", :as => "display_purchases"
+        get "display_books", :as => "display_books"
+        get "display_book", :as => "display_book"
       end
     end
   end

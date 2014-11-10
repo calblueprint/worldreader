@@ -242,8 +242,9 @@ var GroupDisplay = React.createClass({
       name: "",
       country: "",
       description: "",
+      id: "",
     };
-    return {groups: [initGroup], showOrHide: "Hide Books"};
+    return {groups: [initGroup]};
   },
   componentDidMount: function () {
     this._fetchGroups({id: this.props.partnerId});
@@ -258,29 +259,15 @@ var GroupDisplay = React.createClass({
         this.setState({groups: data});
       }.bind(this),
       error: function (xhr, status, err) {
+        console.log("error");
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
-  _expand: function () {
-    if (this.state.showOrHide == "Show Books") {
-      this.setState({showOrHide: "Hide Books"});
-    } else {
-      this.setState({showOrHide: "Show Books"});
-    }
-  },
   render: function() {
     var allGroups = this.state.groups.map (function (group) {
       return (
-        <div className="GroupContainer">
-          <ul className="GroupInfo">
-            <h2> Name: {group["name"]} </h2>
-            <li> Country: {group["country"]} </li>
-            <li> Description: {group["organization"]} </li>
-          </ul>
-          <input type="submit" value="" onClick={_expand} />
-            { {this.state.showOrHide} == "Show Books" ? <GroupBooks groupId={group["id"]} /> : null }
-        </div>
+        <Group group={group} />
       );
     });
     return (
@@ -291,10 +278,79 @@ var GroupDisplay = React.createClass({
   }
 });
 
-var GroupBooks = React.createClass({
+var Group = React.createClass({
+  getInitialState: function () {
+    return {expand: "Show Books"};
+  },
+  _expand: function () {
+    if (this.state.expand == "Show Books") {
+      this.setState({expand: "Hide Books"});
+    } else {
+      this.setState({expand: "Show Books"});
+    }
+  },
   render: function () {
     return (
-      <h2> Hello </h2>
+      <div className="GroupContainer">
+        <ul className="GroupInfo">
+          <h2> Name: {this.props.group["name"]} </h2>
+          <li> Country: {this.props.group["country"]} </li>
+          <li> Description: {this.props.group["organization"]} </li>
+        </ul>
+        <div className="GroupExpand">
+          <input type="submit" value={this.state.expand} onClick={this._expand} />
+        </div>
+        { this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]} /> : null }
+      </div>
+    );
+  }
+});
+
+var GroupBooks = React.createClass({
+  getInitialState: function () {
+    return {books: []};
+  },
+  componentDidMount: function () {
+    this._fetchBooks({id: this.props.groupId});
+  },
+  _fetchBooks: function (id) {
+    $.ajax({
+      url: "/admin/dashboard/" + id["id"] + "/display_books",
+      dataType: 'json',
+      data: id,
+      success: function (data) {
+        console.log(data);
+        this.setState({books: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.log("error");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  render: function () {
+    console.log(this.state.books);
+    return (
+      <div>
+        <BookList books={this.state.books} />
+      </div>
+    );
+  }
+});
+
+var BookList = React.createClass({
+  render: function() {
+    var books = this.props.books.map(function (book) {
+      return (
+        <div className="book">
+          <a href={"/book/" + book.id}>{book.name}</a>
+        </div>
+      );
+    }.bind(this));
+    return (
+      <div className="group-books">
+        {books}
+      </div>
     );
   }
 });
@@ -321,8 +377,48 @@ var PurchaseDisplay = React.createClass({
     });
   },
   render: function () {
+    var purchases = this.state.purchases.map(function (purchase) {
+      return (
+        <div className="purchase">
+          <Purchase purchase={purchase} />
+        </div>
+      );
+    }.bind(this));
     return (
-      <h2> Purchases </h2>
+      <div className="purchases">
+        {purchases}
+      </div>
     );  
+  }
+});
+
+var Purchase = React.createClass( {
+  getInitialState: function () {
+    return {book: []};
+  },
+  componentDidMount: function () {
+    this._fetchBook({bookId: this.props.purchase.book_id});
+  },
+  _fetchBook: function (bookId) {
+    $.ajax({
+      url: "/admin/dashboard/" + bookId["bookId"] + "/display_book",
+      dataType: 'json',
+      data: bookId,
+      success: function (data) {
+        console.log(data);
+        this.setState({book: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  render: function () {
+    return (
+      <div className="book">
+        {this.state.book.name}
+        {this.props.purchase.purchased_on}
+      </div>
+    );
   }
 });

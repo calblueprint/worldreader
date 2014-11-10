@@ -26,4 +26,14 @@ class Admin::DashboardController < ApplicationController
     purchases = Purchase.where(["user_id = ? and is_purchased = ?", params[:id], false])
     render json: purchases
   end
+
+  def display_books
+    books = Group.find(params[:id]).books
+    render json: books
+  end
+
+  def display_book
+    book = Book.find(params[:id])
+    render json: book
+  end
 end

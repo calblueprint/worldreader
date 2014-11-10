@@ -31,7 +31,10 @@ end
 def make_groups
   User.all.each do |user|
     1.upto(3) do |n|
-      user.groups.create(name: "Group#{n}")
+      user.groups.create! name: "Group#{n}",
+                          country: "United States",
+                          description: "Awesome group",
+                          books: Book.all
     end
   end
 end
