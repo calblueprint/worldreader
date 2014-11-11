@@ -76,4 +76,3 @@ React.renderComponent(
   document.getElementById("cart")
 );
 
-
