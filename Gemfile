@@ -18,7 +18,6 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
 gem 'turbolinks'
-gem 'twitter-typeahead-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'isbn', '~> 2.0.10'
 gem 'whenever', :require => false

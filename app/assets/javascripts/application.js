@@ -15,6 +15,5 @@
 //= require bootstrap-sprockets
 //= require bootstrap-tagsinput
 //= require turbolinks
-//= require twitter/typeahead
 //= require react
 //= require_tree .
