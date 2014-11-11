@@ -70,10 +70,10 @@ var CartHeader = React.createClass({
   }
 });
 
-// React.renderComponent(
-//   <Cart cart={gon.cart}
-//         numVisibleCartItems={NUM_VISIBLE_CART_ITEMS} />,
-//   document.getElementById("cart")
+React.renderComponent(
+  <Cart cart={gon.cart}
+        numVisibleCartItems={NUM_VISIBLE_CART_ITEMS} />,
+  document.getElementById("cart")
 );
 
 
