@@ -12,6 +12,7 @@
         a href="/"  Library
       li
         - if !current_user.nil?
+          = javascript_include_tag "react_components/cart"
           = link_to "Cart", cart_path(current_user.id)
       li.end
         - if current_user.nil?

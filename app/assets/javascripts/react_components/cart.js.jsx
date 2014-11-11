@@ -43,3 +43,14 @@ var Cart = React.createClass({
     );
   }
 });
+
+var CartHeader = React.createClass({
+  render: function() {
+    return (
+      <div>
+        Cart ({this.props.cart.length})
+      </div>
+    );
+  }
+});
+
