@@ -2,7 +2,7 @@ var cartView = "#floating-cart";
 var menuY = 0;
 
 $(document).ready(function() {
-  setUpCartView();
+  // setUpCartView();
 });
 
 function setUpCartView() {
@@ -13,3 +13,4 @@ function setUpCartView() {
     $(cartView).animate({top:offset}, {duration: 0, queue: false});
   });
 }
+

@@ -12,16 +12,19 @@
         a href="/"  Library
       li
         - if !current_user.nil?
-          = javascript_include_tag "react_components/cart"
-          = link_to "Cart", cart_path(current_user.id)
+          a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
+            = javascript_include_tag "react_components/cart_header"
+            span.caret
+          #cart.ul.dropdown-menu role="menu"
+            = javascript_include_tag "react_components/cart"
       li.end
         - if current_user.nil?
           a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in/Register
         - else
-          a.dropdown-toggle data-toggle="dropdown" href="#" 
+          a.dropdown-toggle data-toggle="dropdown" href="#"
             | My Account
             span.caret
-          ul.dropdown-menu role="menu" 
+          ul.dropdown-menu role="menu"
             li
               a = link_to "My Purchase History", user_path(current_user.id)
             li

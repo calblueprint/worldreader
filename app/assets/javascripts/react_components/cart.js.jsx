@@ -15,8 +15,25 @@ var CartItem = React.createClass({
 });
 
 var Cart = React.createClass({
+  getInitialState: function() {
+    return {cart: gon.cart,
+            numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
+  },
   viewMoreClicked: function(event) {
     this.props.handleCartEvent({SEE_MORE_CART_ITEMS: 1});
+  },
+  removeBookFromCart: function(bookId) {
+    // TODO figure out how to refactor this
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/carts/remove/" + bookId,
+      data: {
+        book_id: bookId,
+        user_id: this.props.user.id
+      }
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
   },
   render: function() {
     var displayCart = _.last(this.props.cart, this.props.numVisibleCartItems).reverse();
@@ -36,7 +53,6 @@ var Cart = React.createClass({
     }.bind(this));
     return (
       <div>
-        <h3>Your Cart</h3>
         {cartItems}
         {viewMore}
       </div>
@@ -53,4 +69,11 @@ var CartHeader = React.createClass({
     );
   }
 });
+
+// React.renderComponent(
+//   <Cart cart={gon.cart}
+//         numVisibleCartItems={NUM_VISIBLE_CART_ITEMS} />,
+//   document.getElementById("cart")
+);
+
 
