@@ -3,11 +3,16 @@
 var CartItem = React.createClass({
   cartItemRemoved: function(event) {
     this.props.handleCartEvent({REMOVE_BOOK_FROM_CART: this.props.book});
+    $('#cart-item').on({
+      "shown.bs.dropdown": function() { this.closable = false; },
+      "click":             function() { this.closable = false; },
+      "hide.bs.dropdown":  function() { return true; }
+    });
   },
   render: function() {
     return (
       <div className="cart-item">
-        <a className="close" onClick={this.cartItemRemoved}>&times;</a>
+        <a className="close" onClick={this.cartItemRemoved} >&times;</a>
         {this.props.book.name}
       </div>
     );
