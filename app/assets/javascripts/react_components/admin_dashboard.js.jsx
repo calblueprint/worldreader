@@ -32,16 +32,18 @@ var Dashboard = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <div className="searchBar">
+            <div className="topDiv">
               <PartnerSearch />
             </div>
             <div className="listPartners">
               <PartnerList partners={this.state.partners} selectPartner={this._selectPartner}
                 selectedPartner={this.state.selectedPartner} />
             </div>
+            <div className="emptyBottomSpace">
+            </div>
           </div>
           <div className="col-md-8">
-            <div className="viewPurchases">
+            <div className="mainScreen">
               <PartnerDisplay partnerId={this.state.selectedPartner} />
             </div>  
           </div>
@@ -60,11 +62,13 @@ var PartnerSearch = React.createClass({
   },
   render: function () {
     return (
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" onSubmit={this._handleOnSubmit}
+      <form className="navbar-form navbar-left" role="search">
+        <div className="searchInput">
+          <input type="text" className="form-control" onSubmit={this._handleOnSubmit}
             ref="search" placeholder="Search for partner..." />
-          <button type="submit" class="btn btn-default">Search</button>
+        </div>
+        <div className="searchButton">
+          <button type="submit" className="btn btn-default">Search</button>
         </div>
       </form>
     );
@@ -83,9 +87,9 @@ var PartnerList = React.createClass({
       );
     });
     return (
-      <div className="list-group">
+      <ul className="nav nav-pills nav-stacked" role="tablist">
         {currentPartners}
-      </div>
+      </ul>
     );
   }
 });
@@ -106,11 +110,11 @@ var Partner = React.createClass({
   render: function () {
     if (this.state.clicked) {
       return (
-        <a href="#" onClick={this.onClick} className="list-group-item active">{this.props.firstName + " " + this.props.lastName} </a>
+        <li role="presentation" onClick={this.onClick} className="active"><a href="#">{this.props.firstName + " " + this.props.lastName}</a></li>
       );
     }
     return (
-        <a href="#" onClick={this.onClick} className="list-group-item">{this.props.firstName + " " + this.props.lastName} </a>
+        <li role="presentation" onClick={this.onClick}><a href="#">{this.props.firstName + " " + this.props.lastName}</a></li>
     );
   }
 });
@@ -152,11 +156,11 @@ var PartnerDisplay = React.createClass({
                 <span className="icon-bar"></span>
               </button>
             </div>
-            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul className="nav navbar-nav">
-                <li><a href="#" onClick={this.clickInformation}>Information</a></li>
-                <li><a href="#" onClick={this.clickGroups}>Groups</a></li>
-                <li><a href="#" onClick={this.clickPurchases}>New Purchases</a></li>
+            <div className="collapse navbar-collapse">
+              <ul className="nav navbar-nav" id="admin-dashboard-nav">
+                <li id="information"><a href="#" onClick={this.clickInformation}>Information</a></li>
+                <li id="groups"><a href="#" onClick={this.clickGroups}>Groups</a></li>
+                <li id="newPurchases"><a href="#" onClick={this.clickPurchases}>New Purchases</a></li>
               </ul>
             </div>
           </div>
@@ -173,15 +177,21 @@ var MainDisplay = React.createClass({
   render: function() {
     if (this.props.type == 1) {
       return (
-        <InformationDisplay partnerId={this.props.partnerId}/>
+        <div className="display">
+          <InformationDisplay partnerId={this.props.partnerId}/>
+        </div>
       );
     } else if (this.props.type == 2) {
       return(
-        <GroupDisplay partnerId={this.props.partnerId}/>
+        <div className="display">
+          <GroupDisplay partnerId={this.props.partnerId}/>
+        </div>
       );
     } else {
       return (
-        <PurchaseDisplay partnerId={this.props.partnerId}/>
+        <div className="display">
+          <PurchaseDisplay partnerId={this.props.partnerId}/>
+        </div>
       );
     }
   }
@@ -221,16 +231,16 @@ var InformationDisplay = React.createClass({
   },
   render: function () {
     return (
-      <div className="PartnerInfo">
-        <div className="Name">
-          <h2> {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]} </h2>
+      <div id="informationDisplay">
+        <div className="name">
+          <div className="well"> {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]} </div>
         </div>
-        <ul className="Info">
-          <li> Email: {this.state.partnerInfo["email"]} </li>
-          <li> Country: {this.state.partnerInfo["country"]} </li>
-          <li> Organization: {this.state.partnerInfo["organization"]} </li>
-          <li> School: {this.state.partnerInfo["school"]} </li>
-        </ul>
+        <div className="info">
+          <div className="well"> <b>Email:</b> {this.state.partnerInfo["email"]} </div>
+          <div className="well"> <b>Country:</b> {this.state.partnerInfo["country"]} </div>
+          <div className="well"> <b>Organization:</b> {this.state.partnerInfo["organization"]} </div>
+          <div className="well"> <b>School:</b> {this.state.partnerInfo["school"]} </div>
+        </div>
       </div>
     );
   }
@@ -271,7 +281,7 @@ var GroupDisplay = React.createClass({
       );
     });
     return (
-      <div className="Groups">
+      <div>
         {allGroups}
       </div>
     );
@@ -291,13 +301,13 @@ var Group = React.createClass({
   },
   render: function () {
     return (
-      <div className="GroupContainer">
-        <ul className="GroupInfo">
-          <h2> Name: {this.props.group["name"]} </h2>
-          <li> Country: {this.props.group["country"]} </li>
-          <li> Description: {this.props.group["organization"]} </li>
-        </ul>
-        <div className="GroupExpand">
+      <div className="well">
+        <div className="groupInfo">
+          <h2> {this.props.group["name"]} </h2>
+          <div> Country: {this.props.group["country"]} </div>
+          <div> Description: {this.props.group["organization"]} </div>
+        </div>
+        <div className="groupExpand">
           <input type="submit" value={this.state.expand} onClick={this._expand} />
         </div>
         { this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]} /> : null }
@@ -332,23 +342,23 @@ var GroupBooks = React.createClass({
     console.log(this.state.books);
     return (
       <div>
-        <BookList books={this.state.books} />
+        <GroupBookList books={this.state.books} />
       </div>
     );
   }
 });
 
-var BookList = React.createClass({
+var GroupBookList = React.createClass({
   render: function() {
     var books = this.props.books.map(function (book) {
       return (
         <div className="book">
-          <a href={"/book/" + book.id}>{book.name}</a>
+          {book.name}
         </div>
       );
     }.bind(this));
     return (
-      <div className="group-books">
+      <div className="groupBooks">
         {books}
       </div>
     );
@@ -379,14 +389,23 @@ var PurchaseDisplay = React.createClass({
   render: function () {
     var purchases = this.state.purchases.map(function (purchase) {
       return (
-        <div className="purchase">
           <Purchase purchase={purchase} />
-        </div>
       );
     }.bind(this));
     return (
-      <div className="purchases">
-        {purchases}
+      <div className="purchaseDisplay">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Book Name</th>
+              <th>Purchased On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {purchases}
+          </tbody>
+        </table>
       </div>
     );  
   }
@@ -415,10 +434,17 @@ var Purchase = React.createClass( {
   },
   render: function () {
     return (
-      <div className="book">
-        {this.state.book.name}
-        {this.props.purchase.purchased_on}
-      </div>
+      <tr>
+        <td>
+          <input type="checkbox"/>
+        </td>
+        <td>
+          {this.state.book.name}
+        </td>
+        <td>
+          {this.props.purchase.purchased_on}
+        </td>
+      </tr>
     );
   }
 });
