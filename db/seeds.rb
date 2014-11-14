@@ -9,16 +9,19 @@ end
 def make_users
   1.upto(5) do |n|
     puts "user#{n}@gmail.com"
-    User.create!  first_name: "User #{n}",
-                  last_name: "Seed",
+    User.create!  first_name: "User#{n}",
+                  last_name: "LastName",
                   email: "user#{n}@gmail.com",
                   role: 1,
-                  password: "password"
+                  password: "password",
+                  country: "United States",
+                  school: "UC Berkeley",
+                  organization: "Blueprint"
   end
   1.upto(2) do |n|
     puts "admin#{n}@gmail.com"
-    User.create!  first_name: "Admin #{n}",
-                  last_name: "Seed",
+    User.create!  first_name: "Admin#{n}",
+                  last_name: "LastName",
                   email: "admin#{n}@gmail.com",
                   role: 2,
                   password: "password"
@@ -28,7 +31,10 @@ end
 def make_groups
   User.all.each do |user|
     1.upto(3) do |n|
-      user.groups.create(name: 'Group #{n}')
+      user.groups.create! name: "Group#{n}",
+                          country: "United States",
+                          description: "Awesome group",
+                          books: Book.all
     end
   end
 end

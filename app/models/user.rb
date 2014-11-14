@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_many :groups
   has_many :books, through: :purchases
   has_many :purchases
+  scope :partners, -> { where role: 1 }
 
   def send_welcome_mail
     UserMailer.welcome(self).deliver

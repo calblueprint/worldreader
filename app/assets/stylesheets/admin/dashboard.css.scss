@@ -1,3 +1,104 @@
-// Place all the styles related to the admin/dashboard controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.topDiv {
+  height: 65px;
+  background: white;
+}
+
+.navbar-form {
+  width: 100%;
+}
+
+.searchInput {
+  float: left;
+}
+
+.searchButton {
+  float: right;
+}
+
+.listPartners {
+  background: white;
+  padding: 10px 10px 10px 10px;
+  min-height: 600px;
+  max-height: 600px;
+  overflow: scroll;
+}
+
+.emptyBottomSpace {
+  height: 65px;
+}
+
+.noneSelectedDisplay {
+  text-align: center;
+  height: 300px;
+  position: relative;
+  top: 100px;
+  font-style: italic;
+  font-size: medium;
+}
+
+#admin-dashboard-nav {
+  font-size: x-large;
+  width: 100%;
+}
+
+#information {
+  float: left;
+  text-align: center;
+  width: 33%;
+}
+
+#groups {
+  text-align: center;
+  width: 33%;
+}
+
+.caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid #000000;
+}
+
+#newPurchases {
+  float: right;
+  text-align: center;
+  width: 33%;
+}
+
+.name {
+  font-weight: bold;
+  font-size: x-large;
+  text-align: center;
+}
+
+.info {
+  top: 50px;
+}
+
+.mainDisplay {
+  min-height: 800px;
+  max-height: 800px;
+  overflow: scroll;
+}
+
+#informationDisplay {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.groupContainer {
+  padding-left: 50px;
+}
+
+.groupExpand {
+  float: right;
+}
+
+.groupBooks {
+  max-height: 300px;
+  overflow: scroll;
+  padding-top: 25px;
+  padding-left: 25px;
+}
+
+.purchaseDisplay {
+  padding-left: 50px;
+}
