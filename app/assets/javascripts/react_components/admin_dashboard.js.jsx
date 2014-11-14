@@ -122,6 +122,7 @@ var displays = {
   INFORMATION: 1,
   GROUPS: 2,
   PURCHASES: 3,
+
 };
 
 var PartnerDisplay = React.createClass({
@@ -181,19 +182,19 @@ var PartnerDisplay = React.createClass({
 
 var MainDisplay = React.createClass({
   render: function() {
-    if (this.props.type == 1) {
+    if (this.props.type == displays.INFORMATION) {
       return (
         <div className="display">
           <InformationDisplay partnerId={this.props.partnerId}/>
         </div>
       );
-    } else if (this.props.type == 2) {
-      return(
+    } else if (this.props.type == displays.GROUPS) {
+      return (
         <div className="display">
           <GroupDisplay partnerId={this.props.partnerId}/>
         </div>
       );
-    } else {
+    } else if (this.props.type == displays.PURCHASES) {
       return (
         <div className="display">
           <PurchaseDisplay partnerId={this.props.partnerId}/>
