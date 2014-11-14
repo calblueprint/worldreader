@@ -21,8 +21,10 @@ Rails.application.routes.draw do
     post "remove/:book_id" => "cards#remove"
   end
 
+
   namespace :admin do
     resources :dashboard
+    resources :recommendations
   end
 
   # API routes for react updates
