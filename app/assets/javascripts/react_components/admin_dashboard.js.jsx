@@ -57,15 +57,13 @@ var PartnerSearch = React.createClass({
   _handleOnSubmit: function (e) {
     e.preventDefault()
 
-    searchValue = this.refs.search.getDOMNode().value.trim();
-    this.props.onFormSubmit(searchValue);
   },
   render: function () {
     return (
       <form className="navbar-form navbar-left" role="search">
         <div className="searchInput">
           <input type="text" className="form-control" onSubmit={this._handleOnSubmit}
-            ref="search" placeholder="Search for partner..." />
+            ref="search" placeholder="Search for a partner..." />
         </div>
         <div className="searchButton">
           <button type="submit" className="btn btn-default">Search</button>
@@ -81,8 +79,7 @@ var PartnerList = React.createClass({
     var selectedPartner = this.props.selectedPartner;
     var currentPartners = this.props.partners.map (function (partner) {
       return (
-        <Partner partner={partner}
-          selectPartner={selectPartner} partnerId={partner["id"]}
+        <Partner partner={partner} selectPartner={selectPartner} partnerId={partner["id"]}
           selectedPartner={selectedPartner} />
       );
     });
@@ -110,11 +107,13 @@ var Partner = React.createClass({
   render: function () {
     if (this.state.clicked) {
       return (
-        <li role="presentation" onClick={this.onClick} className="active"><a href="#">{this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
+        <li role="presentation" onClick={this.onClick} className="active"><a href="#">
+          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
       );
     }
     return (
-        <li role="presentation" onClick={this.onClick}><a href="#">{this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
+        <li role="presentation" onClick={this.onClick}><a href="#">
+          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
     );
   }
 });
@@ -155,7 +154,8 @@ var PartnerDisplay = React.createClass({
         <nav className="navbar navbar-default" role="navigation">
           <div className="container-fluid">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1">
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>

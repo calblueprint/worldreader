@@ -65,10 +65,11 @@ var Group = React.createClass({
           <button className="btn btn-default dropdown-toggle" type="button"
             data-toggle="dropdown" aria-expanded="true" onClick={this._expand} >
             {this.state.expand}
-            { this.state.expand == "Hide Books" ? <span className="caret caret-reversed"></span> : <span className="caret"></span>}
+            { this.state.expand == "Hide Books" ? <span className="caret caret-reversed">
+              </span> : <span className="caret"></span>}
           </button>
         </div>
-        { this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]} /> : null }
+        {this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]}/> : null}
       </div>
     );
   }
