@@ -81,7 +81,7 @@ var PartnerList = React.createClass({
     var selectedPartner = this.props.selectedPartner;
     var currentPartners = this.props.partners.map (function (partner) {
       return (
-        <Partner firstName={partner["first_name"]} lastName={partner["last_name"]}
+        <Partner partner={partner}
           selectPartner={selectPartner} partnerId={partner["id"]}
           selectedPartner={selectedPartner} />
       );
@@ -110,30 +110,36 @@ var Partner = React.createClass({
   render: function () {
     if (this.state.clicked) {
       return (
-        <li role="presentation" onClick={this.onClick} className="active"><a href="#">{this.props.firstName + " " + this.props.lastName}</a></li>
+        <li role="presentation" onClick={this.onClick} className="active"><a href="#">{this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
       );
     }
     return (
-        <li role="presentation" onClick={this.onClick}><a href="#">{this.props.firstName + " " + this.props.lastName}</a></li>
+        <li role="presentation" onClick={this.onClick}><a href="#">{this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
     );
   }
 });
 
+var displays = {
+  INFORMATION: 1,
+  GROUPS: 2,
+  PURCHASES: 3,
+};
+
 var PartnerDisplay = React.createClass({
   getInitialState: function () {
-    return {selectedPage: 1};
+    return {selectedPage: displays.INFORMATION};
   },
   componentWillReceiveProps: function (nextProps) {
-    this.setState({selectedPage: 1});
+    this.setState({selectedPage: displays.INFORMATION});
   },
   clickInformation: function () {
-    this.setState({selectedPage: 1});
+    this.setState({selectedPage: displays.INFORMATION});
   },
   clickGroups: function () {
-    this.setState({selectedPage: 2});
+    this.setState({selectedPage: displays.GROUPS});
   },
   clickPurchases: function () {
-    this.setState({selectedPage: 3});
+    this.setState({selectedPage: displays.PURCHASES});
   },
   render: function () {
     var selectedPartner = this.props.partnerId;
@@ -194,257 +200,5 @@ var MainDisplay = React.createClass({
         </div>
       );
     }
-  }
-});
-
-var InformationDisplay = React.createClass({
-  getInitialState: function () {
-    var initPartner = {
-      country: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      organization: "",
-      school: "",
-    };
-    return {partnerInfo: initPartner};
-  },
-  componentWillReceiveProps: function (nextProps) {
-    this._fetchPartner({id: nextProps.partnerId});
-  },
-  componentDidMount: function () {
-    this._fetchPartner({id: this.props.partnerId});
-  },
-  _fetchPartner: function (id) {
-    $.ajax({
-      url: "/admin/dashboard/" + id["id"] + "/partner_information",
-      dataType: 'json',
-      data: id,
-      success: function (data) {
-        console.log(data);
-        this.setState({partnerInfo: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  render: function () {
-    return (
-      <div id="informationDisplay">
-        <div className="name">
-          <div className="well"> {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]} </div>
-        </div>
-        <div className="info">
-          <div className="well"> <b>Email:</b> {this.state.partnerInfo["email"]} </div>
-          <div className="well"> <b>Country:</b> {this.state.partnerInfo["country"]} </div>
-          <div className="well"> <b>Organization:</b> {this.state.partnerInfo["organization"]} </div>
-          <div className="well"> <b>School:</b> {this.state.partnerInfo["school"]} </div>
-        </div>
-      </div>
-    );
-  }
-});
-
-var GroupDisplay = React.createClass({
-  getInitialState: function () {
-    var initGroup = {
-      name: "",
-      country: "",
-      description: "",
-      id: "",
-    };
-    return {groups: [initGroup]};
-  },
-  componentDidMount: function () {
-    this._fetchGroups({id: this.props.partnerId});
-  },
-  _fetchGroups: function (id) {
-    $.ajax({
-      url: "/admin/dashboard/" + id["id"] + "/display_groups",
-      dataType: 'json',
-      data: id,
-      success: function (data) {
-        console.log(data);
-        this.setState({groups: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.log("error");
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  render: function() {
-    var allGroups = this.state.groups.map (function (group) {
-      return (
-        <Group group={group} />
-      );
-    });
-    return (
-      <div>
-        {allGroups}
-      </div>
-    );
-  }
-});
-
-var Group = React.createClass({
-  getInitialState: function () {
-    return {expand: "Show Books"};
-  },
-  _expand: function () {
-    if (this.state.expand == "Show Books") {
-      this.setState({expand: "Hide Books"});
-    } else {
-      this.setState({expand: "Show Books"});
-    }
-  },
-  render: function () {
-    return (
-      <div className="well">
-        <div className="groupInfo">
-          <h2> {this.props.group["name"]} </h2>
-          <div> Country: {this.props.group["country"]} </div>
-          <div> Description: {this.props.group["organization"]} </div>
-        </div>
-        <div className="groupExpand">
-          <input type="submit" value={this.state.expand} onClick={this._expand} />
-        </div>
-        { this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]} /> : null }
-      </div>
-    );
-  }
-});
-
-var GroupBooks = React.createClass({
-  getInitialState: function () {
-    return {books: []};
-  },
-  componentDidMount: function () {
-    this._fetchBooks({id: this.props.groupId});
-  },
-  _fetchBooks: function (id) {
-    $.ajax({
-      url: "/admin/dashboard/" + id["id"] + "/display_books",
-      dataType: 'json',
-      data: id,
-      success: function (data) {
-        console.log(data);
-        this.setState({books: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.log("error");
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  render: function () {
-    console.log(this.state.books);
-    return (
-      <div>
-        <GroupBookList books={this.state.books} />
-      </div>
-    );
-  }
-});
-
-var GroupBookList = React.createClass({
-  render: function() {
-    var books = this.props.books.map(function (book) {
-      return (
-        <div className="book">
-          {book.name}
-        </div>
-      );
-    }.bind(this));
-    return (
-      <div className="groupBooks">
-        {books}
-      </div>
-    );
-  }
-});
-
-var PurchaseDisplay = React.createClass({
-  getInitialState: function () {
-    return {purchases: []};
-  },
-  componentDidMount: function () {
-    this._fetchPurchases({id: this.props.partnerId});
-  },
-  _fetchPurchases: function (id) {
-    $.ajax({
-      url: "/admin/dashboard/" + id["id"] + "/display_purchases",
-      dataType: 'json',
-      data: id,
-      success: function (data) {
-        console.log(data);
-        this.setState({purchases: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  render: function () {
-    var purchases = this.state.purchases.map(function (purchase) {
-      return (
-          <Purchase purchase={purchase} />
-      );
-    }.bind(this));
-    return (
-      <div className="purchaseDisplay">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Select</th>
-              <th>Book Name</th>
-              <th>Purchased On</th>
-            </tr>
-          </thead>
-          <tbody>
-            {purchases}
-          </tbody>
-        </table>
-      </div>
-    );  
-  }
-});
-
-var Purchase = React.createClass( {
-  getInitialState: function () {
-    return {book: []};
-  },
-  componentDidMount: function () {
-    this._fetchBook({bookId: this.props.purchase.book_id});
-  },
-  _fetchBook: function (bookId) {
-    $.ajax({
-      url: "/admin/dashboard/" + bookId["bookId"] + "/display_book",
-      dataType: 'json',
-      data: bookId,
-      success: function (data) {
-        console.log(data);
-        this.setState({book: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  render: function () {
-    return (
-      <tr>
-        <td>
-          <input type="checkbox"/>
-        </td>
-        <td>
-          {this.state.book.name}
-        </td>
-        <td>
-          {this.props.purchase.purchased_on}
-        </td>
-      </tr>
-    );
   }
 });

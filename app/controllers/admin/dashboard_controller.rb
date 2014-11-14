@@ -18,12 +18,12 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_groups
-    groups = Group.where("user_id = " + params[:id])
+    groups = Group.where(user_id: params[:id])
     render json: groups
   end
 
   def display_purchases
-    purchases = Purchase.where(["user_id = ? and is_purchased = ?", params[:id], false])
+    purchases = Purchase.where(user_id: params[:id], is_purchased: false)
     render json: purchases
   end
 

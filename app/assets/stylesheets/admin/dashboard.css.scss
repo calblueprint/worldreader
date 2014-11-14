@@ -52,6 +52,11 @@
   width: 33%;
 }
 
+.caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid #000000;
+}
+
 #newPurchases {
   float: right;
   text-align: center;
