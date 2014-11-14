@@ -54,12 +54,12 @@ ActiveRecord::Schema.define(version: 20141106010029) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "groups", force: true do |t|
+    t.integer  "user_id"
     t.string   "name"
     t.string   "country"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "purchases", force: true do |t|
