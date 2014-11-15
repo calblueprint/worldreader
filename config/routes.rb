@@ -22,7 +22,18 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :dashboard
+    resources :dashboard do
+      collection do
+        get "display_partners", :as => "display_partners"
+      end
+      member do
+        get "partner_information", :as => "partner_information"
+        get "display_groups", :as => "display_groups"
+        get "display_purchases", :as => "display_purchases"
+        get "display_books", :as => "display_books"
+        get "display_book", :as => "display_book"
+      end
+    end
   end
 
   # API routes for react updates

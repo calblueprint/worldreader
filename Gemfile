@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 gem 'nokogiri'
 gem 'rails', '4.1.5'
-gem 'react-rails'
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
