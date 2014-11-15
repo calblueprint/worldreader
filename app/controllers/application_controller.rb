@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_cart
+    puts 'setting user cart'
     if user_signed_in?
       gon.current_user = current_user
       gon.cart = current_user.cart

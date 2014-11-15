@@ -1,5 +1,11 @@
 /** @jsx React.DOM */
 
+// Cart Variables
+var ADD_BOOK_TO_CART = "add";
+var REMOVE_BOOK_FROM_CART = "remove";
+var SEE_MORE_CART_ITEMS = "see more";
+var NUM_VISIBLE_CART_ITEMS = 5;
+
 var CartItem = React.createClass({
   cartItemRemoved: function(event) {
     this.props.handleCartEvent({REMOVE_BOOK_FROM_CART: this.props.book});
@@ -67,16 +73,17 @@ var Cart = React.createClass({
 
 var CartHeader = React.createClass({
   render: function() {
+    var cartItems = cart.get("items");
     return (
       <div>
-        Cart ({this.props.cart.length})
+        Cart ({cartItems.length})
       </div>
     );
   }
 });
 
 React.renderComponent(
-  <Cart cart={gon.cart}
+  <Cart cart={cart}
         numVisibleCartItems={NUM_VISIBLE_CART_ITEMS} />,
   document.getElementById("cart")
 );

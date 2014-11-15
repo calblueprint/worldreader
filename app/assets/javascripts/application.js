@@ -18,5 +18,7 @@
 //= require twitter/typeahead
 //= require react
 //= require underscore
+//= require backbone
+//= require_tree ./models
 //= require_tree .
 

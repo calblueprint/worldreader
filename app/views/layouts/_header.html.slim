@@ -13,7 +13,7 @@
       li#cart-item
         - if !current_user.nil?
           a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
-            = javascript_include_tag "react_components/cart_header"
+            = react_component 'CartHeader', {}
             span.caret
           #cart.ul.dropdown-menu role="menu"
             = javascript_include_tag "react_components/cart"

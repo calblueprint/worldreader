@@ -1,11 +1,5 @@
 /** @jsx React.DOM */
 
-// Cart Variables
-var ADD_BOOK_TO_CART = "add";
-var REMOVE_BOOK_FROM_CART = "remove";
-var SEE_MORE_CART_ITEMS = "see more";
-var NUM_VISIBLE_CART_ITEMS = 5;
-
 var Library = React.createClass({
   getInitialState: function() {
     return {cart: gon.cart,
@@ -58,22 +52,22 @@ var Library = React.createClass({
                           this.state.cart.length])});
     }
   },
-  renderCart: function() {
-    React.renderComponent(
-      <CartHeader cart={this.state.cart} />,
-      document.getElementById("cart_header")
-    );
-    React.renderComponent(
-      <Cart cart={this.state.cart}
-            numVisibleCartItems={NUM_VISIBLE_CART_ITEMS}
-            handleCartEvent={this.handleCartEvent} />,
-            document.getElementById("cart")
-    );
-  },
+  // renderCart: function() {
+  //   React.renderComponent(
+  //     <CartHeader cart={this.state.cart} />,
+  //     document.getElementById("cart_header")
+  //   );
+  //   React.renderComponent(
+  //     <Cart cart={this.state.cart}
+  //           numVisibleCartItems={NUM_VISIBLE_CART_ITEMS}
+  //           handleCartEvent={this.handleCartEvent} />,
+  //           document.getElementById("cart")
+  //   );
+  // },
   render: function() {
-    if (this.props.user) {
-      this.renderCart();
-    }
+    // if (this.props.user) {
+    //   this.renderCart();
+    // }
     return (
       <div>
         <BookList user={this.props.user}
@@ -86,6 +80,7 @@ var Library = React.createClass({
 });
 
 React.renderComponent(
-  <Library user={gon.current_user} books={gon.books} />,
+  <Library user={gon.current_user}
+           books={gon.books} />,
   document.getElementById("library")
 );
