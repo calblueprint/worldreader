@@ -8,7 +8,7 @@ var NUM_VISIBLE_CART_ITEMS = 5;
 
 var CartItem = React.createClass({
   cartItemRemoved: function(event) {
-    this.props.handleCartEvent({REMOVE_BOOK_FROM_CART: this.props.book});
+    this.props.handleCartEvent(this.props.book.id);
     $('#cart-item').on({
       "shown.bs.dropdown": function() { this.closable = false; },
       "click":             function() { this.closable = false; },
@@ -27,11 +27,19 @@ var CartItem = React.createClass({
 
 var Cart = React.createClass({
   getInitialState: function() {
-    return {cart: gon.cart,
+    return {cart: cart,
             numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
   },
   viewMoreClicked: function(event) {
     this.props.handleCartEvent({SEE_MORE_CART_ITEMS: 1});
+  },
+  componentWillMount: function() {
+    cart.on("change", (function() {
+      this.forceUpdate();
+    }.bind(this)));
+  },
+  componentWillUnmount: function() {
+    cart.off("change");
   },
   removeBookFromCart: function(bookId) {
     // TODO figure out how to refactor this
@@ -40,31 +48,36 @@ var Cart = React.createClass({
       url: "/api/v1/carts/remove/" + bookId,
       data: {
         book_id: bookId,
-        user_id: this.props.user.id
+        user_id: gon.current_user.id
       }
     }).done(function(message) {
       console.log("Received response " + message.message);
     });
+    var cartItems = _.reject(cart.get("items"), function(el) {
+      return el.id == bookId;
+    });
+    cart.set("items", cartItems);
   },
   render: function() {
-    var displayCart = _.last(this.props.cart, this.props.numVisibleCartItems).reverse();
+    var cartItems = cart.get("items");
+    var displayCart = _.last(cartItems, this.state.numVisibleCartItems).reverse();
     var viewMore;
-    if (this.props.cart.length > this.props.numVisibleCartItems) {
+    if (cartItems.length > this.state.numVisibleCartItems) {
       viewMore = (
         <a onClick={this.viewMoreClicked}>View More</a>
       );
     }
-    var cartItems = displayCart.map(function(cartItem) {
+    var books = displayCart.map(function(book) {
       return (
         <div>
-          <CartItem book={cartItem}
-                    handleCartEvent={this.props.handleCartEvent} />
+          <CartItem book={book}
+                    handleCartEvent={this.removeBookFromCart} />
         </div>
       );
     }.bind(this));
     return (
       <div>
-        {cartItems}
+        {books}
         {viewMore}
       </div>
     );
@@ -72,6 +85,14 @@ var Cart = React.createClass({
 });
 
 var CartHeader = React.createClass({
+  componentWillMount: function() {
+    cart.on("change", (function() {
+      this.forceUpdate();
+    }.bind(this)));
+  },
+  componentWillUnmount: function() {
+    cart.off("change");
+  },
   render: function() {
     var cartItems = cart.get("items");
     return (
@@ -81,10 +102,3 @@ var CartHeader = React.createClass({
     );
   }
 });
-
-React.renderComponent(
-  <Cart cart={cart}
-        numVisibleCartItems={NUM_VISIBLE_CART_ITEMS} />,
-  document.getElementById("cart")
-);
-

@@ -86,22 +86,81 @@ var BookTile = React.createClass({
 
 var BookList = React.createClass({
   getInitialState: function() {
-    return {expandedBookId: null};
+    return {cart: cart,
+            user: gon.current_user,
+            expandedBookId: null};
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
     this.setState({expandedBookId: expandedBookId});
   },
+  componentWillMount: function() {
+    cart.on("change", (function() {
+      console.log("changed")
+      this.forceUpdate();
+    }.bind(this)));
+  },
+  componentWillUnmount: function() {
+    cart.off("change");
+  },
+  removeBookFromCart: function(bookId) {
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/carts/remove/" + bookId,
+      data: {
+        book_id: bookId,
+        user_id: this.state.user.id
+      }
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
+  },
+  addBookToCart: function(bookId) {
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/carts/add/" + bookId,
+      data: {
+        book_id: bookId,
+        user_id: this.state.user.id
+      }
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
+  },
+  handleCartEvent: function(event) {
+    if (event.REMOVE_BOOK_FROM_CART) {
+      var bookId = event.REMOVE_BOOK_FROM_CART.id;
+      var cartItems = cart.get("items");
+      var books = _.reject(cartItems, function(el) {
+        return el.id == bookId;
+      });
+      cart.set("items", books);
+      this.setState({numVisibleCartItems:
+                    _.min([NUM_VISIBLE_CART_ITEMS,
+                          cart.get("items").length])});
+      this.removeBookFromCart(bookId);
+    } else if (event.ADD_BOOK_TO_CART) {
+      var cartItems = cart.get("items");
+      var book = event.ADD_BOOK_TO_CART;
+      var books = cartItems.concat([book]);
+      cart.set("items", books);
+      this.addBookToCart(book.id);
+    } else if (event.SEE_MORE_CART_ITEMS) {
+      this.setState({numVisibleCartItems:
+                    _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
+                          cart.get("items").length])});
+    }
+  },
   render: function() {
     var bookTiles = this.props.books.map(function (book) {
       return (
         <BookTile
-          user={this.props.user}
+          user={gon.current_user}
           key={book.id}
           book={book}
-          cart={this.props.cart}
+          cart={cart.get("items")}
           handleClick={this.handleBookExpand}
-          handleCartEvent={this.props.handleCartEvent}
+          handleCartEvent={this.handleCartEvent}
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));

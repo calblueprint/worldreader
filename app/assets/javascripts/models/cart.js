@@ -8,3 +8,4 @@ var Cart = Backbone.Model.extend({
 var cart = new Cart({
   items : gon.cart
 });
+

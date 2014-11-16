@@ -13,10 +13,10 @@
       li#cart-item
         - if !current_user.nil?
           a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
-            = react_component 'CartHeader', {}
+            = react_component 'CartHeader', {cart: @cart}
             span.caret
           #cart.ul.dropdown-menu role="menu"
-            = javascript_include_tag "react_components/cart"
+            = react_component 'Cart', {cart: @cart}
       li.end
         - if current_user.nil?
           a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in/Register

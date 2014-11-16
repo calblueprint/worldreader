@@ -10,4 +10,4 @@ h3.text-center Library
         span.glyphicon.glyphicon-search
 
 div[id="library"]
-= javascript_include_tag "react_components/library"
+  = react_component 'BookList', {books: @books}

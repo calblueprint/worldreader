@@ -2,8 +2,17 @@
 
 var Library = React.createClass({
   getInitialState: function() {
-    return {cart: gon.cart,
-            numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
+    return {cart: cart,
+            numVisibleCartItems: NUM_VISIBLE_CART_ITEMS,
+            user: gon.current_user};
+  },
+  componentWillMount: function() {
+    cart.on("change", (function() {
+      this.forceUpdate();
+    }.bind(this)));
+  },
+  componentWillUnmount: function() {
+    cart.off("change");
   },
   removeBookFromCart: function(bookId) {
     $.ajax({
@@ -11,7 +20,7 @@ var Library = React.createClass({
       url: "/api/v1/carts/remove/" + bookId,
       data: {
         book_id: bookId,
-        user_id: this.props.user.id
+        user_id: this.state.user.id
       }
     }).done(function(message) {
       console.log("Received response " + message.message);
@@ -23,7 +32,7 @@ var Library = React.createClass({
       url: "/api/v1/carts/add/" + bookId,
       data: {
         book_id: bookId,
-        user_id: this.props.user.id
+        user_id: this.state.user.id
       }
     }).done(function(message) {
       console.log("Received response " + message.message);
@@ -52,22 +61,7 @@ var Library = React.createClass({
                           this.state.cart.length])});
     }
   },
-  // renderCart: function() {
-  //   React.renderComponent(
-  //     <CartHeader cart={this.state.cart} />,
-  //     document.getElementById("cart_header")
-  //   );
-  //   React.renderComponent(
-  //     <Cart cart={this.state.cart}
-  //           numVisibleCartItems={NUM_VISIBLE_CART_ITEMS}
-  //           handleCartEvent={this.handleCartEvent} />,
-  //           document.getElementById("cart")
-  //   );
-  // },
   render: function() {
-    // if (this.props.user) {
-    //   this.renderCart();
-    // }
     return (
       <div>
         <BookList user={this.props.user}
@@ -78,9 +72,3 @@ var Library = React.createClass({
     );
   }
 });
-
-React.renderComponent(
-  <Library user={gon.current_user}
-           books={gon.books} />,
-  document.getElementById("library")
-);
