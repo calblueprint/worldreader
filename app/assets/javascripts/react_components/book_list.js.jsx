@@ -86,27 +86,52 @@ var BookTile = React.createClass({
 
 var BookList = React.createClass({
   getInitialState: function() {
-    return {expandedBookId: null};
+    return {cart: cart,
+            user: gon.current_user,
+            expandedBookId: null};
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
     this.setState({expandedBookId: expandedBookId});
   },
+  componentWillMount: function() {
+    this._boundForceUpdate = this.forceUpdate.bind(this, null);
+    cart.on("change", this._boundForceUpdate, this);
+  },
+  componentWillUnmount: function() {
+    cart.off("change", this._boundForceUpdate);
+  },
+  handleCartEvent: function(event) {
+    if (event.REMOVE_BOOK_FROM_CART) {
+      var book = event.REMOVE_BOOK_FROM_CART;
+      this.setState({numVisibleCartItems:
+                    _.min([NUM_VISIBLE_CART_ITEMS,
+                          cart.get("items").length])});
+      removeBook(book, this.state.user.id);
+    } else if (event.ADD_BOOK_TO_CART) {
+      var book = event.ADD_BOOK_TO_CART;
+      addBook(book, this.state.user.id);
+    } else if (event.SEE_MORE_CART_ITEMS) {
+      this.setState({numVisibleCartItems:
+                    _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
+                          cart.get("items").length])});
+    }
+  },
   render: function() {
     var bookTiles = this.props.books.map(function (book) {
       return (
         <BookTile
-          user={this.props.user}
+          user={gon.current_user}
           key={book.id}
           book={book}
-          cart={this.props.cart}
+          cart={cart.get("items")}
           handleClick={this.handleBookExpand}
-          handleCartEvent={this.props.handleCartEvent}
+          handleCartEvent={this.handleCartEvent}
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));
     return (
-      <div className="media-list">
+      <div className="media-list col-md-8 col-md-offset-2">
         {bookTiles}
       </div>
     );
