@@ -4,7 +4,7 @@ toastr.options = {
   "debug"           : false,
   "progressBar"     : false,
   "positionClass"   : "toast-bottom-right",
-  "onclick"         null,
+  "onclick"         : null,
   "showDuration"    : "900",
   "hideDuration"    : "1000",
   "timeOut"         : "5000",
