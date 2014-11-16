@@ -73,12 +73,11 @@ var Cart = React.createClass({
 
 var CartHeader = React.createClass({
   componentWillMount: function() {
-    cart.on("change", (function() {
-      this.forceUpdate();
-    }.bind(this)));
+    this._boundForceUpdate = this.forceUpdate.bind(this, null);
+    cart.on("change", this._boundForceUpdate, this);
   },
   componentWillUnmount: function() {
-    cart.off("change");
+    cart.off("change", this._boundForceUpdate);
   },
   render: function() {
     var cartItems = cart.get("items");

@@ -95,12 +95,11 @@ var BookList = React.createClass({
     this.setState({expandedBookId: expandedBookId});
   },
   componentWillMount: function() {
-    cart.on("change", (function() {
-      this.forceUpdate();
-    }.bind(this)));
+    this._boundForceUpdate = this.forceUpdate.bind(this, null);
+    cart.on("change", this._boundForceUpdate, this);
   },
   componentWillUnmount: function() {
-    cart.off("change");
+    cart.off("change", this._boundForceUpdate);
   },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
