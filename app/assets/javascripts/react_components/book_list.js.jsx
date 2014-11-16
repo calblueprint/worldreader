@@ -55,8 +55,8 @@ var BookTile = React.createClass({
       )
     }
     return (
-      <div key={this.props.book.id + "-expanded"} className="expanded-book-tile"
-          onClick={this.handleClick}>
+      <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
+        <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
         <div className="expanded-book-img-box pull-left">
           <img className="expanded-book-img" src={this.props.book.image} />
         </div>
@@ -94,6 +94,9 @@ var BookList = React.createClass({
     var expandedBookId = event.bookId;
     this.setState({expandedBookId: expandedBookId});
   },
+  handleBookClosed: function(event) {
+    this.setState({expandedBookId: null});
+  },
   componentWillMount: function() {
     this._boundForceUpdate = this.forceUpdate.bind(this, null);
     cart.on("change", this._boundForceUpdate, this);
@@ -126,6 +129,7 @@ var BookList = React.createClass({
           book={book}
           cart={cart.get("items")}
           handleClick={this.handleBookExpand}
+          handleCloseButton={this.handleBookClosed}
           handleCartEvent={this.handleCartEvent}
           isExpanded={this.state.expandedBookId === book.id} />
       );
