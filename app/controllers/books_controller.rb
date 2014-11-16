@@ -13,9 +13,32 @@ class BooksController < ApplicationController
   private
 
   def search_tags
-    gon.country_tags = Country.uniq.pluck(:name)
-    gon.level_tags = Level.uniq.pluck(:name)
-    gon.language_tags = Language.uniq.pluck(:name)
-    gon.genre_tags = Genre.uniq.pluck(:name)
+    index = 0
+    country_tags = Country.uniq.pluck(:name).map{ |x|
+      index += 1
+      {
+        value: index, text: x, tagType: "Location"
+      }
+    }
+    level_tags = Level.uniq.pluck(:name).map{ |x|
+      index += 1
+      {
+        value: index, text: x, tagType: "Level"
+      }
+    }
+    language_tags = Language.uniq.pluck(:name).map{ |x|
+      index += 1
+      {
+        value: index, text: x, tagType: "Language"
+      }
+    }
+    genre_tags = Genre.uniq.pluck(:name).map{ |x|
+      index += 1
+      {
+        value: index, text: x, tagType: "Genre"
+      }
+    }
+    gon.all_tags = country_tags + level_tags + language_tags + genre_tags
+    
   end
 end

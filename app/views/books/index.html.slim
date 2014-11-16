@@ -1,13 +1,17 @@
-h3.text-center Library
+h2.text-center Library
 - if user_signed_in? and current_user.admin?
   = link_to "Manage Partners", admin_dashboard_index_path
 
 .col-md-8.col-md-offset-2
   #book-searchbar.input-group
-    input#book-searchbar-input.input-block-level.typeahead placeholder=("Input book name or search by tag.") type="text" class="form-control"
+    input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
     span.input-group-btn
       button.btn.btn-default type="button"
         span.glyphicon.glyphicon-search
+  #book-tagbar.input-group
+    span.input-group-addon
+      span.glyphicon.glyphicon-tag
+    input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
 
 div[id="library"]
   = react_component 'BookList', {books: @books}
