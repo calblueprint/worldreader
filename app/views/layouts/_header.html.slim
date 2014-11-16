@@ -14,7 +14,6 @@
         - if !current_user.nil?
           a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
             = react_component 'CartHeader', {cart: @cart}
-            span.caret
           #cart.ul.dropdown-menu role="menu"
             = react_component 'Cart', {cart: @cart}
       li.end

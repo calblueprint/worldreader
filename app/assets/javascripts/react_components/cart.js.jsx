@@ -83,9 +83,10 @@ var CartHeader = React.createClass({
   render: function() {
     var cartItems = cart.get("items");
     return (
-      <div>
+      <span>
         Cart ({cartItems.length})
-      </div>
+        <span class="caret"></span>
+      </span>
     );
   }
 });
