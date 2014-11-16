@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_filter: search_tags
+  before_filter :search_tags
 
   def index
     @books = Book.all
@@ -13,8 +13,9 @@ class BooksController < ApplicationController
   private
 
   def search_tags
-    gon.country_tags = Book.uniq.pluck(:country)
-    gon.age_tags = Book.uniq.pluck(:age)
-    gon.language_tags = Book.uniq.pluck(:language)
-    gon.genre_tags = Book.uniq.pluck(:genre)
+    gon.country_tags = Country.uniq.pluck(:name)
+    gon.level_tags = Level.uniq.pluck(:name)
+    gon.language_tags = Language.uniq.pluck(:name)
+    gon.genre_tags = Genre.uniq.pluck(:name)
+  end
 end
