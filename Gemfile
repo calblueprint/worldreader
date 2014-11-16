@@ -21,7 +21,6 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
 gem 'toastr-rails'
 gem 'turbolinks'
-gem 'twitter-typeahead-rails'
 gem 'underscore-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'isbn', '~> 2.0.10'

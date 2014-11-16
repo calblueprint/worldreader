@@ -1,7 +1,26 @@
 FactoryGirl.define do
-
   factory :recommendation do
     # TODO create recommendation
+  end
+  factory :books_country, :class => 'BooksCountries' do
+    country_id 1
+    book_id 1
+  end
+  factory :books_level, :class => 'BooksLevels' do
+    book_id 1
+    level_id 1
+  end
+  factory :level, :class => 'Levels' do
+    name "MyString"
+  end
+  factory :country do
+    name "MyString"
+  end
+  factory :genre do
+    name "MyString"
+  end
+  factory :language do
+    name "MyString"
   end
 
   factory :user do
