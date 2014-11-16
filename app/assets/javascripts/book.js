@@ -10,8 +10,7 @@ function ready() {
         case 'Location'   : return 'label label-primary';
         case 'Level': return 'label label-success';
         case 'Language'   : return 'label label-default';
-        case 'America'  : return 'label label-danger label-important';
-        case 'Asia'     : return 'label label-warning';
+        case 'Genre'     : return 'label label-warning';
       }
     },
     itemValue: 'value',
