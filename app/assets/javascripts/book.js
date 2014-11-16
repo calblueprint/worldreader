@@ -23,6 +23,5 @@ function ready() {
     }
   });
   mainSearch.tagsinput('add', { "value": 1 , "text": "Elementary", "tagType": "Level" });
-
   mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "Location" });
 }
