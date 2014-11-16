@@ -8,7 +8,7 @@ var NUM_VISIBLE_CART_ITEMS = 5;
 
 var CartItem = React.createClass({
   cartItemRemoved: function(event) {
-    this.props.handleCartEvent(this.props.book.id);
+    this.props.handleCartEvent(this.props.book);
     $('#cart-item').on({
       "shown.bs.dropdown": function() { this.closable = false; },
       "click":             function() { this.closable = false; },
@@ -28,6 +28,7 @@ var CartItem = React.createClass({
 var Cart = React.createClass({
   getInitialState: function() {
     return {cart: cart,
+            user: gon.current_user,
             numVisibleCartItems: NUM_VISIBLE_CART_ITEMS};
   },
   viewMoreClicked: function(event) {
@@ -41,22 +42,8 @@ var Cart = React.createClass({
   componentWillUnmount: function() {
     cart.off("change");
   },
-  removeBookFromCart: function(bookId) {
-    // TODO figure out how to refactor this
-    $.ajax({
-      type: "POST",
-      url: "/api/v1/carts/remove/" + bookId,
-      data: {
-        book_id: bookId,
-        user_id: gon.current_user.id
-      }
-    }).done(function(message) {
-      console.log("Received response " + message.message);
-    });
-    var cartItems = _.reject(cart.get("items"), function(el) {
-      return el.id == bookId;
-    });
-    cart.set("items", cartItems);
+  removeBookFromCart: function(book) {
+    removeBook(book, this.state.user.id);
   },
   render: function() {
     var cartItems = cart.get("items");

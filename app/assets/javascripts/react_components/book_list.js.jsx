@@ -96,55 +96,22 @@ var BookList = React.createClass({
   },
   componentWillMount: function() {
     cart.on("change", (function() {
-      console.log("changed")
       this.forceUpdate();
     }.bind(this)));
   },
   componentWillUnmount: function() {
     cart.off("change");
   },
-  removeBookFromCart: function(bookId) {
-    $.ajax({
-      type: "POST",
-      url: "/api/v1/carts/remove/" + bookId,
-      data: {
-        book_id: bookId,
-        user_id: this.state.user.id
-      }
-    }).done(function(message) {
-      console.log("Received response " + message.message);
-    });
-  },
-  addBookToCart: function(bookId) {
-    $.ajax({
-      type: "POST",
-      url: "/api/v1/carts/add/" + bookId,
-      data: {
-        book_id: bookId,
-        user_id: this.state.user.id
-      }
-    }).done(function(message) {
-      console.log("Received response " + message.message);
-    });
-  },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
-      var bookId = event.REMOVE_BOOK_FROM_CART.id;
-      var cartItems = cart.get("items");
-      var books = _.reject(cartItems, function(el) {
-        return el.id == bookId;
-      });
-      cart.set("items", books);
+      var book = event.REMOVE_BOOK_FROM_CART;
       this.setState({numVisibleCartItems:
                     _.min([NUM_VISIBLE_CART_ITEMS,
                           cart.get("items").length])});
-      this.removeBookFromCart(bookId);
+      removeBook(book, this.state.user.id);
     } else if (event.ADD_BOOK_TO_CART) {
-      var cartItems = cart.get("items");
       var book = event.ADD_BOOK_TO_CART;
-      var books = cartItems.concat([book]);
-      cart.set("items", books);
-      this.addBookToCart(book.id);
+      addBook(book, this.state.user.id);
     } else if (event.SEE_MORE_CART_ITEMS) {
       this.setState({numVisibleCartItems:
                     _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
