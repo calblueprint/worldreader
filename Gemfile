@@ -19,6 +19,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
+gem 'toastr-rails'
 gem 'turbolinks'
 gem 'twitter-typeahead-rails'
 gem 'underscore-rails'
