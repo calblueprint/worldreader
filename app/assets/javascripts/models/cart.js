@@ -27,7 +27,7 @@ var removeBook = function(book, userId) {
     console.log("Received response for book removal: " + message.message);
   });
 
-  toastr.success("Book removed from cart!");
+  toastr.success(book.name + " removed from your cart!");
 }
 
 var addBook = function(book, userId) {
@@ -46,6 +46,6 @@ var addBook = function(book, userId) {
     console.log("Received response for book addition: " + message.message);
   });
 
-  toastr.success("Book added to cart!");
+  toastr.success(book.name + " added to your cart!");
 }
 
