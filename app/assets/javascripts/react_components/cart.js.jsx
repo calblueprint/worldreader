@@ -35,12 +35,11 @@ var Cart = React.createClass({
     this.props.handleCartEvent({SEE_MORE_CART_ITEMS: 1});
   },
   componentWillMount: function() {
-    cart.on("change", (function() {
-      this.forceUpdate();
-    }.bind(this)));
+    this._boundForceUpdate = this.forceUpdate.bind(this, null);
+    cart.on("change", this._boundForceUpdate, this);
   },
   componentWillUnmount: function() {
-    cart.off("change");
+    cart.off("change", this._boundForceUpdate);
   },
   removeBookFromCart: function(book) {
     removeBook(book, this.state.user.id);
