@@ -60,13 +60,6 @@ ActiveRecord::Schema.define(version: 20141114051723) do
     t.datetime "updated_at"
   end
 
-  create_table "countries_books", force: true do |t|
-    t.integer  "country_id"
-    t.integer  "book_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
@@ -99,12 +92,6 @@ ActiveRecord::Schema.define(version: 20141114051723) do
   end
 
   create_table "languages", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "levels", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
