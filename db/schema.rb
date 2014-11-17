@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106010029) do
+ActiveRecord::Schema.define(version: 20141117043331) do
 
   create_table "books", force: true do |t|
     t.string   "name"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20141106010029) do
     t.datetime "updated_at"
     t.string   "image"
     t.string   "asin"
+    t.integer  "language_id"
+    t.integer  "genre_id"
+    t.integer  "country_id"
+  end
+
+  create_table "books_countries", force: true do |t|
+    t.integer  "country_id"
+    t.integer  "book_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "books_groups", id: false, force: true do |t|
@@ -30,12 +40,25 @@ ActiveRecord::Schema.define(version: 20141106010029) do
 
   add_index "books_groups", ["group_id", "book_id"], name: "index_books_groups_on_group_id_and_book_id"
 
+  create_table "books_levels", force: true do |t|
+    t.integer  "book_id"
+    t.integer  "level_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "books_recommendations", id: false, force: true do |t|
     t.integer "book_id",           null: false
     t.integer "recommendation_id", null: false
   end
 
   add_index "books_recommendations", ["book_id", "recommendation_id"], name: "index_books_recommendations_on_book_id_and_recommendation_id"
+
+  create_table "countries", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -53,11 +76,29 @@ ActiveRecord::Schema.define(version: 20141106010029) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
+  create_table "genres", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "groups", force: true do |t|
     t.integer  "user_id"
     t.string   "name"
     t.string   "country"
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "languages", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "levels", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

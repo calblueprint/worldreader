@@ -17,4 +17,8 @@ class Book < ActiveRecord::Base
   has_many :users, through: :purchases
   has_many :purchases
   has_and_belongs_to_many :recommendations
+  belongs_to :language
+  belongs_to :genre
+  has_and_belongs_to_many :countries
+  has_and_belongs_to_many :levels
 end
