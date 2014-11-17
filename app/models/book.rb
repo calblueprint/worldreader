@@ -29,10 +29,12 @@ class Book < ActiveRecord::Base
       u += s.email + " "
     end
     as_json(
-      include: { users: { only: :email},
-                 # authors:    { methods: [:full_name], only: [:full_name] },
-                 # comments:   { only: :text }
-               })
+      include: {
+        language: {only: :name},
+        genre: {only: :name},
+        countries: {only: :name},
+        levels: {only: :name}
+    })
   end
 
   def query(string, tags)
