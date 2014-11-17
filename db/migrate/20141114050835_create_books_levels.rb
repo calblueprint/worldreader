@@ -1,6 +1,6 @@
 class CreateBooksLevels < ActiveRecord::Migration
   def change
-w    create_table :books_levels do |t|
+    create_table :books_levels do |t|
       t.integer :book_id
       t.integer :level_id
 

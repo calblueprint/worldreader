@@ -55,7 +55,33 @@ def make_purchases
   end
 end
 
+def make_location_tags
+  20.times.each do
+    Country.create! name: Faker::Address.country
+  end
+end
+
+def make_level_tags
+  Level.create! name: 'Elementary'
+  Level.create! name: 'Secondary'
+  Level.create! name: 'High'
+end
+
+def make_language_tags
+  Language.create! name: 'Somali'
+  Language.create! name: 'Hausa'
+end
+
+def make_genre_tags
+  Genre.create! name: 'Fiction'
+  Genre.create! name: 'Non-fiction'
+end
+
 make_books
 make_users
 make_groups
 make_purchases
+make_location_tags
+make_level_tags
+make_language_tags
+make_genre_tags
