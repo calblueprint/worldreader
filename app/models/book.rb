@@ -13,12 +13,45 @@
 #
 
 class Book < ActiveRecord::Base
+    include Elasticsearch::Model
+  belongs_to :language
+  belongs_to :genre
   has_and_belongs_to_many :groups
   has_many :users, through: :purchases
   has_many :purchases
   has_and_belongs_to_many :recommendations
-  belongs_to :language
-  belongs_to :genre
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :levels
+
+  def as_indexed_json(options={})
+    u = ""
+    users.each do |s|
+      u += s.email + " "
+    end
+    as_json(
+      include: { users: { only: :email},
+                 # authors:    { methods: [:full_name], only: [:full_name] },
+                 # comments:   { only: :text }
+               })
+  end
+
+  def query(string, tags)
+  	must = []
+    tags.each do |tag, type|
+      must.push({term: {type => tag}})
+    end
+    q = {
+      query: {
+        bool: {
+          should: [
+            {term: {description: string}},
+            {term: {name: string}}
+          ],
+          must: must
+        }
+      }
+    }
+    # Book.search q
+  end
+
 end
