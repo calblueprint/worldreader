@@ -4,6 +4,7 @@ class BooksController < ApplicationController
   def index
     @books = Book.all
     gon.current_user = current_user
+    gon.books = Book.all
   end
 
   def show
