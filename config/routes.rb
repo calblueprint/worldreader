@@ -45,6 +45,11 @@ Rails.application.routes.draw do
           post "remove/:book_id" => "carts#remove"
         end
       end
+      resources :books do
+        collection do
+          get "search/" => "books#search"
+        end
+      end
     end
   end
 

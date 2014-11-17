@@ -24,36 +24,26 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :levels
 
   def as_indexed_json(options={})
-    u = ""
-    users.each do |s|
-      u += s.email + " "
-    end
     as_json(
       include: {
-        language: {only: :name},
         genre: {only: :name},
-        countries: {only: :name},
-        levels: {only: :name}
-    })
+        language: {only: :name},
+        levels: {only: :name},
+        countries: {only: :name}
+      }
+    )
   end
 
-  def query(string, tags)
-  	must = []
-    tags.each do |tag, type|
-      must.push({term: {type => tag}})
+  def self.query(string, tags)
+    tokens = []
+    if string != ""
+      tokens.push(string + "~")
     end
-    q = {
-      query: {
-        bool: {
-          should: [
-            {term: {description: string}},
-            {term: {name: string}}
-          ],
-          must: must
-        }
-      }
-    }
-    # Book.search q
+    tags.each do |tag|
+      tokens.push(tag["tagType"] + ".name:" + tag["text"])
+    end
+    query = {query_string: {query: tokens.join(" AND ")}}
+    results = Book.search(query: query).records.to_a
   end
 
 end
