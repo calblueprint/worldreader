@@ -34,6 +34,8 @@ class Book < ActiveRecord::Base
     )
   end
 
+  Book.import # import books for elasticsearch
+
   def self.query(string, tags)
     tokens = []
     if string != ""
