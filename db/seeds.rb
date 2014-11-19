@@ -56,8 +56,13 @@ def make_purchases
 end
 
 def make_location_tags
-  20.times.each do
+  1.upto(20) do |n|
     Country.create! name: Faker::Address.country
+    3.times.map{ 1 + Random.rand(10) }.each do |i|
+      book = Book.find(i)
+      book.countries << Country.find(n)
+      book.save
+    end
   end
 end
 
@@ -65,16 +70,51 @@ def make_level_tags
   Level.create! name: 'Elementary'
   Level.create! name: 'Secondary'
   Level.create! name: 'High'
+  1.upto(5) do |n|
+    book = Book.find(n)
+    book.levels << Level.find(1)
+    book.save
+  end
+  3.upto(7) do |n|
+    book = Book.find(n)
+    book.levels << Level.find(2)
+    book.save
+  end
+  6.upto(10) do |n|
+    book = Book.find(n)
+    book.levels << Level.find(3)
+    book.save
+  end
 end
 
 def make_language_tags
   Language.create! name: 'Somali'
   Language.create! name: 'Hausa'
+  1.upto(5) do |n|
+    book = Book.find(n)
+    book.language = Language.find(1)
+    book.save
+  end
+  6.upto(10) do |n|
+    book = Book.find(n)
+    book.language = Language.find(2)
+    book.save
+  end
 end
 
 def make_genre_tags
   Genre.create! name: 'Fiction'
   Genre.create! name: 'Non-fiction'
+  1.upto(5) do |n|
+    book = Book.find(n)
+    book.genre = Genre.find(1)
+    book.save
+  end
+  6.upto(10) do |n|
+    book = Book.find(n)
+    book.genre = Genre.find(2)
+    book.save
+  end
 end
 
 make_books

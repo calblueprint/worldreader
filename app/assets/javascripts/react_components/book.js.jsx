@@ -2,6 +2,10 @@
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+
+var bookList = null;
+
+
 var CartButton = React.createClass({
   handleClick: function(event) {
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
@@ -26,6 +30,7 @@ var CartButton = React.createClass({
     }
   }
 });
+
 
 var BookTile = React.createClass({
   handleClick: function() {
@@ -84,10 +89,12 @@ var BookTile = React.createClass({
   }
 });
 
+
 var BookList = React.createClass({
   getInitialState: function() {
     return {cart: cart,
             user: gon.current_user,
+            books: gon.books,
             expandedBookId: null};
   },
   handleBookExpand: function(event) {
@@ -104,12 +111,16 @@ var BookList = React.createClass({
   componentWillUnmount: function() {
     cart.off("change", this._boundForceUpdate);
   },
+  handleBooksUpdate: function(event) {
+    this.setState({books: event});
+  },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
       var book = event.REMOVE_BOOK_FROM_CART;
-      this.setState({numVisibleCartItems:
-                    _.min([NUM_VISIBLE_CART_ITEMS,
-                          cart.get("items").length])});
+      this.setState(
+        {numVisibleCartItems:
+          _.min([NUM_VISIBLE_CART_ITEMS, cart.get("items").length])
+        });
       removeBook(book, this.state.user.id);
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
@@ -121,7 +132,8 @@ var BookList = React.createClass({
     }
   },
   render: function() {
-    var bookTiles = this.props.books.map(function (book) {
+    bookList = this;
+    var bookTiles = this.state.books.map(function (book) {
       return (
         <BookTile
           user={gon.current_user}
