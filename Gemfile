@@ -50,4 +50,5 @@ group :production do
   gem 'rails_12factor'
   gem 'pg'
   gem 'unicorn'
+  gem 'bonsai-elasticsearch-rails'
 end
