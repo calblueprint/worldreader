@@ -23,11 +23,6 @@ function ready() {
       source: gon.all_tags
     }
   });
-  mainSearch.tagsinput("add", {
-    "value": 1,
-    "text": "Recommended",
-    "tagType": "recommended"
-  });
   search();
 
   $('#book-searchbar-input').keypress(function (e) {
