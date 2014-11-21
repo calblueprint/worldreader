@@ -2,19 +2,29 @@
 
 var Dashboard = React.createClass({
   getInitialState: function () {
-    return {partners: [], selectedPartner: null};
+    return {partners: [], partnersNewPurchases: [], selectedPartner: null};
   },
   componentDidMount: function () {
     this._fetchPartners({});
   },
-  _fetchPartners: function (search_data) {
+  _fetchPartners: function () {
     $.ajax({
-      url: "/admin/dashboard/display_partners",
+      url: "/admin/dashboard/display_all_partners",
       dataType: 'json',
-      data: search_data,
       success: function (data) {
         console.log(data);
         this.setState({partners: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    $.ajax({
+      url: "/admin/dashboard/display_partners_new_purchases",
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        this.setState({partnersNewPurchases: data});
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -36,7 +46,9 @@ var Dashboard = React.createClass({
               <PartnerSearch />
             </div>
             <div className="listPartners">
-              <PartnerList partners={this.state.partners} selectPartner={this._selectPartner}
+              <PartnerList partners={this.state.partners}
+                partnersNewPurchases={this.state.partnersNewPurchases}
+                selectPartner={this._selectPartner}
                 selectedPartner={this.state.selectedPartner} />
             </div>
             <div className="emptyBottomSpace">
@@ -77,7 +89,13 @@ var PartnerList = React.createClass({
   render: function () {
     var selectPartner = this.props.selectPartner;
     var selectedPartner = this.props.selectedPartner;
-    var currentPartners = this.props.partners.map (function (partner) {
+    var allPartners = this.props.partners.map (function (partner) {
+      return (
+        <Partner partner={partner} selectPartner={selectPartner} partnerId={partner["id"]}
+          selectedPartner={selectedPartner} />
+      );
+    });
+    var partnersNewPurchases = this.props.partnersNewPurchases.map (function (partner) {
       return (
         <Partner partner={partner} selectPartner={selectPartner} partnerId={partner["id"]}
           selectedPartner={selectedPartner} />
@@ -85,7 +103,10 @@ var PartnerList = React.createClass({
     });
     return (
       <ul className="nav nav-pills nav-stacked" role="tablist">
-        {currentPartners}
+        <li role="presentation">Groups with new purchases</li>
+        {partnersNewPurchases}
+        <li role="presentation">All groups</li>
+        {allPartners}
       </ul>
     );
   }
