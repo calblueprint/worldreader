@@ -76,8 +76,7 @@ var BookTile = React.createClass({
   renderCollapsed: function() {
     var description = this.props.book.description;
     if (this.props.book.highlight) {
-      description = this.props.book.highlight.description ?
-          this.props.book.highlight.description : description;
+      description = this.props.book.highlight.description
     }
     return (
       <div key={this.props.book.id + "-collapsed"} className="collapsed-book-tile"
