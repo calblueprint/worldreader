@@ -12,6 +12,7 @@ function ready() {
         case 'levels': return 'label label-success';
         case 'language'   : return 'label label-default';
         case 'genre'     : return 'label label-warning';
+        case 'recommended'     : return 'label label-danger';
       }
     },
     itemValue: 'value',
@@ -22,19 +23,38 @@ function ready() {
       source: gon.all_tags
     }
   });
-  mainSearch.tagsinput('add', { "value": 1 , "text": "Elementary", "tagType": "levels" });
-  mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "locations" });
+  mainSearch.tagsinput('add', { "value": 1 , "text": "Recommended", "tagType": "recommended" });
+  search();
+
+  $('#book-searchbar-input').keypress(function (e) {
+    if (e.which == 13) {
+      search();
+      return false;
+    }
+  });
+
+  mainSearch.on('itemAdded', function(event) {
+    search();
+  });
+
+  mainSearch.on('itemRemoved', function(event) {
+    search();
+  });
 
   $('#search-button').click(function() {
-    $.ajax({
-      type: "GET",
-      url: "/api/v1/books/search/",
-      data: {
-        tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
-        term: $('#book-searchbar-input').val()
-      }
-    }).done(function(results) {
-      bookList.handleBooksUpdate(results);
-    });
-  })
+    search();
+  });
+}
+
+function search() {
+  $.ajax({
+    type: "GET",
+    url: "/api/v1/books/search/",
+    data: {
+      tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
+      term: $('#book-searchbar-input').val()
+    }
+  }).done(function(results) {
+    bookList.handleBooksUpdate(results);
+  });
 }
