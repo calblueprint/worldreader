@@ -23,7 +23,11 @@ function ready() {
       source: gon.all_tags
     }
   });
-  mainSearch.tagsinput('add', { "value": 1 , "text": "Recommended", "tagType": "recommended" });
+  mainSearch.tagsinput("add", {
+    "value": 1,
+    "text": "Recommended",
+    "tagType": "recommended"
+  });
   search();
 
   $('#book-searchbar-input').keypress(function (e) {
@@ -33,23 +37,17 @@ function ready() {
     }
   });
 
-  mainSearch.on('itemAdded', function(event) {
-    search();
-  });
+  mainSearch.on('itemAdded', search);
 
-  mainSearch.on('itemRemoved', function(event) {
-    search();
-  });
+  mainSearch.on('itemRemoved', search);
 
-  $('#search-button').click(function() {
-    search();
-  });
+  $('#search-button').click(search);
 }
 
 function search() {
   $.ajax({
-    type: "GET",
-    url: "/api/v1/books/search/",
+    type: 'GET',
+    url: '/api/v1/books/search/',
     data: {
       tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
       term: $('#book-searchbar-input').val()
