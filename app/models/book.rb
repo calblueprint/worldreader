@@ -23,6 +23,8 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :levels
 
+  @@stop_words = Set.new ["the", "and"]
+
   def as_indexed_json(options={})
     as_json(
       include: {
@@ -36,16 +38,35 @@ class Book < ActiveRecord::Base
 
   def self.query(string, tags)
     tokens = []
-    if string != ""
-      tokens.push(string + "~")
+    string.split(" ").each do |token|
+      if not @@stop_words.member? token
+        tokens.push(token + "~1")
+      end
     end
+    tags_dict = {}
     tags.each do |tag|
-      tokens.push(tag["tagType"] + ".name:" + tag["text"])
+      type = tag["tagType"]
+      tag = tag["text"]
+      if tags_dict.has_key? type
+        tags_dict[type].push(tag)
+      else
+        tags_dict[type] = [tag]
+      end
     end
+    tags_dict.each do |type, tags|
+      tag_tokens = tags.map { |t| type + ".name:\"" + t + "\"" }
+      tokens.push("(" + tag_tokens.join(" OR ") + ")")
+    end
+    print tokens.join(" AND ")
+    print "\n"
     query = {query_string: {query: tokens.join(" AND ")}}
-    highlight = {fields: {name: {}, description: {fragment_size: 120}}}
+    highlight = {fields: {description: {fragment_size: 120}}}
     results = Book.search(query: query, highlight: highlight).to_a
-    results.map! { |r| r._source.merge({highlight: r.highlight})}
+    results.map! { |r| 
+      r.has_key?(:highlight) ? 
+        r._source.merge({highlight: r.highlight}) :
+        r._source
+    }
   end
 
 end

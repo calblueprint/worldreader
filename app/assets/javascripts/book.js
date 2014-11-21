@@ -8,7 +8,7 @@ function ready() {
   mainSearch.tagsinput({
     tagClass: function(item) {
       switch (item.tagType) {
-        case 'locations'   : return 'label label-primary';
+        case 'countries'   : return 'label label-primary';
         case 'levels': return 'label label-success';
         case 'language'   : return 'label label-default';
         case 'genre'     : return 'label label-warning';
@@ -23,7 +23,7 @@ function ready() {
     }
   });
   mainSearch.tagsinput('add', { "value": 1 , "text": "Elementary", "tagType": "levels" });
-  mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "locations" });
+  mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "countries" });
 
   $('#search-button').click(function() {
     $.ajax({

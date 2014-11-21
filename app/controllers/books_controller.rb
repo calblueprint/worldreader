@@ -18,7 +18,7 @@ class BooksController < ApplicationController
     country_tags = Country.uniq.pluck(:name).map{ |x|
       index += 1
       {
-        value: index, text: x, tagType: "locations"
+        value: index, text: x, tagType: "countries"
       }
     }
     level_tags = Level.uniq.pluck(:name).map{ |x|
