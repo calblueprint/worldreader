@@ -161,7 +161,7 @@ var BookList = React.createClass({
           handleCloseButton={this.handleBookClosed}
           handleCartEvent={this.handleCartEvent}
           isExpanded={this.state.expandedBookId === book.id} />
-        );
+      );
     }.bind(this));
 
     if (bookTiles.length) {
