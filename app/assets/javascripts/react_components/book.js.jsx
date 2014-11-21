@@ -59,6 +59,17 @@ var BookTile = React.createClass({
                     book={this.props.book} />
       )
     }
+    var locations = this.props.book.countries.map(function (country) {
+      return (
+        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+      );
+    });
+    var levels = this.props.book.levels.map(function (level) {
+      return (
+        <span className={"book-tag expanded-book-level " + levelLabel}>{level.name}</span>
+      );
+    });
+    console.log(this.props.book)
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
         <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
@@ -69,6 +80,12 @@ var BookTile = React.createClass({
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           {cartButton}
+          <div className="book-tags">
+            {locations}
+            {levels}
+            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
+            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
+          </div>
         </div>
       </div>
     )
