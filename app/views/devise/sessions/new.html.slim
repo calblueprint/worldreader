@@ -1,16 +1,21 @@
-h2 World Reader Partner Extranet
-p Browse our library, view &amp; order books, and view &amp; download information about your devices and books.
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  div
-    = f.label :email
-    = f.email_field :email, autofocus: true
-  div
-    = f.label :password
-    = f.password_field :password, autocomplete: "off"
-  - if devise_mapping.rememberable?
-    div
-      = f.check_box :remember_me
-      = f.label :remember_me
-  div= f.submit "Log in"
-= render "devise/shared/links"
-= link_to "Continue browsing without logging in", books_path
+h2.text-center World Reader Partner Extranet
+p.text-center Order books, and view &amp; download information about your devices and books.
+.col-md-6.col-md-offset-3
+  = form_tag session_path(:user) do
+    .form-group
+      label for="inputEmail" E-mail address
+      .input-group
+        span.input-group-addon @
+        = text_field_tag 'user[email]', nil, class: "inputEmail form-control", placeholder: "Enter email", type: "email"
+    .form-group
+      label for="inputPassword" Password
+      .input-group
+        = text_field_tag 'user[password]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
+        span.input-group-btn
+          button.btn.btn-default Sign in
+    = link_to "Forgot your password?", new_password_path(:user), class:"text-right"
+
+    .span.navbar-right
+      = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
+      = label_tag 'user[remember_me]', 'Keep me logged in'
+  = link_to "Continue browsing without logging in", books_path
