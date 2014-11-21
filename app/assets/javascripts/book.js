@@ -1,3 +1,9 @@
+var locationLabel = 'label label-success';
+var levelLabel = 'label label-primary';
+var languageLabel = 'label label-warning';
+var genreLabel = 'label label-info';
+var recommendedLabel = 'label label-danger';
+
 $(document).ready(function() {
   ready();
 });
@@ -7,10 +13,11 @@ function ready() {
   mainSearch.tagsinput({
     tagClass: function(item) {
       switch (item.tagType) {
-        case 'Location'   : return 'label label-primary';
-        case 'Level': return 'label label-success';
-        case 'Language'   : return 'label label-default';
-        case 'Genre'     : return 'label label-warning';
+        case 'locations'   : return locationLabel;
+        case 'levels': return levelLabel;
+        case 'language'   : return languageLabel;
+        case 'genre'     : return genreLabel;
+        case 'recommended'     : return recommendedLabel;
       }
     },
     itemValue: 'value',
@@ -21,6 +28,30 @@ function ready() {
       source: gon.all_tags
     }
   });
-  mainSearch.tagsinput('add', { "value": 1 , "text": "Elementary", "tagType": "Level" });
-  mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "Location" });
+
+  $('#book-searchbar-input').keypress(function (e) {
+    if (e.which == 13) {
+      search();
+      return false;
+    }
+  });
+
+  mainSearch.on('itemAdded', search);
+
+  mainSearch.on('itemRemoved', search);
+
+  $('#search-button').click(search);
+}
+
+function search() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/v1/books/search/',
+    data: {
+      tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
+      term: $('#book-searchbar-input').val()
+    }
+  }).done(function(results) {
+    bookList.handleBooksUpdate(results);
+  });
 }

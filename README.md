@@ -20,6 +20,13 @@ Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.
 
 Getting Started
 ---------------
+1. Clone the repo by running `git clone https://github.com/calblueprint/worldreader`
+2. Install all the necessary gems with `bundle install`
+3. Install elasticsearch (on macs it's `brew install elasticsearch`).
+4. Start up the elasticsearch server with `elasticsearch -d`
+5. Migrate the database with `rake db:migrate`
+6. Spin up the server with `rails server`
+7. Visit `localhost:3000` and checkout the app!
 
 Documentation and Support
 -------------------------

@@ -2,6 +2,10 @@
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+
+var bookList = null;
+
+
 var CartButton = React.createClass({
   handleClick: function(event) {
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
@@ -26,6 +30,7 @@ var CartButton = React.createClass({
     }
   }
 });
+
 
 var BookTile = React.createClass({
   handleClick: function() {
@@ -54,6 +59,17 @@ var BookTile = React.createClass({
                     book={this.props.book} />
       )
     }
+    var locations = this.props.book.countries.map(function (country) {
+      return (
+        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+      );
+    });
+    var levels = this.props.book.levels.map(function (level) {
+      return (
+        <span className={"book-tag expanded-book-level " + levelLabel}>{level.name}</span>
+      );
+    });
+    console.log(this.props.book)
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
         <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
@@ -64,6 +80,12 @@ var BookTile = React.createClass({
           <h4 className="media-heading">{this.props.book.name}</h4>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           {cartButton}
+          <div className="book-tags">
+            {locations}
+            {levels}
+            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
+            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
+          </div>
         </div>
       </div>
     )
@@ -84,10 +106,12 @@ var BookTile = React.createClass({
   }
 });
 
+
 var BookList = React.createClass({
   getInitialState: function() {
     return {cart: cart,
             user: gon.current_user,
+            books: gon.books,
             expandedBookId: null};
   },
   handleBookExpand: function(event) {
@@ -104,12 +128,16 @@ var BookList = React.createClass({
   componentWillUnmount: function() {
     cart.off("change", this._boundForceUpdate);
   },
+  handleBooksUpdate: function(event) {
+    this.setState({books: event});
+  },
   handleCartEvent: function(event) {
     if (event.REMOVE_BOOK_FROM_CART) {
       var book = event.REMOVE_BOOK_FROM_CART;
-      this.setState({numVisibleCartItems:
-                    _.min([NUM_VISIBLE_CART_ITEMS,
-                          cart.get("items").length])});
+      this.setState(
+        {numVisibleCartItems:
+          _.min([NUM_VISIBLE_CART_ITEMS, cart.get("items").length])
+        });
       removeBook(book, this.state.user.id);
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
@@ -121,7 +149,8 @@ var BookList = React.createClass({
     }
   },
   render: function() {
-    var bookTiles = this.props.books.map(function (book) {
+    bookList = this;
+    var bookTiles = this.state.books.map(function (book) {
       return (
         <BookTile
           user={gon.current_user}
@@ -134,10 +163,21 @@ var BookList = React.createClass({
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));
-    return (
-      <div className="media-list col-md-8 col-md-offset-2">
-        {bookTiles}
-      </div>
-    );
+
+    if (bookTiles.length) {
+      return (
+        <div className="media-list col-md-8 col-md-offset-2">
+          {bookTiles}
+        </div>
+      );
+    } else {
+      return (
+        <div className="media-list col-md-8 col-md-offset-2">
+          <h3 className="text-center">
+            No books found. Search for a title or add a tag to continue.
+          </h3>
+        </div>
+      );
+    }
   }
 });
