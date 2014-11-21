@@ -74,6 +74,11 @@ var BookTile = React.createClass({
     )
   },
   renderCollapsed: function() {
+    var description = this.props.book.description;
+    if (this.props.book.highlight) {
+      description = this.props.book.highlight.description ?
+          this.props.book.highlight.description : description;
+    }
     return (
       <div key={this.props.book.id + "-collapsed"} className="collapsed-book-tile"
           onClick={this.handleClick}>
@@ -82,7 +87,7 @@ var BookTile = React.createClass({
         </div>
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
-          <span className="collapsed-book-desc">{this.props.book.description}</span>
+          <span className="collapsed-book-desc" dangerouslySetInnerHTML={{__html: description}} />
         </div>
       </div>
     )

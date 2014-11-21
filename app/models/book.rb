@@ -43,7 +43,9 @@ class Book < ActiveRecord::Base
       tokens.push(tag["tagType"] + ".name:" + tag["text"])
     end
     query = {query_string: {query: tokens.join(" AND ")}}
-    results = Book.search(query: query).records.to_a
+    highlight = {fields: {name: {}, description: {fragment_size: 120}}}
+    results = Book.search(query: query, highlight: highlight).to_a
+    results.map! { |r| r._source.merge({highlight: r.highlight})}
   end
 
 end
