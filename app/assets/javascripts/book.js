@@ -23,7 +23,6 @@ function ready() {
       source: gon.all_tags
     }
   });
-  search();
 
   $('#book-searchbar-input').keypress(function (e) {
     if (e.which == 13) {
