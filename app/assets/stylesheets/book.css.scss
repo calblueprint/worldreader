@@ -52,6 +52,15 @@ $cart-view-width: 250px;
     overflow: hidden;
 }
 
+.book-tags {
+    margin-top: 1rem;
+}
+
+.book-tag {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
 .expand-enter {
     height: 180px;
     overflow: hidden;
