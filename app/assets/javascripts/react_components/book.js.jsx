@@ -163,10 +163,21 @@ var BookList = React.createClass({
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));
-    return (
-      <div className="media-list col-md-8 col-md-offset-2">
-        {bookTiles}
-      </div>
-    );
+
+    if (bookTiles.length) {
+      return (
+        <div className="media-list col-md-8 col-md-offset-2">
+          {bookTiles}
+        </div>
+      );
+    } else {
+      return (
+        <div className="media-list col-md-8 col-md-offset-2">
+          <h3 className="text-center">
+            No books found. Search for a title or add a tag to continue.
+          </h3>
+        </div>
+      );
+    }
   }
 });
