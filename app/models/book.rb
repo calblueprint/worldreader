@@ -23,6 +23,10 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :levels
 
+  def donated?
+    price <= 0
+  end
+
   def as_indexed_json(options={})
     as_json(
       include: {

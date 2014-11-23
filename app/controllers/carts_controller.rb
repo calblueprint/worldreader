@@ -1,6 +1,8 @@
 class CartsController < ApplicationController
   def show
-    @cart_items = current_user.purchases.is_purchased(false)
+    @cart_items = current_user.cart
+    @donated_books = @cart_items.select { |book| book.donated? }
+    @paid_books = @cart_items.select { |book| !book.donated? }
   end
 
   def add

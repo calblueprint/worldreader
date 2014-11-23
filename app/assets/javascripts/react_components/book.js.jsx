@@ -69,7 +69,6 @@ var BookTile = React.createClass({
         <span className={"book-tag expanded-book-level " + levelLabel}>{level.name}</span>
       );
     });
-    console.log(this.props.book)
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
         <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
@@ -111,7 +110,7 @@ var BookList = React.createClass({
   getInitialState: function() {
     return {cart: cart,
             user: gon.current_user,
-            books: gon.books,
+            books: this.props.books,
             expandedBookId: null};
   },
   handleBookExpand: function(event) {
@@ -166,7 +165,7 @@ var BookList = React.createClass({
 
     if (bookTiles.length) {
       return (
-        <div className="media-list col-md-8 col-md-offset-2">
+        <div className="media-list">
           {bookTiles}
         </div>
       );
