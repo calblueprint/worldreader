@@ -99,13 +99,11 @@ var SmallBookTile = React.createClass({
     });
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
-        <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
-        <div className="expanded-book-img-box pull-left">
-          <img className="expanded-book-img" src={this.props.book.image} />
+        <div className="icon-book-img-box pull-left">
+          <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
-          <span className="expanded-book-desc">{this.props.book.description}</span>
           {cartButton}
           <div className="book-tags">
             {locations}
