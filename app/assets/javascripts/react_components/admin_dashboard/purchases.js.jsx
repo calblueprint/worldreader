@@ -21,10 +21,20 @@ var PurchaseDisplay = React.createClass({
       }.bind(this)
     });
   },
+  _selectAll: function () {
+    checked = document.getElementsByName("source")[0].checked;
+    checkboxes = document.getElementsByName("purchaseCheckbox");
+    for(var i=0, n=checkboxes.length; i<n; i++) {
+      checkboxes[i].checked = checked;
+    }
+  },
+  selectPurchase: function () {
+    
+  },
   render: function () {
     var purchases = this.state.purchases.map(function (purchase) {
       return (
-          <Purchase purchase={purchase} />
+          <Purchase purchase={purchase} selectPurchase={this.selectPurchase} />
       );
     }.bind(this));
     return (
@@ -32,7 +42,8 @@ var PurchaseDisplay = React.createClass({
         <table className="table">
           <thead>
             <tr>
-              <th>Select</th>
+              <th><input type="checkbox" name="source"
+                onClick={this._selectAll} /> Select All</th>
               <th>Book Name</th>
               <th>Purchased On</th>
             </tr>
@@ -48,7 +59,7 @@ var PurchaseDisplay = React.createClass({
 
 var Purchase = React.createClass( {
   getInitialState: function () {
-    return {book: []};
+    return {book: [], selected: false};
   },
   componentDidMount: function () {
     this._fetchBook({bookId: this.props.purchase.book_id});
@@ -71,7 +82,7 @@ var Purchase = React.createClass( {
     return (
       <tr>
         <td>
-          <input type="checkbox"/>
+          <input type="checkbox" name="purchaseCheckbox"/>
         </td>
         <td>
           {this.state.book.name}
