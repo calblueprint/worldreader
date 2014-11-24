@@ -17,7 +17,7 @@ var isPurchaseable = function() {
     return parseFloat(book.price) > 0;
   });
   return paidBooks.length >= donatedBooks.length;
-}
+};
 
 var makePurchase = function() {
   var book_ids = _.map(cart.get("items"), function(book) {
@@ -53,7 +53,7 @@ var removeBook = function(book, userId) {
   });
 
   toastr.success(book.name + " removed from your cart!");
-}
+};
 
 var addBook = function(book, userId) {
   var cartItems = cart.get("items");
