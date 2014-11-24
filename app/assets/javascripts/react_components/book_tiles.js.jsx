@@ -104,13 +104,13 @@ var SmallBookTile = React.createClass({
         </div>
         <div className="media-body">
           <h4 className="media-heading">{this.props.book.name}</h4>
-          {cartButton}
           <div className="book-tags">
             {locations}
             {levels}
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
           </div>
+          {cartButton}
         </div>
       </div>
     )
