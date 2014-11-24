@@ -2,7 +2,7 @@
 
 var PurchaseDisplay = React.createClass({
   getInitialState: function () {
-    return {purchases: []};
+    return {purchases: [], selectedPurchases: []};
   },
   componentDidMount: function () {
     this._fetchPurchases({id: this.props.partnerId});
@@ -22,28 +22,51 @@ var PurchaseDisplay = React.createClass({
     });
   },
   _selectAll: function () {
-    checked = document.getElementsByName("source")[0].checked;
-    checkboxes = document.getElementsByName("purchaseCheckbox");
-    for(var i=0, n=checkboxes.length; i<n; i++) {
-      checkboxes[i].checked = checked;
-    }
+    this.setState({selectedPurchases: this.state.purchases.map(function (x) {
+      return x["id"];
+    })});
   },
-  selectPurchase: function () {
-    
+  _download: function () {
+    var myAjaxVariable = null;
+    console.log(this.state.selectedPurchases);
+    $.ajax({
+      url: "/admin/csv",
+      type: "POST",
+      async : false,
+      data: {
+        purchases: this.state.selectedPurchases
+      },
+      success: function(data) {
+        myAjaxVariable = data;
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    window.open( "data:text/csv;charset=utf-8," + escape(myAjaxVariable));
+  },
+  changePurchaseState: function (id, is_selected) {
+    selected = this.state.selectedPurchases;
+    if (is_selected) {
+      selected.push(id);
+    } else {
+      selected.splice(selected.indexOf(id), 1);
+    }
+    this.setState({selectedPurchases: selected});
   },
   render: function () {
     var purchases = this.state.purchases.map(function (purchase) {
+      is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
       return (
-          <Purchase purchase={purchase} selectPurchase={this.selectPurchase} />
+          <Purchase purchase={purchase} changePurchaseState={this.changePurchaseState}
+            selected={is_selected}/>
       );
     }.bind(this));
     return (
       <div className="purchaseDisplay">
-        <table className="table">
+        <table className="table table-hover">
           <thead>
             <tr>
-              <th><input type="checkbox" name="source"
-                onClick={this._selectAll} /> Select All</th>
               <th>Book Name</th>
               <th>Purchased On</th>
             </tr>
@@ -52,6 +75,10 @@ var PurchaseDisplay = React.createClass({
             {purchases}
           </tbody>
         </table>
+        <button type="button" id="selectAllButton" className="btn btn-default" onClick={this._selectAll}>
+          Select All Purchases</button>
+        <button type="button" id="downloadPurchaseButton" className="btn btn-default" onClick={this._download}>
+          Download Purchases As CSV</button>
       </div>
     );  
   }
@@ -59,7 +86,7 @@ var PurchaseDisplay = React.createClass({
 
 var Purchase = React.createClass( {
   getInitialState: function () {
-    return {book: [], selected: false};
+    return {book: []};
   },
   componentDidMount: function () {
     this._fetchBook({bookId: this.props.purchase.book_id});
@@ -78,16 +105,17 @@ var Purchase = React.createClass( {
       }.bind(this)
     });
   },
+  _selectPurchase: function () {
+    this.props.changePurchaseState(this.props.purchase["id"], !this.props.selected)
+  },
   render: function () {
+    var is_selected = this.props.selected ? "info" : "";
     return (
       <tr>
-        <td>
-          <input type="checkbox" name="purchaseCheckbox"/>
-        </td>
-        <td>
+        <td className={is_selected} onClick={this._selectPurchase}>
           {this.state.book.name}
         </td>
-        <td>
+        <td className={is_selected} onClick={this._selectPurchase}>
           {this.props.purchase.purchased_on}
         </td>
       </tr>

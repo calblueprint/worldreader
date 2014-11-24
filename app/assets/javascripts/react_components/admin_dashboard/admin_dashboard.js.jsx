@@ -103,9 +103,7 @@ var PartnerList = React.createClass({
     });
     return (
       <ul className="nav nav-pills nav-stacked" role="tablist">
-        <li role="presentation">Groups with new purchases</li>
         {partnersNewPurchases}
-        <li role="presentation">All groups</li>
         {allPartners}
       </ul>
     );
@@ -126,15 +124,11 @@ var Partner = React.createClass({
     this.setState({clicked: true});
   },
   render: function () {
-    if (this.state.clicked) {
-      return (
-        <li role="presentation" onClick={this.onClick} className="active"><a href="#">
-          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
-      );
-    }
+    var is_active = this.state.clicked ? "active" : "";
     return (
-        <li role="presentation" onClick={this.onClick}><a href="#">
-          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}</a></li>
+        <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
+          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}
+          <span className="badge">{gon.new_purchases[this.props.partner["id"]]}</span></a></li>
     );
   }
 });

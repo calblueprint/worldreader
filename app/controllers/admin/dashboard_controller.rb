@@ -1,5 +1,6 @@
 class Admin::DashboardController < ApplicationController
-
+  before_action :get_number_purchases
+  
   def index
   end
 
@@ -8,7 +9,7 @@ class Admin::DashboardController < ApplicationController
   
   # ordered so that partners with new purchases are first
   def display_all_partners 
-    partners = User.partners
+    partners = User.partners_no_new_purchases
     render json: partners
   end
 
@@ -40,5 +41,22 @@ class Admin::DashboardController < ApplicationController
   def display_book
     book = Book.find(params[:id])
     render json: book
+  end
+
+  def generate_csv
+    send_data Purchase.to_csv(Purchase.find(params[:purchases])), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;purchases.csv"
+    # respond_to do |format|
+    #   format.csv {send_data Purchase.to_csv(Purchase.find(params[:purchases])),
+    #     type: "text/csv", filename: "purchases.csv"}
+    # end
+  end
+
+  private
+
+  def get_number_purchases
+    gon.new_purchases = {}
+    User.partners_new_purchases.each { |user|
+      gon.new_purchases[user.id] = user.purchases.where(is_purchased: false).count
+    }
   end
 end

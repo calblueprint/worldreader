@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :purchases
   scope :partners, -> { where role: 1 }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where('purchases.is_purchased = ?', false).uniq }
+  scope :partners_no_new_purchases, -> { partners.where("id not in (?)", partners_new_purchases.pluck(:id))}
 
   def send_welcome_mail
     UserMailer.welcome(self).deliver

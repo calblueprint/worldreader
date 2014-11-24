@@ -35,6 +35,7 @@ Rails.application.routes.draw do
         get "display_book", :as => "display_book"
       end
     end
+    post '/csv', to: 'dashboard#generate_csv'
   end
 
   # API routes for react updates
