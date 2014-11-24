@@ -6,8 +6,33 @@ var Cart = Backbone.Model.extend({
 });
 
 var cart = new Cart({
-  items : gon.cart
+  items : gon.cart,
 });
+
+var isPurchaseable = function() {
+  donatedBooks = _.filter(cart.get("items"), function(book) {
+    return parseFloat(book.price) <= 0;
+  });
+  paidBooks = _.filter(cart.get("items"), function(book) {
+    return parseFloat(book.price) > 0;
+  });
+  return paidBooks.length >= donatedBooks.length;
+}
+
+var makePurchase = function() {
+  var book_ids = _.map(cart.get("items"), function(book) {
+    return book.id;
+  })
+  $.ajax({
+    type: "POST",
+    url: "/carts/" + gon.current_user.id + "/create_purchase",
+    data: {
+      book_ids: book_ids
+    }
+  }).done(function() {
+  });
+};
+
 
 var removeBook = function(book, userId) {
   var cartItems = cart.get("items");

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   resources :books
 
   resources :carts do
-    post "add/:book_id" => "carts#add"
+    post "create_purchase" => "carts#create_purchase"
     post "remove/:book_id" => "cards#remove"
   end
 

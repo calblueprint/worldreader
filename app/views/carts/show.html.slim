@@ -3,7 +3,7 @@
   h2.text-center My Cart
 
 .col-md-2.col-md-offset-2
-  button.btn.btn-default.checkout-btn Checkout
+  = react_component 'CheckoutButton'
 
 .col-md-10.col-md-offset-1
   .book-lists
@@ -15,4 +15,4 @@
       = react_component 'BookList', {books: @donated_books, small: true}
 
 .col-md-2.col-md-offset-10
-  button.btn.btn-default.checkout-btn Checkout
+  = react_component 'CheckoutButton'
