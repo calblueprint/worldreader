@@ -1,18 +1,19 @@
-h2 User Information
-p
-  | Name: #{@user.name if @user.name}
-p
-  | Email: #{@user.email if @user.email}
+row
+  .col-md-10.col-md-offset-1
+    h2.text-center
+      | #{@user.name if @user.name}
+    h3.text-center
+      | #{@user.email if @user.email}
 
-h2 Purchase History
+    h3 Purchase History
 
-table
-  tr
-    th Name
-    th Description
-    th colspan="2" 
+    table
+      tr
+        th Name
+        th Description
+        th colspan="2" 
 
-  - @purchases.each do |purchase|
-    tr
-      td= link_to purchase.book.name, book_path(purchase.book.id)
-      td= purchase.book.description
+      - @purchases.each do |purchase|
+        tr
+          td= link_to purchase.book.name, book_path(purchase.book.id)
+          td= purchase.book.description
