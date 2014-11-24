@@ -22,7 +22,7 @@ var isPurchaseable = function() {
 var makePurchase = function() {
   var book_ids = _.map(cart.get("items"), function(book) {
     return book.id;
-  })
+  });
   $.ajax({
     type: "POST",
     url: "/carts/" + gon.current_user.id + "/create_purchase",
