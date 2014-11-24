@@ -72,7 +72,7 @@ var Cart = React.createClass({
     }
     var books = displayCart.map(function(book) {
       return (
-        <div>
+        <div className="cart-header-item">
           <CartItem book={book}
                     handleCartEvent={this.removeBookFromCart} />
         </div>

@@ -16,7 +16,7 @@
             = react_component 'CartHeader', {cart: @cart}
           #cart.ul.dropdown-menu role="menu"
             = react_component 'Cart', {cart: @cart}
-            divider
+            .text-center
               = link_to "Checkout", cart_path(current_user.id)
       li.end
         - if current_user.nil?
