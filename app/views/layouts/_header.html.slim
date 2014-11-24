@@ -16,6 +16,8 @@
             = react_component 'CartHeader', {cart: @cart}
           #cart.ul.dropdown-menu role="menu"
             = react_component 'Cart', {cart: @cart}
+            .text-center
+              = link_to "Checkout", cart_path(current_user.id)
       li.end
         - if current_user.nil?
           a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
