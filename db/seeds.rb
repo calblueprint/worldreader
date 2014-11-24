@@ -45,7 +45,8 @@ def make_purchases
       Purchase.create!  user_id: user.id,
                         book_id: n,
                         purchased_on: DateTime.new(2014, 3, 2),
-                        is_purchased: true
+                        is_purchased: true,
+                        is_approved: true
     end
   end
 
@@ -53,7 +54,8 @@ def make_purchases
     Purchase.create!  user_id: 1,
                       book_id: n,
                       purchased_on: DateTime.new(2014, 3, 2),
-                      is_purchased: false
+                      is_purchased: true,
+                      is_approved: false
   end
 end
 

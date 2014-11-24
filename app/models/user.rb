@@ -32,7 +32,8 @@ class User < ActiveRecord::Base
   has_many :books, through: :purchases
   has_many :purchases
   scope :partners, -> { where role: 1 }
-  scope :partners_new_purchases, -> { partners.joins(:purchases).where('purchases.is_purchased = ?', false).uniq }
+  scope :partners_new_purchases, -> { partners.joins(:purchases).where(
+    'purchases.is_approved = ? and purchases.is_purchased = ?', false, true).uniq }
 
   def send_welcome_mail
     UserMailer.welcome(self).deliver

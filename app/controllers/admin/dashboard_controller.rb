@@ -1,6 +1,5 @@
 class Admin::DashboardController < ApplicationController
-  before_action :get_number_purchases
-  
+
   def index
   end
 
@@ -29,7 +28,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_purchases
-    purchases = Purchase.where(user_id: params[:id], is_purchased: false)
+    purchases = Purchase.where(user_id: params[:id], is_approved: false, is_purchased: true)
     render json: purchases
   end
 
@@ -51,16 +50,11 @@ class Admin::DashboardController < ApplicationController
 
   def convert_purchases
     params[:purchases].each do |purchase_id|
-        Purchase.find(purchase_id).update(is_purchased: true)
+        Purchase.find(purchase_id).update(is_approved: true)
     end
   end
 
-  private
-
   def get_number_purchases
-    gon.new_purchases = {}
-    User.partners_new_purchases.each { |user|
-      gon.new_purchases[user.id] = user.purchases.where(is_purchased: false).count
-    }
+    render text: User.find(params[:id]).purchases.where(is_approved: false, is_purchased: true).count
   end
 end

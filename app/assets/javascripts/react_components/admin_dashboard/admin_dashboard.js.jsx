@@ -112,23 +112,43 @@ var PartnerList = React.createClass({
 
 var Partner = React.createClass({
   getInitialState: function () {
-    return {clicked: false};
+    return {clicked: false, numNewPurchases: ""};
+  },
+  componentDidMount: function () {
+    this._refreshNewPurchases();
   },
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.selectedPartner != this.props.partnerId) {
       this.setState({clicked: false});
     }
+    this._refreshNewPurchases();
   },
   onClick: function () {
     this.props.selectPartner(this.props.partnerId);
     this.setState({clicked: true});
+  },
+  _refreshNewPurchases: function () {
+    $.ajax({
+      url: "/admin/dashboard/" + this.props.partner["id"] + "/get_number_purchases",
+      dataType: "text",
+      success: function (response) {
+        if (response > 0) {
+          this.setState({numNewPurchases: response});
+        } else {
+          this.setState({numNewPurchases: ""});
+        }
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   render: function () {
     var is_active = this.state.clicked ? "active" : "";
     return (
         <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
           {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}
-          <span className="badge">{gon.new_purchases[this.props.partner["id"]]}</span></a></li>
+          <span className="badge">{this.state.numNewPurchases}</span></a></li>
     );
   }
 });

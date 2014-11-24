@@ -30,7 +30,7 @@ var PurchaseDisplay = React.createClass({
     var myAjaxVariable = null;
     console.log(this.state.selectedPurchases);
     $.ajax({
-      url: "/admin/csv",
+      url: "/admin/dashboard/csv",
       type: "POST",
       async : false,
       data: {
@@ -48,7 +48,7 @@ var PurchaseDisplay = React.createClass({
   },
   _convertSelected: function () {
     $.ajax({
-      url: "/admin/convert",
+      url: "/admin/dashboard/convert",
       type: "POST",
       data: {
         purchases: this.state.selectedPurchases
@@ -72,7 +72,7 @@ var PurchaseDisplay = React.createClass({
   },
   render: function () {
     var purchases = this.state.purchases.map(function (purchase) {
-      is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
+      var is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
       return (
           <Purchase purchase={purchase} changePurchaseState={this.changePurchaseState}
             selected={is_selected}/>
