@@ -7,9 +7,14 @@ class Admin::DashboardController < ApplicationController
   end
   
   # ordered so that partners with new purchases are first
-  def display_partners 
+  def display_all_partners 
     partners = User.partners
     render json: partners
+  end
+
+  def display_partners_new_purchases
+    partners_new_purchases = User.partners_new_purchases
+    render json: partners_new_purchases
   end
 
   def partner_information

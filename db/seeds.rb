@@ -41,17 +41,19 @@ end
 
 def make_purchases
   User.all.each do |user|
-    1.upto(3) do |n|
-      Purchase.create!  user_id: user.id,
-                        book_id: n,
-                        is_purchased: false
-    end
     4.upto(6) do |n|
       Purchase.create!  user_id: user.id,
                         book_id: n,
                         purchased_on: DateTime.new(2014, 3, 2),
                         is_purchased: true
     end
+  end
+
+  1.upto(3) do |n|
+    Purchase.create!  user_id: 1,
+                      book_id: n,
+                      purchased_on: DateTime.new(2014, 3, 2),
+                      is_purchased: false
   end
 end
 

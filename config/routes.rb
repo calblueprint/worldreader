@@ -24,7 +24,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboard do
       collection do
-        get "display_partners", :as => "display_partners"
+        get "display_all_partners", :as => "display_all_partners"
+        get "display_partners_new_purchases", :as => "display_partners_new_purchases"
       end
       member do
         get "partner_information", :as => "partner_information"
