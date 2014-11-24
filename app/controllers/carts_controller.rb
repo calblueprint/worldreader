@@ -6,10 +6,10 @@ class CartsController < ApplicationController
   end
 
   def create_purchase
-    puts params[:books_ids]
     books = Book.find(params[:book_ids])
-    purchases = books.each do |book|
-      Purchase.create book_id: book.id, user_id: current_user.id, is_purchased: true
+    current_user.purchases.each do |purchase|
+      purchase.is_purchased = true
+      purchase.save
     end
     flash.now[:success] = "Your purchase is being processed!"
     flash.keep(:success)
