@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       end
     end
     post '/csv', to: 'dashboard#generate_csv'
+    post '/convert', to: 'dashboard#convert_purchases'
   end
 
   # API routes for react updates

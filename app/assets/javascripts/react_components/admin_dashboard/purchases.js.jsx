@@ -38,12 +38,28 @@ var PurchaseDisplay = React.createClass({
       },
       success: function(data) {
         myAjaxVariable = data;
+        this._convertSelected();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
     window.open( "data:text/csv;charset=utf-8," + escape(myAjaxVariable));
+  },
+  _convertSelected: function () {
+    $.ajax({
+      url: "/admin/convert",
+      type: "POST",
+      data: {
+        purchases: this.state.selectedPurchases
+      },
+      success: function(data) {
+        console.log(data);
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   changePurchaseState: function (id, is_selected) {
     selected = this.state.selectedPurchases;

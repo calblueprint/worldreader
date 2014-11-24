@@ -44,11 +44,15 @@ class Admin::DashboardController < ApplicationController
   end
 
   def generate_csv
-    send_data Purchase.to_csv(Purchase.find(params[:purchases])), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;purchases.csv"
-    # respond_to do |format|
-    #   format.csv {send_data Purchase.to_csv(Purchase.find(params[:purchases])),
-    #     type: "text/csv", filename: "purchases.csv"}
-    # end
+    send_data Purchase.to_csv(Purchase.find(params[:purchases])), 
+      :type => 'text/csv; charset=iso-8859-1; header=present',
+      :disposition => "attachment;purchases.csv"
+  end
+
+  def convert_purchases
+    params[:purchases].each do |purchase_id|
+        Purchase.find(purchase_id).update(is_purchased: true)
+    end
   end
 
   private
