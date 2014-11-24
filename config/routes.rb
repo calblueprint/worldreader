@@ -17,8 +17,10 @@ Rails.application.routes.draw do
   resources :books
 
   resources :carts do
-    post "add/:book_id" => "carts#add"
-    post "remove/:book_id" => "cards#remove"
+    member do
+      post :remove
+      post :create_purchase
+    end
   end
 
   namespace :admin do
