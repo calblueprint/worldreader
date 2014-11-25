@@ -44,7 +44,7 @@ var BookTile = React.createClass({
           <img className="expanded-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {locations}
@@ -65,7 +65,7 @@ var BookTile = React.createClass({
           <img className="collapsed-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
         </div>
       </div>
@@ -103,7 +103,7 @@ var SmallBookTile = React.createClass({
           <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <div className="book-tags">
             {locations}
             {levels}
