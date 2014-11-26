@@ -34,20 +34,9 @@ class Book < ActiveRecord::Base
     price <= 0
   end
 
-  def as_indexed_json(options={})
-    as_json(
-      methods: [:genre_name, :language_name, :countries_name, :levels_name]
-    )
-  end
-
   def as_json(options={})
     super(
-      include: {
-        genre: {only: :name},
-        language: {only: :name},
-        levels: {only: :name},
-        countries: {only: :name}
-      }
+      methods: [:genre_name, :language_name, :countries_name, :levels_name]
     )
   end
 
@@ -106,6 +95,8 @@ class Book < ActiveRecord::Base
       }
     end
     query = {filtered: filtered}
+    print query
+    print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
     results = Book.search(query: query, highlight: highlight).to_a
     results.map! { |r| 
