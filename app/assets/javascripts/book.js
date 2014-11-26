@@ -13,11 +13,11 @@ function ready() {
   mainSearch.tagsinput({
     tagClass: function(item) {
       switch (item.tagType) {
-        case 'countries'   : return countryLabel;
+        case 'countries': return countryLabel;
         case 'levels': return levelLabel;
-        case 'language'   : return languageLabel;
-        case 'genre'     : return genreLabel;
-        case 'recommended'     : return recommendedLabel;
+        case 'language': return languageLabel;
+        case 'genre': return genreLabel;
+        case 'recommended': return recommendedLabel;
       }
     },
     itemValue: 'value',

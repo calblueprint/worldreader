@@ -27,9 +27,9 @@ var BookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var locations = this.props.book.countries.map(function (country) {
+    var countries = this.props.book.countries.map(function (country) {
       return (
-        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+        <span className={"book-tag expanded-book-country " + countryLabel}>{country.name}</span>
       );
     });
     var levels = this.props.book.levels.map(function (level) {
@@ -47,7 +47,7 @@ var BookTile = React.createClass({
           <h3 className="media-heading">{this.props.book.name}</h3>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
-            {locations}
+            {countries}
             {levels}
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
@@ -87,9 +87,9 @@ var SmallBookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var locations = this.props.book.countries.map(function (country) {
+    var countries = this.props.book.countries.map(function (country) {
       return (
-        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+        <span className={"book-tag expanded-book-country " + countryLabel}>{country.name}</span>
       );
     });
     var levels = this.props.book.levels.map(function (level) {
@@ -105,7 +105,7 @@ var SmallBookTile = React.createClass({
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.name}</h3>
           <div className="book-tags">
-            {locations}
+            {countries}
             {levels}
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
