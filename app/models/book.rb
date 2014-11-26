@@ -74,7 +74,7 @@ class Book < ActiveRecord::Base
     tags_dict = {}
     tags.each do |tag|
       type = tag["tagType"]
-      tag = tag["text"]
+      tag = "\"" + tag["text"] + "\""
       if tags_dict.has_key? type
         tags_dict[type].push(tag)
       else
