@@ -23,25 +23,45 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :levels
 
-  @@stop_words = Set.new ["the", "and"]
+  settings number_of_shards: 1 do
+    mapping do
+      indexes :name, analyzer: 'english'
+      indexes :description, analyzer: 'english'
+    end
+  end
 
   def as_indexed_json(options={})
     as_json(
-      include: {
-        genre: {only: :name},
-        language: {only: :name},
-        levels: {only: :name},
-        countries: {only: :name}
-      }
+      methods: [:genre_name, :language_name, :countries_names, :levels_names]
     )
   end
 
+  def genre_name
+    genre.name
+  end
+
+  def language_name
+    language.name
+  end
+
+  def countries_names
+    countries.map { |c| c.name }
+  end
+
+  def levels_names
+    levels.map { |l| l.name }
+  end
+
   def self.query(string, tags)
-    tokens = []
-    string.split(" ").each do |token|
-      if not @@stop_words.member? token
-        tokens.push(token + "~1")
-      end
+    filtered = {}
+    if string
+      filtered[:query] = {
+        multi_match: {
+          query: string,
+          fields: [:name, :description],
+          fuzziness: 'AUTO'
+        }
+      }
     end
     tags_dict = {}
     tags.each do |tag|
@@ -53,13 +73,26 @@ class Book < ActiveRecord::Base
         tags_dict[type] = [tag]
       end
     end
-    tags_dict.each do |type, tags|
-      tag_tokens = tags.map { |t| type + ".name:\"" + t + "\"" }
-      tokens.push("(" + tag_tokens.join(" OR ") + ")")
+    if not tags_dict.empty?
+      and_filter = []
+      tags_dict.each do |type, tags|
+        query = {
+          query: {
+            query_string: {
+              default_field: type,
+              query: tags.join(" OR ")
+            }
+          }
+        }
+        and_filter.push(query)
+      end
+      filtered[:filter] = {
+        and: and_filter
+      }
     end
-    print tokens.join(" AND ")
+    query = {filtered: filtered}
+    print query
     print "\n"
-    query = {query_string: {query: tokens.join(" AND ")}}
     highlight = {fields: {description: {fragment_size: 120}}}
     results = Book.search(query: query, highlight: highlight).to_a
     results.map! { |r| 
