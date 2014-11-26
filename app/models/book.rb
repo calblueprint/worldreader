@@ -27,6 +27,10 @@ class Book < ActiveRecord::Base
     mapping do
       indexes :name, analyzer: 'english'
       indexes :description, analyzer: 'english'
+      indexes :genre_name, index: 'not_analyzed'
+      indexes :language_name, index: 'not_analyzed'
+      indexes :countries_name, index: 'not_analyzed'
+      indexes :levels_name, index: 'not_analyzed'
     end
   end
 
