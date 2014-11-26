@@ -28,6 +28,7 @@ class Book < ActiveRecord::Base
       indexes :name, analyzer: 'english'
       indexes :description, analyzer: 'english'
     end
+  end
 
   def donated?
     price <= 0
@@ -35,7 +36,7 @@ class Book < ActiveRecord::Base
 
   def as_indexed_json(options={})
     as_json(
-      methods: [:genre_name, :language_name, :countries_names, :levels_names]
+      methods: [:genre_name, :language_name, :countries_name, :levels_name]
     )
   end
 
@@ -47,16 +48,17 @@ class Book < ActiveRecord::Base
     language.name
   end
 
-  def countries_names
+  def countries_name
     countries.map { |c| c.name }
   end
 
-  def levels_names
+  def levels_name
     levels.map { |l| l.name }
+  end
 
   def self.query(string, tags)
     filtered = {}
-    if string
+    if not string.empty?
       filtered[:query] = {
         multi_match: {
           query: string,
@@ -81,7 +83,7 @@ class Book < ActiveRecord::Base
         query = {
           query: {
             query_string: {
-              default_field: type,
+              default_field: type + "_name",
               query: tags.join(" OR ")
             }
           }
@@ -93,8 +95,6 @@ class Book < ActiveRecord::Base
       }
     end
     query = {filtered: filtered}
-    print query
-    print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
     results = Book.search(query: query, highlight: highlight).to_a
     results.map! { |r| 
