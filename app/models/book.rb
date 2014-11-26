@@ -40,6 +40,17 @@ class Book < ActiveRecord::Base
     )
   end
 
+  def as_json(options={})
+    super(
+      include: {
+        genre: {only: :name},
+        language: {only: :name},
+        levels: {only: :name},
+        countries: {only: :name}
+      }
+    )
+  end
+
   def genre_name
     genre.name
   end
