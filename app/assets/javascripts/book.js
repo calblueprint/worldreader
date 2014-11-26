@@ -1,17 +1,23 @@
+var countryLabel = 'label label-success';
+var levelLabel = 'label label-primary';
+var languageLabel = 'label label-warning';
+var genreLabel = 'label label-info';
+var recommendedLabel = 'label label-danger';
+
 $(document).ready(function() {
   ready();
 });
-
 
 function ready() {
   var mainSearch = $('#book-tagbar-input');
   mainSearch.tagsinput({
     tagClass: function(item) {
       switch (item.tagType) {
-        case 'countries'   : return 'label label-primary';
-        case 'levels': return 'label label-success';
-        case 'language'   : return 'label label-default';
-        case 'genre'     : return 'label label-warning';
+        case 'countries'   : return countryLabel;
+        case 'levels': return levelLabel;
+        case 'language'   : return languageLabel;
+        case 'genre'     : return genreLabel;
+        case 'recommended'     : return recommendedLabel;
       }
     },
     itemValue: 'value',
@@ -22,19 +28,30 @@ function ready() {
       source: gon.all_tags
     }
   });
-  mainSearch.tagsinput('add', { "value": 1 , "text": "Elementary", "tagType": "levels" });
-  mainSearch.tagsinput('add', { "value": 2 , "text": "Nigeria", "tagType": "countries" });
 
-  $('#search-button').click(function() {
-    $.ajax({
-      type: "GET",
-      url: "/api/v1/books/search/",
-      data: {
-        tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
-        term: $('#book-searchbar-input').val()
-      }
-    }).done(function(results) {
-      bookList.handleBooksUpdate(results);
-    });
-  })
+  $('#book-searchbar-input').keypress(function (e) {
+    if (e.which == 13) {
+      search();
+      return false;
+    }
+  });
+
+  mainSearch.on('itemAdded', search);
+
+  mainSearch.on('itemRemoved', search);
+
+  $('#search-button').click(search);
+}
+
+function search() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/v1/books/search/',
+    data: {
+      tags: JSON.stringify($('#book-tagbar-input').tagsinput('items')),
+      term: $('#book-searchbar-input').val()
+    }
+  }).done(function(results) {
+    bookList.handleBooksUpdate(results);
+  });
 }

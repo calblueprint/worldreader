@@ -1,14 +1,18 @@
-h3 My Cart
-table
-  tr
-    th Name
-    th Description
-    th Date Purchased
-    th colspan="3"
 
-  - @cart_items.each do |item|
-    tr
-      td 
-        =link_to item.book.name, book_path(item.book.id)
-      td= item.book.description
-      td= item.purchased_on
+.col-md-4.col-md-offset-4
+  h2.text-center My Cart
+
+.col-md-2.col-md-offset-2
+  = react_component 'CheckoutButton'
+
+.col-md-10.col-md-offset-1
+  .book-lists
+    .col-md-6
+      h3.text-center Paid Books
+      = react_component 'BookList', {books: @paid_books, small: true}
+    .col-md-6
+      h3.text-center Donated Books
+      = react_component 'BookList', {books: @donated_books, small: true}
+
+.col-md-2.col-md-offset-10
+  = react_component 'CheckoutButton'

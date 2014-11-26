@@ -28,6 +28,9 @@ class Book < ActiveRecord::Base
       indexes :name, analyzer: 'english'
       indexes :description, analyzer: 'english'
     end
+
+  def donated?
+    price <= 0
   end
 
   def as_indexed_json(options={})
@@ -50,7 +53,6 @@ class Book < ActiveRecord::Base
 
   def levels_names
     levels.map { |l| l.name }
-  end
 
   def self.query(string, tags)
     filtered = {}

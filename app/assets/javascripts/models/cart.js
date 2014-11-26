@@ -9,6 +9,31 @@ var cart = new Cart({
   items : gon.cart
 });
 
+var isPurchaseable = function() {
+  var donatedBooks = _.filter(cart.get("items"), function(book) {
+    return parseFloat(book.price) <= 0;
+  });
+  var paidBooks = _.filter(cart.get("items"), function(book) {
+    return parseFloat(book.price) > 0;
+  });
+  return paidBooks.length >= donatedBooks.length;
+};
+
+var makePurchase = function() {
+  var bookIds = _.map(cart.get("items"), function(book) {
+    return book.id;
+  });
+  $.ajax({
+    type: "POST",
+    url: "/carts/" + gon.current_user.id + "/create_purchase",
+    data: {
+      book_ids: bookIds
+    }
+  }).done(function() {
+  });
+};
+
+
 var removeBook = function(book, userId) {
   var cartItems = cart.get("items");
   var books = _.reject(cartItems, function(el) {
@@ -28,7 +53,7 @@ var removeBook = function(book, userId) {
   });
 
   toastr.success(book.name + " removed from your cart!");
-}
+};
 
 var addBook = function(book, userId) {
   var cartItems = cart.get("items");

@@ -6,6 +6,23 @@ var REMOVE_BOOK_FROM_CART = "remove";
 var SEE_MORE_CART_ITEMS = "see more";
 var NUM_VISIBLE_CART_ITEMS = 5;
 
+var CheckoutButton = React.createClass({
+  buttonPressed: function() {
+    if (isPurchaseable()) {
+      makePurchase();
+    } else {
+      toastr.error("To complete a purchase, you need to have an equal number of paid and donated books!");
+    }
+  },
+  render: function() {
+    return (
+      <button className="btn btn-primary checkout-btn" onClick={this.buttonPressed}>
+        Checkout
+      </button>
+    );
+  }
+});
+
 var CartItem = React.createClass({
   cartItemRemoved: function(event) {
     this.props.handleCartEvent(this.props.book);
@@ -55,7 +72,7 @@ var Cart = React.createClass({
     }
     var books = displayCart.map(function(book) {
       return (
-        <div>
+        <div className="cart-header-item">
           <CartItem book={book}
                     handleCartEvent={this.removeBookFromCart} />
         </div>

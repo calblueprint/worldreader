@@ -1,15 +1,15 @@
-h2.text-center Library
+h1.text-center Library
 
-.col-md-8.col-md-offset-2
-  #book-searchbar.input-group
-    input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
-    span.input-group-btn
-      button#search-button.btn.btn-default type="button"
-        span.glyphicon.glyphicon-search
-  #book-tagbar.input-group
-    span.input-group-addon
-      span.glyphicon.glyphicon-tag
-    input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
+.row
+  .col-md-10.col-md-offset-1
+    #book-searchbar.input-group
+      input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
+      span.input-group-btn
+        button#search-button.btn.btn-default type="button"
+          span.glyphicon.glyphicon-search
+    #book-tagbar.input-group
+      span.input-group-addon
+        span.glyphicon.glyphicon-tag
+      input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
 
-div[id="library"]
-  = react_component 'BookList'
+    = react_component 'BookList', {books: @books}

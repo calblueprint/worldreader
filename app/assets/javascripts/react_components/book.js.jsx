@@ -31,74 +31,11 @@ var CartButton = React.createClass({
   }
 });
 
-
-var BookTile = React.createClass({
-  handleClick: function() {
-    this.props.handleClick({bookId: this.props.book.id});
-  },
-  render: function() {
-    var content;
-    if (this.props.isExpanded) {
-      content = this.renderExpanded();
-    } else {
-      content = this.renderCollapsed();
-    }
-    return (
-      <ReactCSSTransitionGroup transitionName={this.props.isExpanded ? "expand" : "collapse"} >
-        {content}
-      </ReactCSSTransitionGroup>
-    )
-  },
-  renderExpanded: function() {
-    var cartButton;
-    if (this.props.user) {
-      cartButton = (
-        <CartButton user={this.props.user}
-                    onClick={this.props.handleCartEvent}
-                    cart={this.props.cart}
-                    book={this.props.book} />
-      )
-    }
-    return (
-      <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
-        <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
-        <div className="expanded-book-img-box pull-left">
-          <img className="expanded-book-img" src={this.props.book.image} />
-        </div>
-        <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
-          <span className="expanded-book-desc">{this.props.book.description}</span>
-          {cartButton}
-        </div>
-      </div>
-    )
-  },
-  renderCollapsed: function() {
-    var description = this.props.book.description;
-    if (this.props.book.highlight) {
-      description = this.props.book.highlight.description
-    }
-    return (
-      <div key={this.props.book.id + "-collapsed"} className="collapsed-book-tile"
-          onClick={this.handleClick}>
-        <div className="collapsed-book-img-box pull-left">
-          <img className="collapsed-book-img" src={this.props.book.image} />
-        </div>
-        <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
-          <span className="collapsed-book-desc" dangerouslySetInnerHTML={{__html: description}} />
-        </div>
-      </div>
-    )
-  }
-});
-
-
 var BookList = React.createClass({
   getInitialState: function() {
     return {cart: cart,
             user: gon.current_user,
-            books: gon.books,
+            books: this.props.books,
             expandedBookId: null};
   },
   handleBookExpand: function(event) {
@@ -126,6 +63,12 @@ var BookList = React.createClass({
           _.min([NUM_VISIBLE_CART_ITEMS, cart.get("items").length])
         });
       removeBook(book, this.state.user.id);
+      if (this.props.small) {
+        var books = _.reject(this.state.books, function(el) {
+          return el.id == book.id;
+        });
+        this.setState({books: books});
+      }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
       addBook(book, this.state.user.id);
@@ -138,6 +81,16 @@ var BookList = React.createClass({
   render: function() {
     bookList = this;
     var bookTiles = this.state.books.map(function (book) {
+      if (this.props.small) {
+        return (
+          <SmallBookTile
+            user={gon.current_user}
+            key={book.id}
+            book={book}
+            cart={cart.get("items")}
+            handleCartEvent={this.handleCartEvent} />
+        )
+      }
       return (
         <BookTile
           user={gon.current_user}
@@ -150,10 +103,21 @@ var BookList = React.createClass({
           isExpanded={this.state.expandedBookId === book.id} />
       );
     }.bind(this));
-    return (
-      <div className="media-list col-md-8 col-md-offset-2">
-        {bookTiles}
-      </div>
-    );
+
+    if (bookTiles.length) {
+      return (
+        <div className="media-list">
+          {bookTiles}
+        </div>
+      );
+    } else {
+      return (
+        <div className="media-list col-md-8 col-md-offset-2">
+          <h3 className="text-center">
+            No books found. Search for a title or add a tag to continue.
+          </h3>
+        </div>
+      );
+    }
   }
 });
