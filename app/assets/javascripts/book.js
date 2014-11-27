@@ -1,4 +1,4 @@
-var locationLabel = 'label label-success';
+var countryLabel = 'label label-success';
 var levelLabel = 'label label-primary';
 var languageLabel = 'label label-warning';
 var genreLabel = 'label label-info';
@@ -13,11 +13,11 @@ function ready() {
   mainSearch.tagsinput({
     tagClass: function(item) {
       switch (item.tagType) {
-        case 'locations'   : return locationLabel;
+        case 'countries': return countryLabel;
         case 'levels': return levelLabel;
-        case 'language'   : return languageLabel;
-        case 'genre'     : return genreLabel;
-        case 'recommended'     : return recommendedLabel;
+        case 'language': return languageLabel;
+        case 'genre': return genreLabel;
+        case 'recommended': return recommendedLabel;
       }
     },
     itemValue: 'value',
