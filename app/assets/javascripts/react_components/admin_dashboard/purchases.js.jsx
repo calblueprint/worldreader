@@ -28,7 +28,6 @@ var PurchaseDisplay = React.createClass({
   },
   _download: function () {
     var myAjaxVariable = null;
-    console.log(this.state.selectedPurchases);
     $.ajax({
       url: "/admin/dashboard/csv",
       type: "POST",

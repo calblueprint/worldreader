@@ -92,7 +92,6 @@ var GroupBooks = React.createClass({
         this.setState({books: data});
       }.bind(this),
       error: function (xhr, status, err) {
-        console.log("error");
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
