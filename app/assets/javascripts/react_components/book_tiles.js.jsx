@@ -27,14 +27,14 @@ var BookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var locations = this.props.book.countries.map(function (country) {
+    var countries = this.props.book.countries_name.map(function (country) {
       return (
-        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+        <span className={"book-tag expanded-book-country " + countryLabel}>{country}</span>
       );
     });
-    var levels = this.props.book.levels.map(function (level) {
+    var levels = this.props.book.levels_name.map(function (level) {
       return (
-        <span className={"book-tag expanded-book-level " + levelLabel}>{level.name}</span>
+        <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
       );
     });
     return (
@@ -44,13 +44,13 @@ var BookTile = React.createClass({
           <img className="expanded-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
-            {locations}
+            {countries}
             {levels}
-            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
-            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
+            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
+            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>
           {cartButton}
         </div>
@@ -65,7 +65,7 @@ var BookTile = React.createClass({
           <img className="collapsed-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
         </div>
       </div>
@@ -87,14 +87,14 @@ var SmallBookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var locations = this.props.book.countries.map(function (country) {
+    var countries = this.props.book.countries_name.map(function (country) {
       return (
-        <span className={"book-tag expanded-book-location " + locationLabel}>{country.name}</span>
+        <span className={"book-tag expanded-book-country " + countryLabel}>{country}</span>
       );
     });
-    var levels = this.props.book.levels.map(function (level) {
+    var levels = this.props.book.levels_name.map(function (level) {
       return (
-        <span className={"book-tag expanded-book-level " + levelLabel}>{level.name}</span>
+        <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
       );
     });
     return (
@@ -103,12 +103,12 @@ var SmallBookTile = React.createClass({
           <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h4 className="media-heading">{this.props.book.name}</h4>
+          <h3 className="media-heading">{this.props.book.name}</h3>
           <div className="book-tags">
-            {locations}
+            {countries}
             {levels}
-            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language.name}</span>
-            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre.name}</span>
+            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
+            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>
           {cartButton}
         </div>
