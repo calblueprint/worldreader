@@ -117,6 +117,48 @@ def make_genre_tags
   end
 end
 
+def make_authors_tags
+  Author.create! name: 'Varun Rau'
+  Author.create! name: 'Eileen Li'
+  Author.create! name: 'Will Tang'
+  Author.create! name: 'Ethan Chiou'
+  1.upto(4) do |n|
+    book = Book.find(n)
+    book.authors << Author.find(1)
+    book.save
+  end
+  3.upto(6) do |n|
+    book = Book.find(n)
+    book.authors << Author.find(2)
+    book.save
+  end
+  5.upto(8) do |n|
+    book = Book.find(n)
+    book.authors << Author.find(3)
+    book.save
+  end
+  7.upto(10) do |n|
+    book = Book.find(n)
+    book.authors << Author.find(4)
+    book.save
+  end
+end
+
+def make_publisher_tags
+  Publisher.create! name: '@vdawg'
+  Publisher.create! name: '@will'
+  1.upto(5) do |n|
+    book = Book.find(n)
+    book.publisher = Publisher.find(1)
+    book.save
+  end
+  6.upto(10) do |n|
+    book = Book.find(n)
+    book.publisher = Publisher.find(2)
+    book.save
+  end
+end
+
 make_books
 make_users
 make_groups
@@ -125,3 +167,5 @@ make_location_tags
 make_level_tags
 make_language_tags
 make_genre_tags
+make_author_tags
+make_publisher_tags

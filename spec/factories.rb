@@ -1,4 +1,8 @@
-FactoryGirl.define do  factory :publisher do
+FactoryGirl.define do  factory :authors_book, :class => 'AuthorsBooks' do
+    book_id 1
+author_id 1
+  end
+  factory :publisher do
     name "MyString"
   end
   factory :author do
