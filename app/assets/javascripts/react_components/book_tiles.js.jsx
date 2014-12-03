@@ -45,6 +45,8 @@ var BookTile = React.createClass({
         </div>
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.name}</h3>
+          <h5>{this.props.book.authors_name}</h5>
+          <h5>{this.props.book.publisher_name}</h5>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {countries}

@@ -117,7 +117,7 @@ def make_genre_tags
   end
 end
 
-def make_authors_tags
+def make_author_tags
   Author.create! name: 'Varun Rau'
   Author.create! name: 'Eileen Li'
   Author.create! name: 'Will Tang'

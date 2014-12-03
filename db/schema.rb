@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203050025) do
+ActiveRecord::Schema.define(version: 20141203051311) do
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20141203050025) do
     t.integer  "genre_id"
     t.integer  "country_id"
     t.decimal  "price"
+    t.integer  "publisher_id"
   end
 
   create_table "books_countries", force: true do |t|
