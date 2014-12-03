@@ -3,12 +3,18 @@ $cart-view-width: 250px;
 .media-list {
     margin-bottom: 2rem;
     padding: 0;
-    font-size: 1.75rem;
+    font-size: 1.6rem;
 }
 
 .collapsed-book-tile {
     height: 180px;
     padding: 10px;
+}
+
+.media-heading {
+    font-size: 2.8rem;
+    margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
 }
 
 .collapsed-book-img-box {
@@ -33,8 +39,8 @@ $cart-view-width: 250px;
 }
 
 .expanded-book-tile {
-    min-height: 340px;
-    padding: 10px;
+    min-height: 360px;
+    padding: 20px;
     outline: gray solid thin;
     background-color: white;
 }
@@ -64,9 +70,9 @@ $cart-view-width: 250px;
 
 .book-tag {
     display: inline-block;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
 }
 
 .expand-enter {
