@@ -37,6 +37,7 @@ var BookTile = React.createClass({
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
       );
     });
+
     return (
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
         <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
@@ -45,6 +46,12 @@ var BookTile = React.createClass({
         </div>
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.name}</h3>
+          <h5>{_.reduce(
+                  this.props.book.authors_name,
+                  function(memo, author) {return memo + " " + author},
+                  ""
+            )}</h5>
+          <h5>{this.props.book.publisher_name}</h5>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {countries}
