@@ -16,12 +16,14 @@ class Book < ActiveRecord::Base
     include Elasticsearch::Model
   belongs_to :language
   belongs_to :genre
-  has_and_belongs_to_many :groups
-  has_many :users, through: :purchases
+  belongs_to :publisher
   has_many :purchases
-  has_and_belongs_to_many :recommendations
+  has_many :users, through: :purchases
+  has_and_belongs_to_many :authors
   has_and_belongs_to_many :countries
+  has_and_belongs_to_many :groups
   has_and_belongs_to_many :levels
+  has_and_belongs_to_many :recommendations
 
   settings number_of_shards: 1 do
     mapping do
@@ -31,6 +33,8 @@ class Book < ActiveRecord::Base
       indexes :language_name, index: 'not_analyzed'
       indexes :countries_name, index: 'not_analyzed'
       indexes :levels_name, index: 'not_analyzed'
+      indexes :authors_name, index: 'not_analyzed'
+      indexes :publisher_name, index: 'not_analyzed'
     end
   end
 
@@ -40,7 +44,14 @@ class Book < ActiveRecord::Base
 
   def as_json(options={})
     super(
-      methods: [:genre_name, :language_name, :countries_name, :levels_name]
+      methods: [
+        :genre_name,
+        :language_name,
+        :countries_name,
+        :levels_name,
+        :publisher_name,
+        :authors_name,
+      ]
     )
   end
 
@@ -60,13 +71,21 @@ class Book < ActiveRecord::Base
     levels.map { |l| l.name }
   end
 
+  def publisher_name
+    publisher.name
+  end
+
+  def authors_name
+    authors.map { |a| a.name }
+  end
+
   def self.query(string, tags)
     filtered = {}
     if not string.empty?
       filtered[:query] = {
         multi_match: {
           query: string,
-          fields: [:name, :description],
+          fields: [:name, :description, :authors_name, :publisher_name],
           fuzziness: 'AUTO'
         }
       }
