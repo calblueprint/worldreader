@@ -16,12 +16,14 @@ class Book < ActiveRecord::Base
     include Elasticsearch::Model
   belongs_to :language
   belongs_to :genre
-  has_and_belongs_to_many :groups
-  has_many :users, through: :purchases
+  belongs_to :publisher
   has_many :purchases
-  has_and_belongs_to_many :recommendations
+  has_many :users, through: :purchases
+  has_and_belongs_to_many :authors
   has_and_belongs_to_many :countries
+  has_and_belongs_to_many :groups
   has_and_belongs_to_many :levels
+  has_and_belongs_to_many :recommendations
 
   settings number_of_shards: 1 do
     mapping do

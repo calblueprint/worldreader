@@ -1,4 +1,10 @@
-FactoryGirl.define do
+FactoryGirl.define do  factory :publisher do
+    name "MyString"
+  end
+  factory :author do
+    name "MyString"
+  end
+
   factory :recommendation do
     # TODO create recommendation
   end
