@@ -26,6 +26,9 @@ var PurchaseDisplay = React.createClass({
       return x["id"];
     })});
   },
+  _deselectAll: function () {
+    this.setState({selectedPurchases: []});
+  },
   _download: function () {
     var myAjaxVariable = null;
     $.ajax({
@@ -44,6 +47,21 @@ var PurchaseDisplay = React.createClass({
       }.bind(this)
     });
     window.open( "data:text/csv;charset=utf-8," + escape(myAjaxVariable));
+  },
+  _disapprove: function () {
+    $.ajax({
+      url: "/admin/dashboard/disapprove",
+      type: "POST",
+      data: {
+        purchases: this.state.selectedPurchases
+      },
+      success: function(data) {
+        console.log(data);
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   _convertSelected: function () {
     $.ajax({
@@ -91,9 +109,13 @@ var PurchaseDisplay = React.createClass({
           </tbody>
         </table>
         <button type="button" id="selectAllButton" className="btn btn-default" onClick={this._selectAll}>
-          Select All Purchases</button>
+          Select All</button>
+        <button type="button" id="deselectAllButton" className="btn btn-default" onClick={this._deselectAll}>
+         Deselect All</button>
         <button type="button" id="downloadPurchaseButton" className="btn btn-default" onClick={this._download}>
-          Download Purchases As CSV</button>
+          Approve and Download Purchases</button>
+        <button type="button" id="disapproveButton" className="btn btn-default" onClick={this._disapprove}>
+          Disapprove Purchases (cannot be undone)</button>
       </div>
     );  
   }

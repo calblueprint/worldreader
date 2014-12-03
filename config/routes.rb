@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get "display_partners_new_purchases", :as => "display_partners_new_purchases"
         post '/csv', to: 'dashboard#generate_csv'
         post '/convert', to: 'dashboard#convert_purchases'
+        post '/disapprove', to: 'dashboard#disapprove_purchases'
       end
       member do
         get "get_number_purchases", :as => "get_number_purchases"

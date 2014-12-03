@@ -28,7 +28,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_purchases
-    purchases = Purchase.where(user_id: params[:id], is_approved: false, is_purchased: true)
+    purchases = Purchase.where(user_id: params[:id], is_approved: nil, is_purchased: true)
     render json: purchases
   end
 
@@ -54,7 +54,13 @@ class Admin::DashboardController < ApplicationController
     end
   end
 
+  def disapprove_purchases
+    params[:purchases].each do |purchase_id|
+        Purchase.find(purchase_id).update(is_approved: false)
+    end
+  end
+
   def get_number_purchases
-    render text: User.find(params[:id]).purchases.where(is_approved: false, is_purchased: true).count
+    render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
 end
