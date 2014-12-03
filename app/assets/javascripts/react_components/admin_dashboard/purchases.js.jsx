@@ -57,6 +57,8 @@ var PurchaseDisplay = React.createClass({
       },
       success: function(data) {
         console.log(data);
+        this.props.refreshPurchases(this.props.partnerId);
+        this._refreshPurchases();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -72,6 +74,8 @@ var PurchaseDisplay = React.createClass({
       },
       success: function(data) {
         console.log(data);
+        this.props.refreshPurchases(this.props.partnerId);
+        this._refreshPurchases();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -86,6 +90,14 @@ var PurchaseDisplay = React.createClass({
       selected.splice(selected.indexOf(id), 1);
     }
     this.setState({selectedPurchases: selected});
+  },
+  _refreshPurchases: function () {
+    var newPurchases = this.state.purchases;
+    for (p in this.state.selectedPurchases) {
+      var index = newPurchases.indexOf(p);
+      newPurchases.splice(index, 1);
+    }
+    this.setState({purchases: newPurchases});
   },
   render: function () {
     var purchases = this.state.purchases.map(function (purchase) {

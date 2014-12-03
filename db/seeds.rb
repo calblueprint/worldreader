@@ -56,6 +56,20 @@ def make_purchases
                       purchased_on: DateTime.new(2014, 3, 2),
                       is_purchased: true
   end
+
+  1.upto(3) do |n|
+    Purchase.create!  user_id: 2,
+                      book_id: n,
+                      purchased_on: DateTime.new(2014, 3, 2),
+                      is_purchased: true
+  end
+
+  1.upto(3) do |n|
+    Purchase.create!  user_id: 3,
+                      book_id: n,
+                      purchased_on: DateTime.new(2014, 3, 2),
+                      is_purchased: true
+  end
 end
 
 def make_location_tags

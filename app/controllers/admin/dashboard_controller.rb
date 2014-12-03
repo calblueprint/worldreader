@@ -52,12 +52,14 @@ class Admin::DashboardController < ApplicationController
     params[:purchases].each do |purchase_id|
         Purchase.find(purchase_id).update(is_approved: true)
     end
+    render :nothing => true
   end
 
   def disapprove_purchases
     params[:purchases].each do |purchase_id|
         Purchase.find(purchase_id).update(is_approved: false)
     end
+    render :nothing => true
   end
 
   def get_number_purchases
