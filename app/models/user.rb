@@ -24,16 +24,35 @@
 #
 
 class User < ActiveRecord::Base
+    include Elasticsearch::Model
+
   enum role: [:user, :vip, :admin]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
 
-  has_many :groups
+  belongs_to :country
   has_many :books, through: :purchases
+  has_many :groups
   has_many :purchases
   scope :partners, -> { where role: 1 }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
+
+  settings number_of_shards: 1 do
+    mapping do
+      indexes :country_name, index: 'not_analyzed'
+    end
+  end
+
+  def as_indexed_json(options={})
+    as_json(
+      methods: [:country_name]
+    )
+  end
+
+  def country_name
+    country.name
+  end
 
   def send_welcome_mail
     UserMailer.welcome(self).deliver
@@ -49,7 +68,38 @@ class User < ActiveRecord::Base
   end
 
   def cart
-    purchases.where(is_purchased: false).collect{ |purchase| purchase.book }
+    purchases.where(is_purchased: false).map{ |purchase| purchase.book }
+  end
+
+  def self.query(string, tags)
+    filtered = {}
+    if not string.empty?
+      filtered[:query] = {
+        multi_match: {
+          query: string,
+          fields: [:first_name, :last_name, :email],
+          fuzziness: 'AUTO'
+        }
+      }
+    end
+    if not tags.empty?
+      or_filter = []
+      tags.each do |country|
+        query = {
+          term: {
+            "country_name" => country
+          }
+        }
+        or_filter.push(query)
+      end
+      filtered[:filter] = {
+        or: or_filter
+      }
+    end
+    query = {filtered: filtered}
+    print query
+    print "\n"
+    User.search(query: query).to_a.map! { |r| r._source }
   end
 
   def self.partners_no_new_purchases
