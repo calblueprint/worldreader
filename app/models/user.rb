@@ -24,6 +24,8 @@
 #
 
 class User < ActiveRecord::Base
+    include Elasticsearch::Model
+
   enum role: [:user, :vip, :admin]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail

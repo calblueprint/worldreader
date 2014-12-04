@@ -7,14 +7,14 @@ def make_books
 end
 
 def make_users
+  c = Country.create! name: 'United States'
   1.upto(5) do |n|
-    puts "user#{n}@gmail.com"
-    User.create!  first_name: "User#{n}",
+     User.create! first_name: "User#{n}",
                   last_name: "LastName",
                   email: "user#{n}@gmail.com",
                   role: 1,
+                  country: c,
                   password: "password",
-                  country: "United States",
                   school: "UC Berkeley",
                   organization: "Blueprint"
   end
@@ -55,12 +55,12 @@ def make_purchases
   end
 end
 
-def make_location_tags
+def make_country_tags
   1.upto(20) do |n|
-    Country.create! name: Faker::Address.country
+    c = Country.create! name: Faker::Address.country
     3.times.map{ 1 + Random.rand(10) }.each do |i|
       book = Book.find(i)
-      book.countries << Country.find(n)
+      book.countries << c
       book.save
     end
   end
