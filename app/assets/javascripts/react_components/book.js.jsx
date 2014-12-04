@@ -2,9 +2,7 @@
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-
 var bookList = null;
-
 
 var CartButton = React.createClass({
   handleClick: function(event) {

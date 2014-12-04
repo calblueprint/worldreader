@@ -9,22 +9,21 @@ end
 def make_users
   c = Country.create! name: 'United States'
   1.upto(5) do |n|
-     User.create! first_name: "User#{n}",
-                  last_name: "LastName",
+    User.create!  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
                   email: "user#{n}@gmail.com",
                   role: 1,
-                  country: c,
                   password: "password",
-                  school: "UC Berkeley",
-                  organization: "Blueprint"
+                  country: c
   end
+  c = Country.create! name: 'United Monkeys'
   1.upto(2) do |n|
-    puts "admin#{n}@gmail.com"
-    User.create!  first_name: "Admin#{n}",
-                  last_name: "LastName",
+    User.create!  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
                   email: "admin#{n}@gmail.com",
                   role: 2,
-                  password: "password"
+                  password: "password",
+                  country: c
   end
 end
 
@@ -163,7 +162,7 @@ make_books
 make_users
 make_groups
 make_purchases
-make_location_tags
+make_country_tags
 make_level_tags
 make_language_tags
 make_genre_tags
