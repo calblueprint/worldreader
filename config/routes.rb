@@ -26,9 +26,14 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboard do
       collection do
-        get "display_partners", :as => "display_partners"
+        get "display_all_partners", :as => "display_all_partners"
+        get "display_partners_new_purchases", :as => "display_partners_new_purchases"
+        post '/csv', to: 'dashboard#generate_csv'
+        post '/convert', to: 'dashboard#convert_purchases'
+        post '/disapprove', to: 'dashboard#disapprove_purchases'
       end
       member do
+        get "get_number_purchases", :as => "get_number_purchases"
         get "partner_information", :as => "partner_information"
         get "display_groups", :as => "display_groups"
         get "display_purchases", :as => "display_purchases"

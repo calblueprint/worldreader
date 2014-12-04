@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
   has_many :books, through: :purchases
   has_many :purchases
   scope :partners, -> { where role: 1 }
+  scope :partners_new_purchases, -> { partners.joins(:purchases).where(
+    'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
   def send_welcome_mail
     UserMailer.welcome(self).deliver
@@ -48,6 +50,14 @@ class User < ActiveRecord::Base
 
   def cart
     purchases.where(is_purchased: false).collect{ |purchase| purchase.book }
+  end
+
+  def self.partners_no_new_purchases
+    if (partners_new_purchases.empty?)
+      partners
+    else
+      partners.where("id not in (?)", partners_new_purchases.pluck(:id))
+    end
   end
 
   # Include default devise modules. Others available are:

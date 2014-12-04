@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20141203051311) do
     t.integer "book_id",      null: false
     t.date    "purchased_on"
     t.boolean "is_purchased"
+    t.boolean "is_approved"
   end
 
   create_table "recommendations", force: true do |t|
