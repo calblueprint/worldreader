@@ -28,9 +28,10 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
 
-  has_many :groups
   has_many :books, through: :purchases
+  has_many :groups
   has_many :purchases
+  has_one :country
   scope :partners, -> { where role: 1 }
 
   def send_welcome_mail
