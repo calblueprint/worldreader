@@ -5,15 +5,22 @@ row
     h3.text-center
       | #{@user.email if @user.email}
 
-    h3 Purchase History
+    h2 Purchase History
 
-    table
-      tr
-        th Name
-        th Description
-        th colspan="2" 
-
-      - @purchases.each do |purchase|
-        tr
-          td= link_to purchase.book.name, book_path(purchase.book.id)
-          td= purchase.book.description
+    - @purchases.each do |purchase|
+      .purchase-tile
+        .purchase-img-box.pull-left
+          img.purchase-img src=purchase.book.image
+        .purchase-body
+          h3
+            | #{purchase.book.name}
+          - purchase.book.countries_name.each do |country_name|
+            span class="book-tag expanded-book-language label label-success"
+              | #{country_name}
+          - purchase.book.levels_name.each do |level_name|
+            span class="book-tag expanded-book-language label label-primary"
+              | #{level_name}
+          span class="book-tag expanded-book-language label label-warning"
+            | #{purchase.book.language_name}
+          span class="book-tag expanded-book-language label label-info"
+            | #{purchase.book.genre_name}
