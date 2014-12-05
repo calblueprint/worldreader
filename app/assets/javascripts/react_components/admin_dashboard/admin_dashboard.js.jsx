@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var Dashboard = React.createClass({
+var ManagePartnerInfo = React.createClass({
   getInitialState: function () {
     return {partners: [], partnersNewPurchases: [],
       selectedPartner: null, numNewPurchases: {}};
@@ -246,6 +246,104 @@ var MainDisplay = React.createClass({
             refreshPurchases={this.props.refreshPurchases} />
         </div>
       );
+    }
+  }
+});
+
+var tabs = {
+  VIEWINFO: 1,
+  RECOMMEND: 2,
+  DOWNLOADCSV: 3,
+  VIEWBOOKS: 4,
+  CREATEUSERS: 5
+};
+
+var DashboardTabs = React.createClass({
+  getInitialState: function () {
+    return {currentTab: tabs.VIEWINFO};
+  },
+  componentWillReceiveProps: function (nextProps) {
+    this.setState({currentTab: tabs.VIEWINFO});
+  },
+  clickViewInfo: function () {
+    this.setState({currentTab: tabs.VIEWINFO});
+  },
+  clickRecommend: function () {
+    this.setState({currentTab: tabs.RECOMMEND});
+    console.log("recommendations tab clicked");
+  },
+  clickDownloadCsv: function () {
+    this.setState({currentTab: tabs.DOWNLOADCSV});
+    console.log("downloadcsv tab clicked");
+  },
+  clickViewBooks: function () {
+    this.setState({currentTab: tabs.VIEWBOOKS});
+  }, 
+  clickCreateUsers: function () {
+    this.setState({currentTab: tabs.CREATEUSERS});
+  },
+  render: function () {
+    return (
+      <div className="tabBar">
+        <nav className="navbar navbar-default" role="navigation">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </button>
+            </div>
+            <div className="collapse navbar-collapse">
+              <ul className="nav nav-tabs">
+                <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Manage Partners</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickDownloadCsv}>Download CSV</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>View Books</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Create Users</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div className="tabDisplay">
+          <DashboardTabDisplay type={this.state.currentTab}/>
+        </div>
+      </div>
+    );
+  }
+
+});
+
+var DashboardTabDisplay = React.createClass({
+  render: function() {
+    if (this.props.type == tabs.VIEWINFO) {
+      return (
+        <ManagePartnerInfo/>
+      );
+    } else if (this.props.type == tabs.RECOMMEND) {
+      return (
+        <RecommendationPage/>
+      );
+    } else if (this.props.type == tabs.DOWNLOADCSV) {
+      return (
+        <div>
+          Download CSV
+        </div>
+      );
+    } else if (this.props.type == tabs.VIEWBOOKS) {
+      return (
+        <div>
+          View Books
+        </div>
+      );
+    } else if (this.props.type == tabs.CREATEUSERS) {
+      return (
+        <div>
+          Create Users
+        </div>
+      )
     }
   }
 });
