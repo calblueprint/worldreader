@@ -1,8 +1,20 @@
 $cart-view-width: 250px;
 
+.media-list {
+    margin-bottom: 2rem;
+    padding: 0;
+    font-size: 1.6rem;
+}
+
 .collapsed-book-tile {
     height: 180px;
     padding: 10px;
+}
+
+.media-heading {
+    font-size: 2.8rem;
+    margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
 }
 
 .collapsed-book-img-box {
@@ -27,8 +39,8 @@ $cart-view-width: 250px;
 }
 
 .expanded-book-tile {
-    height: 340px;
-    padding: 10px;
+    min-height: 360px;
+    padding: 20px;
     outline: gray solid thin;
     background-color: white;
 }
@@ -48,8 +60,19 @@ $cart-view-width: 250px;
 
 .expanded-book-desc {
     display: block;
-    max-height: 150px;
     overflow: hidden;
+}
+
+.book-tags {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.book-tag {
+    display: inline-block;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
 }
 
 .expand-enter {
@@ -58,7 +81,7 @@ $cart-view-width: 250px;
     transition: height .5s;
 
     .expanded-book-tile {
-        height: 180px;
+        min-height: 180px;
         padding: 10px;
         transition: all .5s;
     }
@@ -200,61 +223,38 @@ $cart-view-width: 250px;
 
 #book-searchbar{
     margin-bottom: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+}
+
+#book-tagbar{
+    margin-bottom: 1rem;
 }
 
 .bootstrap-tagsinput{
     padding: 0.5rem;
     margin-bottom: 0px;
     background-color: white;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
     box-shadow: none;
     display: block;
 }
 
-span.tag.label.label-info{
-    font-size: 100%;
-    font-weight: normal;
+// Icon image
+.icon-book-img-box {
+    overflow: auto;
+    width: 150px;
+    height: 150px;
 }
 
-// Cart Styling
+.icon-book-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 150px;
+}
 
-#floating-cart {
-  position: absolute;
-  right: 10px;
-  width: $cart-view-width;
-  background-color: white;
-  top: 150px;
-  border-radius: 3px;
-  padding: 10px;
-
-  ul {
-    margin-bottom: 20px;
-  }
-
-  ul li a {
-    display:block;
-    border:1px solid #999;
-    background-color:#222;
-    border-left:6px solid #999;
-    text-decoration:none;
-    color:#ccc;
-    padding:5px 5px 5px 25px;
-  }
-
-  .close {
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 18px;
-    color: #000000;
-    text-shadow: 0 1px 0 #ffffff;
-    opacity: 0.2;
-    filter: alpha(opacity=20);
-    text-decoration: none;
-    border: none;
-    background: white;
-    padding-right: 5px;
-  }
+.icon-book-tile {
+    min-height: 200px;
+    padding: 10px;
+    background-color: white;
 }

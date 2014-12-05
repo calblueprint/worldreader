@@ -10,17 +10,34 @@
     ul.nav.navbar-nav.navbar-right
       li
         a href="/"  Library
-      li
+      li#cart-item
         - if !current_user.nil?
-          = link_to "Cart", cart_path(current_user.id)
+          a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
+            = react_component 'CartHeader', {cart: @cart}
+          #cart.ul.dropdown-menu role="menu"
+            = react_component 'Cart', {cart: @cart}
+            .text-center
+              = link_to "Checkout", cart_path(current_user.id)
       li.end
         - if current_user.nil?
-          a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in/Register
-        - else
-          a.dropdown-toggle data-toggle="dropdown" href="#" 
-            | My Account
+          a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
+        - elsif current_user.admin?
+          a.dropdown-toggle data-toggle="dropdown" href="#"
+            | #{current_user.name}
             span.caret
-          ul.dropdown-menu role="menu" 
+          ul.dropdown-menu role="menu"
+            li
+              = link_to "Manage Partners", admin_dashboard_index_path
+            li
+              = link_to "Account Settings", user_path(current_user.id)
+            li.divider
+            li
+              = link_to "Sign Out", destroy_user_session_path, method: :delete
+        - else
+          a.dropdown-toggle data-toggle="dropdown" href="#"
+            | #{current_user.name}
+            span.caret
+          ul.dropdown-menu role="menu"
             li
               = link_to "My Purchase History", user_path(current_user.id)
             li
@@ -37,14 +54,9 @@
     .modal-content
       .modal-header
         button.close aria-hidden="true" data-dismiss="modal" type="button"  ×
-        h4.modal-title Login or Register your account
+        h4.modal-title Login
 
       .modal-body
-        ul.nav.nav-tabs
-          li.active
-            a data-toggle="tab" href="#login"  Login
-          li
-            a data-toggle="tab" href="#register"  Sign up
         #modal-tab-content.tab-content
           #login.tab-pane.active.in
             = form_tag session_path(:user) do
@@ -64,63 +76,5 @@
               .span.navbar-right
                 = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
                 = label_tag 'user[remember_me]', 'Keep me logged in'
-
-          #register.tab-pane.fade
-            = form_tag registration_path(:user) do
-              .form-group
-                label for="inputEmail" E-mail address
-                .input-group
-                  span.input-group-addon @
-                  = text_field_tag 'user[email]', nil, class: "inputEmail form-control", placeholder: "Enter email", type: "email"
-              .row
-                .col-lg-6
-                  .form-group
-                    label for="inputFirstName" First Name
-                    .input
-                      = text_field_tag 'user[first_name]', nil, class: "inputFirstName form-control", placeholder: "Enter first name", type: "text"
-                .col-lg-6
-                  .form-group
-                    label for="inputLastName" Last Name
-                    .input
-                      = text_field_tag 'user[last_name]', nil, class: "inputLastName form-control", placeholder: "Enter last name", type: "text"
-              .form-group
-                label for="inputCountry" Country
-                .input
-                  = text_field_tag 'user[country]', nil, class: "inputLastName form-control", placeholder: "Enter Country", type: "text"
-              .form-group
-                label for="inputOrg" Company/Organization
-                .input
-                  = text_field_tag 'user[organization]', nil, class: "inputLastName form-control", placeholder: "Enter Organization", type: "text"
-              .form-group
-                label for="inputSchool" School
-                .input
-                  = text_field_tag 'user[school]', nil, class: "inputLastName form-control", placeholder: "Enter School", type: "text"
-              .form-group
-                label for="inputPassword" Password (#{minimum_password_length} characters minimum)
-                .input
-                  = text_field_tag 'user[password]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
-              .form-group
-                label for="confirmPassword" Confirm Password
-                .input-group
-                  = text_field_tag 'user[password_confirmation]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
-                  span.input-group-btn
-                    button.btn.btn-default Sign up
-
-        / dropdown for account?
-        / li.dropdown
-        /   a.dropdown-toggle data-toggle="dropdown" href="#"
-        /     | My Account
-        /     span.caret
-        /   ul.dropdown-menu role="menu"
-        /     li
-        /       a href="#"  Action
-        /     li
-        /       a href="#"  Another action
-        /     li
-        /       a href="#"  Something else here
-        /     li.divider
-        /     li
-        /       a href="#"  Separated link
-
     /! /.navbar-collapse
   /! /.container-fluid

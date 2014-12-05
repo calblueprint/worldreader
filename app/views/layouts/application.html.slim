@@ -3,13 +3,15 @@ html
   head
     title Worldreader
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = include_gon
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
     link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css" 
     link href="http://fonts.googleapis.com/css?family=Raleway:400,300,700" rel="stylesheet" type="text/css"
+    link href="/assets/favicon64.png" rel="icon" type="image/png" /
 
   body
+    = render 'shared/flash', flash: flash
     = render 'layouts/header'
     = yield

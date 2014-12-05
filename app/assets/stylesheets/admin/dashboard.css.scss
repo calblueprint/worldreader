@@ -108,3 +108,22 @@
   max-height: 800px;
   overflow: scroll;
 }
+
+.badge {
+  float: right;
+}
+
+#downloadPurchaseButton {
+  float: right;
+  margin-right: 50px;
+  background-color: #5cb85c;
+}
+
+#disapproveButton {
+  background-color: #d9534f;
+}
+
+#selectAllButton {
+  float: left;
+  background-color: #d9edf7;
+}

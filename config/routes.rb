@@ -17,17 +17,24 @@ Rails.application.routes.draw do
   resources :books
 
   resources :carts do
-    post "add/:book_id" => "carts#add"
-    post "remove/:book_id" => "cards#remove"
+    member do
+      post :remove
+      post :create_purchase
+    end
   end
 
 
   namespace :admin do
     resources :dashboard do
       collection do
-        get "display_partners", :as => "display_partners"
+        get "display_all_partners", :as => "display_all_partners"
+        get "display_partners_new_purchases", :as => "display_partners_new_purchases"
+        post '/csv', to: 'dashboard#generate_csv'
+        post '/convert', to: 'dashboard#convert_purchases'
+        post '/disapprove', to: 'dashboard#disapprove_purchases'
       end
       member do
+        get "get_number_purchases", :as => "get_number_purchases"
         get "partner_information", :as => "partner_information"
         get "display_groups", :as => "display_groups"
         get "display_purchases", :as => "display_purchases"
@@ -56,6 +63,11 @@ Rails.application.routes.draw do
         collection do
           post "add/:book_id" => "carts#add"
           post "remove/:book_id" => "carts#remove"
+        end
+      end
+      resources :books do
+        collection do
+          get "search/" => "books#search"
         end
       end
     end

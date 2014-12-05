@@ -7,9 +7,14 @@ class Admin::DashboardController < ApplicationController
   end
   
   # ordered so that partners with new purchases are first
-  def display_partners 
-    partners = User.partners
+  def display_all_partners 
+    partners = User.partners_no_new_purchases
     render json: partners
+  end
+
+  def display_partners_new_purchases
+    partners_new_purchases = User.partners_new_purchases
+    render json: partners_new_purchases
   end
 
   def partner_information
@@ -23,7 +28,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_purchases
-    purchases = Purchase.where(user_id: params[:id], is_purchased: false)
+    purchases = Purchase.where(user_id: params[:id], is_approved: nil, is_purchased: true)
     render json: purchases
   end
 
@@ -35,5 +40,29 @@ class Admin::DashboardController < ApplicationController
   def display_book
     book = Book.find(params[:id])
     render json: book
+  end
+
+  def generate_csv
+    send_data Purchase.to_csv(Purchase.find(params[:purchases])), 
+      :type => 'text/csv; charset=iso-8859-1; header=present',
+      :disposition => "attachment;purchases.csv"
+  end
+
+  def convert_purchases
+    params[:purchases].each do |purchase_id|
+        Purchase.find(purchase_id).update(is_approved: true)
+    end
+    render :nothing => true
+  end
+
+  def disapprove_purchases
+    params[:purchases].each do |purchase_id|
+        Purchase.find(purchase_id).update(is_approved: false)
+    end
+    render :nothing => true
+  end
+
+  def get_number_purchases
+    render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
 end

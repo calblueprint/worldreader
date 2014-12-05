@@ -1,19 +1,15 @@
-h3.text-center Library
-- if user_signed_in? and current_user.admin?
-  = link_to "Manage Partners", admin_dashboard_index_path
+h1.text-center Library
 
-.container
-  #book-searchbar.input-group
-    input.input-block-level type="text" class="form-control" value="10-12, 12-15, Ethiopia" data-role="tagsinput" autofocus="autofocus" placeholder="Input book name or search by tag."
-    span.input-group-btn
-      button.btn.btn-default type="button"
-        span.glyphicon.glyphicon-search
+.row
+  .col-md-10.col-md-offset-1
+    #book-searchbar.input-group
+      input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
+      span.input-group-btn
+        button#search-button.btn.btn-default type="button"
+          span.glyphicon.glyphicon-search
+    #book-tagbar.input-group
+      span.input-group-addon
+        span.glyphicon.glyphicon-tag
+      input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
 
-  div[id="library"]
-  = javascript_include_tag "react_components/library"
-
-p
-  - if user_signed_in?
-    = link_to "Sign Out", destroy_user_session_path, method: :delete
-  - else
-    = link_to "Sign In", "#LoginModal", data: {target: "#LoginModal", toggle: "modal"}
+    = react_component 'BookList', {books: @books}

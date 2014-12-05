@@ -1,12 +1,19 @@
 class CartsController < ApplicationController
   def show
-    @cart_items = current_user.purchases.is_purchased(false)
+    @cart_items = current_user.cart
+    @donated_books = @cart_items.select { |book| book.donated? }
+    @paid_books = @cart_items.select { |book| !book.donated? }
   end
 
-  def add
-    book = Book.find(params[:book_id])
-    Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
-    redirect_to cart_path(current_user.id)
+  def create_purchase
+    books = Book.find(params[:book_ids])
+    current_user.purchases.each do |purchase|
+      purchase.is_purchased = true
+      purchase.save
+    end
+    flash.now[:success] = "Your purchase is being processed!"
+    flash.keep(:success)
+    render js: "window.location = '#{root_path}'"
   end
 
   def delete
