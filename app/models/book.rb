@@ -14,6 +14,7 @@
 
 class Book < ActiveRecord::Base
     include Elasticsearch::Model
+
   belongs_to :language
   belongs_to :genre
   belongs_to :publisher
