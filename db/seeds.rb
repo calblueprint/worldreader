@@ -14,7 +14,8 @@ def make_users
                   email: "user#{n}@gmail.com",
                   role: 1,
                   password: "password",
-                  country: c
+                  country: c,
+                  organization: "UCBerkeley"
   end
   c = Country.create! name: 'United Monkeys'
   1.upto(2) do |n|
@@ -23,7 +24,8 @@ def make_users
                   email: "admin#{n}@gmail.com",
                   role: 2,
                   password: "password",
-                  country: c
+                  country: c,
+                  organization: "Blueprint"
   end
 end
 
