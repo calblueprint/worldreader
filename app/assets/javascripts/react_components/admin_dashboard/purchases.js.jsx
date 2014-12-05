@@ -10,7 +10,7 @@ var PurchaseDisplay = React.createClass({
   _fetchPurchases: function (id) {
     $.ajax({
       url: "/admin/dashboard/" + id["id"] + "/display_purchases",
-      dataType: 'json',
+      dataType: "json",
       data: id,
       success: function (data) {
         console.log(data);
@@ -30,23 +30,34 @@ var PurchaseDisplay = React.createClass({
     this.setState({selectedPurchases: []});
   },
   _download: function () {
-    var myAjaxVariable = null;
+    var myCSVData = null;
+    var myFilename = null;
     $.ajax({
       url: "/admin/dashboard/csv",
       type: "POST",
+      dataType: "json",
       async : false,
       data: {
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        myAjaxVariable = data;
+        myCSVData = data.csv;
+        myFilename = data.fname;
         this._convertSelected();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-    window.open( "data:text/csv;charset=utf-8," + escape(myAjaxVariable));
+    var uri = "data:text/csv;charset=utf-8," + escape(myCSVData);
+
+    var downloadLink = document.createElement("a");
+    downloadLink.href = uri;
+    downloadLink.download = myFilename;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   },
   _disapprove: function () {
     $.ajax({

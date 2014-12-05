@@ -1,12 +1,9 @@
 class Admin::DashboardController < ApplicationController
+  before_filter :verify_admin
 
   def index
   end
-
-  def search
-  end
   
-  # ordered so that partners with new purchases are first
   def display_all_partners 
     partners = User.partners_no_new_purchases
     render json: partners
@@ -43,9 +40,8 @@ class Admin::DashboardController < ApplicationController
   end
 
   def generate_csv
-    send_data Purchase.to_csv(Purchase.find(params[:purchases])), 
-      :type => 'text/csv; charset=iso-8859-1; header=present',
-      :disposition => "attachment;purchases.csv"
+    render json: {'fname' => Purchase.csv_filename(Purchase.find(params[:purchases][0])),
+      'csv' => Purchase.to_csv(Purchase.find(params[:purchases]))}
   end
 
   def convert_purchases
@@ -65,4 +61,10 @@ class Admin::DashboardController < ApplicationController
   def get_number_purchases
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
+
+  private
+
+  def verify_admin
+    redirect_to root_url unless current_user.try(:admin?)
+  end 
 end
