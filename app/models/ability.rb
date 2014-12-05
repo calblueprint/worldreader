@@ -30,6 +30,8 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
     if user.admin?
       can :manage, :all
+    else
+      can :manage, Book
     end
   end
 end
