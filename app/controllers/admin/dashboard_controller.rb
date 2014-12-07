@@ -1,12 +1,9 @@
 class Admin::DashboardController < ApplicationController
+  before_filter :verify_admin
 
   def index
   end
-
-  def search
-  end
   
-  # ordered so that partners with new purchases are first
   def display_all_partners 
     partners = User.partners_no_new_purchases
     render json: partners
@@ -65,4 +62,10 @@ class Admin::DashboardController < ApplicationController
   def get_number_purchases
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
+
+  private
+  
+  def verify_admin
+    redirect_to root_url unless current_user.try(:admin?)
+  end 
 end
