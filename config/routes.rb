@@ -49,6 +49,7 @@ Rails.application.routes.draw do
         get "display_partner_categories", :as => "display_partner_categories"
         get "display_recommendations", :as => "display_recommendations"
         post "/add", :to => "recommendations#add_recommendation"
+        post "/delete", :to => "recommendations#delete_recommendation"
       end
       member do
         post "/edit", :to => "recommendations#edit_recommendation"

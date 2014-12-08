@@ -253,9 +253,8 @@ var MainDisplay = React.createClass({
 var tabs = {
   VIEWINFO: 1,
   RECOMMEND: 2,
-  DOWNLOADCSV: 3,
-  VIEWBOOKS: 4,
-  CREATEUSERS: 5
+  VIEWBOOKS: 3,
+  CREATEUSERS: 4
 };
 
 var DashboardTabs = React.createClass({
@@ -271,10 +270,6 @@ var DashboardTabs = React.createClass({
   clickRecommend: function () {
     this.setState({currentTab: tabs.RECOMMEND});
     console.log("recommendations tab clicked");
-  },
-  clickDownloadCsv: function () {
-    this.setState({currentTab: tabs.DOWNLOADCSV});
-    console.log("downloadcsv tab clicked");
   },
   clickViewBooks: function () {
     this.setState({currentTab: tabs.VIEWBOOKS});
@@ -300,7 +295,6 @@ var DashboardTabs = React.createClass({
               <ul className="nav nav-tabs">
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Manage Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickDownloadCsv}>Download CSV</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>View Books</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Create Users</a></li>
               </ul>
@@ -324,13 +318,8 @@ var DashboardTabDisplay = React.createClass({
       );
     } else if (this.props.type == tabs.RECOMMEND) {
       return (
-        <RecommendationPage/>
-      );
-    } else if (this.props.type == tabs.DOWNLOADCSV) {
-      return (
-        <div>
-          Download CSV
-        </div>
+        // <RecommendationsPage/>
+        <RecommendationViews/>
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (

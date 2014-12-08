@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204005940) do
+ActiveRecord::Schema.define(version: 20141206053435) do
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -75,6 +75,11 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.datetime "updated_at"
   end
 
+  create_table "countries_recommendations", id: false, force: true do |t|
+    t.integer "country_id",        null: false
+    t.integer "recommendation_id", null: false
+  end
+
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
@@ -112,6 +117,11 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.datetime "updated_at"
   end
 
+  create_table "languages_recommendations", id: false, force: true do |t|
+    t.integer "language_id",       null: false
+    t.integer "recommendation_id", null: false
+  end
+
   create_table "levels", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -133,10 +143,6 @@ ActiveRecord::Schema.define(version: 20141204005940) do
   end
 
   create_table "recommendations", force: true do |t|
-    t.string   "level"
-    t.string   "language"
-    t.string   "genre"
-    t.string   "country"
     t.string   "organization"
     t.string   "school"
     t.datetime "created_at"
