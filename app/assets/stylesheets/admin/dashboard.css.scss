@@ -120,9 +120,22 @@
 #selectAllButton {
   float: left;
   background-color: #d9edf7;
+}
 
 .tabDisplay {
   min-height: 800px;
   max-height: 800px;
   overflow: scroll;
+}
+
+.top-buffer {
+  margin-top: 20px;
+}
+
+.side-buffer {
+  margin-left: 5px;
+}
+
+.inline {
+  display: inline-block;
 }

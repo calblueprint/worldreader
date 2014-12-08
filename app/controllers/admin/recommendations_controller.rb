@@ -5,15 +5,24 @@ class Admin::RecommendationsController < ApplicationController
 
   def add_recommendation
     recommendation = Recommendation.create()
+
     book_ids = params[:book_ids]
     book_ids.each do |book_id|
       recommendation.books << Book.find(book_id)
     end
+
+    country_ids = params[:country_ids]
+    country_ids.each do |country_id|
+      recommendation.countries << Country.find(country_id)
+    end
+
+    language_ids = params[:language_ids]
+    language_ids.each do |language_id|
+      recommendation.languages << Language.find(language_id)
+    end
+
     recommendation.save
     render :nothing => true
-    #TODO: redirect_to original list view of recommendations.
-    #TODO: response message
-
   end
 
   def edit_recommendation
@@ -33,6 +42,11 @@ class Admin::RecommendationsController < ApplicationController
     recommendation.country = country
 
     recommendation.save
+    render nothing: true
+  end
+
+  def delete_recommendation
+    Recommendation.find(params[:recommendation_id]).destroy
     render nothing: true
   end
 
