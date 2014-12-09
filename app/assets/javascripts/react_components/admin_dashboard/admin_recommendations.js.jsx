@@ -68,6 +68,7 @@ var RecommendationsPage = React.createClass({
     this.props.viewCreateRecommendation();
   },
   _deleteRecommendation: function (recommendationId) {
+    var fetchRecommendations = this._fetchRecommendations;
     $.ajax({
       type: "POST",
       url: "/admin/recommendations/delete",
@@ -76,7 +77,7 @@ var RecommendationsPage = React.createClass({
       },
       success: function (message) {
         console.log("Recommendation succesfully deleted");
-        // this._fetchRecommendations({});
+        fetchRecommendations({});
       },
       error: function(xhr, status, err) {
         console.error("/admin/recommendations/delete", status, err.toString(), xhr);
@@ -136,35 +137,58 @@ var Recommendation = React.createClass({
   onClick: function () {
     this.props.selectRecommendation(this.props.recommendation.id);
   },
+  deleteOnClick: function () {
+    this.props.deleteRecommendation(this.props.recommendation.id);
+  },
   render: function () {
     if (this.props.clicked) {
       return (
         <a href="#" className="list-group-item row" onClick={this.onClick}>
           <div className="row">
-            {this.props.recommendation.id}
+            {"Recommendation: " + this.props.recommendation.id}
             <div className="btn-group pull-right">
               <button type="button" className="btn btn-default">Edit</button>
               <button type="button" className="btn btn-default" 
-                onClick={this.props.deleteRecommendation(this.props.recommendation.id)}>
+                onClick={this.deleteOnClick}>
                 <div className="glyphicon glyphicon-remove"/>
               </button>
             </div>
           </div>
           <div className="row">
-            <div className="col-md-5">books</div>
-            <div className="col-md-5">tags</div>
+            <div className="col-md-5">books
+            </div>
+            <div className="col-md-5">tags
+            </div>
           </div>
         </a>
       );
     }
     return (
       <a href="#" className="list-group-item" onClick={this.onClick}>
-        {this.props.recommendation.id}
+        {"Recommendation: " + this.props.recommendation.id}
       </a>
 
     );
   }
 });
+
+
+
+// var itemList = React.createClass({
+//   render: function () {
+//     console.log("items: " + JSON.stringify(this.props.items));
+//     var pills = this.props.items.map (function (item) {
+//       return (
+//         <div>{item.name}</div>
+//       );
+//     });
+//     return (
+//       <div className="list-group">
+//         {pills}
+//       </div>
+//     );
+//   }
+// });
 
 var CreateRecommendationPage = React.createClass({
   getInitialState: function () {
