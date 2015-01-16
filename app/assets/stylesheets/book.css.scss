@@ -41,7 +41,6 @@ $cart-view-width: 250px;
 .expanded-book-tile {
     min-height: 360px;
     padding: 20px;
-    outline: gray solid thin;
     background-color: white;
 }
 
@@ -221,12 +220,65 @@ $cart-view-width: 250px;
     opacity: 0;
 }
 
+#index-image{
+    height: 40rem;
+    background-image: (url('blue-kid-banner1.jpg'));
+    background-size: cover;
+    padding: 0px;
+    margin-bottom: 108px;
+}
+
+.black-overlay{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.5;
+    position: relative;
+}
+
+#index-image-text-box{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.index-image-text{
+  color: white;
+}
+
+#tag-and-searchbar{
+  padding-top: 2rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -108px;
+}
+
+#tag-and-searchbar.affix{
+  position: fixed;
+  top: 50px;
+  background-color: #f0f0f0;
+  z-index: 1;
+  margin-top: 0px;
+}
+
 #book-searchbar{
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 83.3333333333%;
 }
 
 #book-tagbar{
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 83.3333333333%;
+}
+
+#booklist{
 }
 
 .bootstrap-tagsinput{
