@@ -280,7 +280,7 @@ var DashboardTabs = React.createClass({
   render: function () {
     return (
       <div className="tabBar">
-        <nav className="navbar navbar-default" role="navigation">
+        <nav className="navbar navbar-default transparent" role="navigation">
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
@@ -292,7 +292,7 @@ var DashboardTabs = React.createClass({
               </button>
             </div>
             <div className="collapse navbar-collapse">
-              <ul className="nav nav-pills center-nav-pills">
+              <ul className="nav nav-pills centered nav-pills admin-nav-tabs">
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Manage Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>View Books</a></li>
