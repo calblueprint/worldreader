@@ -139,3 +139,13 @@
 .inline {
   display: inline-block;
 }
+
+.center-nav-tabs > li, .center-nav-pills > li {
+    float:none;
+    display:inline-block;
+}
+
+.center-nav-tabs, .center-nav-pills {
+    text-align:center;
+}
+

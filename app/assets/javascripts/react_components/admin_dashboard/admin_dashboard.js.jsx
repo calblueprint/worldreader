@@ -292,7 +292,7 @@ var DashboardTabs = React.createClass({
               </button>
             </div>
             <div className="collapse navbar-collapse">
-              <ul className="nav nav-tabs">
+              <ul className="nav nav-pills center-nav-pills">
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Manage Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>View Books</a></li>
