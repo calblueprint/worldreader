@@ -103,24 +103,30 @@ var BookList = React.createClass({
     }.bind(this));
 
     if (bookTiles.length) {
-      searchString = "";
-      searchbarInput = $('#book-searchbar-input').val();
-      if (searchbarInput != ''){
-        searchString = " for " + searchbarInput;
-      }
-      tagsArray = $('#book-tagbar-input').tagsinput('items');
-      tagText = [];
-      for (var i = 0; i < tagsArray.length; i++) {
-        tagText.push(tagsArray[i].text);
-      }
-      tagString = "";
-      if (tagText.length != 0){
-        tagString = " with tags " + tagText.join(', ');
+      if (!this.props.small) {
+        results = "";
+        searchString = "";
+        searchbarInput = $('#book-searchbar-input').val();
+        if (searchbarInput != ''){
+          searchString = " for " + searchbarInput;
+        }
+        tagsArray = $('#book-tagbar-input').tagsinput('items');
+        tagText = [];
+        for (var i = 0; i < tagsArray.length; i++) {
+          tagText.push(tagsArray[i].text);
+        }
+        tagString = "";
+        if (tagText.length != 0){
+          tagString = " with tags " + tagText.join(', ');
+        }
+        results = "Found " + bookTiles.length + " results" + searchString + tagString;
+      } else {
+        results = ""
       }
       return (
         <div className="search-results">
           <h4 className="current-search text-center">
-            Found {bookTiles.length} results{searchString}{tagString}.
+            {results}
           </h4>
           <div className="media-list">
             {bookTiles}
