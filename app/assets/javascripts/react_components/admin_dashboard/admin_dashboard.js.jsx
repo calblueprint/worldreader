@@ -293,10 +293,10 @@ var DashboardTabs = React.createClass({
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav nav-pills centered nav-pills admin-nav-tabs">
-                <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Manage Partners</a></li>
+                <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>View Books</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Create Users</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>Books</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Users</a></li>
               </ul>
             </div>
           </div>
@@ -307,7 +307,6 @@ var DashboardTabs = React.createClass({
       </div>
     );
   }
-
 });
 
 var DashboardTabDisplay = React.createClass({
