@@ -1,7 +1,12 @@
-h1.text-center Library
-
 .row
-  .col-md-10.col-md-offset-1
+  #index-image.col-md-12
+    .black-overlay
+    #index-image-text-box
+      h1.index-image-text Welcome to the Worldreader Extranet
+      p.index-image-text Here, partners can find and purchase books for use with Worldreader e-readers and tablets.
+
+#library.row
+  #tag-and-searchbar
     #book-searchbar.input-group
       input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
       span.input-group-btn
@@ -12,4 +17,5 @@ h1.text-center Library
         span.glyphicon.glyphicon-tag
       input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
 
+  #booklist.col-md-10.col-md-offset-1
     = react_component 'BookList', {books: @books}
