@@ -8,10 +8,6 @@ $(document).ready(function() {
   ready();
 });
 
-$(document).on('page:load', function() {
-  ready();
-});
-
 function ready() {
   var mainSearch = $('#book-tagbar-input');
   mainSearch.tagsinput({
@@ -45,12 +41,6 @@ function ready() {
   mainSearch.on('itemRemoved', search);
 
   $('#search-button').click(search);
-
-  $('#tag-and-searchbar').affix({
-      offset: {
-        top: $('#index-image').height()
-      }
-  });
 }
 
 function search() {
