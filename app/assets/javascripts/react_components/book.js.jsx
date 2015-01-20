@@ -119,7 +119,7 @@ var BookList = React.createClass({
         if (tagText.length != 0){
           tagString = " with tags " + tagText.join(', ');
         }
-        results = "Found " + bookTiles.length + " results" + searchString + tagString;
+        results = "Found " + bookTiles.length + " results" + searchString + tagString + ".";
       }
       return (
         <div className="search-results">
