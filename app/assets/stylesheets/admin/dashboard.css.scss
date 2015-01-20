@@ -140,12 +140,15 @@
   display: inline-block;
 }
 
-.center-nav-tabs > li, .center-nav-pills > li {
+.centered.nav-tabs > li, .centered.nav-pills > li {
     float:none;
     display:inline-block;
 }
 
-.center-nav-tabs, .center-nav-pills {
+.centered.nav-tabs, .center-nav-pills {
     text-align:center;
 }
 
+.transparent.navbar {
+  background-color: transparent !important;
+}
