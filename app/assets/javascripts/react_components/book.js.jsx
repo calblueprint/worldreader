@@ -103,25 +103,23 @@ var BookList = React.createClass({
     }.bind(this));
 
     if (bookTiles.length) {
+      var results = ""
       if (!this.props.small) {
-        results = "";
-        searchString = "";
-        searchbarInput = $('#book-searchbar-input').val();
+        var searchString = "";
+        var searchbarInput = $('#book-searchbar-input').val();
         if (searchbarInput != ''){
           searchString = " for " + searchbarInput;
         }
-        tagsArray = $('#book-tagbar-input').tagsinput('items');
-        tagText = [];
+        var tagsArray = $('#book-tagbar-input').tagsinput('items');
+        var tagText = [];
         for (var i = 0; i < tagsArray.length; i++) {
           tagText.push(tagsArray[i].text);
         }
-        tagString = "";
+        var tagString = "";
         if (tagText.length != 0){
           tagString = " with tags " + tagText.join(', ');
         }
         results = "Found " + bookTiles.length + " results" + searchString + tagString;
-      } else {
-        results = ""
       }
       return (
         <div className="search-results">
