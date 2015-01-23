@@ -74,14 +74,12 @@
 }
 
 .mainDisplay {
-  min-height: 800px;
-  max-height: 800px;
+  min-height: 600px;
   overflow: scroll;
+  background-color: #ffffff;
 }
 
 #informationDisplay {
-  width: 50%;
-  margin: 0 auto;
 }
 
 .groupContainer {
@@ -115,17 +113,26 @@
 
 #downloadPurchaseButton {
   float: right;
-  margin-right: 50px;
   background-color: #5cb85c;
+  margin-top: 10px;
 }
 
 #disapproveButton {
   background-color: #d9534f;
+  float: left;
+  margin-top: 10px;
 }
 
 #selectAllButton {
   float: left;
-  background-color: #d9edf7;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+#deselectAllButton {
+  float: left;
+  padding-right: 10px;
+  cursor: pointer;
 }
 
 .top-buffer {

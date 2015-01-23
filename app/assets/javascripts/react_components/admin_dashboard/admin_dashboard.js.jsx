@@ -73,17 +73,15 @@ var ManagePartnerInfo = React.createClass({
               <PartnerList partners={this.state.partners}
                 partnersNewPurchases={this.state.partnersNewPurchases}
                 selectPartner={this._selectPartner}
-                selectedPartner={this.state.selectedPartner} 
+                selectedPartner={this.state.selectedPartner}
                 numNewPurchases={this.state.numNewPurchases} />
-            </div>
-            <div className="emptyBottomSpace">
             </div>
           </div>
           <div className="col-md-8">
             <div className="mainScreen">
               <PartnerDisplay partnerId={this.state.selectedPartner}
                 refreshPurchases={this._refreshNewPurchases} />
-            </div>  
+            </div>
           </div>
         </div>
       </div>
@@ -164,9 +162,8 @@ var Partner = React.createClass({
 
 var displays = {
   INFORMATION: 1,
-  GROUPS: 2,
-  PURCHASES: 3,
-
+  NEW_PURCHASES: 2,
+  OLD_PURCHASES: 3,
 };
 
 var PartnerDisplay = React.createClass({
@@ -179,11 +176,11 @@ var PartnerDisplay = React.createClass({
   clickInformation: function () {
     this.setState({selectedPage: displays.INFORMATION});
   },
-  clickGroups: function () {
-    this.setState({selectedPage: displays.GROUPS});
+  clickNewPurchases: function () {
+    this.setState({selectedPage: displays.NEW_PURCHASES});
   },
-  clickPurchases: function () {
-    this.setState({selectedPage: displays.PURCHASES});
+  clickOldPurchases: function () {
+    this.setState({selectedPage: displays.OLD_PURCHASES});
   },
   render: function () {
     var selectedPartner = this.props.partnerId;
@@ -210,8 +207,8 @@ var PartnerDisplay = React.createClass({
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav" id="admin-dashboard-nav">
                 <li id="information"><a href="#" onClick={this.clickInformation}>Information</a></li>
-                <li id="groups"><a href="#" onClick={this.clickGroups}>Groups</a></li>
-                <li id="newPurchases"><a href="#" onClick={this.clickPurchases}>New Purchases</a></li>
+                <li id="newPurchases"><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
+                <li id="oldPurchases"><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
               </ul>
             </div>
           </div>
@@ -233,13 +230,13 @@ var MainDisplay = React.createClass({
           <InformationDisplay partnerId={this.props.partnerId} />
         </div>
       );
-    } else if (this.props.type == displays.GROUPS) {
+    } else if (this.props.type == displays.OLD_PURCHASES) {
       return (
         <div className="display">
-          <GroupDisplay partnerId={this.props.partnerId} />
+          INSERT OLD PURCHASES HERE
         </div>
       );
-    } else if (this.props.type == displays.PURCHASES) {
+    } else if (this.props.type == displays.NEW_PURCHASES) {
       return (
         <div className="display">
           <PurchaseDisplay partnerId={this.props.partnerId}
@@ -273,7 +270,7 @@ var DashboardTabs = React.createClass({
   },
   clickViewBooks: function () {
     this.setState({currentTab: tabs.VIEWBOOKS});
-  }, 
+  },
   clickCreateUsers: function () {
     this.setState({currentTab: tabs.CREATEUSERS});
   },

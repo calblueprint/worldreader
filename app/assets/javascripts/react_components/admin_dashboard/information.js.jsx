@@ -33,18 +33,19 @@ var InformationDisplay = React.createClass({
     });
   },
   render: function () {
+    console.log(this.state.partnerInfo)
     return (
       <div id="informationDisplay">
-        <div className="name">
-          <div className="well"> {this.state.partnerInfo["first_name"] + " " +
-            this.state.partnerInfo["last_name"]} </div>
+        <div className="h2 text-center">
+          {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]}
         </div>
-        <div className="info">
-          <div className="well"> <b>Email:</b> {this.state.partnerInfo["email"]} </div>
-          <div className="well"> <b>Country:</b> {this.state.partnerInfo["country"]} </div>
-          <div className="well"> <b>Organization:</b>
-            {this.state.partnerInfo["organization"]} </div>
-          <div className="well"> <b>School:</b> {this.state.partnerInfo["school"]} </div>
+        <div className="partner-text-information col-md-5 col-md-offset-1">
+          <p><b>email </b>{this.state.partnerInfo["email"]}</p>
+          <p><b>country </b>{this.state.partnerInfo["country"]}</p>
+          <p><b>organization </b>{this.state.partnerInfo["organization"]}</p>
+          <p><b>school </b>{this.state.partnerInfo["school"]}</p>
+        </div>
+        <div className="partner-map col-5">
         </div>
       </div>
     );

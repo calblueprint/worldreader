@@ -121,16 +121,18 @@ var PurchaseDisplay = React.createClass({
             {purchases}
           </tbody>
         </table>
-        <button type="button" id="selectAllButton" className="btn btn-default" onClick={this._selectAll}>
-          Select All</button>
-        <button type="button" id="deselectAllButton" className="btn btn-default" onClick={this._deselectAll}>
-         Deselect All</button>
+
+        <a id="selectAllButton" onClick={this._selectAll}>
+          Select All</a>
+        <a id="deselectAllButton" onClick={this._deselectAll}>
+         Deselect All</a>
+         <br/>
         <button type="button" id="downloadPurchaseButton" className="btn btn-default" onClick={this._download}>
           Approve and Download Purchases</button>
         <button type="button" id="disapproveButton" className="btn btn-default" onClick={this._disapprove}>
           Disapprove Purchases (cannot be undone)</button>
       </div>
-    );  
+    );
   }
 });
 
