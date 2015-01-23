@@ -1,40 +1,40 @@
 --- !map:HashWithIndifferentAccess
 
 books:
-  - name: '1984'
+  - title: '1984'
     asin: 'B003JTHWKU'
     price: 1.0
-  - name: 'A Brief History of Time'
+  - title: 'A Brief History of Time'
     asin: 'B004WY3D0O'
     price: 1.0
-  - name: 'Alice in Wonderland'
+  - title: 'Alice in Wonderland'
     asin: 'B008LMD6SM'
     price: 0.0
-  - name: 'Beloved'
+  - title: 'Beloved'
     description: 'The ghosts of slavery'
     asin: 'B000TWUTYG'
     price: 0.0
-  - name: 'Catch-22'
+  - title: 'Catch-22'
     description: 'Launched its own catchphrase'
     asin: 'B0048WQDIE'
     price: 0.0
-  - name: 'The Great Gatsby'
+  - title: 'The Great Gatsby'
     description: 'The rich are different..'
     asin: 'B000FC0PDA'
     price: 0.0
-  - name: 'The Phantom Tollbooth'
+  - title: 'The Phantom Tollbooth'
     description: 'An odd and original journey'
     asin: 'B004IK8Q90'
     price: 0.0
-  - name: 'Great Expectations'
+  - title: 'Great Expectations'
     description: 'Dickens best novel'
     asin: 'B0082SWC30'
     price: 0.0
-  - name: 'Fahrenheit 451'
+  - title: 'Fahrenheit 451'
     description: 'It was a pleasure to burn'
     asin: 'B0064CPN7I'
     price: 0.0
-  - name: 'Charlie and the Chocolate Factory'
+  - title: 'Charlie and the Chocolate Factory'
     description: 'Vintage Roald Dahl'
     asin: 'B0093X805W'
     price: 0.0

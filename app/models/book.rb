@@ -3,7 +3,7 @@
 # Table name: books
 #
 #  id          :integer          not null, primary key
-#  name        :string(255)
+#  title       :string(255)
 #  isbn        :string(255)
 #  description :string(255)
 #  created_at  :datetime
@@ -28,7 +28,7 @@ class Book < ActiveRecord::Base
 
   settings number_of_shards: 1 do
     mapping do
-      indexes :name, analyzer: 'english'
+      indexes :title, analyzer: 'english'
       indexes :description, analyzer: 'english'
       indexes :genre_name, index: 'not_analyzed'
       indexes :language_name, index: 'not_analyzed'
@@ -57,7 +57,11 @@ class Book < ActiveRecord::Base
   end
 
   def genre_name
-    genre.name
+    if genre != nil
+      genre.name
+    else
+      ""
+    end
   end
 
   def language_name
@@ -86,7 +90,7 @@ class Book < ActiveRecord::Base
       filtered[:query] = {
         multi_match: {
           query: string,
-          fields: [:name, :description, :authors_name, :publisher_name],
+          fields: [:title, :description, :authors_name, :publisher_name],
           fuzziness: 'AUTO'
         }
       }

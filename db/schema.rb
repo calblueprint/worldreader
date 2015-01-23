@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204005940) do
+ActiveRecord::Schema.define(version: 20150123045510) do
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
   end
 
   create_table "books", force: true do |t|
-    t.string   "name"
+    t.string   "title"
     t.string   "isbn"
     t.text     "description"
     t.datetime "created_at"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.integer  "language_id"
     t.integer  "genre_id"
     t.integer  "country_id"
-    t.decimal  "price"
+    t.decimal  "price",        precision: 10, scale: 0
     t.integer  "publisher_id"
   end
 
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.integer "book_id",  null: false
   end
 
-  add_index "books_groups", ["group_id", "book_id"], name: "index_books_groups_on_group_id_and_book_id"
+  add_index "books_groups", ["group_id", "book_id"], name: "index_books_groups_on_group_id_and_book_id", using: :btree
 
   create_table "books_levels", force: true do |t|
     t.integer  "book_id"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.integer "recommendation_id", null: false
   end
 
-  add_index "books_recommendations", ["book_id", "recommendation_id"], name: "index_books_recommendations_on_book_id_and_recommendation_id"
+  add_index "books_recommendations", ["book_id", "recommendation_id"], name: "index_books_recommendations_on_book_id_and_recommendation_id", using: :btree
 
   create_table "countries", force: true do |t|
     t.string   "name"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "genres", force: true do |t|
     t.string   "name"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 20141204005940) do
     t.integer  "country_id"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
