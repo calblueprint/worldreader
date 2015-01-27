@@ -25,7 +25,15 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_purchases
-    is_approved = params[:is_approved] == "true"
+    is_approved = params[:is_approved]
+    case params[:is_approved]
+    when "true"
+      is_approved = true
+    when "false"
+      is_approved = false
+    when "null"
+      is_approved = nil
+    end
     purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
     render json: purchases
   end

@@ -68,7 +68,11 @@ class User < ActiveRecord::Base
   end
 
   def cart
-    purchases.where(is_purchased: false).map{ |purchase| purchase.book }
+    cart_purchases.map{ |purchase| purchase.book }
+  end
+
+  def cart_purchases
+    purchases.where(is_purchased: false)
   end
 
   def self.query(string, tags)

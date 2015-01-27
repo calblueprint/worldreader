@@ -20,7 +20,7 @@ var PurchaseDisplay = React.createClass({
         isApproved = "true";
         break;
       case purchaseDisplayOptions.NEW:
-        isApproved = "false";
+        isApproved = "null";
         break;
       default:
         // have not implemented all option
