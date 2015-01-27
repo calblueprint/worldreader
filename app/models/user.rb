@@ -26,16 +26,13 @@
 class User < ActiveRecord::Base
     include Elasticsearch::Model
 
-  enum role: [:user, :vip, :admin]
-  after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
 
   belongs_to :country
   has_many :books, through: :purchases
   has_many :groups
   has_many :purchases
-  scope :partners, -> { where role: 1 }
-  scope :partners_new_purchases, -> { partners.joins(:purchases).where(
+  scope :users_new_purchases, -> { users.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
   settings number_of_shards: 1 do
@@ -58,10 +55,6 @@ class User < ActiveRecord::Base
     UserMailer.welcome(self).deliver
   end
   handle_asynchronously :send_welcome_mail
-
-  def set_default_role
-    self.role ||= :user
-  end
 
   def name
     "#{first_name} #{last_name}"
@@ -102,11 +95,11 @@ class User < ActiveRecord::Base
     User.search(query: query).to_a.map! { |r| r._source }
   end
 
-  def self.partners_no_new_purchases
-    if (partners_new_purchases.empty?)
-      partners
+  def self.users_no_new_purchases
+    if (users_new_purchases.empty?)
+      users
     else
-      partners.where("id not in (?)", partners_new_purchases.pluck(:id))
+      users.where("id not in (?)", users_new_purchases.pluck(:id))
     end
   end
 

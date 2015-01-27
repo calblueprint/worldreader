@@ -12,16 +12,6 @@ def make_users
     User.create!  first_name: Faker::Name.first_name,
                   last_name: Faker::Name.last_name,
                   email: "user#{n}@gmail.com",
-                  role: 1,
-                  password: "password",
-                  country: c
-  end
-  c = Country.create! name: 'United Monkeys'
-  1.upto(2) do |n|
-    User.create!  first_name: Faker::Name.first_name,
-                  last_name: Faker::Name.last_name,
-                  email: "admin#{n}@gmail.com",
-                  role: 2,
                   password: "password",
                   country: c
   end
@@ -72,13 +62,15 @@ def make_purchases
 end
 
 def make_country_tags
+  countries = []
   1.upto(20) do |n|
-    c = Country.create! name: Faker::Address.country
-    3.times.map{ 1 + Random.rand(10) }.each do |i|
-      book = Book.find(i)
-      book.countries << c
-      book.save
+    countries.push(Country.create! name: Faker::Address.country)
+  end
+  Book.all.each do |book|
+    3.times.map{ Random.rand(20) }.each do |i|
+      book.countries << countries[i]
     end
+    book.save
   end
 end
 
@@ -106,12 +98,11 @@ end
 def make_language_tags
   Language.create! name: 'Somali'
   Language.create! name: 'Hausa'
-  1.upto(5) do |n|
-    book = Book.find(n)
+  Book.all.each do |book|
     book.language = Language.find(1)
     book.save
   end
-  6.upto(10) do |n|
+  1.upto(10) do |n|
     book = Book.find(n)
     book.language = Language.find(2)
     book.save
@@ -121,12 +112,11 @@ end
 def make_genre_tags
   Genre.create! name: 'Fiction'
   Genre.create! name: 'Non-fiction'
-  1.upto(5) do |n|
-    book = Book.find(n)
+  Book.all.each do |book|
     book.genre = Genre.find(1)
     book.save
   end
-  6.upto(10) do |n|
+  1.upto(10) do |n|
     book = Book.find(n)
     book.genre = Genre.find(2)
     book.save

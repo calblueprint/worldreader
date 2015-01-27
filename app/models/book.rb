@@ -57,15 +57,15 @@ class Book < ActiveRecord::Base
   end
 
   def genre_name
-    if genre != nil
-      genre.name
-    else
-      ""
-    end
+    genre == nil ? "" : genre.name
   end
 
   def language_name
-    language.name
+    language == nil ? "" : language.name
+  end
+
+  def publisher_name
+    publisher == nil ? "" : publisher.name
   end
 
   def countries_name
@@ -74,10 +74,6 @@ class Book < ActiveRecord::Base
 
   def levels_name
     levels.map { |l| l.name }
-  end
-
-  def publisher_name
-    publisher.name
   end
 
   def authors_name
