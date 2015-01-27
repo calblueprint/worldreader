@@ -53,7 +53,7 @@ var Group = React.createClass({
   },
   render: function () {
     return (
-      <div className="well">
+      <div>
         <div className="groupInfo">
           <h2> {this.props.group["name"]} </h2>
           <button className="btn btn-default dropdown-toggle groupExpand" type="button"
@@ -62,8 +62,8 @@ var Group = React.createClass({
             { this.state.expand == "Hide Books" ? <span className="caret caret-reversed">
               </span> : <span className="caret"></span>}
           </button>
-          <div> <b>Country</b>: {this.props.group["country"]} </div>
-          <div> <b>Description</b>: {this.props.group["organization"]} </div>
+          <div> <b>Country</b> {this.props.group["country"]} </div>
+          <div> <b>Description</b> {this.props.group["organization"]} </div>
         </div>
         {this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]}/> : null}
       </div>
