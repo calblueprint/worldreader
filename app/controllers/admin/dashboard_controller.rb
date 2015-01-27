@@ -56,7 +56,9 @@ class Admin::DashboardController < ApplicationController
 
   def convert_purchases
     params[:purchases].each do |purchase_id|
-        Purchase.find(purchase_id).update(is_approved: true)
+      purchase = Purchase.find purchase_id
+      purchase.update is_approved: true
+      purchase.update approved_on: Date.today
     end
     render :nothing => true
   end

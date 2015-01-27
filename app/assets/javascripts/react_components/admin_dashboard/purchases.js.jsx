@@ -121,12 +121,17 @@ var PurchaseDisplay = React.createClass({
     var purchases = this.state.purchases.map(function (purchase) {
       var is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
       return (
-          <Purchase purchase={purchase} 
+          <Purchase purchase={purchase}
                     changePurchaseState={this.changePurchaseState}
                     selected={is_selected}
                     key={purchase["id"]}/>
       );
     }.bind(this));
+    var approvedOnHeader = "";
+    var approveButtonText = "";
+    if (this.props.purchaseDisplayOptions == purchaseDisplayOptions.OLD) {
+      approvedOnHeader = "<th>Approved On</th>"
+    }
     return (
       <div className="purchaseDisplay">
         <table className="table table-hover">

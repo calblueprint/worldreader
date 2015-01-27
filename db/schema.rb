@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206053435) do
+ActiveRecord::Schema.define(version: 20150127203041) do
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -135,11 +135,12 @@ ActiveRecord::Schema.define(version: 20141206053435) do
   end
 
   create_table "purchases", force: true do |t|
-    t.integer "user_id",      null: false
-    t.integer "book_id",      null: false
-    t.date    "purchased_on"
-    t.boolean "is_purchased"
-    t.boolean "is_approved"
+    t.integer  "user_id",      null: false
+    t.integer  "book_id",      null: false
+    t.date     "purchased_on"
+    t.boolean  "is_purchased"
+    t.boolean  "is_approved"
+    t.datetime "approved_on"
   end
 
   create_table "recommendations", force: true do |t|
