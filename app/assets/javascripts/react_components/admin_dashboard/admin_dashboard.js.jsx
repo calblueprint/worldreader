@@ -114,16 +114,22 @@ var PartnerList = React.createClass({
     var numNewPurchases = this.props.numNewPurchases;
     var allPartners = this.props.partners.map (function (partner) {
       return (
-        <Partner partner={partner} selectPartner={selectPartner} partnerId={partner["id"]}
-          selectedPartner={selectedPartner}
-          numNewPurchases={numNewPurchases[partner["id"]]} />
+        <Partner  partner={partner}
+                  selectPartner={selectPartner}
+                  partnerId={partner["id"]}
+                  selectedPartner={selectedPartner}
+                  numNewPurchases={numNewPurchases[partner["id"]]}
+                  key={partner["id"]} />
       );
     });
     var partnersNewPurchases = this.props.partnersNewPurchases.map (function (partner) {
       return (
-        <Partner partner={partner} selectPartner={selectPartner} partnerId={partner["id"]}
-          selectedPartner={selectedPartner}
-          numNewPurchases={numNewPurchases[partner["id"]]} />
+        <Partner  partner={partner}
+                  selectPartner={selectPartner}
+                  partnerId={partner["id"]}
+                  selectedPartner={selectedPartner}
+                  numNewPurchases={numNewPurchases[partner["id"]]}
+                  key={partner["id"]} />
       );
     });
     return (

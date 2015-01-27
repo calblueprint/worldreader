@@ -74,7 +74,8 @@ var Cart = React.createClass({
       return (
         <div className="cart-header-item">
           <CartItem book={book}
-                    handleCartEvent={this.removeBookFromCart} />
+                    handleCartEvent={this.removeBookFromCart}
+                    key={book.id} />
         </div>
       );
     }.bind(this));

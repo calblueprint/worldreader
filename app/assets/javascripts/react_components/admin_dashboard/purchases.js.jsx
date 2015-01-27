@@ -121,8 +121,10 @@ var PurchaseDisplay = React.createClass({
     var purchases = this.state.purchases.map(function (purchase) {
       var is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
       return (
-          <Purchase purchase={purchase} changePurchaseState={this.changePurchaseState}
-            selected={is_selected}/>
+          <Purchase purchase={purchase} 
+                    changePurchaseState={this.changePurchaseState}
+                    selected={is_selected}
+                    key={purchase["id"]}/>
       );
     }.bind(this));
     return (
