@@ -3,8 +3,8 @@ class Admin::DashboardController < ApplicationController
 
   def index
   end
-  
-  def display_all_partners 
+
+  def display_all_partners
     partners = User.partners_no_new_purchases
     render json: partners
   end
@@ -21,13 +21,12 @@ class Admin::DashboardController < ApplicationController
 
   def display_groups
     groups = Group.where(user_id: params[:id])
-    puts "FJKDJFDKLSJFDKLSJFDLKSJFDKLSJFKLS"
-    puts groups
     render json: groups
   end
 
   def display_purchases
-    purchases = Purchase.where(user_id: params[:id], is_approved: nil, is_purchased: true)
+    is_approved = params[:is_approved] == "true"
+    purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
     render json: purchases
   end
 
@@ -42,7 +41,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def generate_csv
-    send_data Purchase.to_csv(Purchase.find(params[:purchases])), 
+    send_data Purchase.to_csv(Purchase.find(params[:purchases])),
       :type => 'text/csv; charset=iso-8859-1; header=present',
       :disposition => "attachment;purchases.csv"
   end
@@ -66,8 +65,8 @@ class Admin::DashboardController < ApplicationController
   end
 
   private
-  
+
   def verify_admin
     redirect_to root_url unless current_user.try(:admin?)
-  end 
+  end
 end

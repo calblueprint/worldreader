@@ -1,5 +1,11 @@
 /** @jsx React.DOM */
 
+var purchaseDisplayOptions= {
+  OLD: 1,
+  NEW: 2,
+  ALL: 3,
+};
+
 var PurchaseDisplay = React.createClass({
   getInitialState: function () {
     return {purchases: [], selectedPurchases: []};
@@ -8,12 +14,26 @@ var PurchaseDisplay = React.createClass({
     this._fetchPurchases({id: this.props.partnerId});
   },
   _fetchPurchases: function (id) {
+    var isApproved;
+    switch(this.props.purchaseDisplayOptions) {
+      case purchaseDisplayOptions.OLD:
+        isApproved = "true";
+        break;
+      case purchaseDisplayOptions.NEW:
+        isApproved = "false";
+        break;
+      default:
+        // have not implemented all option
+        break;
+    }
     $.ajax({
       url: "/admin/dashboard/" + id["id"] + "/display_purchases",
       dataType: 'json',
-      data: id,
+      data: {
+        id: id["id"],
+        is_approved: isApproved
+      },
       success: function (data) {
-        console.log(data);
         this.setState({purchases: data});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -56,7 +76,6 @@ var PurchaseDisplay = React.createClass({
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        console.log(data);
         this.props.refreshPurchases(this.props.partnerId);
         this._refreshPurchases();
       }.bind(this),
@@ -73,7 +92,6 @@ var PurchaseDisplay = React.createClass({
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        console.log(data);
         this.props.refreshPurchases(this.props.partnerId);
         this._refreshPurchases();
       }.bind(this),
@@ -149,7 +167,6 @@ var Purchase = React.createClass( {
       dataType: 'json',
       data: bookId,
       success: function (data) {
-        console.log(data);
         this.setState({book: data});
       }.bind(this),
       error: function (xhr, status, err) {

@@ -245,14 +245,19 @@ var MainDisplay = React.createClass({
     } else if (this.props.type == displays.OLD_PURCHASES) {
       return (
         <div className="display">
-          INSERT OLD PURCHASES HERE
+          <PurchaseDisplay  partnerId={this.props.partnerId}
+                            refreshPurchases={this.props.refreshPurchases}
+                            purchaseDisplayOptions={purchaseDisplayOptions.OLD}
+                            key={1}/>
         </div>
       );
     } else if (this.props.type == displays.NEW_PURCHASES) {
       return (
         <div className="display">
-          <PurchaseDisplay partnerId={this.props.partnerId}
-            refreshPurchases={this.props.refreshPurchases} />
+          <PurchaseDisplay  partnerId={this.props.partnerId}
+                            refreshPurchases={this.props.refreshPurchases}
+                            purchaseDisplayOptions={purchaseDisplayOptions.NEW}
+                            key={2}/>
         </div>
       );
     }
