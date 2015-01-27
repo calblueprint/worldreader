@@ -24,7 +24,6 @@ var InformationDisplay = React.createClass({
       dataType: 'json',
       data: id,
       success: function (data) {
-        console.log(data);
         this.setState({partnerInfo: data});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -33,19 +32,24 @@ var InformationDisplay = React.createClass({
     });
   },
   render: function () {
-    console.log(this.state.partnerInfo)
     return (
       <div id="informationDisplay">
         <div className="h2 text-center">
           {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]}
         </div>
         <div className="partner-text-information col-md-5 col-md-offset-1">
-          <p><b>email </b>{this.state.partnerInfo["email"]}</p>
-          <p><b>country </b>{this.state.partnerInfo["country"]}</p>
-          <p><b>organization </b>{this.state.partnerInfo["organization"]}</p>
-          <p><b>school </b>{this.state.partnerInfo["school"]}</p>
+          <p><b>Email </b>{this.state.partnerInfo["email"]}</p>
+          <p><b>Country </b>{this.state.partnerInfo["country"]}</p>
         </div>
-        <div className="partner-map col-5">
+        <div className="partner-text-information col-5">
+          <p><b>Organization </b>{this.state.partnerInfo["organization"]}</p>
+          <p><b>School </b>{this.state.partnerInfo["school"]}</p>
+        </div>
+        <div className="h2 text-center">
+          Groups
+        </div>
+        <div className="col-md-10 col-md-offset-1">
+          <GroupDisplay partnerId={this.props.partnerId} />
         </div>
       </div>
     );

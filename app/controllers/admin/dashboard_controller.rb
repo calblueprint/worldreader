@@ -21,6 +21,8 @@ class Admin::DashboardController < ApplicationController
 
   def display_groups
     groups = Group.where(user_id: params[:id])
+    puts "FJKDJFDKLSJFDKLSJFDLKSJFDKLSJFKLS"
+    puts groups
     render json: groups
   end
 

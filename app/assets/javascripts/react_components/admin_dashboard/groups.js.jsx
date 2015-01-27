@@ -11,19 +11,17 @@ var GroupDisplay = React.createClass({
     return {groups: [initGroup]};
   },
   componentDidMount: function () {
-    this._fetchGroups({id: this.props.partnerId});
+    this._fetchGroups(this.props.partnerId);
   },
   _fetchGroups: function (id) {
     $.ajax({
-      url: "/admin/dashboard/" + id["id"] + "/display_groups",
+      url: "/admin/dashboard/" + this.props.partnerId + "/display_groups",
       dataType: 'json',
       data: id,
       success: function (data) {
-        console.log(data);
         this.setState({groups: data});
       }.bind(this),
       error: function (xhr, status, err) {
-        console.log("error");
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -58,16 +56,14 @@ var Group = React.createClass({
       <div className="well">
         <div className="groupInfo">
           <h2> {this.props.group["name"]} </h2>
-          <div> Country: {this.props.group["country"]} </div>
-          <div> Description: {this.props.group["organization"]} </div>
-        </div>
-        <div className="groupExpand">
-          <button className="btn btn-default dropdown-toggle" type="button"
+          <button className="btn btn-default dropdown-toggle groupExpand" type="button"
             data-toggle="dropdown" aria-expanded="true" onClick={this._expand} >
             {this.state.expand}
             { this.state.expand == "Hide Books" ? <span className="caret caret-reversed">
               </span> : <span className="caret"></span>}
           </button>
+          <div> <b>Country</b>: {this.props.group["country"]} </div>
+          <div> <b>Description</b>: {this.props.group["organization"]} </div>
         </div>
         {this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]}/> : null}
       </div>
@@ -88,7 +84,6 @@ var GroupBooks = React.createClass({
       dataType: 'json',
       data: id,
       success: function (data) {
-        console.log(data);
         this.setState({books: data});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -97,7 +92,6 @@ var GroupBooks = React.createClass({
     });
   },
   render: function () {
-    console.log(this.state.books);
     return (
       <div>
         <GroupBookList books={this.state.books} />
