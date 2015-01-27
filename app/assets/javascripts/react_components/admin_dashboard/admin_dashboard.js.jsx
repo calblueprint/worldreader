@@ -189,6 +189,20 @@ var PartnerDisplay = React.createClass({
         </div>
       )
     }
+    var infoClass = "";
+    var newPurchasesClass = "";
+    var oldPurchasesClass = "";
+    switch (this.state.selectedPage) {
+      case displays.INFORMATION:
+        infoClass += "underline";
+        break;
+      case displays.NEW_PURCHASES:
+        newPurchasesClass += "underline";
+        break;
+      case displays.OLD_PURCHASES:
+        oldPurchasesClass += "underline";
+        break;
+    }
     return (
       <div className="partnerDisplay">
         <nav className="navbar navbar-default" role="navigation">
@@ -204,9 +218,9 @@ var PartnerDisplay = React.createClass({
             </div>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav" id="admin-dashboard-nav">
-                <li id="information"><a href="#" onClick={this.clickInformation}>Information</a></li>
-                <li id="newPurchases"><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
-                <li id="oldPurchases"><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
+                <li id="information" className={infoClass}><a href="#" onClick={this.clickInformation}>Information</a></li>
+                <li id="newPurchases" className={newPurchasesClass}><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
+                <li id="oldPurchases" className={oldPurchasesClass}><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
               </ul>
             </div>
           </div>
