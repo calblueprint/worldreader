@@ -45,7 +45,9 @@ var InformationDisplay = React.createClass({
           <p><b>Organization </b>{this.state.partnerInfo["organization"]}</p>
           <p><b>School </b>{this.state.partnerInfo["school"]}</p>
         </div>
-        <div className="h2 text-center">
+        <div className="boundary-line col-md-offset-3 col-md-6">
+        </div>
+        <div className="h2 text-center header-padding">
           Groups
         </div>
         <div className="col-md-10 col-md-offset-1">
