@@ -142,26 +142,7 @@ var BookList = React.createClass({
     );
   },
   loadMore: function(pageToLoad) {
-    debugger;
     this.search(13);
-    // $.ajax({
-    //   url: "/api/v1/books/search",
-    //   dataType: "json",
-    //   data: {
-    //     tags: this.state.tags,
-    //     term: this.state.searchTerm,
-    //     page: this.state.pageNumber
-    //   },
-    //   success: function(response) {
-    //     var nextPage = response;
-    //     this.setState({ books: nextPage.concat(this.state.books),
-    //                     pageNumber: this.state.pageNumber + 1
-    //                     });
-    //   }.bind(this),
-    //   error: function(xhr, status, err) {
-    //     console.error(this.props.url, status, err.toString());
-    //   }.bind(this)
-    // });
   },
   search: function(event) {
     if (event.which == 13) {
