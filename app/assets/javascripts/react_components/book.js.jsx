@@ -95,11 +95,11 @@ var BookList = React.createClass({
     mainSearch.tagsinput({
       tagClass: function(item) {
         switch (item.tagType) {
-          case 'countries': return countryLabel;
-          case 'levels': return levelLabel;
-          case 'language': return languageLabel;
-          case 'genre': return genreLabel;
-          case 'recommended': return recommendedLabel;
+          case 'countries':     return countryLabel;
+          case 'levels':        return levelLabel;
+          case 'language':      return languageLabel;
+          case 'genre':         return genreLabel;
+          case 'recommended':   return recommendedLabel;
         }
       },
       itemValue: 'value',
@@ -110,8 +110,8 @@ var BookList = React.createClass({
         source: gon.all_tags
       }
     });
-    mainSearch.on('itemAdded', this.search);
-    mainSearch.on('itemRemoved', this.search);
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
     $('#tag-and-searchbar').affix({
         offset: {
           top: $('#index-image').height()
@@ -142,32 +142,42 @@ var BookList = React.createClass({
     );
   },
   loadMore: function(pageToLoad) {
-    this.search(13);
+    this.updateSearch();
+  },
+  tagsUpdated: function() {
+    console.log('tagsupdate')
+    this.updateSearch()
   },
   search: function(event) {
     if (event.which == 13) {
-      var searchTerm = " " + $("#book-searchbar-input").val();
-      var tags = $("#book-tagbar-input").tagsinput("items");
-      this.setState({ searchTerm: searchTerm,
-                      tags: tags});
-      var self = this;
-      $.ajax({
-        type: "GET",
-        url: "/api/v1/books/search",
-        data: {
-          tags: JSON.stringify(tags),
-          term: searchTerm,
-          page: this.state.pageNumber
-        },
-        success: function(results) {
-          self.setState({ books: results.books,
-                          isLastPage: results.last_page});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
+      this.updateSearch();
     }
+  },
+  updateSearch: function() {
+    console.log('searching')
+    debugger;
+    var searchTerm = " " + $("#book-searchbar-input").val();
+    var tags = $("#book-tagbar-input").tagsinput("items");
+    this.setState({ searchTerm: searchTerm,
+                    tags: tags});
+    var self = this;
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/books/search",
+      data: {
+        tags: JSON.stringify(tags),
+        term: searchTerm,
+        page: this.state.pageNumber
+      },
+      success: function(results) {
+        debugger;
+        self.setState({ books: results.books,
+                        isLastPage: results.last_page});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   render: function() {
     bookList = this;
