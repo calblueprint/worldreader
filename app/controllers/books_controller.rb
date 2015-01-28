@@ -3,7 +3,7 @@ class BooksController < ApplicationController
   before_filter :search_tags
 
   def index
-    @books = Book.paginate(page: 1, per_page: 5)
+    @books = []
     gon.current_user = current_user
     gon.books = @books
   end

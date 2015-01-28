@@ -5,11 +5,13 @@ class Api::V1::BooksController < ApplicationController
     tags = ActiveSupport::JSON.decode params[:tags]
     results = []
     page = params[:page] || 1
-    books = Book.query(term, tags).paginate page: page, per_page: 5
+    books = Book.query(term, tags)
     books.each_with_index do |x, i|
       results.push(x.as_json)
     end
-    render json: results
+    books = results.paginate(page: page, per_page: 5)
+    render json: {books: results,
+                  last_page: books.current_page == books.total_pages}
   end
 
   def page
