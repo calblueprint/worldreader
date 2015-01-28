@@ -8,14 +8,3 @@
 #library.row
   #booklist.col-md-10.col-md-offset-1
     = react_component 'BookList', {books: @books, searchTerm: "", tags: []}
-  /#tag-and-searchbar
-  /  #book-searchbar.input-group
-  /    input#book-searchbar-input.input-block-level placeholder=("Search for books") type="text" class="form-control"
-  /    span.input-group-btn
-  /      button#search-button.btn.btn-default type="button"
-  /        span.glyphicon.glyphicon-search
-  /  #book-tagbar.input-group
-  /    span.input-group-addon
-  /      span.glyphicon.glyphicon-tag
-  /    input#book-tagbar-input.input-block-level.typeahead placeholder=("Add tag") type="text" class="form-control"
-

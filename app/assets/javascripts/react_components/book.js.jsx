@@ -44,7 +44,7 @@ var BookList = React.createClass({
             expandedBookId: null,
             pageNumber: 1,
             searchTerm: "",
-            tags: [],
+            tags: ['hi'],
             isLastPage: false};
   },
   handleBookExpand: function(event) {
@@ -122,23 +122,23 @@ var BookList = React.createClass({
     if (this.props.small) {
       return (
         <SmallBookTile
-        user={gon.current_user}
-        key={book.id}
-        book={book}
-        cart={cart.get("items")}
-        handleCartEvent={this.handleCartEvent} />
+          user={gon.current_user}
+          key={book.id}
+          book={book}
+          cart={cart.get("items")}
+          handleCartEvent={this.handleCartEvent} />
       )
     }
     return (
       <BookTile
-      user={gon.current_user}
-      key={book.id}
-      book={book}
-      cart={cart.get("items")}
-      handleClick={this.handleBookExpand}
-      handleCloseButton={this.handleBookClosed}
-      handleCartEvent={this.handleCartEvent}
-      isExpanded={this.state.expandedBookId === book.id} />
+        user={gon.current_user}
+        key={book.id}
+        book={book}
+        cart={cart.get("items")}
+        handleClick={this.handleBookExpand}
+        handleCloseButton={this.handleBookClosed}
+        handleCartEvent={this.handleCartEvent}
+        isExpanded={this.state.expandedBookId === book.id} />
     );
   },
   loadMore: function(pageToLoad) {
@@ -147,7 +147,7 @@ var BookList = React.createClass({
   search: function(event) {
     if (event.which == 13) {
       var searchTerm = " " + $("#book-searchbar-input").val();
-      var tags = JSON.stringify($("#book-tagbar-input").tagsinput("items"));
+      var tags = $("#book-tagbar-input").tagsinput("items");
       this.setState({ searchTerm: searchTerm,
                       tags: tags});
       var self = this;
@@ -155,7 +155,7 @@ var BookList = React.createClass({
         type: "GET",
         url: "/api/v1/books/search",
         data: {
-          tags: tags,
+          tags: JSON.stringify(tags),
           term: searchTerm,
           page: this.state.pageNumber
         },
@@ -188,7 +188,7 @@ var BookList = React.createClass({
         if (tagText.length != 0){
           tagString = " with tags " + tagText.join(', ');
         }
-        results = "Found " + bookTiles.length + " results" + searchString + tagString + ".";
+        results = "Found " + bookTiles.length + " results:" + searchString + tagString + ".";
       }
       return (
         <div>
