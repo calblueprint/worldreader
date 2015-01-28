@@ -15,7 +15,6 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
-#  role                   :integer
 #  first_name             :string(255)
 #  last_name              :string(255)
 #  school                 :string(255)

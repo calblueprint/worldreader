@@ -110,7 +110,7 @@ var SmallBookTile = React.createClass({
           <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <div className="book-tags">
             {countries}
             {levels}

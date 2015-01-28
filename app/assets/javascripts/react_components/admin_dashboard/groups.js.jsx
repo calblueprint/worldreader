@@ -111,7 +111,7 @@ var GroupBookList = React.createClass({
     var books = this.props.books.map(function (book) {
       return (
         <div className="book">
-          {book.name}
+          {book.title}
         </div>
       );
     }.bind(this));

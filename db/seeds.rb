@@ -17,6 +17,14 @@ def make_users
   end
 end
 
+def make_admin_users
+  c = Country.create! name: 'Canada'
+  1.upto(5) do |n|
+    AdminUser.create! email: "admin#{n}@gmail.com",
+                      password: "password"
+  end
+end
+
 def make_groups
   User.all.each do |user|
     1.upto(3) do |n|
@@ -167,6 +175,7 @@ end
 
 make_books
 make_users
+make_admin_users
 make_groups
 make_purchases
 make_country_tags
