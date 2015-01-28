@@ -41,7 +41,8 @@ var BookList = React.createClass({
     return {cart: cart,
             user: gon.current_user,
             books: this.props.books,
-            expandedBookId: null};
+            expandedBookId: null,
+            pageNumber: 1};
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
@@ -83,30 +84,51 @@ var BookList = React.createClass({
                           cart.get("items").length])});
     }
   },
+  generateTile: function(book) {
+    if (this.props.small) {
+      return (
+        <SmallBookTile
+        user={gon.current_user}
+        key={book.id}
+        book={book}
+        cart={cart.get("items")}
+        handleCartEvent={this.handleCartEvent} />
+      )
+    }
+    return (
+      <BookTile
+      user={gon.current_user}
+      key={book.id}
+      book={book}
+      cart={cart.get("items")}
+      handleClick={this.handleBookExpand}
+      handleCloseButton={this.handleBookClosed}
+      handleCartEvent={this.handleCartEvent}
+      isExpanded={this.state.expandedBookId === book.id} />
+    );
+  },
+  loadMore: function(pageToLoad) {
+    console.log("YO WE BE LOADING");
+    $.ajax({
+      url: "/api/v1/books/page",
+      dataType: "json",
+      data: {
+        page: this.state.pageNumber
+      },
+      success: function(response) {
+        var nextPage = response;
+        this.setState({ books: nextPage.concat(this.state.books),
+                        pageNumber: this.state.pageNumber + 1});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     bookList = this;
     var bookTiles = this.state.books.map(function (book) {
-      if (this.props.small) {
-        return (
-          <SmallBookTile
-            user={gon.current_user}
-            key={book.id}
-            book={book}
-            cart={cart.get("items")}
-            handleCartEvent={this.handleCartEvent} />
-        )
-      }
-      return (
-        <BookTile
-          user={gon.current_user}
-          key={book.id}
-          book={book}
-          cart={cart.get("items")}
-          handleClick={this.handleBookExpand}
-          handleCloseButton={this.handleBookClosed}
-          handleCartEvent={this.handleCartEvent}
-          isExpanded={this.state.expandedBookId === book.id} />
-      );
+      return this.generateTile(book);
     }.bind(this));
 
     if (bookTiles.length) {
@@ -133,9 +155,16 @@ var BookList = React.createClass({
           <h4 className="current-search text-center">
             {results}
           </h4>
-          <div className="media-list">
-            {bookTiles}
-          </div>
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.loadMore}
+            hasMore={true}
+            threshold={250}
+            loader={<div className="loader">Loading...</div>}>
+              <div className="media-list">
+                {bookTiles}
+              </div>
+          </InfiniteScroll>
         </div>
       );
     } else {
