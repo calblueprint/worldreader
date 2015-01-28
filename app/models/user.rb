@@ -50,6 +50,12 @@ class User < ActiveRecord::Base
     )
   end
 
+  def as_json(options={})
+    json = super(options)
+    json[:past_purchase_ids] = purchases.map { |purchase| purchase.book.id }
+    json
+  end
+
   def country_name
     country.name
   end

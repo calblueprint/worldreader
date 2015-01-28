@@ -19,6 +19,8 @@ var BookTile = React.createClass({
   },
   renderExpanded: function() {
     var cartButton;
+    console.log("rendering expanded book tile")
+    console.log(this.props.user)
     if (this.props.user) {
       cartButton = (
         <CartButton user={this.props.user}

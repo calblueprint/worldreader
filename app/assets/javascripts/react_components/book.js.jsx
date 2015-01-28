@@ -13,18 +13,25 @@ var CartButton = React.createClass({
     }
   },
   render: function() {
+    if (_.contains(this.props.user.past_purchase_ids, this.props.book.id)) {
+      return (
+        <button className="btn cart-button disabled">
+          You have already purchased this book!
+        </button>
+      );
+    }
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
         Remove from Cart
         </button>
-      )
+      );
     } else {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
         Add to Cart
         </button>
-      )
+      );
     }
   }
 });
