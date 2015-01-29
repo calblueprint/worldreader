@@ -162,6 +162,8 @@ var BookList = React.createClass({
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
+      dataType: "json",
+      async: false,
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
