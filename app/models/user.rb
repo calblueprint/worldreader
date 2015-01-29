@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :books, through: :purchases
   has_many :groups
   has_many :purchases
-  scope :users_new_purchases, -> { users.joins(:purchases).where(
+  scope :partners_new_purchases, -> { User.all.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
   settings number_of_shards: 1 do
@@ -44,6 +44,12 @@ class User < ActiveRecord::Base
     as_json(
       methods: [:country_name]
     )
+  end
+
+  def as_json(options={})
+    json = super(options)
+    json[:past_purchase_ids] = purchases.map { |purchase| purchase.book.id }
+    json
   end
 
   def country_name
@@ -94,11 +100,11 @@ class User < ActiveRecord::Base
     User.search(query: query).to_a.map! { |r| r._source }
   end
 
-  def self.users_no_new_purchases
-    if (users_new_purchases.empty?)
-      users
+  def self.partners_no_new_purchases
+    if (partners_new_purchases.empty?)
+      User.all
     else
-      users.where("id not in (?)", users_new_purchases.pluck(:id))
+      User.all.where("id not in (?)", partners_new_purchases.pluck(:id))
     end
   end
 
