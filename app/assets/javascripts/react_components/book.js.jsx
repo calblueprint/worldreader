@@ -142,10 +142,10 @@ var BookList = React.createClass({
     );
   },
   loadMore: function(pageToLoad) {
+    this.setState({pageNumber: this.state.pageNumber + 1});
     this.updateSearch();
   },
   tagsUpdated: function() {
-    console.log('tagsupdate')
     this.updateSearch()
   },
   search: function(event) {
@@ -154,9 +154,7 @@ var BookList = React.createClass({
     }
   },
   updateSearch: function() {
-    console.log('searching')
-    debugger;
-    var searchTerm = " " + $("#book-searchbar-input").val();
+    var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
     this.setState({ searchTerm: searchTerm,
                     tags: tags});
@@ -170,7 +168,6 @@ var BookList = React.createClass({
         page: this.state.pageNumber
       },
       success: function(results) {
-        debugger;
         self.setState({ books: results.books,
                         isLastPage: results.last_page});
       }.bind(this),
@@ -188,7 +185,7 @@ var BookList = React.createClass({
     if (bookTiles.length) {
       var results = ""
       if (!this.props.small) {
-        var searchString = this.state.searchTerm;
+        var searchString = " " + this.state.searchTerm;
         var tagsArray = this.state.tags;
         var tagText = [];
         for (var i = 0; i < tagsArray.length; i++) {
