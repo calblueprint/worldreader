@@ -44,6 +44,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'pry-rails'
   gem 'pry-rescue'
+  gem 'railroady'
   gem 'rspec-rails'
   gem 'launchy'
 end
