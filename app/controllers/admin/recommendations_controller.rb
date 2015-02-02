@@ -11,6 +11,8 @@ class Admin::RecommendationsController < ApplicationController
       recommendation.books << Book.find(book_id)
     end
 
+    recommendation.recommendation_type = params[:recommendation_type]
+
     country_ids = params[:country_ids]
     country_ids.each do |country_id|
       recommendation.countries << Country.find(country_id)
