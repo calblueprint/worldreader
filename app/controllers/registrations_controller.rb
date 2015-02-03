@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   before_filter :configure_permitted_parameters, :only => [:create]
-  skip_before_filter :require_no_authentication 
+  skip_before_filter :require_no_authentication
 
   def create
     build_resource(user_params)
@@ -8,10 +8,10 @@ class RegistrationsController < Devise::RegistrationsController
       render json: {message: "User created!"}
     else
       clean_up_passwords resource
-      respond_with resource
+      render json: {message: "User could not be created!"}, status: :forbidden
     end
   end
-  
+
   protected
 
   def configure_permitted_parameters
