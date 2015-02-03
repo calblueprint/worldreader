@@ -198,7 +198,10 @@ var CreateUserPage = React.createClass({
         toastr.success("User created!");
       },
       error: function(xhr, status, err) {
-        toastr.error("User could not be created!");
+        var errors = xhr.responseJSON.errors;
+        for (var error of errors) {
+          toastr.error(error);
+        }
         console.error(this.props.url, status, err.toString(), xhr);
       }.bind(this)
     }).done(function(message) {

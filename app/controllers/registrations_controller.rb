@@ -8,7 +8,7 @@ class RegistrationsController < Devise::RegistrationsController
       render json: {message: "User created!"}
     else
       clean_up_passwords resource
-      render json: {message: "User could not be created!"}, status: :forbidden
+      render json: {message: "User could not be created!", errors: resource.errors.full_messages}, status: :forbidden
     end
   end
 
