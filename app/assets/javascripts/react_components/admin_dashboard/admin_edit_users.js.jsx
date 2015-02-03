@@ -180,17 +180,19 @@ var CreateUserPage = React.createClass({
     });
   },
   createUser: function() {
-    debugger;
+    var user = {
+      first_name: $('#new_user_first_name').val(),
+      last_name: $('#new_user_last_name').val(),
+      email: $('#new_user_email').val(),
+      password: $('#new_user_password').val(),
+      password_confirmation: $('#new_user_password_confirmation').val()
+    };
     $.ajax({
       type: "POST",
       url: "/users",
       data: {
         authenticity_token: gon.auth_token,
-        first_name: $('#new_user_first_name').val(),
-        last_name: $('#new_user_last_name').val(),
-        email: $('#new_user_email').val(),
-        password: $('#new_user_password').val(),
-        password_confirmation: $('#new_user_password_confirmation').val()
+        user: user
       },
       success: function (message) {
         console.log("User succesfully created");
