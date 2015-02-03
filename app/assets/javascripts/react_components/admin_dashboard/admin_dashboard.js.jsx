@@ -32,7 +32,6 @@ var ManagePartnerInfo = React.createClass({
       url: "/admin/dashboard/display_all_partners",
       dataType: 'json',
       success: function (data) {
-        console.log(data);
         this.setState({partners: data});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -43,7 +42,6 @@ var ManagePartnerInfo = React.createClass({
       url: "/admin/dashboard/display_partners_new_purchases",
       dataType: 'json',
       success: function (data) {
-        console.log(data);
         var newIds = _.pluck(data, "id");
         for (var i = 0; i < newIds.length; i++) {
           this._refreshNewPurchases(newIds[i]);

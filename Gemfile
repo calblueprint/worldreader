@@ -28,6 +28,7 @@ gem 'turbolinks'
 gem 'underscore-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'isbn', '~> 2.0.10'
+gem 'will_paginate'
 gem 'whenever', :require => false
 group :development do
   gem 'better_errors'
@@ -44,6 +45,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'pry-rails'
   gem 'pry-rescue'
+  gem 'railroady'
   gem 'rspec-rails'
   gem 'launchy'
 end

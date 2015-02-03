@@ -3,9 +3,9 @@ class BooksController < ApplicationController
   before_filter :search_tags
 
   def index
-    @books = Book.all
+    @books = []
     gon.current_user = current_user
-    gon.books = Book.all
+    gon.books = @books
   end
 
   def show
@@ -41,6 +41,6 @@ class BooksController < ApplicationController
       }
     }
     gon.all_tags = country_tags + level_tags + language_tags + genre_tags
-    
+
   end
 end
