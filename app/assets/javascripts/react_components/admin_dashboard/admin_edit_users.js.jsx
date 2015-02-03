@@ -223,7 +223,7 @@ var CreateUserPage = React.createClass({
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
           <label for="inputFirstName">First Name</label>
           <div class="input-group">
-            <input class="inputFirstName" id="new_user_first_name" name="user[first_name]" type="password"></input>
+            <input class="inputFirstName" id="new_user_first_name" name="user[first_name]" type="text"></input>
           </div>
 
           <label for="inputLastName">Last Name</label>
