@@ -42,13 +42,13 @@ var GroupDisplay = React.createClass({
 
 var Group = React.createClass({
   getInitialState: function () {
-    return {expand: "Show Books"};
+    return {expand: "Show Books "};
   },
   _expand: function () {
-    if (this.state.expand == "Show Books") {
-      this.setState({expand: "Hide Books"});
+    if (this.state.expand == "Show Books ") {
+      this.setState({expand: "Hide Books "});
     } else {
-      this.setState({expand: "Show Books"});
+      this.setState({expand: "Show Books "});
     }
   },
   render: function () {
@@ -59,13 +59,13 @@ var Group = React.createClass({
           <button className="btn btn-default dropdown-toggle groupExpand" type="button"
             data-toggle="dropdown" aria-expanded="true" onClick={this._expand} >
             {this.state.expand}
-            { this.state.expand == "Hide Books" ? <span className="caret caret-reversed">
+            { this.state.expand == "Hide Books " ? <span className="caret caret-reversed">
               </span> : <span className="caret"></span>}
           </button>
           <div> <b>Country</b> {this.props.group["country"]} </div>
           <div> <b>Description</b> {this.props.group["organization"]} </div>
         </div>
-        {this.state.expand == "Hide Books" ? <GroupBooks groupId={this.props.group["id"]}/> : null}
+        {this.state.expand == "Hide Books " ? <GroupBooks groupId={this.props.group["id"]}/> : null}
       </div>
     );
   }
