@@ -347,9 +347,7 @@ var DashboardTabDisplay = React.createClass({
       );
     } else if (this.props.type == tabs.CREATEUSERS) {
       return (
-        <div>
-          Create Users
-        </div>
+        <ManageUserInfo/>
       )
     }
   }

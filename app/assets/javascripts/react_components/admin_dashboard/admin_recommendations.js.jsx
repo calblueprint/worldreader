@@ -3,7 +3,7 @@
 var views = {
   RECOMMENDATIONS: 1,
   CREATE_RECOMMENDATION: 2,
-  EDIT_RECOMMENDATION: 3
+  EDIT_RECOMMENDATION: 3,
 };
 
 /* Handles transitions between views within Recommendations tab */

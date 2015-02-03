@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_user_cart
+  before_action :set_user_cart, :set_auth_token
   after_action :store_location
   protect_from_forgery with: :exception
 
@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
     else
       gon.cart = []
     end
+  end
+
+  def set_auth_token
+    gon.auth_token = form_authenticity_token
   end
 
   def store_location
