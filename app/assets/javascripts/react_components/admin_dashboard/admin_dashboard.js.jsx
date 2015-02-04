@@ -80,9 +80,6 @@ var ManagePartnerInfo = React.createClass({
           </div>
           <div className="col-md-8">
             <div className="mainScreen">
-              <PartnerDisplay partnerId={this.state.selectedPartner}
-                refreshPurchases={this._refreshNewPurchases} />
-            </div>
               {!this.state.showAddPartner ? 
                 <PartnerDisplay partnerId={this.state.selectedPartner}
                   refreshPurchases={this._refreshNewPurchases} />
@@ -255,20 +252,27 @@ var PartnerDisplay = React.createClass({
 });
 
 var AddPartnerDisplay= React.createClass({
+<<<<<<< HEAD
   componentDidMount: function () {
     $('.selectpicker').selectpicker();
   },
+=======
+>>>>>>> progress on create user page
   createUser: function() {
     var user = {
       first_name: $('#newUserFirstName').val(),
       last_name: $('#newUserLastName').val(),
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
+<<<<<<< HEAD
       password_confirmation: $('#newUserConfirmPassword').val(),
       organization: $('#newUserOrganization').val(),
       levels: $('#newUserLevels').val(),
       languages: $('#newUserLanguages').val(),
       countries: $('#newUserCountries').val()
+=======
+      password_confirmation: $('#newUserConfirmPassword').val()
+>>>>>>> progress on create user page
     };
     $.ajax({
       type: "POST",
@@ -292,6 +296,7 @@ var AddPartnerDisplay= React.createClass({
     });
   },
   render: function () {
+<<<<<<< HEAD
     var levels = gon.levels.map(function(level) {
       return (
           <option value={level.id}>{level.name}</option>
@@ -307,6 +312,8 @@ var AddPartnerDisplay= React.createClass({
           <option value={country.id}>{country.name}</option>
       );
     }.bind(this));
+=======
+>>>>>>> progress on create user page
     return (
       <div className="addPartnerDisplay">
         <div className="header">
@@ -316,6 +323,7 @@ var AddPartnerDisplay= React.createClass({
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
           <label for="newUserFirstName">First Name</label>
           <div>
+<<<<<<< HEAD
             <input id="newUserFirstName" type="text" className="form-control newUserInput" />
           </div>
           <label for="newUserLastName">Last Name</label>
@@ -355,6 +363,35 @@ var AddPartnerDisplay= React.createClass({
             <select id="newUserCountries" className="selectpicker newUserInput" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
               {countries}
             </select>
+=======
+            <div>
+              <input id="newUserFirstName" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserLastName">Last Name</label>
+          <div>
+            <div>
+              <input id="newUserLastName" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserEmail">Email</label>
+          <div>
+            <div>
+              <input id="newUserEmail" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserPassword">Password</label>
+          <div>
+            <div>
+              <input id="newUserPassword" type="password" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserConfirmPassword">Confirm Password</label>
+          <div>
+            <div>
+              <input id="newUserConfirmPassword" type="password" className="form-control newUserInput" />
+            </div>
+>>>>>>> progress on create user page
           </div>
           <div className="newUserButton">
             <button type="button" className="btn btn-default" onClick={this.createUser}>
