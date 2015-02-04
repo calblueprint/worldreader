@@ -12,6 +12,11 @@
 }
 
 .searchButton {
+  float: left;
+  margin-left: 8%;
+}
+
+.addButton {
   float: right;
 }
 
@@ -35,6 +40,24 @@
   top: 100px;
   font-style: italic;
   font-size: medium;
+}
+
+.addPartnerDisplay {
+  background: white
+}
+
+.addPartnerForm {
+  padding: 20px;
+}
+
+.newUserInput {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.header {
+  font-size: x-large;
+  text-align: center;
 }
 
 #admin-dashboard-nav {

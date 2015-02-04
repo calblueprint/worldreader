@@ -3,7 +3,7 @@
 var ManagePartnerInfo = React.createClass({
   getInitialState: function () {
     return {partners: [], partnersNewPurchases: [],
-      selectedPartner: null, numNewPurchases: {}};
+      selectedPartner: null, numNewPurchases: {}, showAddPartner: false};
   },
   componentDidMount: function () {
     this._fetchPartners({});
@@ -57,7 +57,11 @@ var ManagePartnerInfo = React.createClass({
     this._fetchPartners({search_data: search});
   },
   _selectPartner: function (partnerId) {
-    this.setState({selectedPartner: partnerId});
+    this.setState({selectedPartner: partnerId, showAddPartner: false});
+  },
+  _addPartner: function() {
+    $('.partner').removeClass('active');
+    this.setState({showAddPartner: true});
   },
   render: function () {
     return (
@@ -65,7 +69,7 @@ var ManagePartnerInfo = React.createClass({
         <div className="row">
           <div className="col-md-4">
             <div className="topDiv">
-              <PartnerSearch />
+              <PartnerSearch addPartner={this._addPartner} />
             </div>
             <div className="listPartners">
               <PartnerList partners={this.state.partners}
@@ -80,6 +84,12 @@ var ManagePartnerInfo = React.createClass({
               <PartnerDisplay partnerId={this.state.selectedPartner}
                 refreshPurchases={this._refreshNewPurchases} />
             </div>
+              {!this.state.showAddPartner ? 
+                <PartnerDisplay partnerId={this.state.selectedPartner}
+                  refreshPurchases={this._refreshNewPurchases} />
+               : <AddPartnerDisplay />
+              }
+            </div>  
           </div>
         </div>
       </div>
@@ -90,9 +100,9 @@ var ManagePartnerInfo = React.createClass({
 var PartnerSearch = React.createClass({
   _handleOnSubmit: function (e) {
     e.preventDefault()
-
   },
   render: function () {
+    var addPartner = this.props.addPartner;
     return (
       <form className="navbar-form navbar-left" role="search">
         <div className="searchInput">
@@ -101,6 +111,11 @@ var PartnerSearch = React.createClass({
         </div>
         <div className="searchButton">
           <button type="submit" className="btn btn-default">Search</button>
+        </div>
+        <div className="addButton">
+          <button type="button" className="btn btn-default" onClick={addPartner}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
         </div>
       </form>
     );
@@ -158,7 +173,7 @@ var Partner = React.createClass({
     var is_active = this.state.clicked ? "active" : "";
     return (
         <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
-          {this.props.partner["email"]}
+          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}
           <span className="badge">{this.props.numNewPurchases}</span></a></li>
     );
   }
@@ -166,8 +181,8 @@ var Partner = React.createClass({
 
 var displays = {
   INFORMATION: 1,
-  NEW_PURCHASES: 2,
-  OLD_PURCHASES: 3,
+  GROUPS: 2,
+  PURCHASES: 3,
 };
 
 var PartnerDisplay = React.createClass({
@@ -234,6 +249,85 @@ var PartnerDisplay = React.createClass({
         <div className="mainDisplay">
           <MainDisplay type={this.state.selectedPage} partnerId={this.props.partnerId}
             refreshPurchases={this.props.refreshPurchases} />
+        </div>
+      </div>
+    );
+  }
+});
+
+var AddPartnerDisplay= React.createClass({
+  createUser: function() {
+    var user = {
+      first_name: $('#newUserFirstName').val(),
+      last_name: $('#newUserLastName').val(),
+      email: $('#newUserEmail').val(),
+      password: $('#newUserPassword').val(),
+      password_confirmation: $('#newUserConfirmPassword').val()
+    };
+    $.ajax({
+      type: "POST",
+      url: "/users",
+      data: {
+        authenticity_token: gon.auth_token,
+        user: user
+      },
+      success: function (message) {
+        toastr.success("User created!");
+      },
+      error: function(xhr, status, err) {
+        var errors = xhr.responseJSON.errors;
+        for (var error of errors) {
+          toastr.error(error);
+        }
+        console.error(this.props.url, status, err.toString(), xhr);
+      }.bind(this)
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
+  },
+  render: function () {
+    return (
+      <div className="addPartnerDisplay">
+        <div className="header">
+          Add a New Partner
+        </div>
+        <div className="addPartnerForm">
+          <input type="hidden" name="authenticity_token" value={gon.auth_token} />
+          <label for="newUserFirstName">First Name</label>
+          <div>
+            <div>
+              <input id="newUserFirstName" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserLastName">Last Name</label>
+          <div>
+            <div>
+              <input id="newUserLastName" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserEmail">Email</label>
+          <div>
+            <div>
+              <input id="newUserEmail" type="text" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserPassword">Password</label>
+          <div>
+            <div>
+              <input id="newUserPassword" type="password" className="form-control newUserInput" />
+            </div>
+          </div>
+          <label for="newUserConfirmPassword">Confirm Password</label>
+          <div>
+            <div>
+              <input id="newUserConfirmPassword" type="password" className="form-control newUserInput" />
+            </div>
+          </div>
+          <div className="newUserButton">
+            <button type="button" className="btn btn-default" onClick={this.createUser}>
+              Make Partner
+            </button>
+          </div>
         </div>
       </div>
     );
