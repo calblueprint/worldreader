@@ -3,7 +3,6 @@
 # Table name: recommendations
 #
 #  id           :integer          not null, primary key
-#  book_id      :integer
 #  level        :string(255)
 #  language     :string(255)
 #  genre        :string(255)
