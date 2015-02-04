@@ -6,14 +6,6 @@ h2 Sign up
     br/
     = f.email_field :email, autofocus: true
   div
-    = f.label :first_name
-    br/
-    = f.text_field :first_name
-  div
-    = f.label :last_name
-    br/
-    = f.text_field :last_name
-  div
     = f.label :password
     - if @validatable
       i

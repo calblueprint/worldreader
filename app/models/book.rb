@@ -78,21 +78,21 @@ class Book < ActiveRecord::Base
   belongs_to :language
   belongs_to :genre
   belongs_to :publisher
+  belongs_to :country, foreign_key: "origin_id"
   has_many :purchases
   has_many :users, through: :purchases
   has_and_belongs_to_many :authors
-  has_and_belongs_to_many :countries
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
 
   settings number_of_shards: 1 do
     mapping do
-      indexes :name, analyzer: 'english'
+      indexes :title, analyzer: 'english'
       indexes :description, analyzer: 'english'
       indexes :genre_name, index: 'not_analyzed'
       indexes :language_name, index: 'not_analyzed'
-      indexes :countries_name, index: 'not_analyzed'
+      indexes :country_name, index: 'not_analyzed'
       indexes :levels_name, index: 'not_analyzed'
       indexes :authors_name, index: 'not_analyzed'
       indexes :publisher_name, index: 'not_analyzed'
@@ -108,7 +108,7 @@ class Book < ActiveRecord::Base
       methods: [
         :genre_name,
         :language_name,
-        :countries_name,
+        :country_name,
         :levels_name,
         :publisher_name,
         :authors_name,
@@ -117,15 +117,15 @@ class Book < ActiveRecord::Base
   end
 
   def genre_name
-    genre.name
+    genre ? genre.name : ""
   end
 
   def language_name
-    language.name
+    language ? language.name : ""
   end
 
-  def countries_name
-    countries.map { |c| c.name }
+  def country_name
+    country ? country.name : ""
   end
 
   def levels_name
@@ -146,7 +146,7 @@ class Book < ActiveRecord::Base
       filtered[:query] = {
         multi_match: {
           query: string,
-          fields: [:name, :description, :authors_name, :publisher_name],
+          fields: [:title, :description, :authors_name, :publisher_name],
           fuzziness: 'AUTO'
         }
       }
