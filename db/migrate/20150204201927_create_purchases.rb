@@ -5,6 +5,7 @@ class CreatePurchases < ActiveRecord::Migration
       t.references :book, :null => false
       t.date :purchased_on
       t.boolean :is_purchased
+      t.boolean :is_approved
     end
   end
 end
