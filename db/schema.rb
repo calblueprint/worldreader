@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529011023) do
+ActiveRecord::Schema.define(version: 20150204204122) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -59,8 +59,11 @@ ActiveRecord::Schema.define(version: 20140529011023) do
     t.boolean  "ops_rel"
     t.boolean  "publishing_rel"
     t.boolean  "DR_rel"
+    t.integer  "role"
+    t.integer  "country_id"
   end
 
+  add_index "admin_users", ["country_id"], name: "index_admin_users_on_country_id", using: :btree
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
@@ -167,6 +170,7 @@ ActiveRecord::Schema.define(version: 20140529011023) do
     t.string   "geo_restrictedby"
     t.string   "pricingmodel",                             limit: 4
     t.string   "textguide_book_id",                        limit: 45
+    t.string   "image"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], name: "index_books_on_book_status_id_and_appstatus_id", using: :btree
@@ -188,6 +192,13 @@ ActiveRecord::Schema.define(version: 20140529011023) do
 
   add_index "books_content_buckets", ["book_id", "content_bucket_id"], name: "index_books_content_buckets_on_book_id_and_content_bucket_id", using: :btree
 
+  create_table "books_groups", id: false, force: true do |t|
+    t.integer "book_id",  null: false
+    t.integer "group_id", null: false
+  end
+
+  add_index "books_groups", ["group_id", "book_id"], name: "index_books_groups_on_group_id_and_book_id", using: :btree
+
   create_table "books_levels", id: false, force: true do |t|
     t.integer "book_id"
     t.integer "level_id"
@@ -208,6 +219,13 @@ ActiveRecord::Schema.define(version: 20140529011023) do
   end
 
   add_index "books_publishing_rights", ["book_id", "publishing_right_id"], name: "book_publishing_right_index", unique: true, using: :btree
+
+  create_table "books_recommendations", id: false, force: true do |t|
+    t.integer "book_id",           null: false
+    t.integer "recommendation_id", null: false
+  end
+
+  add_index "books_recommendations", ["book_id", "recommendation_id"], name: "index_books_recommendations_on_book_id_and_recommendation_id", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -294,6 +312,13 @@ ActiveRecord::Schema.define(version: 20140529011023) do
   end
 
   add_index "grades_books", ["book_id", "origin_grade_id"], name: "index_grades_books_on_book_id_and_origin_grade_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.integer "user_id"
+    t.string  "name"
+    t.string  "country"
+    t.string  "description"
+  end
 
   create_table "homerooms", force: true do |t|
     t.string   "name"
@@ -483,6 +508,13 @@ ActiveRecord::Schema.define(version: 20140529011023) do
     t.text     "comments"
   end
 
+  create_table "purchases", force: true do |t|
+    t.integer "user_id",      null: false
+    t.integer "book_id",      null: false
+    t.date    "purchased_on"
+    t.boolean "is_purchased"
+  end
+
   create_table "pushes", force: true do |t|
     t.integer  "book_id"
     t.integer  "content_bucket_id"
@@ -499,6 +531,17 @@ ActiveRecord::Schema.define(version: 20140529011023) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "recommendations", force: true do |t|
+    t.string   "level"
+    t.string   "language"
+    t.string   "genre"
+    t.string   "country"
+    t.string   "organization"
+    t.string   "school"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "restrictedcontinent_books", id: false, force: true do |t|
