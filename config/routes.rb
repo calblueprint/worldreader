@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, :skip => [:sessions]
+  as :admin_user do
+    post 'admin/sign_in' => 'devise/sessions#create', :as => 'admin_user_session'
+    delete 'admin/sign_out' => 'devise/sessions#destroy', as: 'destroy_admin_user_session'
+  end
+
+  resources :admin_user
+
   devise_scope :user do
     get "/logout" => "devise/sessions#destroy"
     get "/login" => "devise/sessions#new"

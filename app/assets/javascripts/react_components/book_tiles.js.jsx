@@ -45,7 +45,7 @@ var BookTile = React.createClass({
           <img className="expanded-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <h5>{_.reduce(
                   this.props.book.authors_name,
                   function(memo, author) {return memo + " " + author},
@@ -72,7 +72,7 @@ var BookTile = React.createClass({
           <img className="collapsed-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
         </div>
       </div>
@@ -110,7 +110,7 @@ var SmallBookTile = React.createClass({
           <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <div className="book-tags">
             {countries}
             {levels}

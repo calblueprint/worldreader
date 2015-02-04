@@ -36,7 +36,7 @@ var CartItem = React.createClass({
     return (
       <div className="cart-item">
         <a className="close" onClick={this.cartItemRemoved} >&times;</a>
-        {this.props.book.name}
+        {this.props.book.title}
       </div>
     );
   }

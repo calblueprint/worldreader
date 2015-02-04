@@ -31,7 +31,7 @@ class Ability
     
     user ||= User.new # guest user
 
-    if user.admin?
+    if user.kind_of? AdminUser
       can :manage, :all
     else
       can :manage, Book

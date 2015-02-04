@@ -26,6 +26,6 @@ class Purchase < ActiveRecord::Base
   end
 
   def to_csv
-    [book.name, user.first_name, user.last_name, purchased_on]
+    [book.title, user.first_name, user.last_name, purchased_on]
   end
 end
