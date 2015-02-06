@@ -8,16 +8,6 @@ describe UsersController do
       request.env["HTTP_REFERER"] = "http://www.example.com/"
     end
 
-    it "shows all users" do
-      user1 = create(:user, role: 2)
-      user2 = create(:user)
-      user3 = create(:user)
-      sign_in user1
-      get :index
-      expect(response.status).to eq(200)
-      expect(assigns(:users)).to eq([user1, user2, user3])
-    end
-
     it "denies access to non-admins" do
       user = create(:user)
       sign_in user
