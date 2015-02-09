@@ -15,11 +15,9 @@ task :scrape_amazon, [:asin] => :environment do |t, args|
   doc = Nokogiri::HTML(open(url))
   image = doc.css('div#thumbs-image img')[0]['src']
   image.slice!('._SS30_')
-  description = doc.css('div#ps-content div#postBodyPS')[0].text
 
   book = Book.where(asin: args[:asin]).first
   book.image = image
-  book.description = description unless book.description
   book.save
 end
 
