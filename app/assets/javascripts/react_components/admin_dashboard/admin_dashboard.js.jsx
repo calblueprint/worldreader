@@ -60,8 +60,7 @@ var ManagePartnerInfo = React.createClass({
     this.setState({selectedPartner: partnerId, showAddPartner: false});
   },
   _addPartner: function() {
-    $('.partner').removeClass('active');
-    this.setState({showAddPartner: true});
+    this.setState({selectedPartner: null, showAddPartner: true});
   },
   render: function () {
     return (
@@ -295,33 +294,35 @@ var AddPartnerDisplay= React.createClass({
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
           <label for="newUserFirstName">First Name</label>
           <div>
-            <div>
-              <input id="newUserFirstName" type="text" className="form-control newUserInput" />
-            </div>
+            <input id="newUserFirstName" type="text" className="form-control newUserInput" />
           </div>
           <label for="newUserLastName">Last Name</label>
           <div>
-            <div>
-              <input id="newUserLastName" type="text" className="form-control newUserInput" />
-            </div>
+            <input id="newUserLastName" type="text" className="form-control newUserInput" />
           </div>
           <label for="newUserEmail">Email</label>
           <div>
-            <div>
-              <input id="newUserEmail" type="text" className="form-control newUserInput" />
-            </div>
+            <input id="newUserEmail" type="text" className="form-control newUserInput" />
           </div>
           <label for="newUserPassword">Password</label>
           <div>
-            <div>
-              <input id="newUserPassword" type="password" className="form-control newUserInput" />
-            </div>
+            <input id="newUserPassword" type="password" className="form-control newUserInput" />
           </div>
           <label for="newUserConfirmPassword">Confirm Password</label>
           <div>
-            <div>
-              <input id="newUserConfirmPassword" type="password" className="form-control newUserInput" />
-            </div>
+            <input id="newUserConfirmPassword" type="password" className="form-control newUserInput" />
+          </div>
+          <label for="newUserOrganization">Organization Name</label>
+          <div>
+            <input id="newUserOrganization" className="form-control newUserInput" />
+          </div>
+          <label for="newUserGrade">Grade Levels</label>
+          <div className="newUserInput">
+            <select id="newUserGrade" className="form-control">
+              <option>Elementary</option>
+              <option>Secondary</option>
+              <option>High</option>
+            </select>
           </div>
           <div className="newUserButton">
             <button type="button" className="btn btn-default" onClick={this.createUser}>
