@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204211648) do
+ActiveRecord::Schema.define(version: 20150209052524) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -302,6 +302,12 @@ ActiveRecord::Schema.define(version: 20150204211648) do
   end
 
   add_index "events", ["device_id"], name: "index_events_on_device_id", using: :btree
+
+  create_table "failed_updates", force: true do |t|
+    t.integer  "book_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "fiction_types", force: true do |t|
     t.string   "name"

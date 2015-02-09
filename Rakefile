@@ -35,9 +35,20 @@ task update_books: :environment do
         Rake::Task["scrape_amazon"].invoke(book.asin)
         Rake::Task["scrape_amazon"].reenable
         done = true
-      rescue Exception => e
-        Rake::Task["scrape_amazon"].reenable
-        $done = false
+      rescue OpenURI::HTTPError => e
+          if e.message == '404 Not Found'
+            # No longer available on Amazon
+            failure = FailedUpdate.where(book_id: book.id).first
+            if failure
+              failure.touch
+            else
+              failure = FailedUpdate.create! book_id: book.id
+            end
+          else
+            # Amazon failed us
+            Rake::Task["scrape_amazon"].reenable
+            $done = false
+          end
       end
     end while done == false && i < 5
   end

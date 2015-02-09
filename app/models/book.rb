@@ -133,7 +133,7 @@ class Book < ActiveRecord::Base
   end
 
   def publisher_name
-    publisher.name
+    publisher ? publisher.name : ""
   end
 
   def authors_name
