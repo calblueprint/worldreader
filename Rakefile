@@ -19,7 +19,7 @@ task :scrape_amazon, [:asin] => :environment do |t, args|
 
   book = Book.where(asin: args[:asin]).first
   book.image = image
-  book.description = description
+  book.description = description unless book.description
   book.save
 end
 
