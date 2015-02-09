@@ -255,6 +255,9 @@ var PartnerDisplay = React.createClass({
 });
 
 var AddPartnerDisplay= React.createClass({
+  componentDidMount: function () {
+    $('.selectpicker').selectpicker();
+  },
   createUser: function() {
     var user = {
       first_name: $('#newUserFirstName').val(),
@@ -317,11 +320,42 @@ var AddPartnerDisplay= React.createClass({
             <input id="newUserOrganization" className="form-control newUserInput" />
           </div>
           <label for="newUserGrade">Grade Levels</label>
-          <div className="newUserInput">
-            <select id="newUserGrade" className="form-control">
-              <option>Elementary</option>
-              <option>Secondary</option>
-              <option>High</option>
+          <div>
+            <select id="newUserGrade" className="selectpicker newUserInput" title="Select Grade Levels" multiple data-width="300px">
+                <option>Elementary</option>
+                <option>Secondary</option>
+                <option>High School</option>
+            </select>
+          </div>
+          <label for="newUserLanguages">Languages</label>
+          <div>
+            <select id="newUserLanguages" className="selectpicker newUserInput" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+                <option>Mandarin</option>
+                <option>Spanish</option>
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Urdu</option>
+                <option>Arabic</option>
+                <option>Portuguese</option>
+                <option>Bengali</option>
+                <option>Russian</option>
+                <option>Japanese</option>
+                <option>Punjabi</option>
+            </select>
+          </div>
+          <label for="newUserCountries">Countries</label>
+          <div>
+            <select id="newUserCountries" className="selectpicker newUserInput" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+                <option>China</option>
+                <option>India</option>
+                <option>United States</option>
+                <option>Indonesia</option>
+                <option>Brazil</option>
+                <option>Pakistan</option>
+                <option>Nigeria</option>
+                <option>Bangladesh</option>
+                <option>Russia</option>
+                <option>Japan</option>
             </select>
           </div>
           <div className="newUserButton">
