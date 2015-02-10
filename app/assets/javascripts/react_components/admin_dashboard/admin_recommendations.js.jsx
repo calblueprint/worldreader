@@ -337,7 +337,49 @@ var RecommendationBookSearch = React.createClass({
 
 var RecommendationBookTagSearch = React.createClass({
   componentDidMount: function () {
-    console.log("book tag search mounted"); 
+    this.initTagbar(); 
+  },
+  initTagbar: function () {
+    var mainSearch = $('.book-tagbar-input');
+    mainSearch.tagsinput();
+    // mainSearch.tagsinput({
+    //   tagClass: function(item) {
+    //     switch (item.tagType) {
+    //       case 'countries':     return countryLabel;
+    //       case 'levels':        return levelLabel;
+    //       case 'language':      return languageLabel;
+    //       case 'genre':         return genreLabel;
+    //       case 'recommended':   return recommendedLabel;
+    //     }
+    //   },
+    //   itemValue: 'value',
+    //   itemText: 'text',
+    //   typeahead: {
+    //     name: 'cities',
+    //     displayKey: 'text',
+    //     source: gon.all_tags
+    //   }
+    // });
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
+    // $('#tag-and-searchbar').affix({
+    //     offset: {
+    //       top: $('#index-image').height()
+    //     }
+    // });
+  },
+  tagsUpdated: function () {
+    this.updateSearch();
+  },
+  search: function (event) {
+    if (event.which == 13) {
+      this.updateSearch();
+    }
+  },
+  updateSearch: function () {
+    var tags = $(".book-tagbar-input").tagsinput("items");
+    console.log("tags: " + tags);
+
   },
   render: function () {    
     return (

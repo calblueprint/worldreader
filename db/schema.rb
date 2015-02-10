@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121233039) do
+ActiveRecord::Schema.define(version: 20150204011311) do
 
   create_table "authors", force: true do |t|
     t.string   "name"
@@ -76,8 +76,9 @@ ActiveRecord::Schema.define(version: 20150121233039) do
   end
 
   create_table "countries_recommendations", id: false, force: true do |t|
-    t.integer "country_id",        null: false
     t.integer "recommendation_id", null: false
+    t.integer "user_country_id"
+    t.integer "book_country_id"
   end
 
   create_table "delayed_jobs", force: true do |t|
@@ -118,8 +119,9 @@ ActiveRecord::Schema.define(version: 20150121233039) do
   end
 
   create_table "languages_recommendations", id: false, force: true do |t|
-    t.integer "language_id",       null: false
     t.integer "recommendation_id", null: false
+    t.integer "user_language_id"
+    t.integer "book_language_id"
   end
 
   create_table "levels", force: true do |t|
