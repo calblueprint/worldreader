@@ -1,4 +1,7 @@
-FactoryGirl.define do  factory :authors_book, :class => 'AuthorsBooks' do
+FactoryGirl.define do  factory :failed_update do
+    book_id 1
+  end
+  factory :authors_book, :class => 'AuthorsBooks' do
     book_id 1
 author_id 1
   end
@@ -34,8 +37,6 @@ author_id 1
   end
 
   factory :user do
-    first_name "John"
-    last_name "Du"
     sequence(:email) { |n| "email#{n}@example.com" }
     password "password"
     role 0

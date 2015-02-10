@@ -5,8 +5,6 @@ var InformationDisplay = React.createClass({
     var initPartner = {
       country: "",
       email: "",
-      first_name: "",
-      last_name: "",
       organization: "",
       school: "",
     };
@@ -36,11 +34,9 @@ var InformationDisplay = React.createClass({
     return (
       <div id="informationDisplay">
         <div className="name">
-          <div className="well"> {this.state.partnerInfo["first_name"] + " " +
-            this.state.partnerInfo["last_name"]} </div>
+          <div className="well"> <b>Email:</b> {this.state.partnerInfo["email"]} </div>
         </div>
         <div className="info">
-          <div className="well"> <b>Email:</b> {this.state.partnerInfo["email"]} </div>
           <div className="well"> <b>Country:</b> {this.state.partnerInfo["country"]} </div>
           <div className="well"> <b>Organization:</b>
             {this.state.partnerInfo["organization"]} </div>

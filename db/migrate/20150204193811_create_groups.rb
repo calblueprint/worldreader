@@ -5,8 +5,6 @@ class CreateGroups < ActiveRecord::Migration
       t.string :name
       t.string :country
       t.string :description
-
-      t.timestamps
     end
   end
 end
