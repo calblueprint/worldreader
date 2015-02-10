@@ -91,32 +91,34 @@ var BookList = React.createClass({
     }
   },
   initTagbar: function() {
-    var mainSearch = $('#book-tagbar-input');
-    mainSearch.tagsinput({
-      tagClass: function(item) {
-        switch (item.tagType) {
-          case 'countries':     return countryLabel;
-          case 'levels':        return levelLabel;
-          case 'language':      return languageLabel;
-          case 'genre':         return genreLabel;
-          case 'recommended':   return recommendedLabel;
+    if (!this.props.small) {
+      var mainSearch = $('#book-tagbar-input');
+      mainSearch.tagsinput({
+        tagClass: function(item) {
+          switch (item.tagType) {
+            case 'countries':     return countryLabel;
+            case 'levels':        return levelLabel;
+            case 'language':      return languageLabel;
+            case 'genre':         return genreLabel;
+            case 'recommended':   return recommendedLabel;
+          }
+        },
+        itemValue: 'value',
+        itemText: 'text',
+        typeahead: {
+          name: 'cities',
+          displayKey: 'text',
+          source: gon.all_tags
         }
-      },
-      itemValue: 'value',
-      itemText: 'text',
-      typeahead: {
-        name: 'cities',
-        displayKey: 'text',
-        source: gon.all_tags
-      }
-    });
-    mainSearch.on('itemAdded', this.tagsUpdated);
-    mainSearch.on('itemRemoved', this.tagsUpdated);
-    $('#tag-and-searchbar').affix({
-        offset: {
-          top: $('#index-image').height()
-        }
-    });
+      });
+      mainSearch.on('itemAdded', this.tagsUpdated);
+      mainSearch.on('itemRemoved', this.tagsUpdated);
+      $('#tag-and-searchbar').affix({
+          offset: {
+            top: $('#index-image').height()
+          }
+      });
+    }
   },
   generateTile: function(book) {
     if (this.props.small) {
@@ -184,6 +186,22 @@ var BookList = React.createClass({
       return this.generateTile(book);
     }.bind(this));
 
+    var searchBar = (
+      <div className="row" id="library">
+        <div id="tag-and-searchbar">
+          <div className="input-group" id="book-searchbar">
+            <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
+            <span className="input-group-btn">
+              <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
+            </span>
+          </div>
+          <div className="input-group" id="book-tagbar">
+            <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
+            <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+          </div>
+        </div>
+      </div>
+    );
     if (bookTiles.length) {
       var results = ""
       if (!this.props.small) {
@@ -198,64 +216,48 @@ var BookList = React.createClass({
           tagString = " with tags " + tagText.join(', ');
         }
         results = "Found " + bookTiles.length + " results:" + searchString + tagString + ".";
+        return (
+          <div>
+            {searchBar}
+            <div className="search-results">
+              <h4 className="current-search text-center">
+                {results}
+              </h4>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadMore}
+                hasMore={!this.state.isLastPage}
+                threshold={250}
+                loader={<div className="loader">Loading...</div>}>
+                  <div className="media-list">
+                    {bookTiles}
+                  </div>
+              </InfiniteScroll>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <div className="search-results">
+              <h4 className="current-search text-center">
+                {results}
+              </h4>
+              {bookTiles}
+            </div>
+          </div>
+        );
       }
-      return (
-        <div>
-          <div className="row" id="library">
-            <div id="tag-and-searchbar">
-              <div className="input-group" id="book-searchbar">
-                <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
-                <span className="input-group-btn">
-                  <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
-                </span>
-              </div>
-              <div className="input-group" id="book-tagbar">
-                <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
-                <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
-              </div>
-            </div>
-          </div>
-          <div className="search-results">
-            <h4 className="current-search text-center">
-              {results}
-            </h4>
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadMore}
-              hasMore={!this.state.isLastPage}
-              threshold={250}
-              loader={<div className="loader">Loading...</div>}>
-                <div className="media-list">
-                  {bookTiles}
-                </div>
-            </InfiniteScroll>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <div className="row" id="library">
-            <div id="tag-and-searchbar">
-              <div className="input-group" id="book-searchbar">
-                <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
-                <span className="input-group-btn">
-                  <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
-                </span>
-              </div>
-              <div className="input-group" id="book-tagbar">
-                <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
-                <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
-              </div>
-            </div>
-          </div>
+    }
+    return (
+      <div>
+        {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
             No books found. Search for a title or add a tag to continue.
           </h3>
         </div>
       </div>
-      );
-    }
+    );
   }
 });

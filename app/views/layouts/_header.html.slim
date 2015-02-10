@@ -23,7 +23,7 @@
           a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
         - elsif current_user.admin?
           a.dropdown-toggle data-toggle="dropdown" href="#"
-            | #{current_user.name}
+            | #{current_user.email}
             span.caret
           ul.dropdown-menu role="menu"
             li
@@ -35,7 +35,7 @@
               = link_to "Sign Out", destroy_user_session_path, method: :delete
         - else
           a.dropdown-toggle data-toggle="dropdown" href="#"
-            | #{current_user.name}
+            | #{current_user.email}
             span.caret
           ul.dropdown-menu role="menu"
             li

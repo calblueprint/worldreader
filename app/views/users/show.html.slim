@@ -1,7 +1,7 @@
 row
   .col-md-10.col-md-offset-1
     h2.text-center
-      | #{@user.name if @user.name}
+      | #{@user.email if @user.email}
     h3.text-center
       | #{@user.email if @user.email}
 
@@ -13,13 +13,12 @@ row
           img.purchase-img src=purchase.book.image
         .purchase-body
           h3
-            | #{purchase.book.name}
-          - purchase.book.countries_name.each do |country_name|
-            span class="book-tag expanded-book-language label label-success"
-              | #{country_name}
+            | #{purchase.book.title}
           - purchase.book.levels_name.each do |level_name|
             span class="book-tag expanded-book-language label label-primary"
               | #{level_name}
+          span class="book-tag expanded-book-country label label-success"
+            | #{purchase.book.country_name}
           span class="book-tag expanded-book-language label label-warning"
             | #{purchase.book.language_name}
           span class="book-tag expanded-book-language label label-info"

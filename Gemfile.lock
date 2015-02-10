@@ -106,6 +106,8 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
+    dotenv-rails (0.11.1)
+      dotenv (= 0.11.1)
     eco (1.0.0)
       coffee-script
       eco-source
@@ -161,6 +163,7 @@ GEM
     kgio (2.9.2)
     launchy (2.4.2)
       addressable (~> 2.3)
+    libv8 (3.16.14.7)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -170,10 +173,10 @@ GEM
     minitest (5.4.2)
     multi_json (1.10.1)
     multipart-post (2.0.0)
+    mysql2 (0.3.17)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     orm_adapter (0.5.0)
-    pg (0.17.1)
     polyglot (0.3.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -218,6 +221,7 @@ GEM
     rdoc (4.1.2)
       json (~> 1.4)
     react-source (0.11.1)
+    ref (1.0.5)
     request_store (1.1.0)
     responders (1.1.1)
       railties (>= 3.2, < 4.2)
@@ -262,6 +266,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.9)
     temple (0.6.8)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -312,8 +319,10 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   delayed_job_active_record
   devise
+  dotenv-rails
   elasticsearch-model
   elasticsearch-rails
+  execjs
   factory_girl_rails
   faker
   foreman
@@ -323,8 +332,8 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   launchy
+  mysql2
   nokogiri
-  pg
   pry-rails
   pry-rescue
   quiet_assets
@@ -339,6 +348,7 @@ DEPENDENCIES
   slim
   spring
   sqlite3
+  therubyracer
   thin
   toastr-rails
   turbolinks

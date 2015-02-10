@@ -163,7 +163,7 @@ var Purchase = React.createClass( {
     return (
       <tr>
         <td className={is_selected} onClick={this._selectPurchase}>
-          {this.state.book.name}
+          {this.state.book.title}
         </td>
         <td className={is_selected} onClick={this._selectPurchase}>
           {this.props.purchase.purchased_on}

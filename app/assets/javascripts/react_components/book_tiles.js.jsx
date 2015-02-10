@@ -27,11 +27,6 @@ var BookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var countries = this.props.book.countries_name.map(function (country) {
-      return (
-        <span className={"book-tag expanded-book-country " + countryLabel}>{country}</span>
-      );
-    });
     var levels = this.props.book.levels_name.map(function (level) {
       return (
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
@@ -45,7 +40,7 @@ var BookTile = React.createClass({
           <img className="expanded-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <h5>{_.reduce(
                   this.props.book.authors_name,
                   function(memo, author) {return memo + " " + author},
@@ -54,8 +49,8 @@ var BookTile = React.createClass({
           <h5>{this.props.book.publisher_name}</h5>
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
-            {countries}
             {levels}
+            <span className={"book-tag expanded-book-country " + countryLabel}>{this.props.book.country_name}</span>
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>
@@ -72,7 +67,7 @@ var BookTile = React.createClass({
           <img className="collapsed-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
         </div>
       </div>
@@ -94,11 +89,6 @@ var SmallBookTile = React.createClass({
                     book={this.props.book} />
       )
     }
-    var countries = this.props.book.countries_name.map(function (country) {
-      return (
-        <span className={"book-tag expanded-book-country " + countryLabel}>{country}</span>
-      );
-    });
     var levels = this.props.book.levels_name.map(function (level) {
       return (
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
@@ -110,10 +100,10 @@ var SmallBookTile = React.createClass({
           <img className="icon-book-img" src={this.props.book.image} />
         </div>
         <div className="media-body">
-          <h3 className="media-heading">{this.props.book.name}</h3>
+          <h3 className="media-heading">{this.props.book.title}</h3>
           <div className="book-tags">
-            {countries}
             {levels}
+            <span className={"book-tag expanded-book-country " + countryLabel}>{this.props.book.country_name}</span>
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>

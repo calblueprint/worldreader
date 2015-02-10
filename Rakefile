@@ -15,11 +15,9 @@ task :scrape_amazon, [:asin] => :environment do |t, args|
   doc = Nokogiri::HTML(open(url))
   image = doc.css('div#thumbs-image img')[0]['src']
   image.slice!('._SS30_')
-  description = doc.css('div#ps-content div#postBodyPS')[0].text
 
   book = Book.where(asin: args[:asin]).first
   book.image = image
-  book.description = description
   book.save
 end
 
@@ -35,9 +33,20 @@ task update_books: :environment do
         Rake::Task["scrape_amazon"].invoke(book.asin)
         Rake::Task["scrape_amazon"].reenable
         done = true
-      rescue Exception => e
-        Rake::Task["scrape_amazon"].reenable
-        $done = false
+      rescue OpenURI::HTTPError => e
+          if e.message == '404 Not Found'
+            # No longer available on Amazon
+            failure = FailedUpdate.where(book_id: book.id).first
+            if failure
+              failure.touch
+            else
+              failure = FailedUpdate.create! book_id: book.id
+            end
+          else
+            # Amazon failed us
+            Rake::Task["scrape_amazon"].reenable
+            $done = false
+          end
       end
     end while done == false && i < 5
   end
