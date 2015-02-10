@@ -33,7 +33,7 @@ var InformationDisplay = React.createClass({
     return (
       <div id="informationDisplay">
         <div className="h2 text-center">
-          {this.state.partnerInfo["first_name"] + " " + this.state.partnerInfo["last_name"]}
+          {this.state.partnerInfo.email}
         </div>
         <div className="partner-text-information col-md-5 col-md-offset-1">
           <p><b>Email </b>{this.state.partnerInfo["email"]}</p>
