@@ -143,6 +143,12 @@
   cursor: pointer;
 }
 
+.tabDisplay {
+  min-height: 800px;
+  max-height: 800px;
+  overflow: scroll;
+}
+
 .top-buffer {
   margin-top: 20px;
 }

@@ -1,30 +1,32 @@
 # == Schema Information
 #
-# Table name: users
+# Table name: admin_users
 #
 #  id                     :integer          not null, primary key
-#  email                  :string(255)      default(""), not null
-#  encrypted_password     :string(255)      default(""), not null
+#  email                  :string(255)      not null
+#  encrypted_password     :string(255)      not null
 #  reset_password_token   :string(255)
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
+#  sign_in_count          :integer          default(0)
 #  current_sign_in_at     :datetime
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string(255)
 #  last_sign_in_ip        :string(255)
-#  created_at             :datetime
-#  updated_at             :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  can_edit_origins       :boolean
+#  ops_rel                :boolean
+#  publishing_rel         :boolean
+#  DR_rel                 :boolean
 #  role                   :integer
-#  first_name             :string(255)
-#  last_name              :string(255)
-#  school                 :string(255)
-#  organization           :string(255)
-#  country                :string(255)
+#  country_id             :integer
 #
 
 class User < ActiveRecord::Base
     include Elasticsearch::Model
+
+  self.table_name = "admin_users"
 
   enum role: [:user, :vip, :admin]
   after_initialize :set_default_role, :if => :new_record?
@@ -50,6 +52,12 @@ class User < ActiveRecord::Base
     )
   end
 
+  def as_json(options={})
+    json = super(options)
+    json[:past_purchase_ids] = purchases.map { |purchase| purchase.book.id }
+    json
+  end
+
   def country_name
     country.name
   end
@@ -61,10 +69,6 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= :user
-  end
-
-  def name
-    "#{first_name} #{last_name}"
   end
 
   def cart
@@ -81,7 +85,7 @@ class User < ActiveRecord::Base
       filtered[:query] = {
         multi_match: {
           query: string,
-          fields: [:first_name, :last_name, :email],
+          fields: [:email],
           fuzziness: 'AUTO'
         }
       }

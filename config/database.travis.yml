@@ -1,4 +1,5 @@
 test:
-  adapter: sqlite3
-  timeout: 500
-  database: ":memory:"
+  adapter: mysql2
+  database: worldreader_dev
+  username: travis
+  encoding: utf8

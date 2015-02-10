@@ -5,8 +5,6 @@ var InformationDisplay = React.createClass({
     var initPartner = {
       country: "",
       email: "",
-      first_name: "",
-      last_name: "",
       organization: "",
       school: "",
     };

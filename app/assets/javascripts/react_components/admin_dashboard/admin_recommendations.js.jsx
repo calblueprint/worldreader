@@ -172,34 +172,24 @@ var Recommendation = React.createClass({
   }
 });
 
-
-
-// var itemList = React.createClass({
-//   render: function () {
-//     console.log("items: " + JSON.stringify(this.props.items));
-//     var pills = this.props.items.map (function (item) {
-//       return (
-//         <div>{item.name}</div>
-//       );
-//     });
-//     return (
-//       <div className="list-group">
-//         {pills}
-//       </div>
-//     );
-//   }
-// });
+var recommendationTypes = {
+  AUTO:0,
+  CUSTOM:1
+};
 
 var CreateRecommendationPage = React.createClass({
   getInitialState: function () {
     return {
       books: [], 
       selectedBooks: [],
+      recommendation_type: recommendationTypes.AUTO,
       tags: {countries:[2,3,4], languages:[1,2]}
     };
   },
   componentDidMount: function () {
     this._fetchBooks({});
+    $('#recommendation-type-toggle').bootstrapSwitch();
+    $('#recommendation-type-toggle').on('switchChange.bootstrapSwitch', this._setRecommendationType);
   },
   _fetchBooks: function (search_data) {
     $.ajax({
@@ -237,6 +227,7 @@ var CreateRecommendationPage = React.createClass({
       url: "/admin/recommendations/add",
       data: {
         book_ids: this.state.selectedBooks,
+        recommendation_type: this.state.recommendation_type,
         country_ids: this.state.tags.countries,
         language_ids: this.state.tags.languages
       },
@@ -252,31 +243,76 @@ var CreateRecommendationPage = React.createClass({
       console.log("Received response " + message.message);
     });
   },
+  _setRecommendationType: function (event, state) {
+    console.log("recommendation type: " + state);
+    this.setState({recommendation_type: state});
+    $('#recommendation-type-toggle').bootstrapSwitch();
+
+  },
   render: function () {
-    return (
-      <div className="container">
-        <div className="row btn-group btn-group-lg" role="group">
-          <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
-            <span className="glyphicon glyphicon-chevron-left"></span> Back
+    if (this.state.recommendation_type == recommendationTypes.AUTO) {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="btn-group btn-group-lg col-md-8" role="group">
+              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
+                <span className="glyphicon glyphicon-chevron-left"></span> Back
+              </div>
+              <div className="btn btn-default" onClick={this._addRecommendation}> 
+                Done 
+              </div>
+            </div>
+            <div className="col-md-4">
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendation_type} 
+                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
+            </div>
           </div>
-          <div className="btn btn-default" onClick={this._addRecommendation}> 
-            Done 
+          <div className="row top-buffer">
+            <div className="col-md-5 panel">
+              <div className="row panel-heading"><RecommendationBookTagSearch/></div>
+              <div className="row panel-body"><RecommendationBookList books={this.state.books} 
+                selectBook={this._selectBook}
+                selectedBooks={this.state.selectedBooks} /></div>
+            </div>
+            <div className="col-md-5 panel side-buffer">
+              <div className="row panel-heading"><RecommendationUserTagSearch/></div>
+              <div className="row panel-body"><RecommendationSelectedTags tags={this.state.tags}/></div>
+            </div>
           </div>
         </div>
-        <div className="row top-buffer">
-          <div className="col-md-5 panel">
-            <div className="row panel-heading"><RecommendationBookSearch/></div>
-            <div className="row panel-body"><RecommendationBookList books={this.state.books} 
-              selectBook={this._selectBook}
-              selectedBooks={this.state.selectedBooks} /></div>
+      );
+    } else {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="btn-group btn-group-lg col-md-8" role="group">
+              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
+                <span className="glyphicon glyphicon-chevron-left"></span> Back
+              </div>
+              <div className="btn btn-default" onClick={this._addRecommendation}> 
+                Done 
+              </div>
+            </div>
+            <div className="col-md-4">
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendation_type} 
+                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
+            </div>
           </div>
-          <div className="col-md-5 panel side-buffer">
-            <div className="row panel-heading"><RecommendationTagSearch/></div>
-            <div className="row panel-body"><RecommendationSelectedTags tags={this.state.tags}/></div>
+          <div className="row top-buffer">
+            <div className="col-md-5 panel">
+              <div className="row panel-heading"><RecommendationBookSearch/></div>
+              <div className="row panel-body"><RecommendationBookList books={this.state.books} 
+                selectBook={this._selectBook}
+                selectedBooks={this.state.selectedBooks} /></div>
+            </div>
+            <div className="col-md-5 panel side-buffer">
+              <div className="row panel-heading"><RecommendationUserTagSearch/></div>
+              <div className="row panel-body"><RecommendationSelectedTags tags={this.state.tags}/></div>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      );
+    }
   }
 });
 
@@ -296,6 +332,70 @@ var RecommendationBookSearch = React.createClass({
         </span>
       </div>
     );
+  }
+});
+
+var RecommendationBookTagSearch = React.createClass({
+  componentDidMount: function () {
+    this.initTagbar(); 
+  },
+  initTagbar: function () {
+    var mainSearch = $('.book-tagbar-input');
+    mainSearch.tagsinput();
+    // mainSearch.tagsinput({
+    //   tagClass: function(item) {
+    //     switch (item.tagType) {
+    //       case 'countries':     return countryLabel;
+    //       case 'levels':        return levelLabel;
+    //       case 'language':      return languageLabel;
+    //       case 'genre':         return genreLabel;
+    //       case 'recommended':   return recommendedLabel;
+    //     }
+    //   },
+    //   itemValue: 'value',
+    //   itemText: 'text',
+    //   typeahead: {
+    //     name: 'cities',
+    //     displayKey: 'text',
+    //     source: gon.all_tags
+    //   }
+    // });
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
+    // $('#tag-and-searchbar').affix({
+    //     offset: {
+    //       top: $('#index-image').height()
+    //     }
+    // });
+  },
+  tagsUpdated: function () {
+    this.updateSearch();
+  },
+  search: function (event) {
+    if (event.which == 13) {
+      this.updateSearch();
+    }
+  },
+  updateSearch: function () {
+    var tags = $(".book-tagbar-input").tagsinput("items");
+    console.log("tags: " + tags);
+
+  },
+  render: function () {    
+    return (
+      <div id="book-tagbar" className="input-group">
+        <span className="input-group-addon">
+          <span className="glyphicon glyphicon-tag"/>
+        </span>
+        <input className="book-tagbar-input input-block-level typeahead form-control" 
+        placeholder="Add tag" type="text"/>
+        <span className="input-group-btn">
+          <button className="search-button btn btn-default" type="submit">
+            <span className="glyphicon glyphicon-search"/>
+          </button>
+        </span>
+      </div>
+      );
   }
 });
 
@@ -338,7 +438,7 @@ var RecommendationBook = React.createClass({
   }
 });
 
-var RecommendationTagSearch = React.createClass({
+var RecommendationUserTagSearch = React.createClass({
   render: function () {    
     return (
       <div id="recommendation-tagbar" className="input-group">

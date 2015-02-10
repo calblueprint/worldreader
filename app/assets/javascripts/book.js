@@ -4,6 +4,8 @@ var languageLabel = 'label label-warning';
 var genreLabel = 'label label-info';
 var recommendedLabel = 'label label-danger';
 
+var InfiniteScroll = React.addons.InfiniteScroll;
+
 $(document).ready(function() {
   ready();
 });
