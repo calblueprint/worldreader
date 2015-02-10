@@ -103,6 +103,12 @@
   padding-left: 50px;
 }
 
+.tabDisplay {
+  min-height: 800px;
+  max-height: 800px;
+  overflow: scroll;
+}
+
 .badge {
   float: right;
 }
@@ -120,4 +126,35 @@
 #selectAllButton {
   float: left;
   background-color: #d9edf7;
+}
+
+.tabDisplay {
+  min-height: 800px;
+  max-height: 800px;
+  overflow: scroll;
+}
+
+.top-buffer {
+  margin-top: 20px;
+}
+
+.side-buffer {
+  margin-left: 5px;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.centered.nav-tabs > li, .centered.nav-pills > li {
+    float:none;
+    display:inline-block;
+}
+
+.centered.nav-tabs, .center-nav-pills {
+    text-align:center;
+}
+
+.transparent.navbar {
+  background-color: transparent !important;
 }

@@ -254,6 +254,12 @@ ActiveRecord::Schema.define(version: 20150209052524) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "countries_recommendations", id: false, force: true do |t|
+    t.integer "recommendation_id", null: false
+    t.integer "user_country_id"
+    t.integer "book_country_id"
+  end
+
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
@@ -401,6 +407,12 @@ ActiveRecord::Schema.define(version: 20150209052524) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "languages_recommendations", id: false, force: true do |t|
+    t.integer "recommendation_id", null: false
+    t.integer "user_language_id"
+    t.integer "book_language_id"
   end
 
   create_table "levels", force: true do |t|
@@ -557,14 +569,11 @@ ActiveRecord::Schema.define(version: 20150209052524) do
   end
 
   create_table "recommendations", force: true do |t|
-    t.string   "level"
-    t.string   "language"
-    t.string   "genre"
-    t.string   "country"
     t.string   "organization"
     t.string   "school"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "recommendation_type"
   end
 
   create_table "restrictedcontinent_books", id: false, force: true do |t|

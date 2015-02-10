@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
+
   namespace :admin do
     resources :dashboard do
       collection do
@@ -39,6 +40,19 @@ Rails.application.routes.draw do
         get "display_purchases", :as => "display_purchases"
         get "display_books", :as => "display_books"
         get "display_book", :as => "display_book"
+      end
+    end
+    resources :recommendations do
+      collection do
+        get "display_partners", :as => "display_partners"
+        get "display_books", :as => "display_books"
+        get "display_partner_categories", :as => "display_partner_categories"
+        get "display_recommendations", :as => "display_recommendations"
+        post "/add", :to => "recommendations#add_recommendation"
+        post "/delete", :to => "recommendations#delete_recommendation"
+      end
+      member do
+        post "/edit", :to => "recommendations#edit_recommendation"
       end
     end
   end

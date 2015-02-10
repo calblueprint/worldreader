@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap-switch
 //= require bootstrap-sprockets
 //= require bootstrap-tagsinput
 //= require turbolinks
@@ -11,4 +12,3 @@
 //= require_tree ./plugins
 //= require_tree ./models
 //= require_tree .
-
