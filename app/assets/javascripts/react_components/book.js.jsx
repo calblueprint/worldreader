@@ -42,7 +42,7 @@ var BookList = React.createClass({
             user: gon.current_user,
             books: this.props.books,
             expandedBookId: null,
-            pageNumber: 1,
+            pageNumber: 0,
             searchTerm: "",
             tags: [],
             isLastPage: false};
@@ -172,13 +172,14 @@ var BookList = React.createClass({
         page: this.state.pageNumber
       },
       success: function(results) {
-        self.setState({ books: results.books,
-                        isLastPage: results.last_page});
+        self.setState({ books: this.state.books.concat(results.books),
+                        isLastPage: results.books.length == 0 ? true : false});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+    console.log(this.state.pageNumber);
   },
   render: function() {
     bookList = this;
