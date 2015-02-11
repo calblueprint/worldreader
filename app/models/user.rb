@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
 
+  validates :organization, presence: { message: "must be provided" }
+
   belongs_to :country
   has_many :books, through: :purchases
   has_many :groups

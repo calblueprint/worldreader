@@ -288,6 +288,21 @@ var AddPartnerDisplay= React.createClass({
     });
   },
   render: function () {
+    var countries = gon.countries.map(function(country) {
+      return (
+          <option value={country.id}>{country.name}</option>
+      );
+    }.bind(this));
+    var levels = gon.levels.map(function(level) {
+      return (
+          <option value={level.id}>{level.name}</option>
+      );
+    }.bind(this));
+    var languages = gon.languages.map(function(language) {
+      return (
+          <option value={language.id}>{language.name}</option>
+      );
+    }.bind(this));
     return (
       <div className="addPartnerDisplay">
         <div className="header">
@@ -322,40 +337,19 @@ var AddPartnerDisplay= React.createClass({
           <label for="newUserGrade">Grade Levels</label>
           <div>
             <select id="newUserGrade" className="selectpicker newUserInput" title="Select Grade Levels" multiple data-width="300px">
-                <option>Elementary</option>
-                <option>Secondary</option>
-                <option>High School</option>
+              {levels}
             </select>
           </div>
           <label for="newUserLanguages">Languages</label>
           <div>
             <select id="newUserLanguages" className="selectpicker newUserInput" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
-                <option>Mandarin</option>
-                <option>Spanish</option>
-                <option>English</option>
-                <option>Hindi</option>
-                <option>Urdu</option>
-                <option>Arabic</option>
-                <option>Portuguese</option>
-                <option>Bengali</option>
-                <option>Russian</option>
-                <option>Japanese</option>
-                <option>Punjabi</option>
+              {languages}
             </select>
           </div>
           <label for="newUserCountries">Countries</label>
           <div>
             <select id="newUserCountries" className="selectpicker newUserInput" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
-                <option>China</option>
-                <option>India</option>
-                <option>United States</option>
-                <option>Indonesia</option>
-                <option>Brazil</option>
-                <option>Pakistan</option>
-                <option>Nigeria</option>
-                <option>Bangladesh</option>
-                <option>Russia</option>
-                <option>Japan</option>
+              {countries}
             </select>
           </div>
           <div className="newUserButton">

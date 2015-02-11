@@ -1,5 +1,5 @@
 class Admin::DashboardController < ApplicationController
-  before_filter :verify_admin
+  before_filter :verify_admin, :new_partner_info
 
   def index
   end
@@ -78,6 +78,24 @@ class Admin::DashboardController < ApplicationController
 
   def get_number_purchases
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
+  end
+
+  def new_partner_info
+    gon.countries = Country.all.map{ |x|
+      {
+        id: x.id, name: x.name
+      }
+    }
+    gon.levels= Level.all.map{ |x|
+      {
+        id: x.id, name: x.name
+      }
+    }
+    gon.languages = Language.all.map{ |x|
+      {
+        id: x.id, name: x.name
+      }
+    }
   end
 
   private
