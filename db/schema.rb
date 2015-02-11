@@ -543,11 +543,12 @@ ActiveRecord::Schema.define(version: 20150209052524) do
   end
 
   create_table "purchases", force: true do |t|
-    t.integer "user_id",      null: false
-    t.integer "book_id",      null: false
-    t.date    "purchased_on"
-    t.boolean "is_purchased"
-    t.boolean "is_approved"
+    t.integer  "user_id",      null: false
+    t.integer  "book_id",      null: false
+    t.date     "purchased_on"
+    t.boolean  "is_purchased"
+    t.boolean  "is_approved"
+    t.datetime "approved_on"
   end
 
   create_table "pushes", force: true do |t|

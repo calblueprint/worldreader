@@ -3,8 +3,8 @@ class Admin::DashboardController < ApplicationController
 
   def index
   end
-  
-  def display_all_partners 
+
+  def display_all_partners
     partners = User.partners_no_new_purchases
     render json: partners
   end
@@ -25,7 +25,16 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_purchases
-    purchases = Purchase.where(user_id: params[:id], is_approved: nil, is_purchased: true)
+    is_approved = params[:is_approved]
+    case params[:is_approved]
+    when "true"
+      is_approved = true
+    when "false"
+      is_approved = false
+    when "null"
+      is_approved = nil
+    end
+    purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
     render json: purchases
   end
 
@@ -40,14 +49,16 @@ class Admin::DashboardController < ApplicationController
   end
 
   def generate_csv
-    send_data Purchase.to_csv(Purchase.find(params[:purchases])), 
+    send_data Purchase.to_csv(Purchase.find(params[:purchases])),
       :type => 'text/csv; charset=iso-8859-1; header=present',
       :disposition => "attachment;purchases.csv"
   end
 
   def convert_purchases
     params[:purchases].each do |purchase_id|
-        Purchase.find(purchase_id).update(is_approved: true)
+      purchase = Purchase.find purchase_id
+      purchase.update is_approved: true
+      purchase.update approved_on: Date.today
     end
     render :nothing => true
   end
@@ -64,8 +75,8 @@ class Admin::DashboardController < ApplicationController
   end
 
   private
-  
+
   def verify_admin
     redirect_to root_url unless current_user.try(:admin?)
-  end 
+  end
 end

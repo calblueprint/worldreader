@@ -21,6 +21,7 @@
   min-height: 600px;
   max-height: 600px;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 .emptyBottomSpace {
@@ -74,14 +75,17 @@
 }
 
 .mainDisplay {
-  min-height: 800px;
-  max-height: 800px;
+  max-height: 600px;
+  min-height: 600px;
   overflow: scroll;
+  background-color: #ffffff;
 }
 
 #informationDisplay {
-  width: 50%;
-  margin: 0 auto;
+}
+
+.partner-text-information > p {
+  margin-bottom: 0px;
 }
 
 .groupContainer {
@@ -97,10 +101,12 @@
   overflow: scroll;
   padding-top: 25px;
   padding-left: 25px;
+  overflow-x: hidden;
 }
 
 .purchaseDisplay {
   padding-left: 50px;
+  padding-right: 50px;
 }
 
 .tabDisplay {
@@ -115,17 +121,26 @@
 
 #downloadPurchaseButton {
   float: right;
-  margin-right: 50px;
   background-color: #5cb85c;
+  margin-top: 10px;
 }
 
 #disapproveButton {
   background-color: #d9534f;
+  float: left;
+  margin-top: 10px;
 }
 
 #selectAllButton {
   float: left;
-  background-color: #d9edf7;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+#deselectAllButton {
+  float: left;
+  padding-right: 10px;
+  cursor: pointer;
 }
 
 .tabDisplay {
@@ -157,4 +172,17 @@
 
 .transparent.navbar {
   background-color: transparent !important;
+}
+
+.underline {
+  border-bottom: 2px solid #428bca;
+}
+
+.boundary-line {
+  padding-top: 30px;
+  border-bottom: 2px solid #aaa;
+}
+
+.header-padding {
+  padding-top: 30px;
 }
