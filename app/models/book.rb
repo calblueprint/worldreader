@@ -140,7 +140,7 @@ class Book < ActiveRecord::Base
     authors.map { |a| a.name }
   end
 
-  def self.query(string, tags)
+  def self.query(string, tags, page)
     filtered = {}
     if not string.empty?
       filtered[:query] = {
@@ -178,11 +178,13 @@ class Book < ActiveRecord::Base
         and: and_filter
       }
     end
-    query = {filtered: filtered}
+    query = {
+      filtered: filtered
+    }
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
-    results = Book.search(query: query, highlight: highlight).to_a
+    results = Book.search(query: query, highlight: highlight, from: 10 * page).to_a
     results.map! { |r| 
       r.has_key?(:highlight) ? 
         r._source.merge({highlight: r.highlight}) :
