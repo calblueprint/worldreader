@@ -1,4 +1,4 @@
- # == Schema Information
+# == Schema Information
 #
 # Table name: admin_users
 #
@@ -31,10 +31,13 @@ class User < ActiveRecord::Base
   enum role: [:user, :vip, :admin]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
+  after_save :validate_user_fields
 
-  validates :organization, presence: { message: "must be provided" }
+  validates :organization, presence: { message: "can't be blank" }
 
-  belongs_to :country
+  has_and_belongs_to_many :countries
+  has_and_belongs_to_many :levels
+  has_and_belongs_to_many :languages
   has_many :books, through: :purchases
   has_many :groups
   has_many :purchases
@@ -125,5 +128,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-
+  private
+  def validate_user_fields
+    errors.add(:levels, "can't be blank") if levels.size < 1
+    errors.add(:langauages, "can't be blank") if languages.size < 1
+    errors.add(:countries, "can't be blank")  if countries.size < 1
+    raise ActiveRecord::RecordInvalid.new(self) if !errors.empty?
+  end
 end

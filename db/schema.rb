@@ -260,6 +260,14 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.integer "book_country_id"
   end
 
+  create_table "countries_users", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "country_id"
+  end
+
+  add_index "countries_users", ["country_id"], name: "index_countries_users_on_country_id"
+  add_index "countries_users", ["user_id"], name: "index_countries_users_on_user_id"
+
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
@@ -415,6 +423,14 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.integer "book_language_id"
   end
 
+  create_table "languages_users", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "language_id"
+  end
+
+  add_index "languages_users", ["language_id"], name: "index_languages_users_on_language_id"
+  add_index "languages_users", ["user_id"], name: "index_languages_users_on_user_id"
+
   create_table "levels", force: true do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -490,6 +506,14 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "levels_users", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+  end
+
+  add_index "levels_users", ["level_id"], name: "index_levels_users_on_level_id"
+  add_index "levels_users", ["user_id"], name: "index_levels_users_on_user_id"
 
   create_table "publishers", force: true do |t|
     t.string   "name"

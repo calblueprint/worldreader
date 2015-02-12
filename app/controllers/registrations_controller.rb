@@ -3,7 +3,23 @@ class RegistrationsController < Devise::RegistrationsController
   skip_before_filter :require_no_authentication
 
   def create
-    build_resource(user_params)
+    build_resource(sign_up_params)
+
+    level_ids = Array(user_params[:levels])
+    level_ids.each do |level_id|
+      resource.levels << Level.find(level_id)
+    end
+
+    language_ids = Array(user_params[:languages])
+    language_ids.each do |language_id|
+      resource.languages << Language.find(language_id)
+    end
+
+    country_ids = Array(user_params[:countries])
+    country_ids.each do |country_id|
+      resource.countries << Country.find(country_id)
+    end
+
     if resource.save
       render json: {message: "User created!"}
     else
@@ -13,15 +29,15 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   protected
-
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) {
-      |u| u.permit(:email, :password)
+      |u| u.permit(:email, :first_name, :last_name, :organization, :password,
+           :password_confirmation)
     }
   end
 
-  private
+  private 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+    params.require(:user).permit({ :countries => [] }, { :levels => [] }, { :languages => [] })
   end
 end

@@ -264,7 +264,11 @@ var AddPartnerDisplay= React.createClass({
       last_name: $('#newUserLastName').val(),
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
-      password_confirmation: $('#newUserConfirmPassword').val()
+      password_confirmation: $('#newUserConfirmPassword').val(),
+      organization: $('#newUserOrganization').val(),
+      levels: $('#newUserLevels').val(),
+      languages: $('#newUserLanguages').val(),
+      countries: $('#newUserCountries').val()
     };
     $.ajax({
       type: "POST",
@@ -288,11 +292,6 @@ var AddPartnerDisplay= React.createClass({
     });
   },
   render: function () {
-    var countries = gon.countries.map(function(country) {
-      return (
-          <option value={country.id}>{country.name}</option>
-      );
-    }.bind(this));
     var levels = gon.levels.map(function(level) {
       return (
           <option value={level.id}>{level.name}</option>
@@ -301,6 +300,11 @@ var AddPartnerDisplay= React.createClass({
     var languages = gon.languages.map(function(language) {
       return (
           <option value={language.id}>{language.name}</option>
+      );
+    }.bind(this));
+    var countries = gon.countries.map(function(country) {
+      return (
+          <option value={country.id}>{country.name}</option>
       );
     }.bind(this));
     return (
@@ -334,9 +338,9 @@ var AddPartnerDisplay= React.createClass({
           <div>
             <input id="newUserOrganization" className="form-control newUserInput" />
           </div>
-          <label for="newUserGrade">Grade Levels</label>
+          <label for="newUserLevels">Grade Levels</label>
           <div>
-            <select id="newUserGrade" className="selectpicker newUserInput" title="Select Grade Levels" multiple data-width="300px">
+            <select id="newUserLevels" className="selectpicker newUserInput" title="Select Grade Levels" multiple data-width="300px">
               {levels}
             </select>
           </div>
