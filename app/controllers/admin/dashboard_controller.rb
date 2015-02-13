@@ -59,6 +59,12 @@ class Admin::DashboardController < ApplicationController
       purchase = Purchase.find purchase_id
       purchase.update is_approved: true
       purchase.update approved_on: Date.today
+
+      # Add these books to all of the partner's groups
+      user = purchase.user
+      user.groups.each do |group|
+        group.books << purchase.book
+      end
     end
     render :nothing => true
   end
