@@ -148,10 +148,14 @@ var BookList = React.createClass({
     this.updateSearch();
   },
   tagsUpdated: function() {
+    this.setState({ books: [],
+                  pageNumber: 0});
     this.updateSearch()
   },
   search: function(event) {
     if (event.which == 13) {
+      this.setState({ books: [],
+                      pageNumber: 0});
       this.updateSearch();
     }
   },
