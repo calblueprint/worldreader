@@ -34,7 +34,6 @@ class ApplicationController < ActionController::Base
     }
   end
 
-
   def set_auth_token
     gon.auth_token = form_authenticity_token
   end

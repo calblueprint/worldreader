@@ -287,7 +287,6 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    debugger;
     var levels = gon.levels.map(function(level) {
       return (
           <option value={level.id}>{level.name}</option>
