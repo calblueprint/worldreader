@@ -309,7 +309,6 @@ var AddPartnerDisplay= React.createClass({
         </div>
         <div className="addPartnerForm">
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
-          </div>
           <label for="newUserEmail">Email</label>
           <div>
             <input id="newUserEmail" type="text" className="form-control newUserInput" />
