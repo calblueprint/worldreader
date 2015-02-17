@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211021538) do
+ActiveRecord::Schema.define(version: 20150217022154) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -61,11 +61,36 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.boolean  "DR_rel"
     t.integer  "role"
     t.integer  "country_id"
+    t.string   "organization"
   end
 
   add_index "admin_users", ["country_id"], name: "index_admin_users_on_country_id", using: :btree
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "admin_users_languages", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "language_id"
+  end
+
+  add_index "admin_users_languages", ["language_id"], name: "index_admin_users_languages_on_language_id", using: :btree
+  add_index "admin_users_languages", ["user_id"], name: "index_admin_users_languages_on_user_id", using: :btree
+
+  create_table "admin_users_levels", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+  end
+
+  add_index "admin_users_levels", ["level_id"], name: "index_admin_users_levels_on_level_id", using: :btree
+  add_index "admin_users_levels", ["user_id"], name: "index_admin_users_levels_on_user_id", using: :btree
+
+  create_table "admin_users_origins", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "country_id"
+  end
+
+  add_index "admin_users_origins", ["country_id"], name: "index_admin_users_origins_on_country_id", using: :btree
+  add_index "admin_users_origins", ["user_id"], name: "index_admin_users_origins_on_user_id", using: :btree
 
   create_table "admin_users_projects", id: false, force: true do |t|
     t.integer "admin_user_id"
@@ -265,8 +290,8 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.integer "country_id"
   end
 
-  add_index "countries_users", ["country_id"], name: "index_countries_users_on_country_id"
-  add_index "countries_users", ["user_id"], name: "index_countries_users_on_user_id"
+  add_index "countries_users", ["country_id"], name: "index_countries_users_on_country_id", using: :btree
+  add_index "countries_users", ["user_id"], name: "index_countries_users_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -428,14 +453,22 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.integer "language_id"
   end
 
-  add_index "languages_users", ["language_id"], name: "index_languages_users_on_language_id"
-  add_index "languages_users", ["user_id"], name: "index_languages_users_on_user_id"
+  add_index "languages_users", ["language_id"], name: "index_languages_users_on_language_id", using: :btree
+  add_index "languages_users", ["user_id"], name: "index_languages_users_on_user_id", using: :btree
 
   create_table "levels", force: true do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "levels_users", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+  end
+
+  add_index "levels_users", ["level_id"], name: "index_levels_users_on_level_id", using: :btree
+  add_index "levels_users", ["user_id"], name: "index_levels_users_on_user_id", using: :btree
 
   create_table "models", force: true do |t|
     t.string   "name"
@@ -506,14 +539,6 @@ ActiveRecord::Schema.define(version: 20150211021538) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "levels_users", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "level_id"
-  end
-
-  add_index "levels_users", ["level_id"], name: "index_levels_users_on_level_id"
-  add_index "levels_users", ["user_id"], name: "index_levels_users_on_user_id"
 
   create_table "publishers", force: true do |t|
     t.string   "name"
