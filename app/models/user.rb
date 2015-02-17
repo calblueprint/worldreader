@@ -129,6 +129,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   private
+
   def validate_user_fields
     errors.add(:levels, "can't be blank") if levels.size < 1
     errors.add(:langauages, "can't be blank") if languages.size < 1
