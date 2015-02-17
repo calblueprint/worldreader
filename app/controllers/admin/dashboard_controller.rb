@@ -86,7 +86,7 @@ class Admin::DashboardController < ApplicationController
         id: x.id, name: x.name
       }
     }
-    gon.levels= Level.all.map{ |x|
+    gon.levels = Level.all.map{ |x|
       {
         id: x.id, name: x.name
       }

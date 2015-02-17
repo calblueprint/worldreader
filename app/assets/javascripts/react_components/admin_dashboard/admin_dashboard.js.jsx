@@ -178,7 +178,7 @@ var Partner = React.createClass({
 var displays = {
   INFORMATION: 1,
   NEW_PURCHASES: 2,
-  OLD_PURCHASES: 3
+  OLD_PURCHASES: 3,
 };
 
 var PartnerDisplay = React.createClass({
@@ -257,8 +257,6 @@ var AddPartnerDisplay= React.createClass({
   },
   createUser: function() {
     var user = {
-      first_name: $('#newUserFirstName').val(),
-      last_name: $('#newUserLastName').val(),
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
       password_confirmation: $('#newUserConfirmPassword').val(),
@@ -311,13 +309,6 @@ var AddPartnerDisplay= React.createClass({
         </div>
         <div className="addPartnerForm">
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
-          <label for="newUserFirstName">First Name</label>
-          <div>
-            <input id="newUserFirstName" type="text" className="form-control newUserInput" />
-          </div>
-          <label for="newUserLastName">Last Name</label>
-          <div>
-            <input id="newUserLastName" type="text" className="form-control newUserInput" />
           </div>
           <label for="newUserEmail">Email</label>
           <div>
