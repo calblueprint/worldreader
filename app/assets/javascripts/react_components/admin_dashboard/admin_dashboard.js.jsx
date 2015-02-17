@@ -307,39 +307,39 @@ var add-partner-display= React.createClass({
         <div className="header">
           Add a New Partner
         </div>
-        <div className="addPartnerForm">
+        <div className="add-partner-form">
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
           <label for="newUserEmail">Email</label>
           <div>
-            <input id="newUserEmail" type="text" className="form-control newUserInput" />
+            <input id="newUserEmail" type="text" className="form-control new-user-input" />
           </div>
           <label for="newUserPassword">Password</label>
           <div>
-            <input id="newUserPassword" type="password" className="form-control newUserInput" />
+            <input id="newUserPassword" type="password" className="form-control new-user-input" />
           </div>
           <label for="newUserConfirmPassword">Confirm Password</label>
           <div>
-            <input id="newUserConfirmPassword" type="password" className="form-control newUserInput" />
+            <input id="newUserConfirmPassword" type="password" className="form-control new-user-input" />
           </div>
           <label for="newUserOrganization">Organization Name</label>
           <div>
-            <input id="newUserOrganization" className="form-control newUserInput" />
+            <input id="newUserOrganization" className="form-control new-user-input" />
           </div>
           <label for="newUserLevels">Grade Levels</label>
           <div>
-            <select id="newUserLevels" className="selectpicker newUserInput" title="Select Grade Levels" multiple data-width="300px">
+            <select id="newUserLevels" className="selectpicker new-user-input" title="Select Grade Levels" multiple data-width="300px">
               {levels}
             </select>
           </div>
           <label for="newUserLanguages">Languages</label>
           <div>
-            <select id="newUserLanguages" className="selectpicker newUserInput" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+            <select id="newUserLanguages" className="selectpicker new-user-input" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
               {languages}
             </select>
           </div>
           <label for="newUserCountries">Countries</label>
           <div>
-            <select id="newUserCountries" className="selectpicker newUserInput" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+            <select id="newUserCountries" className="selectpicker new-user-input" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
               {countries}
             </select>
           </div>
