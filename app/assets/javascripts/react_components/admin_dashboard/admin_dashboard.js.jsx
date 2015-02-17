@@ -169,7 +169,7 @@ var Partner = React.createClass({
     var is_active = this.state.clicked ? "active" : "";
     return (
         <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
-          {this.props.partner["first_name"] + " " + this.props.partner["last_name"]}
+          {this.props.partner["email"]}
           <span className="badge">{this.props.numNewPurchases}</span></a></li>
     );
   }
@@ -177,8 +177,8 @@ var Partner = React.createClass({
 
 var displays = {
   INFORMATION: 1,
-  GROUPS: 2,
-  PURCHASES: 3,
+  NEW_PURCHASES: 2,
+  OLD_PURCHASES: 3
 };
 
 var PartnerDisplay = React.createClass({
