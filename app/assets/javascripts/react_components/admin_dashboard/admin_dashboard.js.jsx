@@ -83,7 +83,7 @@ var ManagePartnerInfo = React.createClass({
               {!this.state.showAddPartner ? 
                 <PartnerDisplay partnerId={this.state.selectedPartner}
                   refreshPurchases={this._refreshNewPurchases} />
-               : <add-partner-display />
+               : <AddPartnerDisplay />
               }
             </div>  
           </div>
@@ -251,7 +251,7 @@ var PartnerDisplay = React.createClass({
   }
 });
 
-var add-partner-display= React.createClass({
+var AddPartnerDisplay = React.createClass({
   componentDidMount: function () {
     $('.selectpicker').selectpicker();
   },

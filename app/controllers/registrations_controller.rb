@@ -42,9 +42,9 @@ class RegistrationsController < Devise::RegistrationsController
     }
   end
 
-  private 
+  private
 
   def user_params
-    params.require(:user).permit(:countries => [], :levels => [], :languages => [])
+    params.require(:user).permit(countries: [], levels: [], languages: [])
   end
 end
