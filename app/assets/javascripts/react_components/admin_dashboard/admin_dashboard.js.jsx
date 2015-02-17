@@ -83,7 +83,7 @@ var ManagePartnerInfo = React.createClass({
               {!this.state.showAddPartner ? 
                 <PartnerDisplay partnerId={this.state.selectedPartner}
                   refreshPurchases={this._refreshNewPurchases} />
-               : <AddPartnerDisplay />
+               : <add-partner-display />
               }
             </div>  
           </div>
@@ -108,7 +108,7 @@ var PartnerSearch = React.createClass({
         <div className="searchButton">
           <button type="submit" className="btn btn-default">Search</button>
         </div>
-        <div className="addButton">
+        <div className="add-button">
           <button type="button" className="btn btn-default" onClick={addPartner}>
             <span className="glyphicon glyphicon-plus"></span>
           </button>
@@ -251,7 +251,7 @@ var PartnerDisplay = React.createClass({
   }
 });
 
-var AddPartnerDisplay= React.createClass({
+var add-partner-display= React.createClass({
   componentDidMount: function () {
     $('.selectpicker').selectpicker();
   },
@@ -303,7 +303,7 @@ var AddPartnerDisplay= React.createClass({
       );
     }.bind(this));
     return (
-      <div className="addPartnerDisplay">
+      <div className="add-partner-display">
         <div className="header">
           Add a New Partner
         </div>

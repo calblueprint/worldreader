@@ -21,10 +21,10 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     if resource.save
-      render json: {message: "User created!"}
+      render json: { message: "User created!" }
     else
       clean_up_passwords resource
-      render json: {message: "User could not be created!", errors: resource.errors.full_messages}, status: :forbidden
+      render json: { message: "User could not be created!", errors: resource.errors.full_messages }, status: :forbidden
     end
   end
 
@@ -38,6 +38,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   private 
   def user_params
-    params.require(:user).permit({ :countries => [] }, { :levels => [] }, { :languages => [] })
+    params.require(:user).permit(:countries => [], :levels => [], :languages => [])
   end
 end
