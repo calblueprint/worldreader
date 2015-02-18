@@ -4,8 +4,6 @@ row
       | #{@user.email if @user.email}
     h3.text-center
       | #{@user.email if @user.email}
-    h3.text-center
-      | #{Country.find(@user.country_id).name if @user.country_id}
 
     h2 Purchase History
 
