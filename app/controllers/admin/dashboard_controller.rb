@@ -19,7 +19,7 @@ class Admin::DashboardController < ApplicationController
     countries = user.countries.pluck(:name).join(", ")
     levels = user.levels.pluck(:name).join(", ")
     languages = user.languages.pluck(:name).join(", ")
-    extra_fields = { countries: countries, levels: levels, languages: languages }
+    extra_fields = {countries: countries, levels: levels, languages: languages}
     render json: JSON::parse(user.to_json).merge(extra_fields)
   end
 

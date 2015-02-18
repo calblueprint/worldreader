@@ -162,20 +162,13 @@ var Partner = React.createClass({
   getInitialState: function () {
     return {clicked: false};
   },
-  componentDidMount: function() {
-    this.setState({clicked: this.props.selectedPartner == this.props.partnerId});
-  },
-  componentWillReceiveProps: function (nextProps) {
-    if (nextProps.selectedPartner != this.props.partnerId) {
-      this.setState({clicked: false});
-    }
-  },
   onClick: function () {
     this.props.selectPartner(this.props.partnerId);
     this.setState({clicked: true});
   },
   render: function () {
-    var is_active = this.state.clicked ? "active" : "";
+    var clicked = this.props.selectedPartner == this.props.partnerId;
+    var is_active = clicked ? "active" : "";
     return (
         <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
           {this.props.partner["email"]}
