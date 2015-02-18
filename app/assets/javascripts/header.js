@@ -16,9 +16,9 @@ function login() {
         password: $('.inputPassword').val()
       }
     }
-  }).done(function(results) {
-    location.reload()
-  }).error(function(results){
-    toastr.error("Invalid username or password.");
+  }).done(function() {
+    location.reload();
+  }).error(function(){
+    toastr.error('Invalid username or password.');
   });
 }
