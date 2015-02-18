@@ -3,7 +3,7 @@
 var ManagePartnerInfo = React.createClass({
   getInitialState: function () {
     return {partners: [], partnersNewPurchases: [],
-      selectedPartner: null, numNewPurchases: {}};
+      selectedPartner: null, numNewPurchases: {}, showAddPartner: false};
   },
   componentDidMount: function () {
     this._fetchPartners({});
@@ -57,7 +57,16 @@ var ManagePartnerInfo = React.createClass({
     this._fetchPartners({search_data: search});
   },
   _selectPartner: function (partnerId) {
-    this.setState({selectedPartner: partnerId});
+    this.setState({selectedPartner: partnerId, showAddPartner: false});
+  },
+  _addPartner: function() {
+    this.setState({selectedPartner: null, showAddPartner: true});
+  },
+  _addPartnerSuccess: function(newPartner) {
+    var partners = this.state.partners;
+    partners.push(newPartner);
+    this.setState({partners: partners, selectedPartner: newPartner["id"],
+      showAddPartner: false});
   },
   render: function () {
     return (
@@ -65,7 +74,7 @@ var ManagePartnerInfo = React.createClass({
         <div className="row">
           <div className="col-md-4">
             <div className="topDiv">
-              <PartnerSearch />
+              <PartnerSearch addPartner={this._addPartner} />
             </div>
             <div className="listPartners">
               <PartnerList partners={this.state.partners}
@@ -77,8 +86,11 @@ var ManagePartnerInfo = React.createClass({
           </div>
           <div className="col-md-8">
             <div className="mainScreen">
-              <PartnerDisplay partnerId={this.state.selectedPartner}
-                refreshPurchases={this._refreshNewPurchases} />
+              {!this.state.showAddPartner ? 
+                <PartnerDisplay partnerId={this.state.selectedPartner}
+                  refreshPurchases={this._refreshNewPurchases} />
+               : <AddPartnerDisplay success={this._addPartnerSuccess} />
+              }
             </div>
           </div>
         </div>
@@ -90,9 +102,9 @@ var ManagePartnerInfo = React.createClass({
 var PartnerSearch = React.createClass({
   _handleOnSubmit: function (e) {
     e.preventDefault()
-
   },
   render: function () {
+    var addPartner = this.props.addPartner;
     return (
       <form className="navbar-form navbar-left" role="search">
         <div className="searchInput">
@@ -101,6 +113,11 @@ var PartnerSearch = React.createClass({
         </div>
         <div className="searchButton">
           <button type="submit" className="btn btn-default">Search</button>
+        </div>
+        <div className="add-button">
+          <button type="button" className="btn btn-default" onClick={addPartner}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
         </div>
       </form>
     );
@@ -240,6 +257,111 @@ var PartnerDisplay = React.createClass({
   }
 });
 
+var AddPartnerDisplay = React.createClass({
+  componentDidMount: function () {
+    $('.selectpicker').selectpicker();
+  },
+  createUser: function() {
+    var success = this.props.success;
+    var user = {
+      email: $('#newUserEmail').val(),
+      password: $('#newUserPassword').val(),
+      password_confirmation: $('#newUserConfirmPassword').val(),
+      organization: $('#newUserOrganization').val(),
+      levels: $('#newUserLevels').val(),
+      languages: $('#newUserLanguages').val(),
+      countries: $('#newUserCountries').val()
+    };
+    $.ajax({
+      type: "POST",
+      url: "/users",
+      data: {
+        authenticity_token: gon.auth_token,
+        user: user
+      },
+      success: function (data) {
+        toastr.success(data.message);
+        success(data.user);
+      },
+      error: function(xhr, status, err) {
+        var errors = xhr.responseJSON.errors;
+        for (var error of errors) {
+          toastr.error(error);
+        }
+        console.error(this.props.url, status, err.toString(), xhr);
+      }.bind(this)
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
+  },
+  render: function () {
+    var levels = gon.levels.map(function(level) {
+      return (
+          <option value={level.id}>{level.name}</option>
+      );
+    }.bind(this));
+    var languages = gon.languages.map(function(language) {
+      return (
+          <option value={language.id}>{language.name}</option>
+      );
+    }.bind(this));
+    var countries = gon.countries.map(function(country) {
+      return (
+          <option value={country.id}>{country.name}</option>
+      );
+    }.bind(this));
+    return (
+      <div className="add-partner-display">
+        <div className="header">
+          Add a New Partner
+        </div>
+        <div className="add-partner-form">
+          <input type="hidden" name="authenticity_token" value={gon.auth_token} />
+          <label for="newUserEmail">Email</label>
+          <div>
+            <input id="newUserEmail" type="text" className="form-control new-user-input" />
+          </div>
+          <label for="newUserPassword">Password</label>
+          <div>
+            <input id="newUserPassword" type="password" className="form-control new-user-input" />
+          </div>
+          <label for="newUserConfirmPassword">Confirm Password</label>
+          <div>
+            <input id="newUserConfirmPassword" type="password" className="form-control new-user-input" />
+          </div>
+          <label for="newUserOrganization">Organization Name</label>
+          <div>
+            <input id="newUserOrganization" className="form-control new-user-input" />
+          </div>
+          <label for="newUserLevels">Grade Levels</label>
+          <div>
+            <select id="newUserLevels" className="selectpicker new-user-input" title="Select Grade Levels" multiple data-width="300px">
+              {levels}
+            </select>
+          </div>
+          <label for="newUserLanguages">Languages</label>
+          <div>
+            <select id="newUserLanguages" className="selectpicker new-user-input" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+              {languages}
+            </select>
+          </div>
+          <label for="newUserCountries">Countries</label>
+          <div>
+            <select id="newUserCountries" className="selectpicker new-user-input" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
+              {countries}
+            </select>
+          </div>
+          <div className="newUserButton">
+            <button type="button" className="btn btn-default" onClick={this.createUser}>
+              Make Partner
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 var MainDisplay = React.createClass({
   render: function() {
     if (this.props.type == displays.INFORMATION) {
@@ -274,7 +396,6 @@ var tabs = {
   VIEWINFO: 1,
   RECOMMEND: 2,
   VIEWBOOKS: 3,
-  CREATEUSERS: 4
 };
 
 var DashboardTabs = React.createClass({
@@ -292,9 +413,6 @@ var DashboardTabs = React.createClass({
   },
   clickViewBooks: function () {
     this.setState({currentTab: tabs.VIEWBOOKS});
-  },
-  clickCreateUsers: function () {
-    this.setState({currentTab: tabs.CREATEUSERS});
   },
   render: function () {
     return (
@@ -315,7 +433,6 @@ var DashboardTabs = React.createClass({
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>Books</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Users</a></li>
               </ul>
             </div>
           </div>
@@ -332,12 +449,11 @@ var DashboardTabDisplay = React.createClass({
   render: function() {
     if (this.props.type == tabs.VIEWINFO) {
       return (
-        <ManagePartnerInfo/>
+        <ManagePartnerInfo />
       );
     } else if (this.props.type == tabs.RECOMMEND) {
       return (
-        // <RecommendationsPage/>
-        <RecommendationViews/>
+        <RecommendationViews />
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (
@@ -345,12 +461,6 @@ var DashboardTabDisplay = React.createClass({
           View Books
         </div>
       );
-    } else if (this.props.type == tabs.CREATEUSERS) {
-      return (
-        <div>
-          Create Users
-        </div>
-      )
     }
   }
 });

@@ -7,19 +7,26 @@ def make_books
 end
 
 def make_users
-  c = Country.create! name: 'United States'
+  c = Country.find(1)
+  l = Level.find(1)
+  la = Language.find(1)
   1.upto(5) do |n|
     User.create!  email: "user#{n}@gmail.com",
-                  role: 1,
+                  role: 0,
                   password: "password",
-                  country: c
+                  organization: "org#{n}",
+                  countries: [c],
+                  levels: [l],
+                  languages: [la]
   end
-  c = Country.create! name: 'United Monkeys'
   1.upto(2) do |n|
     User.create!  email: "admin#{n}@gmail.com",
-                  role: 2,
+                  role: 1,
                   password: "password",
-                  country: c
+                  organization: "org#{n}",
+                  countries: [c],
+                  levels: [l],
+                  languages: [la]
   end
 end
 
@@ -170,12 +177,12 @@ def make_publisher_tags
 end
 
 make_books
-make_users
 make_groups
 make_purchases
 make_country_tags
 make_level_tags
 make_language_tags
+make_users
 make_genre_tags
 make_author_tags
 make_publisher_tags

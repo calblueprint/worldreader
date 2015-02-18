@@ -3,6 +3,7 @@
 //= require bootstrap-switch
 //= require bootstrap-sprockets
 //= require bootstrap-tagsinput
+//= require bootstrap-select
 //= require turbolinks
 //= require react
 //= require react_ujs

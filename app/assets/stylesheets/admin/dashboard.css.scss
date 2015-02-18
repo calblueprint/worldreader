@@ -12,6 +12,11 @@
 }
 
 .searchButton {
+  float: left;
+  margin-left: 8%;
+}
+
+.add-button {
   float: right;
 }
 
@@ -35,6 +40,24 @@
   top: 100px;
   font-style: italic;
   font-size: medium;
+}
+
+.add-partner-display {
+  background: #ffffff;
+}
+
+.add-partner-form {
+  padding: 20px;
+}
+
+.new-user-input {
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.header {
+  font-size: x-large;
+  text-align: center;
 }
 
 #admin-dashboard-nav {
