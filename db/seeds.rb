@@ -12,7 +12,7 @@ def make_users
   la = Language.find(1)
   1.upto(5) do |n|
     User.create!  email: "user#{n}@gmail.com",
-                  role: 1,
+                  role: 0,
                   password: "password",
                   organization: "org#{n}",
                   countries: [c],
@@ -21,7 +21,7 @@ def make_users
   end
   1.upto(2) do |n|
     User.create!  email: "admin#{n}@gmail.com",
-                  role: 2,
+                  role: 1,
                   password: "password",
                   organization: "org#{n}",
                   countries: [c],

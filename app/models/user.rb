@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   self.table_name = "admin_users"
 
-  enum role: [:user, :vip, :admin]
+  enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
   after_save :validate_user_fields
@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   has_many :books, through: :purchases
   has_many :groups
   has_many :purchases
-  scope :partners, -> { where role: 1 }
+  scope :partners, -> { where role: :user }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
@@ -133,7 +133,7 @@ class User < ActiveRecord::Base
   def validate_user_fields
     errors.add(:levels, "can't be blank") if levels.size < 1
     errors.add(:langauages, "can't be blank") if languages.size < 1
-    errors.add(:countries, "can't be blank")  if countries.size < 1
+    errors.add(:countries, "can't be blank") if countries.size < 1
     raise ActiveRecord::RecordInvalid.new(self) if !errors.empty?
   end
 end

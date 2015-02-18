@@ -62,6 +62,12 @@ var ManagePartnerInfo = React.createClass({
   _addPartner: function() {
     this.setState({selectedPartner: null, showAddPartner: true});
   },
+  _addPartnerSuccess: function(newPartner) {
+    var partners = this.state.partners;
+    partners.push(newPartner);
+    this.setState({partners: partners, selectedPartner: newPartner["id"],
+      showAddPartner: false});
+  },
   render: function () {
     return (
       <div className="container">
@@ -83,9 +89,9 @@ var ManagePartnerInfo = React.createClass({
               {!this.state.showAddPartner ? 
                 <PartnerDisplay partnerId={this.state.selectedPartner}
                   refreshPurchases={this._refreshNewPurchases} />
-               : <AddPartnerDisplay />
+               : <AddPartnerDisplay success={this._addPartnerSuccess} />
               }
-            </div>  
+            </div>
           </div>
         </div>
       </div>
@@ -256,6 +262,7 @@ var AddPartnerDisplay = React.createClass({
     $('.selectpicker').selectpicker();
   },
   createUser: function() {
+    var success = this.props.success;
     var user = {
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
@@ -272,8 +279,9 @@ var AddPartnerDisplay = React.createClass({
         authenticity_token: gon.auth_token,
         user: user
       },
-      success: function (message) {
-        toastr.success("User created!");
+      success: function (data) {
+        toastr.success(data.message);
+        success(data.user);
       },
       error: function(xhr, status, err) {
         var errors = xhr.responseJSON.errors;
@@ -388,7 +396,6 @@ var tabs = {
   VIEWINFO: 1,
   RECOMMEND: 2,
   VIEWBOOKS: 3,
-  CREATEUSERS: 4
 };
 
 var DashboardTabs = React.createClass({
@@ -406,9 +413,6 @@ var DashboardTabs = React.createClass({
   },
   clickViewBooks: function () {
     this.setState({currentTab: tabs.VIEWBOOKS});
-  },
-  clickCreateUsers: function () {
-    this.setState({currentTab: tabs.CREATEUSERS});
   },
   render: function () {
     return (
@@ -429,7 +433,6 @@ var DashboardTabs = React.createClass({
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>Books</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickCreateUsers}>Users</a></li>
               </ul>
             </div>
           </div>
@@ -446,12 +449,11 @@ var DashboardTabDisplay = React.createClass({
   render: function() {
     if (this.props.type == tabs.VIEWINFO) {
       return (
-        <ManagePartnerInfo/>
+        <ManagePartnerInfo />
       );
     } else if (this.props.type == tabs.RECOMMEND) {
       return (
-        // <RecommendationsPage/>
-        <RecommendationViews/>
+        <RecommendationViews />
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (
@@ -459,10 +461,6 @@ var DashboardTabDisplay = React.createClass({
           View Books
         </div>
       );
-    } else if (this.props.type == tabs.CREATEUSERS) {
-      return (
-        <ManageUserInfo/>
-      )
     }
   }
 });

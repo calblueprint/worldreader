@@ -21,7 +21,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     if resource.save
-      render json: { message: "User created!" }
+      render json: { message: "User created!", user: resource }
     else
       clean_up_passwords resource
       errors = resource.errors.full_messages
