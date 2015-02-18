@@ -162,6 +162,9 @@ var Partner = React.createClass({
   getInitialState: function () {
     return {clicked: false};
   },
+  componentDidMount: function() {
+    this.setState({clicked: this.props.selectedPartner == this.props.partnerId});
+  },
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.selectedPartner != this.props.partnerId) {
       this.setState({clicked: false});
