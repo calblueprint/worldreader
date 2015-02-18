@@ -7,6 +7,7 @@ var InformationDisplay = React.createClass({
       email: "",
       organization: "",
       levels: "",
+      languages: "",
     };
     return {partnerInfo: initPartner};
   },
@@ -33,7 +34,7 @@ var InformationDisplay = React.createClass({
     return (
       <div id="informationDisplay">
         <div className="h2 text-center">
-          {this.state.partnerInfo.email}
+          {this.state.partnerInfo["email"]}
         </div>
         <div className="partner-text-information col-md-5 col-md-offset-1">
           <p><b>Languages </b>{this.state.partnerInfo["languages"]}</p>
