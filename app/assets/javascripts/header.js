@@ -1,5 +1,19 @@
 function ready() {
   $('#login-button').click(login);
+
+  $('.inputEmail').keypress(function (e) {
+    if (e.which == 13) {
+      login();
+      return false;
+    }
+  });
+
+  $('.inputPassword').keypress(function (e) {
+    if (e.which == 13) {
+      login();
+      return false;
+    }
+  });
 }
 
 $(document).on('page:load', function() {
