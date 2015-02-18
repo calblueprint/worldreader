@@ -59,22 +59,21 @@
       .modal-body
         #modal-tab-content.tab-content
           #login.tab-pane.active.in
-            = form_tag session_path(:user) do
-              .form-group
-                label for="inputEmail" E-mail address
-                .input-group
-                  span.input-group-addon @
-                  = text_field_tag 'user[email]', nil, class: "inputEmail form-control", placeholder: "Enter email", type: "email"
-              .form-group
-                label for="inputPassword" Password
-                .input-group
-                  = text_field_tag 'user[password]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
-                  span.input-group-btn
-                    button.btn.btn-default Sign in
-              = link_to "Forgot your password?", new_password_path(:user), class:"text-right"
+            .form-group
+              label for="inputEmail" E-mail address
+              .input-group
+                span.input-group-addon @
+                = text_field_tag 'user[email]', nil, class: "inputEmail form-control", placeholder: "Enter email", type: "email"
+            .form-group.password-field
+              label for="inputPassword" Password
+              .input-group
+                = text_field_tag 'user[password]', nil, class: "inputPassword form-control", placeholder: "Password", type: "password"
+                span.input-group-btn
+                  button#login-button.btn.btn-default Sign in
+            = link_to "Forgot your password?", new_password_path(:user), class:"text-right"
 
-              .span.navbar-right
-                = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
-                = label_tag 'user[remember_me]', 'Keep me logged in'
+            .span.navbar-right
+              = check_box_tag 'user[remember_me]', 1, false, class:"pad-right"
+              = label_tag 'user[remember_me]', 'Keep me logged in'
     /! /.navbar-collapse
   /! /.container-fluid
