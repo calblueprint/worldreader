@@ -159,12 +159,8 @@ var PartnerList = React.createClass({
 });
 
 var Partner = React.createClass({
-  getInitialState: function () {
-    return {clicked: false};
-  },
   onClick: function () {
     this.props.selectPartner(this.props.partnerId);
-    this.setState({clicked: true});
   },
   render: function () {
     var clicked = this.props.selectedPartner == this.props.partnerId;
