@@ -16,7 +16,11 @@ class Admin::DashboardController < ApplicationController
 
   def partner_information
     user = User.find(params[:id])
-    render json: user
+    countries = user.countries.pluck(:name).join(", ")
+    levels = user.levels.pluck(:name).join(", ")
+    languages = user.languages.pluck(:name).join(", ")
+    extra_fields = {countries: countries, levels: levels, languages: languages}
+    render json: user.as_json.merge(extra_fields)
   end
 
   def display_groups
