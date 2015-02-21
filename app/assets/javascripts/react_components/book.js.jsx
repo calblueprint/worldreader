@@ -96,8 +96,8 @@ var BookList = React.createClass({
       mainSearch.tagsinput({
         tagClass: function(item) {
           switch (item.tagType) {
-            case 'countries':     return countryLabel;
-            case 'levels':        return levelLabel;
+            case 'country':       return countryLabel;
+            case 'levels':         return levelLabel;
             case 'language':      return languageLabel;
             case 'genre':         return genreLabel;
             case 'recommended':   return recommendedLabel;
@@ -219,7 +219,7 @@ var BookList = React.createClass({
         if (tagText.length != 0){
           tagString = " with tags " + tagText.join(', ');
         }
-        results = "Found " + bookTiles.length + " results:" + searchString + tagString + ".";
+        results = "Found results:" + searchString + tagString + ".";
         return (
           <div>
             {searchBar}
