@@ -1,5 +1,10 @@
 class Api::V1::BooksController < ApplicationController
 
+  def index
+    # TODO replace with infinite scroll
+    render json: Book.all
+  end
+
   def search
     term = params[:term]
     tags = ActiveSupport::JSON.decode params[:tags]

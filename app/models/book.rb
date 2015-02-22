@@ -81,6 +81,7 @@ class Book < ActiveRecord::Base
   belongs_to :country, foreign_key: "origin_id"
   has_many :purchases
   has_many :users, through: :purchases
+  has_one :failed_update
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :levels
@@ -112,6 +113,8 @@ class Book < ActiveRecord::Base
         :levels_name,
         :publisher_name,
         :authors_name,
+        :update_status,
+        :url
       ]
     )
   end
@@ -138,6 +141,14 @@ class Book < ActiveRecord::Base
 
   def authors_name
     authors.map { |a| a.name }
+  end
+
+  def update_status
+    failed_update.as_json
+  end
+
+  def url
+    "http://www.amazon.com/dp/" + asin
   end
 
   def self.query(string, tags, page)
