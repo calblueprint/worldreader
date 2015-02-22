@@ -172,7 +172,7 @@ var Recommendation = React.createClass({
   }
 });
 
-var recommendationTypes = {
+var RecommendationTypes = {
   AUTO:0,
   CUSTOM:1
 };
@@ -180,56 +180,47 @@ var recommendationTypes = {
 var CreateRecommendationPage = React.createClass({
   getInitialState: function () {
     return {
-      books: [], 
-      selectedBooks: [],
-      recommendation_type: recommendationTypes.AUTO,
-      tags: {countries:[2,3,4], languages:[1,2]}
+      recommendationType: RecommendationTypes.AUTO,
+      bookTags: [],
+      userTags: [],
+      selectedBooks: []
     };
   },
   componentDidMount: function () {
-    this._fetchBooks({});
     $('#recommendation-type-toggle').bootstrapSwitch();
     $('#recommendation-type-toggle').on('switchChange.bootstrapSwitch', this._setRecommendationType);
   },
-  _fetchBooks: function (search_data) {
-    $.ajax({
-      url: "/admin/recommendations/display_books",
-      dataType: 'json',
-      data: search_data,
-      success: function (data) {
-        this.setState({books: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+  _setRecommendationType: function (event, state) {
+    console.log("recommendation type: " + state);
+    this.setState({recommendationType: state});
+    $('#recommendation-type-toggle').bootstrapSwitch();
   },
-  _handleOnBookSearchSubmit: function (search) {
-    this._fetchBooks({search_data: search});
+  _setBookTags: function (tags) {
+    this.setState({bookTags: tags});
+  },
+  _setUserTags: function (tags) { 
+    this.setState({userTags: tags});
   },
   _selectBook: function (bookId) {
     var bookList = this.state.selectedBooks;
-    if (_.contains(bookList, bookId)) {
-      bookList = _.without(bookList, bookId);
-    }
-    else {
+    if (!_.contains(bookList, bookId)) {
       bookList.push(bookId);
+      this.setState({selectedBooks: bookList});
     }
-    this.setState({selectedBooks: bookList});
   },
   _addRecommendation: function () {
     var viewRecommendations = this.props.viewRecommendations;
-    if (this.state.selectedBooks.length == 0) {
-      console.error("no books selected");
-    }
+    // if (this.state.selectedBooks.length == 0) {
+    //   console.error("no books selected");
+    // }
     $.ajax({
       type: "POST",
       url: "/admin/recommendations/add",
       data: {
+        recommendation_type: this.state.recommendationType,
         book_ids: this.state.selectedBooks,
-        recommendation_type: this.state.recommendation_type,
-        country_ids: this.state.tags.countries,
-        language_ids: this.state.tags.languages
+        book_tags: JSON.stringify(this.state.bookTags),
+        user_tags: JSON.stringify(this.state.userTags)
       },
       success: function (message) {
         console.log("Recommendation succesfully created");
@@ -243,14 +234,8 @@ var CreateRecommendationPage = React.createClass({
       console.log("Received response " + message.message);
     });
   },
-  _setRecommendationType: function (event, state) {
-    console.log("recommendation type: " + state);
-    this.setState({recommendation_type: state});
-    $('#recommendation-type-toggle').bootstrapSwitch();
-
-  },
   render: function () {
-    if (this.state.recommendation_type == recommendationTypes.AUTO) {
+    if (this.state.recommendationType == RecommendationTypes.AUTO) {
       return (
         <div className="container">
           <div className="row">
@@ -263,75 +248,25 @@ var CreateRecommendationPage = React.createClass({
               </div>
             </div>
             <div className="col-md-4">
-              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendation_type} 
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
                 data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
             </div>
           </div>
           <div className="row top-buffer">
             <div className="col-md-5 panel">
-              <div className="row panel-heading"><RecommendationBookTagSearch/></div>
-              <div className="row panel-body"><RecommendationBookList books={this.state.books} 
-                selectBook={this._selectBook}
-                selectedBooks={this.state.selectedBooks} /></div>
+              <RecommendationBookTagSearch setBookTags={this._setBookTags}/>
             </div>
             <div className="col-md-5 panel side-buffer">
-              <div className="row panel-heading"><RecommendationUserTagSearch/></div>
-              <div className="row panel-body"><RecommendationSelectedTags tags={this.state.tags}/></div>
+              <RecommendationUserTagSearch setUserTags={this._setUserTags}/>
             </div>
           </div>
         </div>
       );
     } else {
-      return (
-        <div className="container">
-          <div className="row">
-            <div className="btn-group btn-group-lg col-md-8" role="group">
-              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
-                <span className="glyphicon glyphicon-chevron-left"></span> Back
-              </div>
-              <div className="btn btn-default" onClick={this._addRecommendation}> 
-                Done 
-              </div>
-            </div>
-            <div className="col-md-4">
-              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendation_type} 
-                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
-            </div>
-          </div>
-          <div className="row top-buffer">
-            <div className="col-md-5 panel">
-              <div className="row panel-heading"><RecommendationBookSearch/></div>
-              <div className="row panel-body"><RecommendationBookList books={this.state.books} 
-                selectBook={this._selectBook}
-                selectedBooks={this.state.selectedBooks} /></div>
-            </div>
-            <div className="col-md-5 panel side-buffer">
-              <div className="row panel-heading"><RecommendationUserTagSearch/></div>
-              <div className="row panel-body"><RecommendationSelectedTags tags={this.state.tags}/></div>
-            </div>
-          </div>
-        </div>
+      return ( 
+        <div/> 
       );
     }
-  }
-});
-
-var RecommendationBookSearch = React.createClass({
-  _handleOnSubmit: function (e) {
-    e.preventDefault();
-  },
-  render: function () {
-    return (
-      <div className="input-group">
-        <input type="text" className="form-control" onSubmit={this._handleOnSubmit}
-          placeholder="Search for books..." />
-        <span className="input-group-btn">
-          <button className="btn btn-default" type="submit">
-            <span className="glyphicon glyphicon-search"/>
-          </button>
-        </span>
-      </div>
-    );
   }
 });
 
@@ -339,36 +274,37 @@ var RecommendationBookTagSearch = React.createClass({
   componentDidMount: function () {
     this.initTagbar(); 
   },
+  getInitialState: function () {
+    return {
+      books: []
+    };
+  },
   initTagbar: function () {
     var mainSearch = $('.book-tagbar-input');
-    mainSearch.tagsinput();
-    // mainSearch.tagsinput({
-    //   tagClass: function(item) {
-    //     switch (item.tagType) {
-    //       case 'countries':     return countryLabel;
-    //       case 'levels':        return levelLabel;
-    //       case 'language':      return languageLabel;
-    //       case 'genre':         return genreLabel;
-    //       case 'recommended':   return recommendedLabel;
-    //     }
-    //   },
-    //   itemValue: 'value',
-    //   itemText: 'text',
-    //   typeahead: {
-    //     name: 'cities',
-    //     displayKey: 'text',
-    //     source: gon.all_tags
-    //   }
-    // });
+    mainSearch.tagsinput({
+      tagClass: function(item) {
+        switch (item.tagType) {
+          case 'countries':     return countryLabel;
+          case 'levels':        return levelLabel;
+          case 'language':      return languageLabel;
+          case 'genre':         return genreLabel;
+        }
+      },
+      itemValue: 'value',
+      itemText: 'text',
+      typeahead: {
+        name: 'recommendations',
+        displayKey: 'text',
+        source: gon.all_tags
+      }
+    });
     mainSearch.on('itemAdded', this.tagsUpdated);
     mainSearch.on('itemRemoved', this.tagsUpdated);
-    // $('#tag-and-searchbar').affix({
-    //     offset: {
-    //       top: $('#index-image').height()
-    //     }
-    // });
+
   },
   tagsUpdated: function () {
+    var tags = $(".book-tagbar-input").tagsinput("items");
+    this.props.setBookTags(tags);
     this.updateSearch();
   },
   search: function (event) {
@@ -378,24 +314,126 @@ var RecommendationBookTagSearch = React.createClass({
   },
   updateSearch: function () {
     var tags = $(".book-tagbar-input").tagsinput("items");
-    console.log("tags: " + tags);
+    console.log("book tags: " + JSON.stringify(tags));
+
+    var self = this;
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/books/search",
+      dataType: "json",
+      async: false,
+      data: {
+        tags: JSON.stringify(tags),
+        term: "",
+        page: 1
+      },
+      success: function(results) {
+        self.setState({ books: results.books});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    if (tags.length == 0) {
+      this.setState({books: []});
+    }
 
   },
-  render: function () {    
-    return (
-      <div id="book-tagbar" className="input-group">
-        <span className="input-group-addon">
-          <span className="glyphicon glyphicon-tag"/>
-        </span>
-        <input className="book-tagbar-input input-block-level typeahead form-control" 
-        placeholder="Add tag" type="text"/>
-        <span className="input-group-btn">
-          <button className="search-button btn btn-default" type="submit">
-            <span className="glyphicon glyphicon-search"/>
-          </button>
-        </span>
-      </div>
+  render: function () {
+    var bookList = this.state.books.map (function (book) {
+      return (
+        <li className="list-group-item" key={book.id}> {book.name} </li>
       );
+    });
+    return (
+      <div>
+        <div className="row panel-heading">
+          <div id="book-tagbar" className="input-group">
+            <span className="input-group-addon">
+              <span className="glyphicon glyphicon-tag"/>
+            </span>
+            <input className="book-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
+          </div>
+        </div>
+        <div className="row panel-body">
+          <div className="list-group">
+            {bookList}
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
+var RecommendationUserTagSearch = React.createClass({
+  componentDidMount: function () {
+    this.initTagbar(); 
+  },
+  getInitialState: function () {
+    return {
+      users: []
+    };
+  },
+  initTagbar: function () {
+    var mainSearch = $('.user-tagbar-input');
+    mainSearch.tagsinput({
+      tagClass: function(item) {
+        switch (item.tagType) {
+          case 'countries':     return countryLabel;
+          case 'levels':        return levelLabel;
+          case 'language':      return languageLabel;
+        }
+      },
+      itemValue: 'value',
+      itemText: 'text',
+      typeahead: {
+        name: 'recommendations',
+        displayKey: 'text',
+        source: gon.user_tags
+      }
+    });
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
+
+  },
+  tagsUpdated: function () {
+    var tags = $(".user-tagbar-input").tagsinput("items");
+    this.props.setUserTags(tags);
+    this.updateSearch();
+  },
+  search: function (event) {
+    if (event.which == 13) {
+      this.updateSearch();
+    }
+  },
+  updateSearch: function () {
+    var tags = $(".user-tagbar-input").tagsinput("items");
+    console.log("user tags: " + JSON.stringify(tags));
+
+  },
+  render: function () {
+    var userList = this.state.users.map (function (user) {
+      return (
+        <li className="list-group-item"> {user.email} </li>
+      );
+    });
+    return (
+      <div>
+        <div className="row panel-heading">
+          <div id="book-tagbar" className="input-group">
+            <span className="input-group-addon">
+              <span className="glyphicon glyphicon-tag"/>
+            </span>
+            <input className="user-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
+          </div>
+        </div>
+        <div className="row panel-body">
+          <div className="list-group">
+            {userList}
+          </div>
+        </div>
+      </div>
+    );
   }
 });
 
@@ -438,39 +476,3 @@ var RecommendationBook = React.createClass({
   }
 });
 
-var RecommendationUserTagSearch = React.createClass({
-  render: function () {    
-    return (
-      <div id="recommendation-tagbar" className="input-group">
-        <span className="input-group-addon">
-          <span className="glyphicon glyphicon-tag"/>
-        </span>
-        <input id="recommendation-tagbar-input" className="input-block-level typeahead form-control" 
-        placeholder="Add tag" type="text"/>
-      </div>
-      );
-  }
-});
-
-var RecommendationSelectedTags = React.createClass({
-  render: function () {
-    var countryTags = this.props.tags.countries.map (function (tag) {
-      return (<div className="list-group-item">{tag}</div>);
-    });
-    var languageTags = this.props.tags.languages.map (function (tag) {
-      return (<div className="list-group-item">{tag}</div>);
-    });
-    return (
-      <div>
-        <h3>Countries</h3>
-        <div className="list-group">
-          {countryTags}
-        </div>
-        <h3>Languages</h3>
-        <div className="list-group">
-          {languageTags}
-        </div>
-      </div>
-      );
-  }
-})

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_user_cart
+  before_action :set_user_cart, :search_tags
   after_action :store_location
   protect_from_forgery with: :exception
 
@@ -34,4 +34,38 @@ class ApplicationController < ActionController::Base
     flash[:error] = exception.message
     redirect_to root_url
   end
+
+  private
+
+  def search_tags
+    index = 0
+    country_tags = Country.uniq.select([:id, :name]).map{ |x|
+      index += 1
+      {
+        value: index, text: x.name, tagType: "countries", id: x.id
+      }
+    }
+    level_tags = Level.uniq.select([:id, :name]).map{ |x|
+      index += 1
+      {
+        value: index, text: x.name, tagType: "levels", id: x.id
+      }
+    }
+    language_tags = Language.uniq.select([:id, :name]).map{ |x|
+      index += 1
+      {
+        value: index, text: x.name, tagType: "language", id: x.id
+      }
+    }
+    genre_tags = Genre.uniq.select([:id, :name]).map{ |x|
+      index += 1
+      {
+        value: index, text: x.name, tagType: "genre", id: x.id
+      }
+    }
+    gon.all_tags = country_tags + level_tags + language_tags + genre_tags
+    gon.user_tags = country_tags + level_tags + language_tags
+
+  end
+
 end
