@@ -1,8 +1,9 @@
 class Api::V1::BooksController < ApplicationController
 
   def index
-    # TODO replace with infinite scroll
-    render json: Book.all
+    page = params[:page] || 1
+    books = Book.all.paginate page: page, per_page: 10
+    render json: books
   end
 
   def search
