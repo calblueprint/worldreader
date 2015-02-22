@@ -151,6 +151,10 @@ class Book < ActiveRecord::Base
     "http://www.amazon.com/dp/" + asin
   end
 
+  def asin
+    read_attribute(:asin) || ""
+  end
+
   def self.query(string, tags, page)
     filtered = {}
     if not string.empty?
