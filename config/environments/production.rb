@@ -23,7 +23,9 @@ Rails.application.configure do
   config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # TODO(varun:) change this back when app is fully deployed
+  # config.assets.js_compressor = :uglifier
+  config.assets.debug = true
   # config.assets.css_compressor = :sass
 
   # Do fallback to assets pipeline if a precompiled asset is missed.
