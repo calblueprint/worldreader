@@ -81,6 +81,7 @@ class Book < ActiveRecord::Base
   belongs_to :country, foreign_key: "origin_id"
   has_many :purchases
   has_many :users, through: :purchases
+  has_one :failed_update
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :levels
@@ -112,6 +113,8 @@ class Book < ActiveRecord::Base
         :levels_name,
         :publisher_name,
         :authors_name,
+        :update_status,
+        :url
       ]
     )
   end
@@ -140,7 +143,15 @@ class Book < ActiveRecord::Base
     authors.map { |a| a.name }
   end
 
-  def self.query(string, tags)
+  def update_status
+    failed_update.as_json
+  end
+
+  def url
+    "http://www.amazon.com/dp/" + asin
+  end
+
+  def self.query(string, tags, page)
     filtered = {}
     if not string.empty?
       filtered[:query] = {
@@ -178,11 +189,13 @@ class Book < ActiveRecord::Base
         and: and_filter
       }
     end
-    query = {filtered: filtered}
+    query = {
+      filtered: filtered
+    }
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
-    results = Book.search(query: query, highlight: highlight).to_a
+    results = Book.search(query: query, highlight: highlight, from: 10 * page).to_a
     results.map! { |r| 
       r.has_key?(:highlight) ? 
         r._source.merge({highlight: r.highlight}) :

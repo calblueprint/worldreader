@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209052524) do
+ActiveRecord::Schema.define(version: 20150217022154) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -61,11 +61,36 @@ ActiveRecord::Schema.define(version: 20150209052524) do
     t.boolean  "DR_rel"
     t.integer  "role"
     t.integer  "country_id"
+    t.string   "organization"
   end
 
   add_index "admin_users", ["country_id"], name: "index_admin_users_on_country_id", using: :btree
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "admin_users_languages", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "language_id"
+  end
+
+  add_index "admin_users_languages", ["language_id"], name: "index_admin_users_languages_on_language_id", using: :btree
+  add_index "admin_users_languages", ["user_id"], name: "index_admin_users_languages_on_user_id", using: :btree
+
+  create_table "admin_users_levels", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+  end
+
+  add_index "admin_users_levels", ["level_id"], name: "index_admin_users_levels_on_level_id", using: :btree
+  add_index "admin_users_levels", ["user_id"], name: "index_admin_users_levels_on_user_id", using: :btree
+
+  create_table "admin_users_origins", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "country_id"
+  end
+
+  add_index "admin_users_origins", ["country_id"], name: "index_admin_users_origins_on_country_id", using: :btree
+  add_index "admin_users_origins", ["user_id"], name: "index_admin_users_origins_on_user_id", using: :btree
 
   create_table "admin_users_projects", id: false, force: true do |t|
     t.integer "admin_user_id"
@@ -543,11 +568,12 @@ ActiveRecord::Schema.define(version: 20150209052524) do
   end
 
   create_table "purchases", force: true do |t|
-    t.integer "user_id",      null: false
-    t.integer "book_id",      null: false
-    t.date    "purchased_on"
-    t.boolean "is_purchased"
-    t.boolean "is_approved"
+    t.integer  "user_id",      null: false
+    t.integer  "book_id",      null: false
+    t.date     "purchased_on"
+    t.boolean  "is_purchased"
+    t.boolean  "is_approved"
+    t.datetime "approved_on"
   end
 
   create_table "pushes", force: true do |t|

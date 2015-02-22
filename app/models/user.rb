@@ -28,15 +28,20 @@ class User < ActiveRecord::Base
 
   self.table_name = "admin_users"
 
-  enum role: [:user, :vip, :admin]
+  enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
+  after_save :validate_user_fields
 
-  belongs_to :country
+  validates :organization, presence: { message: "can't be blank" }
+
+  has_and_belongs_to_many :countries
+  has_and_belongs_to_many :levels
+  has_and_belongs_to_many :languages
   has_many :books, through: :purchases
   has_many :groups
   has_many :purchases
-  scope :partners, -> { where role: 1 }
+  scope :partners, -> { where role: :user }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
@@ -72,7 +77,11 @@ class User < ActiveRecord::Base
   end
 
   def cart
-    purchases.where(is_purchased: false).map{ |purchase| purchase.book }
+    cart_purchases.map{ |purchase| purchase.book }
+  end
+
+  def cart_purchases
+    purchases.where(is_purchased: false)
   end
 
   def self.query(string, tags)
@@ -119,5 +128,12 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  private
 
+  def validate_user_fields
+    errors.add(:levels, "can't be blank") if levels.size < 1
+    errors.add(:langauages, "can't be blank") if languages.size < 1
+    errors.add(:countries, "can't be blank") if countries.size < 1
+    raise ActiveRecord::RecordInvalid.new(self) if !errors.empty?
+  end
 end

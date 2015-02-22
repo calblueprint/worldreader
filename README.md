@@ -24,9 +24,10 @@ Getting Started
 2. Install all the necessary gems with `bundle install`
 3. Install elasticsearch (on macs it's `brew install elasticsearch`).
 4. Start up the elasticsearch server with `elasticsearch -d`
-5. Migrate the database with `rake db:migrate`
-6. Spin up the server with `rails server`
-7. Visit `localhost:3000` and checkout the app!
+5. Start up mysql server with `mysqld`
+6. Migrate the database with `rake db:migrate`
+7. Spin up the server with `rails server`
+8. Visit `localhost:3000` and checkout the app!
 
 Documentation and Support
 -------------------------

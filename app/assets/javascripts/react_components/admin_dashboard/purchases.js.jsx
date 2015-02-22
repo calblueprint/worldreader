@@ -1,5 +1,11 @@
 /** @jsx React.DOM */
 
+var purchaseDisplayOptions= {
+  OLD: 1,
+  NEW: 2,
+  ALL: 3,
+};
+
 var PurchaseDisplay = React.createClass({
   getInitialState: function () {
     return {purchases: [], selectedPurchases: []};
@@ -8,12 +14,26 @@ var PurchaseDisplay = React.createClass({
     this._fetchPurchases({id: this.props.partnerId});
   },
   _fetchPurchases: function (id) {
+    var isApproved;
+    switch(this.props.purchaseDisplayOptions) {
+      case purchaseDisplayOptions.OLD:
+        isApproved = "true";
+        break;
+      case purchaseDisplayOptions.NEW:
+        isApproved = "null";
+        break;
+      default:
+        // have not implemented all option
+        break;
+    }
     $.ajax({
       url: "/admin/dashboard/" + id["id"] + "/display_purchases",
       dataType: 'json',
-      data: id,
+      data: {
+        id: id["id"],
+        is_approved: isApproved
+      },
       success: function (data) {
-        console.log(data);
         this.setState({purchases: data});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -56,7 +76,6 @@ var PurchaseDisplay = React.createClass({
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        console.log(data);
         this.props.refreshPurchases(this.props.partnerId);
         this._refreshPurchases();
       }.bind(this),
@@ -73,7 +92,6 @@ var PurchaseDisplay = React.createClass({
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        console.log(data);
         this.props.refreshPurchases(this.props.partnerId);
         this._refreshPurchases();
       }.bind(this),
@@ -103,10 +121,17 @@ var PurchaseDisplay = React.createClass({
     var purchases = this.state.purchases.map(function (purchase) {
       var is_selected = this.state.selectedPurchases.indexOf(purchase["id"]) >= 0;
       return (
-          <Purchase purchase={purchase} changePurchaseState={this.changePurchaseState}
-            selected={is_selected}/>
+          <Purchase purchase={purchase}
+                    changePurchaseState={this.changePurchaseState}
+                    selected={is_selected}
+                    key={purchase["id"]}/>
       );
     }.bind(this));
+    var approvedOnHeader = "";
+    var approveButtonText = "";
+    if (this.props.purchaseDisplayOptions == purchaseDisplayOptions.OLD) {
+      approvedOnHeader = "<th>Approved On</th>"
+    }
     return (
       <div className="purchaseDisplay">
         <table className="table table-hover">
@@ -121,16 +146,18 @@ var PurchaseDisplay = React.createClass({
             {purchases}
           </tbody>
         </table>
-        <button type="button" id="selectAllButton" className="btn btn-default" onClick={this._selectAll}>
-          Select All</button>
-        <button type="button" id="deselectAllButton" className="btn btn-default" onClick={this._deselectAll}>
-         Deselect All</button>
+
+        <a id="selectAllButton" onClick={this._selectAll}>
+          Select All</a>
+        <a id="deselectAllButton" onClick={this._deselectAll}>
+         Deselect All</a>
+         <br/>
         <button type="button" id="downloadPurchaseButton" className="btn btn-default" onClick={this._download}>
           Approve and Download Purchases</button>
         <button type="button" id="disapproveButton" className="btn btn-default" onClick={this._disapprove}>
           Disapprove Purchases (cannot be undone)</button>
       </div>
-    );  
+    );
   }
 });
 
@@ -147,7 +174,6 @@ var Purchase = React.createClass( {
       dataType: 'json',
       data: bookId,
       success: function (data) {
-        console.log(data);
         this.setState({book: data});
       }.bind(this),
       error: function (xhr, status, err) {

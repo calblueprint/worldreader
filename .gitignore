@@ -20,6 +20,7 @@ db/*.sqlite3
 /db/*.sqlite3-journal
 /log/*
 /tmp/*
+*.sql
 
 # various artifacts
 **.war
@@ -76,4 +77,5 @@ pickle-email-*.html
 
 # Environment files that may contain sensitive data
 .env
+.env_*
 .powenv
