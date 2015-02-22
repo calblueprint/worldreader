@@ -152,7 +152,7 @@ class Book < ActiveRecord::Base
   end
 
   def asin
-    read_attribute(:asin) || ""
+    self[:asin] || ""
   end
 
   def self.query(string, tags, page)
