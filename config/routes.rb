@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       end
       resources :books do
         collection do
+          get "" => "books#index"
           get "search/" => "books#search"
           get "page" => "books#page"
         end
