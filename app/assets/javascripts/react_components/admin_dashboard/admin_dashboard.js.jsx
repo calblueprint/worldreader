@@ -449,9 +449,8 @@ var DashboardTabDisplay = React.createClass({
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (
-        <div>
-          View Books
-        </div>
+        // <div> hi</div>
+        <BookStatusView />
       );
     }
   }
