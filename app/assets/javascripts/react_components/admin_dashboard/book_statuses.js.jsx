@@ -9,6 +9,11 @@ var BookStatusView = React.createClass({
     };
   },
   componentDidMount: function() {
+    this.setState({
+      books: [],
+      page: 1,
+      isLastPage: false
+    });
     $.ajax({
       url: "/api/v1/books",
       dataType: "json",
