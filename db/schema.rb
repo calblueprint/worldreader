@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217022154) do
+ActiveRecord::Schema.define(version: 20150223062539) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -574,6 +574,7 @@ ActiveRecord::Schema.define(version: 20150217022154) do
     t.boolean  "is_purchased"
     t.boolean  "is_approved"
     t.datetime "approved_on"
+    t.boolean  "flagged"
   end
 
   create_table "pushes", force: true do |t|

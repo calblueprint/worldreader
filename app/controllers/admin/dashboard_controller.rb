@@ -90,10 +90,16 @@ class Admin::DashboardController < ApplicationController
       type:         "text/csv; charset=iso-8859-1; header=present",
       disposition:  "attachment;failed_update.csv"
   end
+  
+  def toggle_flag
+    Purchase.find(params[:id]).update(flagged: params[:is_flagged])
+    render json: nil, status: :ok
+  end
 
   private
 
   def verify_admin
     redirect_to root_url unless current_user.try(:admin?)
+    gon.vip = current_user.try(:vip?)
   end
 end
