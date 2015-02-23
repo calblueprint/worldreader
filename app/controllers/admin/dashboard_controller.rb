@@ -84,9 +84,15 @@ class Admin::DashboardController < ApplicationController
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
 
+  def toggle_flag
+    Purchase.find(params[:id]).update(flagged: params[:is_flagged])
+    render json: nil, status: :ok
+  end
+
   private
 
   def verify_admin
     redirect_to root_url unless current_user.try(:admin?)
+    gon.vip = current_user.try(:vip?)
   end
 end

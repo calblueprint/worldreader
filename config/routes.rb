@@ -40,6 +40,7 @@ Rails.application.routes.draw do
         get "display_purchases", :as => "display_purchases"
         get "display_books", :as => "display_books"
         get "display_book", :as => "display_book"
+        post "/toggle_flag", :to =>"dashboard#toggle_flag"
       end
     end
     resources :recommendations do
