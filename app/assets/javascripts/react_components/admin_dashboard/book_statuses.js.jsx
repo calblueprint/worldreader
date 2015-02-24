@@ -54,26 +54,37 @@ var BookStatusView = React.createClass({
     return (
       <div  className="container">
         <div className="panel panel-primary">
-          <div className="row">
-            <div className="col-md-12">
-              <InfiniteScroll
-                pageStart={1}
-                loadMore={this.loadMore}
-                hasMore={!this.state.isLastPage}
-                loader={<div className="loader">Loading...</div>}>
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Book Name</th>
-                        <th>Updated On</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {bookStatuses}
-                    </tbody>
-                  </table>
-              </InfiniteScroll>
+          <div className="panel-heading">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="btn btn-default pull-right">
+                  <span className="glyphicon glyphicon-download-alt"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="panel-body">
+            <div className="row">
+              <div className="col-md-12">
+                <InfiniteScroll
+                  pageStart={1}
+                  loadMore={this.loadMore}
+                  hasMore={!this.state.isLastPage}
+                  loader={<div className="loader">Loading...</div>}>
+                    <table className="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Book Name</th>
+                          <th>Updated On</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bookStatuses}
+                      </tbody>
+                    </table>
+                </InfiniteScroll>
+              </div>
             </div>
           </div>
         </div>
