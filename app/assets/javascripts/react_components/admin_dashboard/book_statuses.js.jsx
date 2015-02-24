@@ -44,6 +44,19 @@ var BookStatusView = React.createClass({
       }.bind(this)
     });
   },
+  downloadFaildUpdateReport: function() {
+    $.ajax({
+      url: "/admin/dashboard/failed_report",
+      type: "GET",
+      success: function(data) {
+        window.open("data:text/csv;charset=utf-8," + escape(data));
+      }.bind(this),
+      error: function(xhr, status, error) {
+        toastr.error("There was an error while generating the report");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     var bookStatuses = this.state.books.map(function (book) {
       return (
@@ -57,7 +70,7 @@ var BookStatusView = React.createClass({
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-12">
-                <div className="btn btn-default pull-right">
+                <div className="btn btn-default pull-right" onClick={this.downloadFaildUpdateReport}>
                   <span className="glyphicon glyphicon-download-alt"/>
                 </div>
               </div>
