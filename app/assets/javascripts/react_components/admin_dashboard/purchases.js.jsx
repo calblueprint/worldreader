@@ -153,7 +153,7 @@ var PurchaseDisplay = React.createClass({
     if (this.props.purchaseDisplayOptions == purchaseDisplayOptions.OLD) {
       approvedOnHeader = "<th>Approved On</th>"
     }
-    var isVip = gon.vip;
+    var isVip = gon.current_user.role == 2;
     return (
       <div className="purchaseDisplay">
         <table className="table table-hover">

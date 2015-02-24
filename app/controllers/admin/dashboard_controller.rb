@@ -93,6 +93,5 @@ class Admin::DashboardController < ApplicationController
 
   def verify_admin
     redirect_to root_url unless current_user.try(:admin?)
-    gon.vip = current_user.try(:vip?)
   end
 end
