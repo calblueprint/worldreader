@@ -85,12 +85,10 @@ class Admin::DashboardController < ApplicationController
   end
 
   def generate_failed_report
-    failed_books = FailedUpdate.all.map do |update|
-      update.book
-    end
+    failed_books = FailedUpdate.all.map &:book
     send_data Book.to_csv(failed_books),
-      type: 'text/csv; charset=iso-8859-1; header=present',
-      disposition: 'attachment;failed_update.csv'
+      type:         "text/csv; charset=iso-8859-1; header=present",
+      disposition:  "attachment;failed_update.csv"
   end
 
   private
