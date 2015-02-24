@@ -90,7 +90,7 @@ class Admin::DashboardController < ApplicationController
       type:         "text/csv; charset=iso-8859-1; header=present",
       disposition:  "attachment;failed_update.csv"
   end
-  
+
   def toggle_flag
     Purchase.find(params[:id]).update(flagged: params[:is_flagged])
     render json: nil, status: :ok
