@@ -25,7 +25,6 @@
   padding: 10px 10px 10px 10px;
   min-height: 600px;
   max-height: 600px;
-  overflow: scroll;
   overflow-x: hidden;
 }
 
@@ -100,7 +99,6 @@
 .mainDisplay {
   max-height: 600px;
   min-height: 600px;
-  overflow: scroll;
   background-color: #ffffff;
 }
 
@@ -132,12 +130,6 @@
   padding-right: 50px;
 }
 
-.tabDisplay {
-  min-height: 800px;
-  max-height: 800px;
-  overflow: scroll;
-}
-
 .badge {
   float: right;
 }
@@ -164,12 +156,6 @@
   float: left;
   padding-right: 10px;
   cursor: pointer;
-}
-
-.tabDisplay {
-  min-height: 800px;
-  max-height: 800px;
-  overflow: scroll;
 }
 
 .top-buffer {
@@ -204,4 +190,8 @@
 .boundary-line {
   padding-top: 30px;
   border-bottom: 2px solid #aaa;
+}
+
+.book-title-table {
+  max-width: 600px;
 }

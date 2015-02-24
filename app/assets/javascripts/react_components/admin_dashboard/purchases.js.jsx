@@ -50,23 +50,20 @@ var PurchaseDisplay = React.createClass({
     this.setState({selectedPurchases: []});
   },
   _download: function () {
-    var myAjaxVariable = null;
     $.ajax({
       url: "/admin/dashboard/csv",
       type: "POST",
-      async : false,
       data: {
         purchases: this.state.selectedPurchases
       },
       success: function(data) {
-        myAjaxVariable = data;
+        window.open( "data:text/csv;charset=utf-8," + escape(data));
         this._convertSelected();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-    window.open( "data:text/csv;charset=utf-8," + escape(myAjaxVariable));
   },
   _disapprove: function () {
     $.ajax({

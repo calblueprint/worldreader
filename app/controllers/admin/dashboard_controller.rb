@@ -84,6 +84,13 @@ class Admin::DashboardController < ApplicationController
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
   end
 
+  def generate_failed_report
+    failed_books = FailedUpdate.all.map &:book
+    send_data Book.to_csv(failed_books),
+      type:         "text/csv; charset=iso-8859-1; header=present",
+      disposition:  "attachment;failed_update.csv"
+  end
+
   private
 
   def verify_admin

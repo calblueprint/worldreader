@@ -429,9 +429,7 @@ var DashboardTabs = React.createClass({
             </div>
           </div>
         </nav>
-        <div className="tabDisplay">
-          <DashboardTabDisplay type={this.state.currentTab}/>
-        </div>
+        <DashboardTabDisplay type={this.state.currentTab}/>
       </div>
     );
   }

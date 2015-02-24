@@ -3,10 +3,17 @@
 var BookStatusView = React.createClass({
   getInitialState: function() {
     return {
-      books: []
+      books: [],
+      page: 1,
+      isLastPage: false
     };
   },
   componentDidMount: function() {
+    this.setState({
+      books: [],
+      page: 1,
+      isLastPage: false
+    });
     $.ajax({
       url: "/api/v1/books",
       dataType: "json",
@@ -15,6 +22,37 @@ var BookStatusView = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
         toastr.error("There was an error retrieving the book data.");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  loadMore: function(pageToLoad) {
+    $.ajax({
+      url: "/api/v1/books",
+      dataType: "json",
+      data: {
+        page: pageToLoad
+      },
+      success: function(data) {
+        this.setState({ books: this.state.books.concat(data),
+                        page: this.state.page + 1,
+                        isLastPage: data.length == 0});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        toastr.error("There was an error retrieving the book data.");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  downloadFaildUpdateReport: function() {
+    $.ajax({
+      url: "/admin/dashboard/failed_report",
+      type: "GET",
+      success: function(data) {
+        window.open("data:text/csv;charset=utf-8," + escape(data));
+      }.bind(this),
+      error: function(xhr, status, error) {
+        toastr.error("There was an error while generating the report");
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -29,20 +67,37 @@ var BookStatusView = React.createClass({
     return (
       <div  className="container">
         <div className="panel panel-primary">
-          <div className="row">
-            <div className="col-md-12">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Book Name</th>
-                    <th>Updated On</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookStatuses}
-                </tbody>
-              </table>
+          <div className="panel-heading">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="btn btn-default pull-right" onClick={this.downloadFaildUpdateReport}>
+                  <span className="glyphicon glyphicon-download-alt"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="panel-body">
+            <div className="row">
+              <div className="col-md-12">
+                <InfiniteScroll
+                  pageStart={1}
+                  loadMore={this.loadMore}
+                  hasMore={!this.state.isLastPage}
+                  loader={<div className="loader">Loading...</div>}>
+                    <table className="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Book Name</th>
+                          <th>Updated On</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bookStatuses}
+                      </tbody>
+                    </table>
+                </InfiniteScroll>
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +121,7 @@ var BookStatus = React.createClass({
     }
     return (
       <tr>
-        <td>
+        <td className="book-title-table">
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
