@@ -87,6 +87,21 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
 
+  CSV_COLUMNS = ["Book Name", "ASIN"]
+
+  def self.to_csv(books)
+    CSV.generate do |csv|
+      csv << CSV_COLUMNS
+      books.each do |book|
+        csv << book.to_csv
+      end
+    end
+  end
+
+  def to_csv
+    [title, asin]
+  end
+
   settings number_of_shards: 1 do
     mapping do
       indexes :title, analyzer: 'english'
