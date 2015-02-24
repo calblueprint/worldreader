@@ -135,15 +135,19 @@
 }
 
 #downloadPurchaseButton {
-  float: right;
   background-color: #5cb85c;
-  margin-top: 10px;
 }
 
 #disapproveButton {
   background-color: #d9534f;
-  float: left;
-  margin-top: 10px;
+}
+
+#downloadButton {
+  background-color: #A9D0F5;
+}
+
+.action {
+  margin-left: 15px;
 }
 
 #selectAllButton {

@@ -91,6 +91,11 @@ class Admin::DashboardController < ApplicationController
       disposition:  "attachment;failed_update.csv"
   end
 
+  def toggle_flag
+    Purchase.find(params[:id]).update(flagged: params[:is_flagged])
+    render json: nil, status: :ok
+  end
+
   private
 
   def verify_admin
