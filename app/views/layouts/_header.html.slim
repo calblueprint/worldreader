@@ -1,50 +1,53 @@
 #navigation.navbar.navbar-default.navbar-fixed-top
-  .navbar-header
-    button.navbar-toggle data-target=".navbar-collapse" data-toggle="collapse" type="button"
-      span.icon-bar
-      span.icon-bar
-      span.icon-bar
-    a.navbar-brand href="/"
-      img.header-logo src="/assets/worldreader_logo.svg"
-  .navbar-collapse.collapse
-    ul.nav.navbar-nav.navbar-right
-      li
-        a href="/"  Library
-      li#cart-item
-        - if !current_user.nil?
-          a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
-            = react_component 'CartHeader', {cart: @cart}
-          #cart.ul.dropdown-menu role="menu"
-            = react_component 'Cart', {cart: @cart}
-            .text-center
-              = link_to "Checkout", cart_path(current_user.id)
-      li.end
-        - if current_user.nil?
-          a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
-        - elsif current_user.admin?
-          a.dropdown-toggle data-toggle="dropdown" href="#"
-            | #{current_user.email}
-            span.caret
-          ul.dropdown-menu role="menu"
-            li
-              = link_to "Admin Dashboard", admin_dashboard_index_path
-            li
-              = link_to "Account Settings", user_path(current_user.id)
-            li.divider
-            li
-              = link_to "Sign Out", destroy_user_session_path, method: :delete
-        - else
-          a.dropdown-toggle data-toggle="dropdown" href="#"
-            | #{current_user.email}
-            span.caret
-          ul.dropdown-menu role="menu"
-            li
-              = link_to "My Purchase History", user_path(current_user.id)
-            li
-              = link_to "Account Settings", user_path(current_user.id)
-            li.divider
-            li
-              = link_to "Sign Out", destroy_user_session_path, method: :delete
+  .col-md-1
+  .col-md-10
+    .navbar-header
+      button.navbar-toggle data-target=".navbar-collapse" data-toggle="collapse" type="button"
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand href="/"
+        img.header-logo src="/assets/worldreader_logo.svg"
+    .navbar-collapse.collapse
+      ul.nav.navbar-nav.navbar-right
+        li
+          a href="/"  Library
+        li#cart-item
+          - if !current_user.nil?
+            a#cart_header.dropdown-toggle data-toggle="dropdown" href="#"
+              = react_component 'CartHeader', {cart: @cart}
+            #cart.ul.dropdown-menu role="menu"
+              = react_component 'Cart', {cart: @cart}
+              .text-center
+                = link_to "Checkout", cart_path(current_user.id)
+        li.end
+          - if current_user.nil?
+            a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
+          - elsif current_user.admin?
+            a.dropdown-toggle data-toggle="dropdown" href="#"
+              | #{current_user.email}
+              span.caret
+            ul.dropdown-menu role="menu"
+              li
+                = link_to "Admin Dashboard", admin_dashboard_index_path
+              li
+                = link_to "Account Settings", user_path(current_user.id)
+              li.divider
+              li
+                = link_to "Sign Out", destroy_user_session_path, method: :delete
+          - else
+            a.dropdown-toggle data-toggle="dropdown" href="#"
+              | #{current_user.email}
+              span.caret
+            ul.dropdown-menu role="menu"
+              li
+                = link_to "My Purchase History", user_path(current_user.id)
+              li
+                = link_to "Account Settings", user_path(current_user.id)
+              li.divider
+              li
+                = link_to "Sign Out", destroy_user_session_path, method: :delete
+  .col-md-1
 
 
     /! /.navbar-collapse
