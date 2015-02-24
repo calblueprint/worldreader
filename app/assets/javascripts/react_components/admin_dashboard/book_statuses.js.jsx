@@ -97,7 +97,7 @@ var BookStatus = React.createClass({
     }
     return (
       <tr>
-        <td>
+        <td className="book-title-table">
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
