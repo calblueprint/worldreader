@@ -10,7 +10,7 @@
 #  friendly_name :string(255)
 #
 
-class ContentBuckets < ActiveRecord::Base
+class ContentBucket < ActiveRecord::Base
   belongs_to :project
   has_and_belongs_to_many :books
 end

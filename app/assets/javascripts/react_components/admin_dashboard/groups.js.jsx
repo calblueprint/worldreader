@@ -10,8 +10,8 @@ var GroupDisplay = React.createClass({
     };
     return {groups: [initGroup]};
   },
-  componentDidMount: function () {
-    this._fetchGroups(this.props.partnerId);
+  componentWillReceiveProps: function (nextProps) {
+    this._fetchGroups(nextProps.partnerId);
   },
   _fetchGroups: function (id) {
     $.ajax({
@@ -19,6 +19,7 @@ var GroupDisplay = React.createClass({
       dataType: 'json',
       data: id,
       success: function (data) {
+        // console.log(data);
         this.setState({groups: data});
       }.bind(this),
       error: function (xhr, status, err) {

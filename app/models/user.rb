@@ -25,28 +25,22 @@
 #
 
 class User < ActiveRecord::Base
-    include Elasticsearch::Model
 
   self.table_name = "admin_users"
 
   enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
-  after_save :validate_user_fields
-
   validates :organization, presence: { message: "can't be blank" }
-  has_and_belongs_to_many :projects
+
+  belongs_to :country
   has_many :books, through: :purchases
   has_many :purchases
+  has_and_belongs_to_many :projects, foreign_key: 'admin_user_id'
+
   scope :partners, -> { where role: :user }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
-
-  settings number_of_shards: 1 do
-    mapping do
-      indexes :country_name, index: 'not_analyzed'
-    end
-  end
 
   def as_json(options={})
     json = super(options)

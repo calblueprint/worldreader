@@ -1,4 +1,5 @@
-FactoryGirl.define do  factory :project, :class => 'Projects' do
+FactoryGirl.define do
+  factory :project, :class => 'Projects' do
     
   end
   factory :content_bucket, :class => 'ContentBuckets' do
