@@ -192,7 +192,11 @@ var CreateRecommendationPage = React.createClass({
   },
   _setRecommendationType: function (event, state) {
     console.log("recommendation type: " + state);
-    this.setState({recommendationType: state});
+    if (state) {
+      this.setState({recommendationType: 1});
+    } else {
+      this.setState({recommendationType: 0});      
+    }
     $('#recommendation-type-toggle').bootstrapSwitch();
   },
   _setBookTags: function (tags) {
@@ -201,26 +205,33 @@ var CreateRecommendationPage = React.createClass({
   _setUserTags: function (tags) { 
     this.setState({userTags: tags});
   },
-  _selectBook: function (bookId) {
+  _selectBook: function (book) {
     var bookList = this.state.selectedBooks;
-    if (!_.contains(bookList, bookId)) {
-      bookList.push(bookId);
-      this.setState({selectedBooks: bookList});
+    if (_.findWhere(bookList, {"id":book.id}) == null) {
+      bookList.push(book);
     }
+    this.setState({selectedBooks: bookList});
+  },
+  _unselectBook: function (book) {
+    var bookList = _.without(this.state.selectedBooks, book);
+    this.setState({selectedBooks: bookList});
   },
   _addRecommendation: function () {
+    console.log("selectedBooks state: " + JSON.stringify(this.state.selectedBooks));
     var viewRecommendations = this.props.viewRecommendations;
-    // if (this.state.selectedBooks.length == 0) {
-    //   console.error("no books selected");
-    // }
+    var bookIds = this.state.selectedBooks.map (function (book) {
+      return book.id;
+    });
+
+    console.log("selected bookIds: " + bookIds);
     $.ajax({
       type: "POST",
       url: "/admin/recommendations/add",
       data: {
         recommendation_type: this.state.recommendationType,
-        book_ids: this.state.selectedBooks,
+        book_ids: bookIds,
         book_tags: JSON.stringify(this.state.bookTags),
-        user_tags: JSON.stringify(this.state.userTags)
+        project_tags: JSON.stringify(this.state.userTags)
       },
       success: function (message) {
         console.log("Recommendation succesfully created");
@@ -264,7 +275,30 @@ var CreateRecommendationPage = React.createClass({
       );
     } else {
       return ( 
-        <div/> 
+        <div className="container">
+          <div className="row">
+            <div className="btn-group btn-group-lg col-md-8" role="group">
+              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
+                <span className="glyphicon glyphicon-chevron-left"></span> Back
+              </div>
+              <div className="btn btn-default" onClick={this._addRecommendation}> 
+                Done 
+              </div>
+            </div>
+            <div className="col-md-4">
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
+                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
+            </div>
+          </div>
+          <div className="row top-buffer">
+            <div className="col-md-6 panel">
+              <RecommendationBookSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+            </div>
+            <div className="col-md-4 panel side-buffer">
+              <RecommendationUserTagSearch setUserTags={this._setUserTags}/>              
+            </div>
+          </div>
+        </div>
       );
     }
   }
@@ -325,10 +359,11 @@ var RecommendationBookTagSearch = React.createClass({
       data: {
         tags: JSON.stringify(tags),
         term: "",
-        page: 1
+        page: 0
       },
       success: function(results) {
         self.setState({ books: results.books});
+        console.log("results: " + JSON.stringify(results));
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -342,7 +377,7 @@ var RecommendationBookTagSearch = React.createClass({
   render: function () {
     var bookList = this.state.books.map (function (book) {
       return (
-        <li className="list-group-item" key={book.id}> {book.name} </li>
+        <li className="list-group-item" key={book.id}> {book.title}</li>
       );
     });
     return (
@@ -389,7 +424,7 @@ var RecommendationUserTagSearch = React.createClass({
       typeahead: {
         name: 'recommendations',
         displayKey: 'text',
-        source: gon.user_tags
+        source: gon.project_tags
       }
     });
     mainSearch.on('itemAdded', this.tagsUpdated);
@@ -437,42 +472,140 @@ var RecommendationUserTagSearch = React.createClass({
   }
 });
 
-var RecommendationBookList = React.createClass({
+
+var RecommendationBookSearch = React.createClass({
+  componentDidMount: function () {
+    this.initTagbar(); 
+  },
+  getInitialState: function () {
+    return {
+      books: [],
+    };
+  },
+  initTagbar: function () {
+    var mainSearch = $('.book-tagbar-input');
+    mainSearch.tagsinput({
+      tagClass: function(item) {
+        switch (item.tagType) {
+          case 'countries':     return countryLabel;
+          case 'levels':        return levelLabel;
+          case 'language':      return languageLabel;
+          case 'genre':         return genreLabel;
+        }
+      },
+      itemValue: 'value',
+      itemText: 'text',
+      typeahead: {
+        name: 'recommendations',
+        displayKey: 'text',
+        source: gon.all_tags
+      }
+    });
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
+  },
+  tagsUpdated: function () {
+    var tags = $(".book-tagbar-input").tagsinput("items");
+    this.updateSearch();
+  },
+  search: function (event) {
+    if (event.which == 13) {
+      this.updateSearch();
+    }
+  },
+  updateSearch: function () {
+    var tags = $(".book-tagbar-input").tagsinput("items");
+    var searchTerm = $(".book-searchbar-input").val();
+    var self = this;
+
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/books/search",
+      dataType: "json",
+      async: false,
+      data: {
+        tags: JSON.stringify(tags),
+        term: searchTerm,
+        page: 0
+      },
+      success: function(results) {
+        self.setState({ books: results.books});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    if (tags.length == 0 && searchTerm=="") {
+      this.setState({books: []});
+    }
+  },
   render: function () {
-    var selectBook = this.props.selectBook;
-    var selectedBooks = this.props.selectedBooks;
-    var currentBooks = this.props.books.map (function (book) {
+    var addBook = this.props.selectBook;
+    var removeBook = this.props.unselectBook;
+    var bookList = this.state.books.map (function (book) {
       return (
-        <RecommendationBook book={book} selectBook={selectBook} bookId={book["id"]} 
-          selectedBooks={selectedBooks} key={book.id} clicked={_.contains(selectedBooks, book.id)}/>
+        <RecommendationBookListItem book={book} addBook={addBook} isSelected={false}/>
       );
     });
+    var selectedBookList = this.props.selectedBooks.map (function (book) {
+      return (
+        <RecommendationBookListItem book={book} removeBook={removeBook} isSelected={true}/>
+      );
+    })
     return (
-      <div className="list-group">
-        {currentBooks}
+      <div>
+        <div className="col-md-8">
+          <div className="row panel-heading">
+            <div id="book-searchbar" className="input-group">
+              <input className="input-block-level form-control book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
+              <span className="input-group-btn">
+                <button className="btn btn-default" id="search-button" onClick={this.updateSearch} type="button"><span className="glyphicon glyphicon-search"></span></button>
+              </span>
+            </div>
+            <div id="book-tagbar" className="input-group">
+              <span className="input-group-addon">
+                <span className="glyphicon glyphicon-tag"/>
+              </span>
+              <input className="book-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
+            </div>
+          </div>
+          <div className="row panel-body">
+            <div className="list-group">
+              {bookList}
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+            {selectedBookList}
+          </div>
       </div>
     );
   }
 });
 
-var RecommendationBook = React.createClass({
-  getInitialState: function () {
-    return {clicked: this.props.clicked};
+var RecommendationBookListItem = React.createClass({
+  addBookToSelected: function () {
+    var selectBook = this.props.addBook;
+    selectBook(this.props.book);
   },
-  onClick: function () {
-    this.props.selectBook(this.props.bookId);
+  removeBookFromSelected: function () {
+    var unselectBook = this.props.removeBook;
+    unselectBook(this.props.book);
   },
   render: function () {
-    if (this.props.clicked) {
+    if (!this.props.isSelected) {
       return (
-        <a href="#" className="list-group-item active" onClick={this.onClick} >
-          {this.props.book.name}</a>
+        <li className="list-group-item" key={this.props.book.id}> {this.props.book.title}
+          <div className="btn btn-default pull-right" onClick={this.addBookToSelected}><span className="glyphicon glyphicon-plus"/></div>
+        </li>
+      );
+    } else {
+      return (
+        <li className="list-group-item" key={this.props.book.id}> {this.props.book.title}
+          <div className="btn btn-default pull-right" onClick={this.removeBookFromSelected}><span className="glyphicon glyphicon-minus"/></div>
+        </li>
       );
     }
-    return (
-        <a href="#" className="list-group-item" onClick={this.onClick}>
-          {this.props.book.name}</a>
-    );
   }
 });
 

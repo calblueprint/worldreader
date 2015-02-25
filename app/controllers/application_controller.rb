@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
       }
     }
     gon.all_tags = country_tags + level_tags + language_tags + genre_tags
-    gon.user_tags = country_tags + level_tags + language_tags
+    gon.project_tags = country_tags + level_tags + language_tags
 
   end
 
