@@ -70,13 +70,13 @@ var ManagePartnerInfo = React.createClass({
   },
   render: function () {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="topDiv">
-              <PartnerSearch addPartner={this._addPartner} />
-            </div>
-            <div className="listPartners">
+      <div className="admin-dash-container container height-100">
+        <div className="row height-100">
+          <div className="col-md-4 height-100">
+            <div className="row listPartners height-100">
+              <div className="topDiv">
+                <PartnerSearch addPartner={this._addPartner} />
+              </div>
               <PartnerList partners={this.state.partners}
                 partnersNewPurchases={this.state.partnersNewPurchases}
                 selectPartner={this._selectPartner}
@@ -84,8 +84,8 @@ var ManagePartnerInfo = React.createClass({
                 numNewPurchases={this.state.numNewPurchases} />
             </div>
           </div>
-          <div className="col-md-8">
-            <div className="mainScreen">
+          <div className="col-md-8 height-100">
+            <div className="mainScreen height-100">
               {!this.state.showAddPartner ? 
                 <PartnerDisplay partnerId={this.state.selectedPartner}
                   refreshPurchases={this._refreshNewPurchases} />
@@ -227,30 +227,30 @@ var PartnerDisplay = React.createClass({
         break;
     }
     return (
-      <div className="partnerDisplay">
-        <nav className="navbar navbar-default" role="navigation">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-            </div>
-            <div className="collapse navbar-collapse">
-              <ul className="nav navbar-nav" id="admin-dashboard-nav">
-                <li id="information" className={infoClass}><a href="#" onClick={this.clickInformation}>Information</a></li>
-                <li id="newPurchases" className={newPurchasesClass}><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
-                <li id="oldPurchases" className={oldPurchasesClass}><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+      <div className="partnerDisplay height-100">
         <div className="mainDisplay">
+          <nav className="navbar navbar-default" role="navigation">
+            <div className="container-fluid">
+              <div className="navbar-header">
+                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+                  data-target="#bs-example-navbar-collapse-1">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+              </div>
+              <div className="collapse navbar-collapse">
+                <ul className="nav navbar-nav" id="admin-dashboard-nav">
+                  <li id="information" className={infoClass}><a href="#" onClick={this.clickInformation}>Information</a></li>
+                  <li id="newPurchases" className={newPurchasesClass}><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
+                  <li id="oldPurchases" className={oldPurchasesClass}><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
           <MainDisplay type={this.state.selectedPage} partnerId={this.props.partnerId}
-            refreshPurchases={this.props.refreshPurchases} />
+            refreshPurchases={this.props.refreshPurchases} className="height-100"/>
         </div>
       </div>
     );
