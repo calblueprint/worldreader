@@ -303,7 +303,7 @@ var AddPartnerDisplay = React.createClass({
       );
     }.bind(this));
     return (
-      <div className="add-partner-display">
+      <div className="add-partner-display height-100">
         <div className="header">
           Add a New Partner
         </div>
