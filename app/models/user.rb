@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def admin?
+    role == "admin" || role == "vip"
+  end
+
   def as_indexed_json(options={})
     as_json(
       methods: [:country_name]

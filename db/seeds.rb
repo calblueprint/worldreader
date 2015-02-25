@@ -23,7 +23,16 @@ def make_users
     User.create!  email: "admin#{n}@gmail.com",
                   role: 1,
                   password: "password",
-                  organization: "org#{n}",
+                  organization: "worldreader",
+                  countries: [c],
+                  levels: [l],
+                  languages: [la]
+  end
+  1.upto(2) do |n|
+    User.create!  email: "vip#{n}@gmail.com",
+                  role: 2,
+                  password: "password",
+                  organization: "worldreader",
                   countries: [c],
                   levels: [l],
                   languages: [la]
