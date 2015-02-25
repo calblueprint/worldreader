@@ -5,7 +5,6 @@ class Admin::RecommendationsController < ApplicationController
 
   def add_recommendation
     recommendation = Recommendation.create()
-    
     recommendation_type = params[:recommendation_type].to_i
     recommendation.recommendation_type = recommendation_type
 
