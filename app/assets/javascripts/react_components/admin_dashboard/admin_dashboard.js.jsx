@@ -107,12 +107,11 @@ var PartnerSearch = React.createClass({
     var addPartner = this.props.addPartner;
     return (
       <form className="navbar-form navbar-left" role="search">
-        <div className="searchInput">
-          <input type="text" className="form-control" onSubmit={this._handleOnSubmit}
-            ref="search" placeholder="Search for a partner..." />
-        </div>
-        <div className="searchButton">
-          <button type="submit" className="btn btn-default">Search</button>
+        <div className="input-group" id="book-searchbar">
+          <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for partners" type="text" />
+          <span className="input-group-btn">
+            <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
+          </span>
         </div>
         <div className="add-button">
           <button type="button" className="btn btn-default" onClick={addPartner}>
