@@ -100,7 +100,7 @@ var ManagePartnerInfo = React.createClass({
 });
 
 var PartnerSearch = React.createClass({
-  _handleOnSubmit: function (e) {
+  search: function (e) {
     e.preventDefault()
   },
   render: function () {
