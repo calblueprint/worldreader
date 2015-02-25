@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_admin?
+  def admin?
     role == "admin" || role == "vip"
   end
 

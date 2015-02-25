@@ -23,7 +23,7 @@
         li.end
           - if current_user.nil?
             a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
-          - elsif current_user.is_admin?
+          - elsif current_user.admin?
             a.dropdown-toggle data-toggle="dropdown" href="#"
               | #{current_user.email}
               span.caret
