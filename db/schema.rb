@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217022154) do
+ActiveRecord::Schema.define(version: 20150225015940) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -67,30 +67,6 @@ ActiveRecord::Schema.define(version: 20150217022154) do
   add_index "admin_users", ["country_id"], name: "index_admin_users_on_country_id", using: :btree
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "admin_users_languages", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "language_id"
-  end
-
-  add_index "admin_users_languages", ["language_id"], name: "index_admin_users_languages_on_language_id", using: :btree
-  add_index "admin_users_languages", ["user_id"], name: "index_admin_users_languages_on_user_id", using: :btree
-
-  create_table "admin_users_levels", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "level_id"
-  end
-
-  add_index "admin_users_levels", ["level_id"], name: "index_admin_users_levels_on_level_id", using: :btree
-  add_index "admin_users_levels", ["user_id"], name: "index_admin_users_levels_on_user_id", using: :btree
-
-  create_table "admin_users_origins", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "country_id"
-  end
-
-  add_index "admin_users_origins", ["country_id"], name: "index_admin_users_origins_on_country_id", using: :btree
-  add_index "admin_users_origins", ["user_id"], name: "index_admin_users_origins_on_user_id", using: :btree
 
   create_table "admin_users_projects", id: false, force: true do |t|
     t.integer "admin_user_id"
@@ -434,6 +410,14 @@ ActiveRecord::Schema.define(version: 20150217022154) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "languages_projects", id: false, force: true do |t|
+    t.integer "language_id", null: false
+    t.integer "project_id",  null: false
+  end
+
+  add_index "languages_projects", ["language_id", "project_id"], name: "index_languages_projects_on_language_id_and_project_id", using: :btree
+  add_index "languages_projects", ["project_id", "language_id"], name: "index_languages_projects_on_project_id_and_language_id", using: :btree
+
   create_table "languages_recommendations", id: false, force: true do |t|
     t.integer "recommendation_id", null: false
     t.integer "user_language_id"
@@ -445,6 +429,14 @@ ActiveRecord::Schema.define(version: 20150217022154) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "levels_projects", id: false, force: true do |t|
+    t.integer "level_id",   null: false
+    t.integer "project_id", null: false
+  end
+
+  add_index "levels_projects", ["level_id", "project_id"], name: "index_levels_projects_on_level_id_and_project_id", using: :btree
+  add_index "levels_projects", ["project_id", "level_id"], name: "index_levels_projects_on_project_id_and_level_id", using: :btree
 
   create_table "models", force: true do |t|
     t.string   "name"
