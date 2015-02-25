@@ -39,6 +39,9 @@ class Admin::DashboardController < ApplicationController
       is_approved = nil
     end
     purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
+    purchases.collect! { |purchase|
+      purchase.as_json.merge(flagged_user_email: purchase.flagged_user.try(:email))
+    }
     render json: purchases
   end
 
@@ -82,6 +85,20 @@ class Admin::DashboardController < ApplicationController
 
   def get_number_purchases
     render text: User.find(params[:id]).purchases.where(is_approved: nil, is_purchased: true).count
+  end
+
+  def generate_failed_report
+    failed_books = FailedUpdate.all.map &:book
+    send_data Book.to_csv(failed_books),
+      type:         "text/csv; charset=iso-8859-1; header=present",
+      disposition:  "attachment;failed_update.csv"
+  end
+
+  def toggle_flag
+    flagged_user = User.find(params[:flagged_id]) if params[:is_flagged]
+    Purchase.find(params[:id]).update(flagged: params[:is_flagged],
+                                      flagged_user: flagged_user)
+    render json: nil, status: :ok
   end
 
   private

@@ -253,9 +253,10 @@ var BookList = React.createClass({
         );
       }
     }
+    console.log("got here")
     return (
       <div>
-        {searchBar}
+        {this.props.small ? null : searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
             No books found. Search for a title or add a tag to continue.

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get "display_all_partners", :as => "display_all_partners"
         get "display_partners_new_purchases", :as => "display_partners_new_purchases"
         post '/csv', to: 'dashboard#generate_csv'
+        get "/failed_report", to: "dashboard#generate_failed_report"
         post '/convert', to: 'dashboard#convert_purchases'
         post '/disapprove', to: 'dashboard#disapprove_purchases'
       end
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
         get "display_purchases", :as => "display_purchases"
         get "display_books", :as => "display_books"
         get "display_book", :as => "display_book"
+        post "/toggle_flag", :to => "dashboard#toggle_flag"
       end
     end
     resources :recommendations do

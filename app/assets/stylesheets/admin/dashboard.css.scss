@@ -25,7 +25,6 @@
   padding: 10px 10px 10px 10px;
   min-height: 600px;
   max-height: 600px;
-  overflow: scroll;
   overflow-x: hidden;
 }
 
@@ -100,7 +99,6 @@
 .mainDisplay {
   max-height: 600px;
   min-height: 600px;
-  overflow: scroll;
   background-color: #ffffff;
 }
 
@@ -132,26 +130,24 @@
   padding-right: 50px;
 }
 
-.tabDisplay {
-  min-height: 800px;
-  max-height: 800px;
-  overflow: scroll;
-}
-
 .badge {
   float: right;
 }
 
 #downloadPurchaseButton {
-  float: right;
   background-color: #5cb85c;
-  margin-top: 10px;
 }
 
 #disapproveButton {
   background-color: #d9534f;
-  float: left;
-  margin-top: 10px;
+}
+
+#downloadButton {
+  background-color: #A9D0F5;
+}
+
+.action {
+  margin-left: 15px;
 }
 
 #selectAllButton {
@@ -164,12 +160,6 @@
   float: left;
   padding-right: 10px;
   cursor: pointer;
-}
-
-.tabDisplay {
-  min-height: 800px;
-  max-height: 800px;
-  overflow: scroll;
 }
 
 .top-buffer {
@@ -204,4 +194,8 @@
 .boundary-line {
   padding-top: 30px;
   border-bottom: 2px solid #aaa;
+}
+
+.book-title-table {
+  max-width: 600px;
 }
