@@ -104,6 +104,6 @@ class Admin::DashboardController < ApplicationController
   private
 
   def verify_admin
-    redirect_to root_url unless current_user.try(:admin?)
+    redirect_to root_url unless current_user.try(:admin?) || current_user.try(:vip?)
   end
 end
