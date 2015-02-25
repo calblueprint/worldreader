@@ -120,7 +120,8 @@ var PurchaseDisplay = React.createClass({
       type: "POST",
       data: {
         id: purchase["id"],
-        is_flagged: isFlagged
+        is_flagged: isFlagged,
+        flagged_id: gon.current_user.id
       },
       success: function(data) {
         var newPurchases = this.state.purchases;
@@ -193,6 +194,13 @@ var Purchase = React.createClass( {
   },
   componentDidMount: function () {
     this._fetchBook({bookId: this.props.purchase.book_id});
+    $('[data-toggle="tooltip"]').tooltip();
+  },
+  componentDidUpdate: function (prevProps, prevState) {
+    if (prevProps.flagged != this.props.flagged) {
+      $('[data-placement="top"]').tooltip("destroy");
+      $('[data-toggle="tooltip"]').tooltip();
+    }
   },
   _fetchBook: function (bookId) {
     $.ajax({
@@ -216,6 +224,7 @@ var Purchase = React.createClass( {
   render: function () {
     var purchaseClass = this.props.selected ? "info" : "";
     var isFlagged = this.props.flagged ? " flagged" : "";
+    var flaggedUser = this.props.purchase.flagged_user_email;
     purchaseClass += isFlagged;
     return (
       <tr>
@@ -228,7 +237,9 @@ var Purchase = React.createClass( {
         <td className={purchaseClass} onClick={this._selectPurchase}>
           {this.state.book.asin}
         </td>
-        <td className={purchaseClass} onClick={this._toggleFlag}>
+        <td className={purchaseClass} onClick={this._toggleFlag} data-placement="top"
+            data-toggle={isFlagged ? "tooltip" : ""}
+            data-original-title={"Flagged by: " + flaggedUser}>
           <img className={"flag"+isFlagged} src="/assets/flag.png" />
         </td>
       </tr>

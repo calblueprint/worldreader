@@ -39,6 +39,9 @@ class Admin::DashboardController < ApplicationController
       is_approved = nil
     end
     purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
+    purchases.collect! { |purchase|
+      purchase.as_json.merge(flagged_user_email: purchase.flagged_user.try(:email))
+    }
     render json: purchases
   end
 
@@ -92,7 +95,9 @@ class Admin::DashboardController < ApplicationController
   end
 
   def toggle_flag
-    Purchase.find(params[:id]).update(flagged: params[:is_flagged])
+    flagged_user = User.find(params[:flagged_id]) if params[:is_flagged]
+    Purchase.find(params[:id]).update(flagged: params[:is_flagged],
+                                      flagged_user: flagged_user)
     render json: nil, status: :ok
   end
 
