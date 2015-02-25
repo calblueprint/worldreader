@@ -1,4 +1,10 @@
-FactoryGirl.define do  
+FactoryGirl.define do  factory :project, :class => 'Projects' do
+    
+  end
+  factory :content_bucket, :class => 'ContentBuckets' do
+    
+  end
+  
   factory :failed_update do
     book_id 1
   end
