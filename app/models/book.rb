@@ -87,7 +87,7 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
 
-  default_scope { where(:in_store => true) }
+  default_scope { where(in_store: true) }
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
 
