@@ -126,6 +126,7 @@ var PurchaseDisplay = React.createClass({
       success: function(data) {
         var newPurchases = this.state.purchases;
         purchase["flagged"] = isFlagged;
+        purchase["flagged_user_email"] = gon.current_user.email;
         newPurchases.splice(newPurchases.indexOf(purchase), 0, purchase);
         this.setState({purchases: newPurchases});
       }.bind(this),
