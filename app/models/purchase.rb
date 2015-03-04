@@ -15,7 +15,7 @@ class Purchase < ActiveRecord::Base
   belongs_to :book
   scope :is_purchased, -> (t_or_f) { where is_purchased: t_or_f }
 
-  CSV_COLUMNS = ["Book Name", "Partner Email", "Purchased On"]
+  CSV_COLUMNS = ["Book Name", "Book Price", "Partner Email", "Purchased On"]
 
   def self.to_csv(purchases)
     CSV.generate do |csv|
@@ -27,6 +27,6 @@ class Purchase < ActiveRecord::Base
   end
 
   def to_csv
-    [book.title, user.email, purchased_on]
+    [book.title, "$#{book.price}", user.email, purchased_on]
   end
 end
