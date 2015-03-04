@@ -27,8 +27,8 @@ class Project < ActiveRecord::Base
   settings number_of_shards: 1 do
     mapping do
       indexes :country_name, index: 'not_analyzed'
-      indexes :languages_names, index: 'not_analyzed'
-      indexes :levels_names, index: 'not_analyzed'
+      indexes :languages_name, index: 'not_analyzed'
+      indexes :levels_name, index: 'not_analyzed'
     end
   end
 
@@ -36,8 +36,8 @@ class Project < ActiveRecord::Base
     as_json(
       methods: [
         :country_name,
-        :languages_names,
-        :levels_names
+        :languages_name,
+        :levels_name
       ]
     )
   end
@@ -46,11 +46,11 @@ class Project < ActiveRecord::Base
     country ? country.name : ""
   end
 
-  def languages_names
+  def languages_name
     languages.map { |l| l.name }
   end
 
-  def levels_names
+  def levels_name
     levels.map { |l| l.name }
   end
 
