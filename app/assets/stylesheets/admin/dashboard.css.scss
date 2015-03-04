@@ -196,6 +196,62 @@
   border-bottom: 2px solid #aaa;
 }
 
+.panel-boundary-bottom {
+  padding-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-bottom: 2px solid #aaa;
+}
+
+.panel-boundary-right {
+  border-right: 1px solid #ddd;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .book-title-table {
   max-width: 600px;
+}
+
+.panel-title {
+  margin-left: 10px;
+  font-size: 23px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+
+.book-search-panel-left {
+  width: 49%;
+  float: left;
+  padding-right: 10px;
+}
+
+.book-search-panel-right {
+  width: 49%;
+  float: left;
+  padding-right: 10px;
+  margin-left: -1px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-left: 1px solid #ddd;
+}
+
+.book-search-fields {
+  margin-top: 10px;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.book-search-rows {
+  margin: 0px;
+}
+
+.book-search-list {
+  margin: 5px;
+  list-style-type: none;
+}
+.book-search-li-icon {
+  color: #aaa;
+  float: right;
 }

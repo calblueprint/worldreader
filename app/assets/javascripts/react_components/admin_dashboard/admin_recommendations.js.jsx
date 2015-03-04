@@ -180,7 +180,7 @@ var RecommendationTypes = {
 var CreateRecommendationPage = React.createClass({
   getInitialState: function () {
     return {
-      recommendationType: RecommendationTypes.AUTO,
+      recommendationType: RecommendationTypes.CUSTOM,
       bookTags: [],
       userTags: [],
       selectedBooks: []
@@ -250,7 +250,7 @@ var CreateRecommendationPage = React.createClass({
       return (
         <div className="container">
           <div className="row">
-            <div className="btn-group btn-group-lg col-md-8" role="group">
+            <div className="btn-group btn-group-lg col-md-10" role="group">
               <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
                 <span className="glyphicon glyphicon-chevron-left"></span> Back
               </div>
@@ -258,17 +258,25 @@ var CreateRecommendationPage = React.createClass({
                 Done 
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-2">
               <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
                 data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
             </div>
           </div>
           <div className="row top-buffer">
-            <div className="col-md-5 panel">
-              <RecommendationBookTagSearch setBookTags={this._setBookTags}/>
+            <div className="col-md-6">
+              <div className="panel">
+                <h3 className="panel-title"> Book Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationBookTagSearch setBookTags={this._setBookTags}/>
+              </div>
             </div>
-            <div className="col-md-5 panel side-buffer">
-              <RecommendationUserTagSearch setUserTags={this._setUserTags}/>
+            <div className="col-md-6">
+              <div className="panel">
+                <h3 className="panel-title"> Projects Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationUserTagSearch setUserTags={this._setUserTags}/>
+              </div>
             </div>
           </div>
         </div>
@@ -277,7 +285,7 @@ var CreateRecommendationPage = React.createClass({
       return ( 
         <div className="container">
           <div className="row">
-            <div className="btn-group btn-group-lg col-md-8" role="group">
+            <div className="btn-group btn-group-lg col-md-10" role="group">
               <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
                 <span className="glyphicon glyphicon-chevron-left"></span> Back
               </div>
@@ -285,17 +293,25 @@ var CreateRecommendationPage = React.createClass({
                 Done 
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-2">
               <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
                 data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
             </div>
           </div>
           <div className="row top-buffer">
-            <div className="col-md-6 panel">
-              <RecommendationBookSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+            <div className="col-md-8">
+              <div className="panel">
+                <h3 className="panel-title"> Book Search </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationBookSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+              </div>
             </div>
-            <div className="col-md-4 panel side-buffer">
-              <RecommendationUserTagSearch setUserTags={this._setUserTags}/>              
+            <div className="col-md-4">
+              <div className="panel">
+                <h3 className="panel-title"> Project Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationUserTagSearch setUserTags={this._setUserTags}/>              
+              </div>
             </div>
           </div>
         </div>
@@ -542,10 +558,13 @@ var RecommendationBookSearch = React.createClass({
   render: function () {
     var addBook = this.props.selectBook;
     var removeBook = this.props.unselectBook;
+    var selectedBooks = this.props.selectedBooks;
     var bookList = this.state.books.map (function (book) {
-      return (
-        <RecommendationBookListItem book={book} addBook={addBook} isSelected={false}/>
-      );
+      if (_.findWhere(selectedBooks, {"id": book.id}) == null) {
+        return (
+          <RecommendationBookListItem book={book} addBook={addBook} isSelected={false}/>
+        );
+      }
     });
     var selectedBookList = this.props.selectedBooks.map (function (book) {
       return (
@@ -554,30 +573,32 @@ var RecommendationBookSearch = React.createClass({
     })
     return (
       <div>
-        <div className="col-md-8">
-          <div className="row panel-heading">
-            <div id="book-searchbar" className="input-group">
-              <input className="input-block-level form-control book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
-              <span className="input-group-btn">
-                <button className="btn btn-default" id="search-button" onClick={this.updateSearch} type="button"><span className="glyphicon glyphicon-search"></span></button>
-              </span>
-            </div>
-            <div id="book-tagbar" className="input-group">
-              <span className="input-group-addon">
-                <span className="glyphicon glyphicon-tag"/>
-              </span>
-              <input className="book-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
-            </div>
+        <div className="row book-search-fields">
+          <div id="book-searchbar" className="input-group">
+            <input className="input-block-level form-control book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
+            <span className="input-group-btn">
+              <button className="btn btn-default" id="search-button" onClick={this.updateSearch} type="button"><span className="glyphicon glyphicon-search"></span></button>
+            </span>
           </div>
-          <div className="row panel-body">
-            <div className="list-group">
-              {bookList}
-            </div>
+          <div id="book-tagbar" className="input-group">
+            <span className="input-group-addon">
+              <span className="glyphicon glyphicon-tag"/>
+            </span>
+            <input className="book-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
           </div>
         </div>
-        <div className="col-md-4">
-            {selectedBookList}
+        <div className="row book-search-rows">
+          <div className="book-search-panel-left panel-boundary-right">
+            <ul className="book-search-list">
+              {bookList}
+            </ul>
           </div>
+          <div className="book-search-panel-right">
+            <ul className="book-search-list">
+              {selectedBookList}
+            </ul>
+          </div>
+        </div>
       </div>
     );
   }
@@ -595,14 +616,14 @@ var RecommendationBookListItem = React.createClass({
   render: function () {
     if (!this.props.isSelected) {
       return (
-        <li className="list-group-item" key={this.props.book.id}> {this.props.book.title}
-          <div className="btn btn-default pull-right" onClick={this.addBookToSelected}><span className="glyphicon glyphicon-plus"/></div>
+        <li key={this.props.book.id}> {this.props.book.title}
+          <a onClick={this.addBookToSelected}><span className="glyphicon glyphicon-plus book-search-li-icon"/></a>
         </li>
       );
     } else {
       return (
-        <li className="list-group-item" key={this.props.book.id}> {this.props.book.title}
-          <div className="btn btn-default pull-right" onClick={this.removeBookFromSelected}><span className="glyphicon glyphicon-minus"/></div>
+        <li key={this.props.book.id}> {this.props.book.title}
+          <a onClick={this.removeBookFromSelected}><span className="glyphicon glyphicon-minus book-search-li-icon"/></a>
         </li>
       );
     }
