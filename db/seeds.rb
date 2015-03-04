@@ -2,7 +2,8 @@ SEEDS = YAML.load(File.read(File.expand_path('../seeds.yml', __FILE__)))
 
 def make_books
   SEEDS[:books].each do |book|
-    Book.create! book.merge! ({ in_store: true })
+    Book.create! book.merge! ({ in_store: true,
+                                description: Faker::Lorem.paragraph })
   end
 end
 
