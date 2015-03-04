@@ -58,11 +58,6 @@ FactoryGirl.define do
     password "password"
     organization "org"
     role 0
-    after(:build) { |user| 
-      user.countries = [create(:country)] 
-      user.languages = [create(:language)]
-      user.levels = [create(:level)]
-    }
   end
 
   factory :book do

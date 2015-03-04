@@ -23,26 +23,22 @@
 .listPartners {
   background: white;
   padding: 10px 10px 10px 10px;
-  min-height: 600px;
-  max-height: 600px;
+  overflow: scroll;
   overflow-x: hidden;
-}
-
-.emptyBottomSpace {
-  height: 65px;
 }
 
 .noneSelectedDisplay {
   text-align: center;
-  height: 300px;
+  height: 100%;
   position: relative;
-  top: 100px;
+  padding-top: 100px;
   font-style: italic;
   font-size: medium;
 }
 
 .add-partner-display {
   background: #ffffff;
+  overflow: scroll;
 }
 
 .add-partner-form {
@@ -56,6 +52,7 @@
 
 .header {
   font-size: x-large;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -96,9 +93,8 @@
   top: 50px;
 }
 
-.mainDisplay {
-  max-height: 600px;
-  min-height: 600px;
+.partnerDisplay {
+  overflow: scroll;
   background-color: #ffffff;
 }
 
@@ -130,20 +126,54 @@
   padding-right: 50px;
 }
 
+.admin-dash-container {
+  padding-bottom: 15px;
+}
+
+.tabBar {
+  bottom: 0;
+  position: absolute;
+  top: 119px;
+  width: 100%;
+}
+
+.tabDisplay {
+  bottom: 0;
+  position: absolute;
+  top: 50px;
+  width: 100%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.mainScreen {
+  overflow: scroll;
+}
+
+.admin-nav-tabs {
+  margin-top: 3px;
+}
+
 .badge {
   float: right;
 }
 
 #downloadPurchaseButton {
-  float: right;
   background-color: #5cb85c;
-  margin-top: 10px;
 }
 
 #disapproveButton {
   background-color: #d9534f;
-  float: left;
-  margin-top: 10px;
+}
+
+#downloadButton {
+  background-color: #A9D0F5;
+}
+
+.action {
+  margin-left: 15px;
 }
 
 #selectAllButton {

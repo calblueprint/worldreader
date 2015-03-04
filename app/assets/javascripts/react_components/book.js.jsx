@@ -165,6 +165,7 @@ var BookList = React.createClass({
     this.setState({ searchTerm: searchTerm,
                     tags: tags});
     var self = this;
+    var state = this._pendingState == this.state ? this.state : this._pendingState;
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
@@ -173,10 +174,10 @@ var BookList = React.createClass({
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
-        page: this.state.pageNumber
+        page: state.pageNumber
       },
       success: function(results) {
-        self.setState({books: this.state.books.concat(results.books),
+        self.setState({books: state.books.concat(results.books),
                        isLastPage: results.books.length == 0});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -253,9 +254,10 @@ var BookList = React.createClass({
         );
       }
     }
+    console.log("got here")
     return (
       <div>
-        {searchBar}
+        {this.props.small ? null : searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
             No books found. Search for a title or add a tag to continue.

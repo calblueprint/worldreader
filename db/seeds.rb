@@ -2,7 +2,7 @@ SEEDS = YAML.load(File.read(File.expand_path('../seeds.yml', __FILE__)))
 
 def make_books
   SEEDS[:books].each do |book|
-    Book.create!  book
+    Book.create! book.merge! ({ in_store: true })
   end
 end
 
@@ -17,7 +17,13 @@ def make_users
     User.create!  email: "admin#{n}@gmail.com",
                   role: 1,
                   password: "password",
-                  organization: "org#{n}"
+                  organization: "worldreader"
+  end
+  1.upto(2) do |n|
+    User.create!  email: "vip#{n}@gmail.com",
+                  role: 2,
+                  password: "password",
+                  organization: "worldreader",
   end
 end
 
