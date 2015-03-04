@@ -42,20 +42,8 @@ class User < ActiveRecord::Base
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
     'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
-  settings number_of_shards: 1 do
-    mapping do
-      indexes :country_name, index: 'not_analyzed'
-    end
-  end
-
   def admin?
     role == "admin" || role == "vip"
-  end
-
-  def as_indexed_json(options={})
-    as_json(
-      methods: [:country_name]
-    )
   end
 
   def as_json(options={})

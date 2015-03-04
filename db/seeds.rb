@@ -23,7 +23,7 @@ def make_users
     User.create!  email: "vip#{n}@gmail.com",
                   role: 2,
                   password: "password",
-                  organization: "worldreader",
+                  organization: "worldreader"
   end
 end
 
