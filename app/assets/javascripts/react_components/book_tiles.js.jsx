@@ -51,7 +51,11 @@ var BookTile = React.createClass({
             <div className="price">
               <b>${this.props.book.price}</b>
             </div>
-            : null}
+            :
+            <div className="price">
+              <b>Free</b>
+            </div>
+          }
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {levels}
@@ -116,7 +120,11 @@ var SmallBookTile = React.createClass({
             <div className="price">
               <b>${this.props.book.price}</b>
             </div>
-            : null}
+            :
+            <div className="price">
+              <b>Free</b>
+            </div>
+          }
           {cartButton}
         </div>
       </div>
