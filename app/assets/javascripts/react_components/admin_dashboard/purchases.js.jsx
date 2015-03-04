@@ -126,6 +126,7 @@ var PurchaseDisplay = React.createClass({
       success: function(data) {
         var newPurchases = this.state.purchases;
         purchase["flagged"] = isFlagged;
+        purchase["flagged_user_email"] = gon.current_user.email;
         newPurchases.splice(newPurchases.indexOf(purchase), 0, purchase);
         this.setState({purchases: newPurchases});
       }.bind(this),
@@ -143,7 +144,8 @@ var PurchaseDisplay = React.createClass({
                     toggleFlag={this._toggleFlag}
                     selected={is_selected}
                     flagged={purchase["flagged"]}
-                    key={purchase["id"]} />
+                    key={purchase["id"]}
+                    type={this.props.purchaseDisplayOptions} />
       );
     }.bind(this));
     var approvedOnHeader = "";
@@ -151,7 +153,7 @@ var PurchaseDisplay = React.createClass({
     if (this.props.purchaseDisplayOptions == purchaseDisplayOptions.OLD) {
       approvedOnHeader = "<th>Approved On</th>"
     }
-    var isVip = gon.current_user.role == 2;
+    var isVip = gon.current_user.role == "vip";
     return (
       <div className="purchaseDisplay">
         <table className="table table-hover">
@@ -222,6 +224,7 @@ var Purchase = React.createClass( {
     this.props.toggleFlag(this.props.purchase, !this.props.flagged);
   },
   render: function () {
+    var toggleFunc = this.props.type == 2 ? this._toggleFlag : null;
     var purchaseClass = this.props.selected ? "info" : "";
     var isFlagged = this.props.flagged ? " flagged" : "";
     var flaggedUser = this.props.purchase.flagged_user_email;
@@ -237,7 +240,7 @@ var Purchase = React.createClass( {
         <td className={purchaseClass} onClick={this._selectPurchase}>
           {this.state.book.asin}
         </td>
-        <td className={purchaseClass} onClick={this._toggleFlag} data-placement="top"
+        <td className={purchaseClass} onClick={toggleFunc} data-placement="top"
             data-toggle={isFlagged ? "tooltip" : ""}
             data-original-title={"Flagged by: " + flaggedUser}>
           <img className={"flag"+isFlagged} src="/assets/flag.png" />

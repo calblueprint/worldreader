@@ -47,6 +47,15 @@ var BookTile = React.createClass({
                   ""
             )}</h5>
           <h5>{this.props.book.publisher_name}</h5>
+          {parseFloat(this.props.book.price) > 0 ?
+            <div className="price">
+              <b>${this.props.book.price}</b>
+            </div>
+            :
+            <div className="price">
+              <b>Free</b>
+            </div>
+          }
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {levels}
@@ -57,7 +66,7 @@ var BookTile = React.createClass({
           {cartButton}
         </div>
       </div>
-    )
+    );
   },
   renderCollapsed: function() {
     return (
@@ -107,6 +116,15 @@ var SmallBookTile = React.createClass({
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>
+          {parseFloat(this.props.book.price) > 0 ?
+            <div className="price">
+              <b>${this.props.book.price}</b>
+            </div>
+            :
+            <div className="price">
+              <b>Free</b>
+            </div>
+          }
           {cartButton}
         </div>
       </div>

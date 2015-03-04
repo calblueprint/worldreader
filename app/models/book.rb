@@ -83,9 +83,11 @@ class Book < ActiveRecord::Base
   has_many :users, through: :purchases
   has_one :failed_update
   has_and_belongs_to_many :authors
-  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :content_buckets
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
+
+  default_scope { where(in_store: true) }
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
 
@@ -208,9 +210,7 @@ class Book < ActiveRecord::Base
         and: and_filter
       }
     end
-    query = {
-      filtered: filtered
-    }
+    query = { filtered: filtered }
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}

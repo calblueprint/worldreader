@@ -16,15 +16,14 @@ class Admin::DashboardController < ApplicationController
 
   def partner_information
     user = User.find(params[:id])
-    countries = user.countries.pluck(:name).join(", ")
-    levels = user.levels.pluck(:name).join(", ")
-    languages = user.languages.pluck(:name).join(", ")
-    extra_fields = {countries: countries, levels: levels, languages: languages}
+    # country = user.country.pluck(:name)
+    # language = user.language.pluck(:name)
+    extra_fields = { country: "hello", language: "language" }
     render json: user.as_json.merge(extra_fields)
   end
 
   def display_groups
-    groups = Group.where(user_id: params[:id])
+    groups = User.find(params[:id]).projects.flat_map &:content_buckets
     render json: groups
   end
 
@@ -46,7 +45,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_books
-    books = Group.find(params[:id]).books
+    books = ContentBucket.find(params[:id]).books
     render json: books
   end
 
@@ -68,8 +67,8 @@ class Admin::DashboardController < ApplicationController
       purchase.update approved_on: Date.today
 
       # Add these books to all of the partner's groups
-      user = purchase.user
-      user.groups.each do |group|
+      groups = purchase.user.projects.flat_map &:content_buckets
+      groups.each do |group|
         group.books << purchase.book
       end
     end
@@ -104,6 +103,7 @@ class Admin::DashboardController < ApplicationController
   private
 
   def verify_admin
-    redirect_to root_url unless current_user.try(:admin?)
+    redirect_to root_url unless
+      current_user.try(:admin?) || current_user.try(:vip?)
   end
 end
