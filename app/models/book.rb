@@ -210,7 +210,7 @@ class Book < ActiveRecord::Base
         and: and_filter
       }
     end
-    query = {filtered: filtered}
+    query = { filtered: filtered }
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}

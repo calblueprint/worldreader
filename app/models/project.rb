@@ -77,12 +77,12 @@ class Project < ActiveRecord::Base
     end
     if not tags_dict.empty?
       and_filter = []
-      tags_dict.each do |type, tags|
+      tags_dict.each do |type, tags_list|
         query = {
           query: {
             query_string: {
               default_field: type + "_name",
-              query: tags.join(" OR ")
+              query: tags_list.join(" OR ")
             }
           }
         }

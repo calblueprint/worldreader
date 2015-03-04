@@ -18,12 +18,12 @@ class Admin::DashboardController < ApplicationController
     user = User.find(params[:id])
     # country = user.country.pluck(:name)
     # language = user.language.pluck(:name)
-    extra_fields = {country: "hello", language: "language"}
+    extra_fields = { country: "hello", language: "language" }
     render json: user.as_json.merge(extra_fields)
   end
 
   def display_groups
-    groups = User.find(params[:id]).projects.flat_map { |p| p.content_buckets }
+    groups = User.find(params[:id]).projects.flat_map &:content_buckets
     render json: groups
   end
 
@@ -67,7 +67,7 @@ class Admin::DashboardController < ApplicationController
       purchase.update approved_on: Date.today
 
       # Add these books to all of the partner's groups
-      groups = purchase.user.projects.flat_map { |p| p.content_buckets }
+      groups = purchase.user.projects.flat_map &:content_buckets
       groups.each do |group|
         group.books << purchase.book
       end

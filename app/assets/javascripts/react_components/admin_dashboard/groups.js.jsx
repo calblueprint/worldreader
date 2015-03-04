@@ -19,7 +19,6 @@ var GroupDisplay = React.createClass({
       dataType: 'json',
       data: id,
       success: function (data) {
-        // console.log(data);
         this.setState({groups: data});
       }.bind(this),
       error: function (xhr, status, err) {
