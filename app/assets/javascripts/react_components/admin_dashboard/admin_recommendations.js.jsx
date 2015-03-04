@@ -301,7 +301,7 @@ var CreateRecommendationPage = React.createClass({
           <div className="row top-buffer">
             <div className="col-md-8">
               <div className="panel">
-                <h3 className="panel-title"> Book Search </h3>
+                <h3 className="panel-title"> Book Tags </h3>
                 <div className="panel-boundary-bottom"/>
                 <RecommendationBookSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
               </div>
@@ -588,7 +588,7 @@ var RecommendationBookSearch = React.createClass({
           </div>
         </div>
         <div className="row book-search-rows">
-          <div className="book-search-panel-left panel-boundary-right">
+          <div className="book-search-panel-left">
             <ul className="book-search-list">
               {bookList}
             </ul>

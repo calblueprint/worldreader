@@ -203,12 +203,6 @@
   border-bottom: 2px solid #aaa;
 }
 
-.panel-boundary-right {
-  border-right: 1px solid #ddd;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
 .book-title-table {
   max-width: 600px;
 }
@@ -224,6 +218,9 @@
   width: 49%;
   float: left;
   padding-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-right: 1px solid #ddd;
 }
 
 .book-search-panel-right {
