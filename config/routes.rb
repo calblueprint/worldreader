@@ -75,6 +75,11 @@ Rails.application.routes.draw do
           get "page" => "books#page"
         end
       end
+      resources :projects do
+        collection do
+          get "search/" => "projects#search"
+        end
+      end
     end
   end
 

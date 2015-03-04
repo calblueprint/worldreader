@@ -20,6 +20,14 @@ class Admin::RecommendationsController < ApplicationController
     else
       recommendation.books << Book.find(params[:book_ids])
     end
+    project_tags = ActiveSupport::JSON.decode params[:project_tags]
+    project_tags.each do |proj_tag|
+      if proj_tag["tagType"].eql? "countries"
+        recommendation.proj_countries << Country.find(proj_tag["id"])
+      elsif proj_tag["tagType"].eql? "language"
+        recommendation.proj_languages << Language.find(proj_tag["id"])
+      end
+    end
 
     recommendation.save
     render :nothing => true

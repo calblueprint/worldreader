@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225015940) do
+ActiveRecord::Schema.define(version: 20150304084457) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -256,8 +256,8 @@ ActiveRecord::Schema.define(version: 20150225015940) do
   end
 
   create_table "countries_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "user_country_id"
+    t.integer "recommendation_id",  null: false
+    t.integer "project_country_id"
     t.integer "book_country_id"
   end
 
@@ -419,8 +419,8 @@ ActiveRecord::Schema.define(version: 20150225015940) do
   add_index "languages_projects", ["project_id", "language_id"], name: "index_languages_projects_on_project_id_and_language_id", using: :btree
 
   create_table "languages_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "user_language_id"
+    t.integer "recommendation_id",   null: false
+    t.integer "project_language_id"
     t.integer "book_language_id"
   end
 

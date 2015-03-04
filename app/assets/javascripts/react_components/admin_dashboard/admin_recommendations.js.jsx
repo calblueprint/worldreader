@@ -182,7 +182,7 @@ var CreateRecommendationPage = React.createClass({
     return {
       recommendationType: RecommendationTypes.CUSTOM,
       bookTags: [],
-      userTags: [],
+      projectTags: [],
       selectedBooks: []
     };
   },
@@ -191,7 +191,6 @@ var CreateRecommendationPage = React.createClass({
     $('#recommendation-type-toggle').on('switchChange.bootstrapSwitch', this._setRecommendationType);
   },
   _setRecommendationType: function (event, state) {
-    console.log("recommendation type: " + state);
     if (state) {
       this.setState({recommendationType: 1});
     } else {
@@ -202,8 +201,8 @@ var CreateRecommendationPage = React.createClass({
   _setBookTags: function (tags) {
     this.setState({bookTags: tags});
   },
-  _setUserTags: function (tags) { 
-    this.setState({userTags: tags});
+  _setProjectTags: function (tags) { 
+    this.setState({projectTags: tags});
   },
   _selectBook: function (book) {
     var bookList = this.state.selectedBooks;
@@ -217,13 +216,18 @@ var CreateRecommendationPage = React.createClass({
     this.setState({selectedBooks: bookList});
   },
   _addRecommendation: function () {
-    console.log("selectedBooks state: " + JSON.stringify(this.state.selectedBooks));
     var viewRecommendations = this.props.viewRecommendations;
     var bookIds = this.state.selectedBooks.map (function (book) {
       return book.id;
     });
 
-    console.log("selected bookIds: " + bookIds);
+    //TODO: present error message to user if none selected
+    if (this.state.recommendationType == RecommendationTypes.CUSTOM) {
+      if (bookIds.length == 0 || this.state.projectTags.length == 0) return;
+    } else {
+      if (this.state.bookTags.length == 0 || this.state.projectTags.length == 0) return;
+    }
+
     $.ajax({
       type: "POST",
       url: "/admin/recommendations/add",
@@ -231,11 +235,11 @@ var CreateRecommendationPage = React.createClass({
         recommendation_type: this.state.recommendationType,
         book_ids: bookIds,
         book_tags: JSON.stringify(this.state.bookTags),
-        project_tags: JSON.stringify(this.state.userTags)
+        project_tags: JSON.stringify(this.state.projectTags)
       },
       success: function (message) {
         console.log("Recommendation succesfully created");
-        //present message to user
+        //TODO: present message to user
         viewRecommendations();
       },
       error: function(xhr, status, err) {
@@ -275,7 +279,7 @@ var CreateRecommendationPage = React.createClass({
               <div className="panel">
                 <h3 className="panel-title"> Projects Tags </h3>
                 <div className="panel-boundary-bottom"/>
-                <RecommendationUserTagSearch setUserTags={this._setUserTags}/>
+                <RecommendationProjectTagSearch setProjectTags={this._setProjectTags}/>
               </div>
             </div>
           </div>
@@ -310,7 +314,7 @@ var CreateRecommendationPage = React.createClass({
               <div className="panel">
                 <h3 className="panel-title"> Project Tags </h3>
                 <div className="panel-boundary-bottom"/>
-                <RecommendationUserTagSearch setUserTags={this._setUserTags}/>              
+                <RecommendationProjectTagSearch setProjectTags={this._setProjectTags}/>              
               </div>
             </div>
           </div>
@@ -364,8 +368,6 @@ var RecommendationBookTagSearch = React.createClass({
   },
   updateSearch: function () {
     var tags = $(".book-tagbar-input").tagsinput("items");
-    console.log("book tags: " + JSON.stringify(tags));
-
     var self = this;
     $.ajax({
       type: "GET",
@@ -379,7 +381,6 @@ var RecommendationBookTagSearch = React.createClass({
       },
       success: function(results) {
         self.setState({ books: results.books});
-        console.log("results: " + JSON.stringify(results));
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -407,7 +408,7 @@ var RecommendationBookTagSearch = React.createClass({
           </div>
         </div>
         <div className="row panel-body">
-          <div className="list-group">
+          <div className="list-group list-padding">
             {bookList}
           </div>
         </div>
@@ -416,17 +417,17 @@ var RecommendationBookTagSearch = React.createClass({
   }
 });
 
-var RecommendationUserTagSearch = React.createClass({
+var RecommendationProjectTagSearch = React.createClass({
   componentDidMount: function () {
     this.initTagbar(); 
   },
   getInitialState: function () {
     return {
-      users: []
+      projects: []
     };
   },
   initTagbar: function () {
-    var mainSearch = $('.user-tagbar-input');
+    var mainSearch = $('.project-tagbar-input');
     mainSearch.tagsinput({
       tagClass: function(item) {
         switch (item.tagType) {
@@ -448,8 +449,8 @@ var RecommendationUserTagSearch = React.createClass({
 
   },
   tagsUpdated: function () {
-    var tags = $(".user-tagbar-input").tagsinput("items");
-    this.props.setUserTags(tags);
+    var tags = $(".project-tagbar-input").tagsinput("items");
+    this.props.setProjectTags(tags);
     this.updateSearch();
   },
   search: function (event) {
@@ -458,14 +459,32 @@ var RecommendationUserTagSearch = React.createClass({
     }
   },
   updateSearch: function () {
-    var tags = $(".user-tagbar-input").tagsinput("items");
-    console.log("user tags: " + JSON.stringify(tags));
-
+    var tags = $(".project-tagbar-input").tagsinput("items");
+    var self = this;
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/projects/search",
+      dataType: "json",
+      async: false,
+      data: {
+        tags: JSON.stringify(tags),
+        term: "",
+      },
+      success: function(results) {
+        self.setState({ projects: results.projects});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+    if (tags.length == 0) {
+      this.setState({projects: []});
+    }
   },
   render: function () {
-    var userList = this.state.users.map (function (user) {
+    var projectList = this.state.projects.map (function (project) {
       return (
-        <li className="list-group-item"> {user.email} </li>
+        <li className="list-group-item"> {project.name} </li>
       );
     });
     return (
@@ -475,12 +494,12 @@ var RecommendationUserTagSearch = React.createClass({
             <span className="input-group-addon">
               <span className="glyphicon glyphicon-tag"/>
             </span>
-            <input className="user-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
+            <input className="project-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
           </div>
         </div>
         <div className="row panel-body">
-          <div className="list-group">
-            {userList}
+          <div className="list-group list-padding">
+            {projectList}
           </div>
         </div>
       </div>
