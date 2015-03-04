@@ -112,6 +112,11 @@ var SmallBookTile = React.createClass({
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
           </div>
+          {parseFloat(this.props.book.price) > 0 ?
+            <div className="price">
+              <b>${this.props.book.price}</b>
+            </div>
+            : null}
           {cartButton}
         </div>
       </div>
