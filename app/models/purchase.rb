@@ -7,6 +7,8 @@
 #  book_id      :integer          not null
 #  purchased_on :date
 #  is_purchased :boolean
+#  is_approved  :boolean
+#  approved_on  :datetime
 #
 
 class Purchase < ActiveRecord::Base

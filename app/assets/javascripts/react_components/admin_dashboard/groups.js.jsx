@@ -10,8 +10,8 @@ var GroupDisplay = React.createClass({
     };
     return {groups: [initGroup]};
   },
-  componentDidMount: function () {
-    this._fetchGroups(this.props.partnerId);
+  componentWillReceiveProps: function (nextProps) {
+    this._fetchGroups(nextProps.partnerId);
   },
   _fetchGroups: function (id) {
     $.ajax({

@@ -8,46 +8,93 @@ def make_books
 end
 
 def make_users
-  c = Country.find(1)
-  l = Level.find(1)
-  la = Language.find(1)
   1.upto(5) do |n|
     User.create!  email: "user#{n}@gmail.com",
                   role: 0,
                   password: "password",
-                  organization: "org#{n}",
-                  countries: [c],
-                  levels: [l],
-                  languages: [la]
+                  organization: "org#{n}"
   end
   1.upto(2) do |n|
     User.create!  email: "admin#{n}@gmail.com",
                   role: 1,
                   password: "password",
-                  organization: "worldreader",
-                  countries: [c],
-                  levels: [l],
-                  languages: [la]
+                  organization: "worldreader"
   end
   1.upto(2) do |n|
     User.create!  email: "vip#{n}@gmail.com",
                   role: 2,
                   password: "password",
-                  organization: "worldreader",
-                  countries: [c],
-                  levels: [l],
-                  languages: [la]
+                  organization: "worldreader"
   end
 end
 
-def make_groups
-  User.all.each do |user|
-    1.upto(3) do |n|
-      user.groups.create! name: "Group#{n}",
-                          country: "United States",
-                          description: "Awesome group",
-                          books: Book.all
-    end
+def make_countries
+  1.upto(10) do
+    c = Country.create! name: Faker::Address.country
+  end
+end
+
+def make_levels
+  Level.create! name: "A"
+  Level.create! name: "B"
+  Level.create! name: "C"
+  Level.create! name: "D"
+end
+
+def make_languages
+  Language.create! name: 'Somali'
+  Language.create! name: 'Hausa'
+end
+
+def make_genres
+  Genre.create! name: 'Fiction'
+  Genre.create! name: 'Non-fiction'
+end
+
+def make_authors
+  Author.create! name: 'Varun Rau'
+  Author.create! name: 'Eileen Li'
+  Author.create! name: 'Will Tang'
+  Author.create! name: 'Ethan Chiou'
+end
+
+def make_publishers
+  Publisher.create! name: 'Harper Collins'
+  Publisher.create! name: 'Penguin Publisher'
+end
+
+def make_book_tags
+  Book.all.each do |b|
+    b.country = Country.find(1 + Random.rand(10))
+    b.levels << Level.find(1 + Random.rand(4))
+    b.language = Language.find(1 + Random.rand(2))
+    b.genre = Genre.find(1 + Random.rand(2))
+    b.authors << Author.find(1 + Random.rand(4))
+    b.publisher = Publisher.find(1 + Random.rand(2))
+    b.save
+  end
+end
+
+def make_projects
+  1.upto(6) do |n|
+    project = Project.create name: "project#{n}",
+                             country: Country.find(n)
+    project.languages << Language.find(1 + Random.rand(2))
+    project.levels << Level.find(1 + Random.rand(4))
+    project.users << User.find(1 + Random.rand(5))
+    project.save
+  end
+end
+
+def make_content_buckets
+  1.upto(10) do |n|
+    content_bucket = ContentBucket.create name: "bucket#{n}"
+    content_bucket.project = Project.find(1 + Random.rand(6))
+    book_index = Random.rand(10)
+    content_bucket.books << Book.find(1 + book_index)
+    content_bucket.books << Book.find(1 + (book_index + 1) % 10)
+    content_bucket.books << Book.find(1 + (book_index + 2) % 10)
+    content_bucket.save
   end
 end
 
@@ -84,115 +131,15 @@ def make_purchases
   end
 end
 
-def make_country_tags
-  1.upto(10) do |n|
-    c = Country.create! name: Faker::Address.country
-    book = Book.find(n)
-    book.country = c
-    book.save
-  end
-end
-
-def make_level_tags
-  Level.create! name: 'Elementary'
-  Level.create! name: 'Secondary'
-  Level.create! name: 'High'
-  1.upto(5) do |n|
-    book = Book.find(n)
-    book.levels << Level.find(1)
-    book.save
-  end
-  3.upto(7) do |n|
-    book = Book.find(n)
-    book.levels << Level.find(2)
-    book.save
-  end
-  6.upto(10) do |n|
-    book = Book.find(n)
-    book.levels << Level.find(3)
-    book.save
-  end
-end
-
-def make_language_tags
-  Language.create! name: 'Somali'
-  Language.create! name: 'Hausa'
-  1.upto(5) do |n|
-    book = Book.find(n)
-    book.language = Language.find(1)
-    book.save
-  end
-  6.upto(10) do |n|
-    book = Book.find(n)
-    book.language = Language.find(2)
-    book.save
-  end
-end
-
-def make_genre_tags
-  Genre.create! name: 'Fiction'
-  Genre.create! name: 'Non-fiction'
-  1.upto(5) do |n|
-    book = Book.find(n)
-    book.genre = Genre.find(1)
-    book.save
-  end
-  6.upto(10) do |n|
-    book = Book.find(n)
-    book.genre = Genre.find(2)
-    book.save
-  end
-end
-
-def make_author_tags
-  Author.create! name: 'Varun Rau'
-  Author.create! name: 'Eileen Li'
-  Author.create! name: 'Will Tang'
-  Author.create! name: 'Ethan Chiou'
-  1.upto(4) do |n|
-    book = Book.find(n)
-    book.authors << Author.find(1)
-    book.save
-  end
-  3.upto(6) do |n|
-    book = Book.find(n)
-    book.authors << Author.find(2)
-    book.save
-  end
-  5.upto(8) do |n|
-    book = Book.find(n)
-    book.authors << Author.find(3)
-    book.save
-  end
-  7.upto(10) do |n|
-    book = Book.find(n)
-    book.authors << Author.find(4)
-    book.save
-  end
-end
-
-def make_publisher_tags
-  Publisher.create! name: '@vdawg'
-  Publisher.create! name: '@will'
-  1.upto(5) do |n|
-    book = Book.find(n)
-    book.publisher = Publisher.find(1)
-    book.save
-  end
-  6.upto(10) do |n|
-    book = Book.find(n)
-    book.publisher = Publisher.find(2)
-    book.save
-  end
-end
-
 make_books
-make_groups
-make_purchases
-make_country_tags
-make_level_tags
-make_language_tags
 make_users
-make_genre_tags
-make_author_tags
-make_publisher_tags
+make_countries
+make_levels
+make_languages
+make_genres
+make_authors
+make_publishers
+make_book_tags
+make_projects
+make_content_buckets
+make_purchases

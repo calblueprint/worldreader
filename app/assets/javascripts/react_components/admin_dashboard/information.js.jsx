@@ -3,11 +3,10 @@
 var InformationDisplay = React.createClass({
   getInitialState: function () {
     var initPartner = {
-      countries: "",
+      country: "",
       email: "",
       organization: "",
-      levels: "",
-      languages: "",
+      language: "",
     };
     return {partnerInfo: initPartner};
   },
@@ -37,12 +36,11 @@ var InformationDisplay = React.createClass({
           {this.state.partnerInfo["email"]}
         </div>
         <div className="partner-text-information col-md-5 col-md-offset-1">
-          <p><b>Languages </b>{this.state.partnerInfo["languages"]}</p>
-          <p><b>Countries </b>{this.state.partnerInfo["countries"]}</p>
+          <p><b>Language </b>{this.state.partnerInfo["language"]}</p>
+          <p><b>Country </b>{this.state.partnerInfo["country"]}</p>
         </div>
         <div className="partner-text-information col-6">
           <p><b>Organization </b>{this.state.partnerInfo["organization"]}</p>
-          <p><b>Levels </b>{this.state.partnerInfo["levels"]}</p>
         </div>
         <div className="boundary-line col-md-offset-3 col-md-6">
         </div>
