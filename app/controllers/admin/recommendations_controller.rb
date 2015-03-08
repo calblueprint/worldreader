@@ -63,22 +63,23 @@ class Admin::RecommendationsController < ApplicationController
     render json: recommendations
   end
 
-  def display_partners
-    partners = User.partners
-    render json: partners
-  end
-
-  def display_partner_categories
-    partners = User.partners
-    countries = partners.select(:country).map(&:country).uniq
-    organizations = partners.select(:organization).map(&:organization).uniq
-    schools = partners.select(:school).map(&:school).uniq
-
-    render json: {countries: countries, organizations: organizations, schools: schools}
-  end
-
-  def display_books
-    books = Book.all
+    def display_books
+    recommendation = Recommendation.find(params[:id])
+    books = recommendation.books
     render json: books
+  end
+
+  def display_book_tags
+    recommendation = Recommendation.find(params[:id])
+    countries = recommendation.book_countries
+    languages = recommendation.book_languages
+    render json: {countries: countries, languages: languages}
+  end
+
+  def display_proj_tags
+    recommendation = Recommendation.find(params[:id])
+    countries = recommendation.proj_countries
+    languages = recommendation.proj_languages
+    render json: {countries: countries, languages: languages}
   end
 end

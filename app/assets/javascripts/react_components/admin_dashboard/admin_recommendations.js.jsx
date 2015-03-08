@@ -62,7 +62,11 @@ var RecommendationsPage = React.createClass({
     });
   },
   _selectRecommendation: function (recommendationId) {
-    this.setState({selectedRecommendation: recommendationId});
+    if (recommendationId == this.state.selectedRecommendation) {
+      this.setState({selectedRecommendation: null});
+    } else {
+      this.setState({selectedRecommendation: recommendationId});
+    }
   },
   _createRecommendation: function () {
     this.props.viewCreateRecommendation();
@@ -87,6 +91,16 @@ var RecommendationsPage = React.createClass({
     });
   },
   render: function () {
+    var self = this;
+    var recommendationPills = this.state.recommendations.map (function (recommendation) {
+      return (
+        <Recommendation recommendation={recommendation}
+          clicked={_.isEqual(self.state.selectedRecommendation, recommendation.id)}
+          selectedRecommendation={self.state.selectedRecommendation}
+          selectRecommendation={self._selectRecommendation}
+          deleteRecommendation={self._deleteRecommendation} />
+      );
+    })
     return (
       <div className="container">
         <div className="panel panel-primary">
@@ -98,10 +112,9 @@ var RecommendationsPage = React.createClass({
             </div>
           </div>
           <div className="panel-body">
-            <RecommendationList recommendations={this.state.recommendations} 
-              selectedRecommendation={this.state.selectedRecommendation} 
-              selectRecommendation={this._selectRecommendation} 
-              deleteRecommendation={this._deleteRecommendation} />
+            <div className="list-group">
+              {recommendationPills}
+            </div>
           </div>
         </div>
       </div>
@@ -109,30 +122,62 @@ var RecommendationsPage = React.createClass({
   }
 });
 
-var RecommendationList = React.createClass({
-  render: function () {
-    var selectedRecommendation = this.props.selectedRecommendation;
-    var selectRecommendation = this.props.selectRecommendation;
-    var deleteRecommendation = this.props.deleteRecommendation;
-    var recommendationPills = this.props.recommendations.map (function (recommendation) {
-      return (
-        <Recommendation recommendation={recommendation} 
-          clicked={_.isEqual(selectedRecommendation, recommendation.id)} 
-          selectRecommendation={selectRecommendation} 
-          deleteRecommendation={deleteRecommendation} />
-      );
-    });
-    return (
-      <div className="list-group">
-        {recommendationPills}
-      </div>
-    );
-  }
-});
-
 var Recommendation = React.createClass({
   getInitialState: function () {
-    return {clicked: this.props.clicked};
+    return {
+      clicked: this.props.clicked, 
+      projectTags: {}, 
+      bookTags: {},
+      books: []
+    };
+  },
+  componentDidMount: function () {
+    var r = this.props.recommendation;
+    if (r.recommendation_type == RecommendationTypes.AUTO) {
+      this.fetchBookTags();
+    } else {
+      this.fetchBooks();
+    }
+    this.fetchProjectTags();
+  },
+  fetchProjectTags: function () {
+    var id = this.props.recommendation.id;
+    $.ajax({
+      url: "/admin/recommendations/" + id + "/display_proj_tags",
+      dataType: 'json',
+      success: function (data) {
+        this.setState({projectTags: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  fetchBookTags: function () {
+    var id = this.props.recommendation.id;
+    $.ajax({
+      url: "/admin/recommendations/" + id + "/display_book_tags",
+      dataType: 'json',
+      success: function (data) {
+        this.setState({bookTags: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  fetchBooks: function () {
+    var id = this.props.recommendation.id;
+    $.ajax({
+      url: "/admin/recommendations/" + id + "/display_books",
+      dataType: 'json',
+      success: function (data) {
+        this.setState({books: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   onClick: function () {
     this.props.selectRecommendation(this.props.recommendation.id);
@@ -141,27 +186,91 @@ var Recommendation = React.createClass({
     this.props.deleteRecommendation(this.props.recommendation.id);
   },
   render: function () {
+    var recommendation = this.props.recommendation;
+    var type = recommendation.recommendation_type;
+
     if (this.props.clicked) {
-      return (
-        <a href="#" className="list-group-item row" onClick={this.onClick}>
-          <div className="row">
-            {"Recommendation: " + this.props.recommendation.id}
-            <div className="btn-group pull-right">
-              <button type="button" className="btn btn-default">Edit</button>
-              <button type="button" className="btn btn-default" 
-                onClick={this.deleteOnClick}>
-                <div className="glyphicon glyphicon-remove"/>
-              </button>
+      var projTags = this.state.projectTags;
+      var projCountries = projTags.countries.map (function (country) {
+        return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
+      });
+      var projLanguages = projTags.languages.map (function (language) {
+        return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
+      });
+      if (type == RecommendationTypes.AUTO) {
+        var bookTags = this.state.bookTags;
+        var bookCountries = bookTags.countries.map (function (country) {
+          return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
+        });
+        var bookLanguages = bookTags.languages.map (function (language) {
+          return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
+        });
+        return (
+          <a href="#" className="list-group-item" onClick={this.onClick}>
+            <div className="row">
+              {"Recommendation: " + this.props.recommendation.id}
+              <div className="btn-group pull-right">
+                <button type="button" className="btn btn-default">Edit</button>
+                <button type="button" className="btn btn-default" 
+                  onClick={this.deleteOnClick}>
+                  <div className="glyphicon glyphicon-remove"/>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-md-5">books
+            <div className="row">
+              <div className="col-md-3">
+                Type: AUTO
+              </div>
+              <div className="col-md-3">Book Tags
+                <ul className="recommendation-display-list">
+                  {bookCountries}
+                  {bookLanguages}
+                </ul>
+              </div>
+              <div className="col-md-3">Project Tags
+                <ul className="recommendation-display-list">
+                  {projCountries}
+                  {projLanguages}
+                </ul>
+              </div>
             </div>
-            <div className="col-md-5">tags
+          </a>
+        );
+      } else {
+        var books = this.state.books.map (function (book) {
+          return (<li>{book.title}</li>);
+        });
+        return (
+          <a href="#" className="list-group-item" onClick={this.onClick}>
+            <div className="row">
+              {"Recommendation: " + this.props.recommendation.id}
+              <div className="btn-group pull-right">
+                <button type="button" className="btn btn-default">Edit</button>
+                <button type="button" className="btn btn-default" 
+                  onClick={this.deleteOnClick}>
+                  <div className="glyphicon glyphicon-remove"/>
+                </button>
+              </div>
             </div>
-          </div>
-        </a>
-      );
+            <div className="row">
+              <div className="col-md-3">
+                Type: CUSTOM
+              </div>
+              <div className="col-md-3">Books
+                <ul>
+                  {books}
+                </ul>
+              </div>
+              <div className="col-md-3">Project Tags
+                <ul className="recommendation-display-list">
+                  {projCountries}
+                  {projLanguages}
+                </ul>
+              </div>
+            </div>
+          </a>
+        );
+      }
     }
     return (
       <a href="#" className="list-group-item" onClick={this.onClick}>
@@ -192,9 +301,9 @@ var CreateRecommendationPage = React.createClass({
   },
   _setRecommendationType: function (event, state) {
     if (state) {
-      this.setState({recommendationType: 1});
+      this.setState({recommendationType: RecommendationTypes.CUSTOM});
     } else {
-      this.setState({recommendationType: 0});      
+      this.setState({recommendationType: RecommendationTypes.AUTO});      
     }
     $('#recommendation-type-toggle').bootstrapSwitch();
   },
