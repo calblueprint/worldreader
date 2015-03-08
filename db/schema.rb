@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304084457) do
+ActiveRecord::Schema.define(version: 20150308064357) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -594,6 +594,7 @@ ActiveRecord::Schema.define(version: 20150304084457) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "recommendation_type"
+    t.string   "name"
   end
 
   create_table "restrictedcontinent_books", id: false, force: true do |t|

@@ -7,6 +7,7 @@ class Admin::RecommendationsController < ApplicationController
     recommendation = Recommendation.create()
     recommendation_type = params[:recommendation_type].to_i
     recommendation.recommendation_type = recommendation_type
+    recommendation.name = params[:name]
 
     if recommendation_type == 0
       book_tags = ActiveSupport::JSON.decode params[:book_tags]

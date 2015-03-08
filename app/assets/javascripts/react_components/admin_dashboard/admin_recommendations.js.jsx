@@ -188,6 +188,12 @@ var Recommendation = React.createClass({
   render: function () {
     var recommendation = this.props.recommendation;
     var type = recommendation.recommendation_type;
+    var name;
+    if (recommendation.name == "") {
+      name = "Recommendation: " + recommendation.id;
+    } else {
+      name = recommendation.name;
+    }
 
     if (this.props.clicked) {
       var projTags = this.state.projectTags;
@@ -208,7 +214,7 @@ var Recommendation = React.createClass({
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
             <div className="row">
-              {"Recommendation: " + this.props.recommendation.id}
+              {name}
               <div className="btn-group pull-right">
                 <button type="button" className="btn btn-default">Edit</button>
                 <button type="button" className="btn btn-default" 
@@ -243,7 +249,7 @@ var Recommendation = React.createClass({
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
             <div className="row">
-              {"Recommendation: " + this.props.recommendation.id}
+              {name}
               <div className="btn-group pull-right">
                 <button type="button" className="btn btn-default">Edit</button>
                 <button type="button" className="btn btn-default" 
@@ -274,7 +280,7 @@ var Recommendation = React.createClass({
     }
     return (
       <a href="#" className="list-group-item" onClick={this.onClick}>
-        {"Recommendation: " + this.props.recommendation.id}
+        {name}
       </a>
 
     );
@@ -289,7 +295,7 @@ var RecommendationTypes = {
 var CreateRecommendationPage = React.createClass({
   getInitialState: function () {
     return {
-      recommendationType: RecommendationTypes.CUSTOM,
+      recommendationType: RecommendationTypes.AUTO,
       bookTags: [],
       projectTags: [],
       selectedBooks: []
@@ -298,6 +304,7 @@ var CreateRecommendationPage = React.createClass({
   componentDidMount: function () {
     $('#recommendation-type-toggle').bootstrapSwitch();
     $('#recommendation-type-toggle').on('switchChange.bootstrapSwitch', this._setRecommendationType);
+    $('.bootstrap-switch').css("float", "right");
   },
   _setRecommendationType: function (event, state) {
     if (state) {
@@ -341,6 +348,7 @@ var CreateRecommendationPage = React.createClass({
       type: "POST",
       url: "/admin/recommendations/add",
       data: {
+        name: $('.name-field').val(),
         recommendation_type: this.state.recommendationType,
         book_ids: bookIds,
         book_tags: JSON.stringify(this.state.bookTags),
@@ -363,7 +371,7 @@ var CreateRecommendationPage = React.createClass({
       return (
         <div className="container">
           <div className="row">
-            <div className="btn-group btn-group-lg col-md-10" role="group">
+            <div className="btn-group btn-group-lg col-md-4" role="group">
               <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
                 <span className="glyphicon glyphicon-chevron-left"></span> Back
               </div>
@@ -371,7 +379,12 @@ var CreateRecommendationPage = React.createClass({
                 Done 
               </div>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-4">
+              <div className="input-group input-group-lg name-input-group">
+                <input type="text" className="form-control name-field" placeholder="Enter a Name"/>
+              </div>
+            </div>
+            <div className="col-md-4">
               <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
                 data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
             </div>
@@ -398,7 +411,7 @@ var CreateRecommendationPage = React.createClass({
       return ( 
         <div className="container">
           <div className="row">
-            <div className="btn-group btn-group-lg col-md-10" role="group">
+            <div className="btn-group btn-group-lg col-md-4" role="group">
               <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
                 <span className="glyphicon glyphicon-chevron-left"></span> Back
               </div>
@@ -406,7 +419,12 @@ var CreateRecommendationPage = React.createClass({
                 Done 
               </div>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-4">
+              <div className="input-group input-group-lg name-input-group">
+                <input type="text" className="form-control name-field" placeholder="Enter a Name"/>
+              </div>
+            </div>
+            <div className="col-md-4">
               <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
                 data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
             </div>
