@@ -333,16 +333,25 @@ var CreateRecommendationPage = React.createClass({
   },
   _addRecommendation: function () {
     var viewRecommendations = this.props.viewRecommendations;
-    var bookIds = this.state.selectedBooks.map (function (book) {
-      return book.id;
-    });
+    var bookIds = _.pluck(this.state.selectedBooks, "id");
 
-    //TODO: present error message to user if none selected
-    if (this.state.recommendationType == RecommendationTypes.CUSTOM) {
-      if (bookIds.length == 0 || this.state.projectTags.length == 0) return;
-    } else {
-      if (this.state.bookTags.length == 0 || this.state.projectTags.length == 0) return;
+    var hasErrors = false;
+    if (this.state.projectTags.length == 0) {
+      toastr.error("No project tags selected");
+      hasErrors = true;
     }
+    if (this.state.recommendationType == RecommendationTypes.CUSTOM) {
+      if (bookIds.length == 0) {
+        toastr.error("No books selected");
+        hasErrors = true;
+      }
+    } else {
+      if (this.state.bookTags.length == 0) {
+        toastr.error("No book tags selected");
+        hasErrors = true;
+      }
+    }
+    if (hasErrors) return;
 
     $.ajax({
       type: "POST",
@@ -355,12 +364,12 @@ var CreateRecommendationPage = React.createClass({
         project_tags: JSON.stringify(this.state.projectTags)
       },
       success: function (message) {
-        console.log("Recommendation succesfully created");
-        //TODO: present message to user
+        toastr.success("Success! Created Recommendation");
         viewRecommendations();
       },
       error: function(xhr, status, err) {
         console.error("/admin/recommendations/add", status, err.toString(), xhr);
+        toastr.error("Error creating recommendation");
       }.bind(this)
     }).done(function(message) {
       console.log("Received response " + message.message);
