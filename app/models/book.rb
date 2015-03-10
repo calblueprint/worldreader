@@ -196,12 +196,12 @@ class Book < ActiveRecord::Base
     levels_set = Set.new []
     tags.each do |tag|
       if tag["tagType"] == "levels" && LEVELS_CONVERT.has_key?(tag["text"])
-        levels_set.merge(LEVELS_CONVERT[tag["text"]].to_set())
+        levels_set.merge(LEVELS_CONVERT[tag["text"]].to_set)
       else
         tags_levels_adjusted.push(tag)
       end
     end
-    tags_level_adjusted.concat(levels_set.to_a())
+    tags_level_adjusted.concat(levels_set.to_a)
 
     tags_level_adjusted.each do |tag|
       type = tag["tagType"]
