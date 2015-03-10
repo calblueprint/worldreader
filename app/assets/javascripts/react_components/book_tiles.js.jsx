@@ -62,6 +62,7 @@ var BookTile = React.createClass({
             <span className={"book-tag expanded-book-country " + countryLabel}>{this.props.book.country_name}</span>
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
+            <span className={"book-tag expanded-book-subcategory " + subcategoryLabel}>{this.props.book.subcategory_name}</span>
           </div>
           {cartButton}
         </div>
@@ -115,6 +116,7 @@ var SmallBookTile = React.createClass({
             <span className={"book-tag expanded-book-country " + countryLabel}>{this.props.book.country_name}</span>
             <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
+            <span className={"book-tag expanded-book-subcategory " + subcategoryLabel}>{this.props.book.subcategory_name}</span>
           </div>
           {parseFloat(this.props.book.price) > 0 ?
             <div className="price">

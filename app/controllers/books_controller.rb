@@ -40,7 +40,13 @@ class BooksController < ApplicationController
         value: index, text: x, tagType: "genre"
       }
     }
-    gon.all_tags = country_tags + level_tags + language_tags + genre_tags
-
+    subcategory_tags = Subcategory.uniq.pluck(:name).map { |x|
+      index += 1
+      {
+        value: index, text: x, tagType: "subcategory"
+      }
+    }
+    gon.all_tags = country_tags + level_tags + language_tags + genre_tags +
+      subcategory_tags
   end
 end
