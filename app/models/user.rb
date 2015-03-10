@@ -85,7 +85,6 @@ class User < ActiveRecord::Base
   private
 
   def validate_user_fields
-    puts projects
     errors.add(:projects, "can't be blank") if projects.size < 1
     raise ActiveRecord::RecordInvalid.new(self) if !errors.empty?
   end
