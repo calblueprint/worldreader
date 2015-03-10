@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, :if => :new_record?
   after_create :send_welcome_mail
-  validates :organization, presence: { message: "can't be blank" }
+  after_save :validate_user_fields
 
   belongs_to :country
   has_many :books, through: :purchases
@@ -83,4 +83,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   private
+
+  def validate_user_fields
+    puts projects
+    errors.add(:projects, "can't be blank") if projects.size < 1
+    raise ActiveRecord::RecordInvalid.new(self) if !errors.empty?
+  end
 end

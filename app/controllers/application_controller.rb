@@ -32,6 +32,11 @@ class ApplicationController < ActionController::Base
         id: x.id, name: x.name
       }
     }
+    gon.projects = Project.uniq.all.map { |x|
+      {
+        id: x.id, name: x.name
+      }
+    }
   end
 
   def set_auth_token
