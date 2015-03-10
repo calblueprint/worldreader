@@ -457,7 +457,9 @@ var RecommendationBookTagSearch = React.createClass({
   },
   getInitialState: function () {
     return {
-      books: []
+      books: [],
+      pageNumber: 0,
+      isLastPage: true
     };
   },
   initTagbar: function () {
@@ -486,16 +488,19 @@ var RecommendationBookTagSearch = React.createClass({
   tagsUpdated: function () {
     var tags = $(".book-tagbar-input").tagsinput("items");
     this.props.setBookTags(tags);
+    this.setState({books: [], pageNumber: 0});
     this.updateSearch();
   },
   search: function (event) {
     if (event.which == 13) {
+      this.setState({books: [], pageNumber: 0});
       this.updateSearch();
     }
   },
   updateSearch: function () {
     var tags = $(".book-tagbar-input").tagsinput("items");
     var self = this;
+    var state = this._pendingState == null || this.state ? this.state : this._pendingState;
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
@@ -504,19 +509,23 @@ var RecommendationBookTagSearch = React.createClass({
       data: {
         tags: JSON.stringify(tags),
         term: "",
-        page: 0
+        page: state.pageNumber
       },
       success: function(results) {
-        self.setState({ books: results.books});
+        self.setState({books: self.state.books.concat(results.books),
+                       isLastPage: results.books.length == 0});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
     if (tags.length == 0) {
-      this.setState({books: []});
+      this.setState({books: [], pageNumber: 0, isLastPage: true});
     }
-
+  },
+  loadMore: function (pageToLoad) {
+    this.setState({pageNumber: this.state.pageNumber + 1});
+    this.updateSearch();
   },
   render: function () {
     var bookList = this.state.books.map (function (book) {
@@ -536,7 +545,14 @@ var RecommendationBookTagSearch = React.createClass({
         </div>
         <div className="row panel-body">
           <div className="list-group list-padding">
-            {bookList}
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadMore}
+              hasMore={!this.state.isLastPage}
+              threshold={250}
+              loader={<div className="loader">Loading...</div>}>
+                {bookList}
+            </InfiniteScroll>
           </div>
         </div>
       </div>
@@ -642,6 +658,8 @@ var RecommendationBookSearch = React.createClass({
   getInitialState: function () {
     return {
       books: [],
+      pageNumber: 0,
+      isLastPage: true
     };
   },
   initTagbar: function () {
@@ -667,11 +685,13 @@ var RecommendationBookSearch = React.createClass({
     mainSearch.on('itemRemoved', this.tagsUpdated);
   },
   tagsUpdated: function () {
-    var tags = $(".book-tagbar-input").tagsinput("items");
+    // var tags = $(".book-tagbar-input").tagsinput("items");
+    this.setState({books: [], pageNumber: 0});
     this.updateSearch();
   },
   search: function (event) {
     if (event.which == 13) {
+      this.setState({books: [], pageNumber: 0});
       this.updateSearch();
     }
   },
@@ -679,6 +699,8 @@ var RecommendationBookSearch = React.createClass({
     var tags = $(".book-tagbar-input").tagsinput("items");
     var searchTerm = $(".book-searchbar-input").val();
     var self = this;
+    var state = this._pendingState == null || this._pendingState == this.state ?
+      this.state : this._pendingState;
 
     $.ajax({
       type: "GET",
@@ -688,10 +710,11 @@ var RecommendationBookSearch = React.createClass({
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
-        page: 0
+        page: state.pageNumber
       },
       success: function(results) {
-        self.setState({ books: results.books});
+        self.setState({ books: state.books.concat(results.books),
+                        isLastPage: results.books.length == 0});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -700,6 +723,10 @@ var RecommendationBookSearch = React.createClass({
     if (tags.length == 0 && searchTerm=="") {
       this.setState({books: []});
     }
+  },
+  loadMore: function(pageToLoad) {
+    this.setState({pageNumber: this.state.pageNumber + 1});
+    this.updateSearch();
   },
   render: function () {
     var addBook = this.props.selectBook;
@@ -736,7 +763,14 @@ var RecommendationBookSearch = React.createClass({
         <div className="row book-search-rows">
           <div className="book-search-panel-left">
             <ul className="book-search-list">
-              {bookList}
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadMore}
+                hasMore={!this.state.isLastPage}
+                threshold={250}
+                load={<div className="loader">Loading...</div>}>
+                  {bookList}
+              </InfiniteScroll>
             </ul>
           </div>
           <div className="book-search-panel-right">
