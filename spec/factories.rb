@@ -6,6 +6,12 @@ FactoryGirl.define do
   factory :content_bucket, :class => 'ContentBuckets' do
   end
 
+  factory :subcategory do
+    name "MyString"
+    created_at "2015-03-03 16:05:30"
+    udpated_at "2015-03-03 16:05:30"
+  end
+
   factory :failed_update do
     book_id 1
   end

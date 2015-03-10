@@ -33,7 +33,7 @@ end
 
 def make_countries
   1.upto(10) do
-    c = Country.create! name: Faker::Address.country
+    Country.create! name: Faker::Address.country
   end
 end
 
@@ -72,6 +72,7 @@ def make_book_tags
     b.levels << Level.find(1 + Random.rand(4))
     b.language = Language.find(1 + Random.rand(2))
     b.genre = Genre.find(1 + Random.rand(2))
+    b.subcategory = Subcategory.find(1 + Random.rand(3))
     b.authors << Author.find(1 + Random.rand(4))
     b.publisher = Publisher.find(1 + Random.rand(2))
     b.save
@@ -133,11 +134,20 @@ def make_purchases
   end
 end
 
+def make_subcategories
+  names = ['Science Fiction', 'Historical Fiction', 'Fantasy']
+  1.upto(3) do |n|
+    Subcategory.create! name: names[n],
+                        category_id: n
+  end
+end
+
 make_books
 make_countries
 make_levels
 make_languages
 make_genres
+make_subcategories
 make_authors
 make_publishers
 make_book_tags

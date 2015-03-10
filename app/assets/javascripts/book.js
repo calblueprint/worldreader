@@ -2,6 +2,7 @@ var countryLabel = 'label label-success';
 var levelLabel = 'label label-primary';
 var languageLabel = 'label label-warning';
 var genreLabel = 'label label-info';
+var subcategoryLabel = 'label label-info';
 var recommendedLabel = 'label label-danger';
 
 var InfiniteScroll = React.addons.InfiniteScroll;
@@ -23,6 +24,7 @@ function ready() {
         case 'levels': return levelLabel;
         case 'language': return languageLabel;
         case 'genre': return genreLabel;
+        case 'subcategory': return subcategoryLabel;
         case 'recommended': return recommendedLabel;
       }
     },

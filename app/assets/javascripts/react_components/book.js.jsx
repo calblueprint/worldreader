@@ -100,6 +100,7 @@ var BookList = React.createClass({
             case 'levels':        return levelLabel;
             case 'language':      return languageLabel;
             case 'genre':         return genreLabel;
+            case 'subcategory':   return subcategoryLabel;
             case 'recommended':   return recommendedLabel;
           }
         },
