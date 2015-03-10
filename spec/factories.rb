@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :project do
     name "super cool project"
   end
-  factory :content_bucket, :class => 'ContentBuckets' do
 
+  factory :content_bucket, :class => 'ContentBuckets' do
   end
 
   factory :failed_update do
