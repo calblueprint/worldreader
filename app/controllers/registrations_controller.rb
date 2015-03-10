@@ -5,19 +5,9 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    level_ids = Array(user_params[:levels])
-    level_ids.each do |level_id|
-      resource.levels << Level.find(level_id)
-    end
-
-    language_ids = Array(user_params[:languages])
-    language_ids.each do |language_id|
-      resource.languages << Language.find(language_id)
-    end
-
-    country_ids = Array(user_params[:countries])
-    country_ids.each do |country_id|
-      resource.countries << Country.find(country_id)
+    project_ids = Array(user_params[:projects])
+    project_ids.each do |project_id|
+      resource.projects << Project.find(project_id)
     end
 
     if resource.save
@@ -36,7 +26,6 @@ class RegistrationsController < Devise::RegistrationsController
       u.permit(:email,
                :first_name,
                :last_name,
-               :organization,
                :password,
                :password_confirmation)
     }
@@ -45,6 +34,6 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def user_params
-    params.require(:user).permit(countries: [], levels: [], languages: [])
+    params.require(:user).permit(projects: [])
   end
 end

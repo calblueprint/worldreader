@@ -9,22 +9,25 @@ end
 
 def make_users
   1.upto(5) do |n|
-    User.create!  email: "user#{n}@gmail.com",
-                  role: 0,
-                  password: "password",
-                  organization: "org#{n}"
+    user = User.create email: "user#{n}@gmail.com",
+                       role: 0,
+                       password: "password"
+    user.projects << Project.find(1 + Random.rand(Project.count))
+    user.save
   end
   1.upto(2) do |n|
-    User.create!  email: "admin#{n}@gmail.com",
-                  role: 1,
-                  password: "password",
-                  organization: "worldreader"
+    user = User.create email: "admin#{n}@gmail.com",
+                       role: 1,
+                       password: "password"
+    user.projects << Project.find(1 + Random.rand(Project.count))
+    user.save
   end
   1.upto(2) do |n|
-    User.create!  email: "vip#{n}@gmail.com",
-                  role: 2,
-                  password: "password",
-                  organization: "worldreader"
+    user = User.create email: "vip#{n}@gmail.com",
+                       role: 2,
+                       password: "password"
+    user.projects << Project.find(1 + Random.rand(Project.count))
+    user.save
   end
 end
 
@@ -81,7 +84,6 @@ def make_projects
                              country: Country.find(n)
     project.languages << Language.find(1 + Random.rand(2))
     project.levels << Level.find(1 + Random.rand(4))
-    project.users << User.find(1 + Random.rand(5))
     project.save
   end
 end
@@ -132,7 +134,6 @@ def make_purchases
 end
 
 make_books
-make_users
 make_countries
 make_levels
 make_languages
@@ -141,5 +142,6 @@ make_authors
 make_publishers
 make_book_tags
 make_projects
+make_users
 make_content_buckets
 make_purchases
