@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225015940) do
+ActiveRecord::Schema.define(version: 20150310231608) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -633,10 +633,10 @@ ActiveRecord::Schema.define(version: 20150225015940) do
 
   create_table "subcategories", force: true do |t|
     t.string   "name"
-    t.integer  "category_id"
     t.integer  "book_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "genre_id"
   end
 
   create_table "textbook_levels", force: true do |t|
