@@ -23,5 +23,17 @@ module Worldreader
     # config.i18n.default_locale = :de
 
     config.react.addons = true
+    # Don't generate extra files when generating models and controllers
+    config.generators do |generate|
+      generate.helper               false
+      generate.javascript_engine    false
+      generate.request_specs        false
+      generate.routing_specs        false
+      generate.stylesheets          false
+      generate.view_specs           false
+      generate.controller_specs     false
+      generate.test_framework       false
+      generate.fixture_replacement  false
+    end
   end
 end
