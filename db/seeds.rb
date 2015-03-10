@@ -10,22 +10,22 @@ end
 def make_users
   1.upto(5) do |n|
     user = User.create  email: "user#{n}@gmail.com",
-                  role: 0,
-                  password: "password"
+                        role: 0,
+                        password: "password"
     user.projects << Project.find(1 + Random.rand(Project.count))
     user.save
   end
   1.upto(2) do |n|
     user = User.create  email: "admin#{n}@gmail.com",
-                  role: 1,
-                  password: "password"
+                        role: 1,
+                        password: "password"
     user.projects << Project.find(1 + Random.rand(Project.count))
     user.save
   end
   1.upto(2) do |n|
     user = User.create  email: "vip#{n}@gmail.com",
-                  role: 2,
-                  password: "password"
+                        role: 2,
+                        password: "password"
     user.projects << Project.find(1 + Random.rand(Project.count))
     user.save
   end
