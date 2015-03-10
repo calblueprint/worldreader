@@ -165,8 +165,8 @@ var BookList = React.createClass({
     this.setState({ searchTerm: searchTerm,
                     tags: tags});
     var self = this;
-    ar state = this._pendingState == null || this._pendingState == this.state
-      ? this.state : this._pendingState;
+    var state = this._pendingState == null || this._pendingState == this.state ?
+      this.state : this._pendingState;
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
