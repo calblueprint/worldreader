@@ -283,21 +283,6 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    var levels = gon.levels.map(function(level) {
-      return (
-          <option value={level.id}>{level.name}</option>
-      );
-    }.bind(this));
-    var languages = gon.languages.map(function(language) {
-      return (
-          <option value={language.id}>{language.name}</option>
-      );
-    }.bind(this));
-    var countries = gon.countries.map(function(country) {
-      return (
-          <option value={country.id}>{country.name}</option>
-      );
-    }.bind(this));
     var projects = gon.projects.map(function(project) {
       return (
         <option value={project.id}>{project.name}</option>
