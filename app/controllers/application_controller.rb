@@ -17,17 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def new_partner_info
-    gon.countries = Country.uniq.all.map{ |x|
-      {
-        id: x.id, name: x.name
-      }
-    }
-    gon.levels = Level.uniq.all.map{ |x|
-      {
-        id: x.id, name: x.name
-      }
-    }
-    gon.languages = Language.uniq.all.map{ |x|
+    gon.projects = Project.uniq.all.map { |x|
       {
         id: x.id, name: x.name
       }

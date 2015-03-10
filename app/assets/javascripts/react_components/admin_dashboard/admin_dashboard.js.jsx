@@ -258,10 +258,7 @@ var AddPartnerDisplay = React.createClass({
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
       password_confirmation: $('#newUserConfirmPassword').val(),
-      organization: $('#newUserOrganization').val(),
-      levels: $('#newUserLevels').val(),
-      languages: $('#newUserLanguages').val(),
-      countries: $('#newUserCountries').val()
+      projects: $('#newUserProjects').val()
     };
     $.ajax({
       type: "POST",
@@ -286,19 +283,9 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    var levels = gon.levels.map(function(level) {
+    var projects = gon.projects.map(function(project) {
       return (
-          <option value={level.id}>{level.name}</option>
-      );
-    }.bind(this));
-    var languages = gon.languages.map(function(language) {
-      return (
-          <option value={language.id}>{language.name}</option>
-      );
-    }.bind(this));
-    var countries = gon.countries.map(function(country) {
-      return (
-          <option value={country.id}>{country.name}</option>
+        <option value={project.id}>{project.name}</option>
       );
     }.bind(this));
     return (
@@ -320,26 +307,10 @@ var AddPartnerDisplay = React.createClass({
           <div>
             <input id="newUserConfirmPassword" type="password" className="form-control new-user-input" />
           </div>
-          <label for="newUserOrganization">Organization Name</label>
+          <label for="newUserProjects">Projects</label>
           <div>
-            <input id="newUserOrganization" className="form-control new-user-input" />
-          </div>
-          <label for="newUserLevels">Grade Levels</label>
-          <div>
-            <select id="newUserLevels" className="selectpicker new-user-input" title="Select Grade Levels" multiple data-width="300px">
-              {levels}
-            </select>
-          </div>
-          <label for="newUserLanguages">Languages</label>
-          <div>
-            <select id="newUserLanguages" className="selectpicker new-user-input" title="Select Languages" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
-              {languages}
-            </select>
-          </div>
-          <label for="newUserCountries">Countries</label>
-          <div>
-            <select id="newUserCountries" className="selectpicker new-user-input" title="Select Countries" multiple data-width="300px" data-live-search="true" data-size="5" data-selected-text-format="count>4">
-              {countries}
+            <select id="newUserProjects" className="selectpicker new-user-input" title="Select Projects" multiple data-width="300px">
+              {projects}
             </select>
           </div>
           <div className="newUserButton">
