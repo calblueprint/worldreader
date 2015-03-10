@@ -135,9 +135,9 @@ def make_purchases
 end
 
 def make_subcategories
-  names = ['Science Fiction', 'Historical Fiction', 'Fantasy']
+  names = ["Science Fiction", "Historical Fiction", "Fantasy"]
   1.upto(3) do |n|
-    Subcategory.create! name: names[n-1],
+    Subcategory.create! name: names[n - 1],
                         category_id: n
   end
 end

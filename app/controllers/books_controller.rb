@@ -47,6 +47,6 @@ class BooksController < ApplicationController
       }
     }
     gon.all_tags = country_tags + level_tags + language_tags + genre_tags +
-        subcategory_tags
+      subcategory_tags
   end
 end
