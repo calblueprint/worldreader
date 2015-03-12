@@ -119,6 +119,9 @@ class Book < ActiveRecord::Base
   end
 
   def donated?
+    unless price
+      return true
+    end
     price <= 0
   end
 
