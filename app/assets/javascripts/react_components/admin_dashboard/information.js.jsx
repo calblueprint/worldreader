@@ -29,6 +29,17 @@ var InformationDisplay = React.createClass({
       }.bind(this)
     });
   },
+  renderField: function (field) {
+    if (this.state.partnerInfo[field]) {
+      return (
+        this.state.partnerInfo[field].join(",")
+      );
+    } else {
+      return (
+        <i>None</i>
+      )
+    }
+  },
   render: function () {
     return (
       <div id="informationDisplay">
@@ -36,11 +47,11 @@ var InformationDisplay = React.createClass({
           {this.state.partnerInfo["email"]}
         </div>
         <div className="partner-text-information col-md-5 col-md-offset-1">
-          <p><b>Language </b>{this.state.partnerInfo["language"]}</p>
-          <p><b>Country </b>{this.state.partnerInfo["country"]}</p>
+          <p><b>Languages </b>{this.renderField("language_names")}</p>
+          <p><b>Countries </b>{this.renderField("country_names")}</p>
         </div>
         <div className="partner-text-information col-6">
-          <p><b>Organization </b>{this.state.partnerInfo["organization"]}</p>
+          <p><b>Projects </b>{this.renderField("project_names")}</p>
         </div>
         <div className="boundary-line col-md-offset-3 col-md-6">
         </div>
