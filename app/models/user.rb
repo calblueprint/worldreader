@@ -58,9 +58,9 @@ class User < ActiveRecord::Base
   end
 
   def past_purchase_ids
-    purchases.map { |purchase|
+    purchases.map do |purchase|
       purchase.book.id
-    }
+    end
   end
 
   def country_names
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   end
 
   def project_names
-    projects.map { |project| project.name }
+    projects.map &:name
   end
 
   def send_welcome_mail
