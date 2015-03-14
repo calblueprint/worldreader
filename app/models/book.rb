@@ -119,7 +119,15 @@ class Book < ActiveRecord::Base
   end
 
   def donated?
-    price <= 0
+    p = self[:price]
+    unless p
+      return true
+    end
+    p <= 0
+  end
+
+  def price
+    ActionController::Base.helpers.number_to_currency self[:price]
   end
 
   def as_json(options={})
@@ -133,6 +141,7 @@ class Book < ActiveRecord::Base
         :publisher_name,
         :authors_name,
         :update_status,
+        :donated?,
         :url
       ]
     )
