@@ -91,6 +91,10 @@ class Book < ActiveRecord::Base
   default_scope { where(in_store: true) }
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
+  # Probably want future improvement so we don't have to store it in a .yml
+  # file which will get parsed every time the model is used. We can also
+  # allow for future mapping changes by making a model mapping search tags
+  # to model tags.
   LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../../../db/levelsConvert.yml', __FILE__)))
 
   def self.to_csv(books)
@@ -131,6 +135,7 @@ class Book < ActiveRecord::Base
         :language_name,
         :country_name,
         :levels_name,
+        :textbook_level,
         :publisher_name,
         :authors_name,
         :update_status,
@@ -155,8 +160,12 @@ class Book < ActiveRecord::Base
     country ? country.name : ""
   end
 
-  def levels_name
+  def levels_name #for fiction books.
     levels.map { |l| l.name }
+  end
+
+  def textbook_level #for nonfiction books
+    textbook_levels.map { |l| l.name }
   end
 
   def publisher_name
