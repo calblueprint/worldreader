@@ -26,7 +26,9 @@ var InfiniteScroll = React.addons.InfiniteScroll = React.createClass({
     return React.DOM.div(null, props.children, props.hasMore && (props.loader || InfiniteScroll._defaultLoader));
   },
   scrollListener: function () {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    var el = this.getDOMNode();
+    var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    if (topPosition(el) + el.offsetHeight - scrollTop - window.innerHeight < Number(this.props.threshold)) {
       this.detachScrollListener();
       // call loadMore after detachScrollListener to allow
       // for non-async loadMore functions
@@ -39,7 +41,6 @@ var InfiniteScroll = React.addons.InfiniteScroll = React.createClass({
     }
     window.addEventListener('scroll', this.scrollListener);
     window.addEventListener('resize', this.scrollListener);
-    this.scrollListener();
   },
   detachScrollListener: function () {
     window.removeEventListener('scroll', this.scrollListener);
