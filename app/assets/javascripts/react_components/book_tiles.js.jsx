@@ -105,6 +105,9 @@ var SmallBookTile = React.createClass({
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
       );
     });
+    var groups = this.props.groups.map(function(group) {
+      return group.name;
+    }).join(", ");
     return (
       <div key={this.props.book.id + "-expanded"} className="icon-book-tile">
         <div className="icon-book-img-box pull-left">
@@ -128,6 +131,10 @@ var SmallBookTile = React.createClass({
               <b>{this.props.book.price}</b>
             </div>
           }
+          <div className="groups">
+            <b>Groups: </b>
+            {groups}
+          </div>
           {cartButton}
         </div>
       </div>
