@@ -13,4 +13,5 @@
 class ContentBucket < ActiveRecord::Base
   belongs_to :project
   has_and_belongs_to_many :books
+  has_and_belongs_to_many :purchases
 end

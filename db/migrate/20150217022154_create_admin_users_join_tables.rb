@@ -23,6 +23,5 @@ class CreateAdminUsersJoinTables < ActiveRecord::Migration
 
     add_index :admin_users_languages, :user_id
     add_index :admin_users_languages, :language_id
-
   end
 end
