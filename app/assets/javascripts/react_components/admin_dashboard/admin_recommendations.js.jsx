@@ -17,8 +17,9 @@ var RecommendationViews = React.createClass({
   viewCreateRecommendation: function () {
     this.setState({currentView: views.CREATE_RECOMMENDATION});
   },
-  viewEditRecommendation: function () {
-    this.setState({currentView: views.EDIT_RECOMMENDATION});
+  viewEditRecommendation: function (recommendation) {
+    this.setState({currentView: views.EDIT_RECOMMENDATION,
+                   recommendation: recommendation});
   },
   render: function () {
     if (this.state.currentView == views.RECOMMENDATIONS) {
@@ -34,7 +35,8 @@ var RecommendationViews = React.createClass({
     }
     else if (this.state.currentView == views.EDIT_RECOMMENDATION) {
       return (
-        <div/>
+        <EditRecommendationPage viewRecommendations={this.viewRecommendations}
+          recommendation={this.state.recommendation}/>
         );
     }
   }
@@ -98,7 +100,8 @@ var RecommendationsPage = React.createClass({
           clicked={_.isEqual(self.state.selectedRecommendation, recommendation.id)}
           selectedRecommendation={self.state.selectedRecommendation}
           selectRecommendation={self._selectRecommendation}
-          deleteRecommendation={self._deleteRecommendation} />
+          deleteRecommendation={self._deleteRecommendation}
+          editRecommendation={self.props.viewEditRecommendation} />
       );
     })
     return (
@@ -185,6 +188,9 @@ var Recommendation = React.createClass({
   deleteOnClick: function () {
     this.props.deleteRecommendation(this.props.recommendation.id);
   },
+  editRecommendation: function () {
+    this.props.editRecommendation(this.props.recommendation);
+  },
   render: function () {
     var recommendation = this.props.recommendation;
     var type = recommendation.recommendation_type;
@@ -216,7 +222,10 @@ var Recommendation = React.createClass({
             <div className="row">
               {name}
               <div className="btn-group pull-right">
-                <button type="button" className="btn btn-default">Edit</button>
+                <button type="button" className="btn btn-default"
+                  onClick={this.editRecommendation}>
+                  Edit
+                </button>
                 <button type="button" className="btn btn-default" 
                   onClick={this.deleteOnClick}>
                   <div className="glyphicon glyphicon-remove"/>
@@ -251,7 +260,10 @@ var Recommendation = React.createClass({
             <div className="row">
               {name}
               <div className="btn-group pull-right">
-                <button type="button" className="btn btn-default">Edit</button>
+                <button type="button" className="btn btn-default"
+                  onClick={this.editRecommendation}>
+                  Edit
+                </button>
                 <button type="button" className="btn btn-default" 
                   onClick={this.deleteOnClick}>
                   <div className="glyphicon glyphicon-remove"/>
@@ -425,6 +437,251 @@ var CreateRecommendationPage = React.createClass({
                 <span className="glyphicon glyphicon-chevron-left"></span> Back
               </div>
               <div className="btn btn-default" onClick={this._addRecommendation}> 
+                Done 
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group input-group-lg name-input-group">
+                <input type="text" className="form-control name-field" placeholder="Enter a Name"/>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
+                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
+            </div>
+          </div>
+          <div className="row top-buffer">
+            <div className="col-md-8">
+              <div className="panel">
+                <h3 className="panel-title"> Book Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationBookSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="panel">
+                <h3 className="panel-title"> Project Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationProjectTagSearch setProjectTags={this._setProjectTags}/>              
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+});
+
+var EditRecommendationPage = React.createClass({
+  getInitialState: function () {
+    var rec = this.props.recommendation;
+    var id = rec.id;
+    $.ajax({
+      url: "/admin/recommendations/" + id + "/display_proj_tags",
+      dataType: 'json',
+      success: function (data) {
+        this.setState({projectTags: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+
+    return {
+      recommendationType: rec.recommendation_type,
+      bookTags: [],
+      projectTags: [],
+      selectedBooks: []
+    };
+  },
+  componentDidMount: function () {
+    $('#recommendation-type-toggle').bootstrapSwitch();
+    $('#recommendation-type-toggle').on('switchChange.bootstrapSwitch', this._setRecommendationType);
+    $('.bootstrap-switch').css("float", "right");
+
+    var rec = this.props.recommendation;
+    $('.name-field').val(rec.name);
+
+    var self = this;
+    $.ajax({
+      url: "/admin/recommendations/" + rec.id + "/display_proj_tags",
+      dataType: 'json',
+      success: function (data) {
+        var projTags = [];
+        data.countries.map (function (country) {
+          var tag = _.findWhere(gon.project_tags, {id: country.id, tagType:"countries"});
+          projTags.push(tag);
+        });
+        data.languages.map (function (lang) {
+          var tag = _.findWhere(gon.project_tags, {id: lang.id, tagType:"language"});
+          projTags.push(tag);
+        });
+        self.setState({projectTags: projTags});
+        projTags.map (function (tag) {
+          $('.project-tagbar-input').tagsinput('add', tag);
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+
+    if (rec.recommendation_type == RecommendationTypes.AUTO) {
+      $.ajax({
+        url: "/admin/recommendations/" + rec.id + "/display_book_tags",
+        dataType: 'json',
+        success: function (data) {
+          var bookTags = [];
+          data.countries.map (function (country) {
+            var tag = _.findWhere(gon.all_tags, {id: country.id, tagType:"countries"});
+            bookTags.push(tag);
+          });
+          data.languages.map (function (lang) {
+            var tag = _.findWhere(gon.all_tags, {id: lang.id, tagType:"language"});
+            bookTags.push(tag);
+          });
+          self.setState({bookTags: bookTags});
+          bookTags.map ( function (tag) {
+            $('.book-tagbar-input').tagsinput('add', tag);
+          });
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    } else {
+      $.ajax({
+        url: "/admin/recommendations/" + rec.id + "/display_books",
+        dataType: 'json',
+        success: function (data) {
+          self.setState({selectedBooks: data});
+        }.bind(this),
+        error: function (xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
+  },
+  _setRecommendationType: function (event, state) {
+    if (state) {
+      this.setState({recommendationType: RecommendationTypes.CUSTOM});
+    } else {
+      this.setState({recommendationType: RecommendationTypes.AUTO});      
+    }
+    $('#recommendation-type-toggle').bootstrapSwitch();
+  },
+  _setBookTags: function (tags) {
+    this.setState({bookTags: tags});
+  },
+  _setProjectTags: function (tags) { 
+    this.setState({projectTags: tags});
+  },
+  _selectBook: function (book) {
+    var bookList = this.state.selectedBooks;
+    if (_.findWhere(bookList, {"id":book.id}) == null) {
+      bookList.push(book);
+    }
+    this.setState({selectedBooks: bookList});
+  },
+  _unselectBook: function (book) {
+    var bookList = _.without(this.state.selectedBooks, book);
+    this.setState({selectedBooks: bookList});
+  },
+  _submitRecommendation: function () {
+    var viewRecommendations = this.props.viewRecommendations;
+    var bookIds = _.pluck(this.state.selectedBooks, "id");
+
+    var hasErrors = false;
+    if (this.state.projectTags.length == 0) {
+      toastr.error("No project tags selected");
+      hasErrors = true;
+    }
+    if (this.state.recommendationType == RecommendationTypes.CUSTOM) {
+      if (bookIds.length == 0) {
+        toastr.error("No books selected");
+        hasErrors = true;
+      }
+    } else {
+      if (this.state.bookTags.length == 0) {
+        toastr.error("No book tags selected");
+        hasErrors = true;
+      }
+    }
+    if (hasErrors) return;
+
+    var rec = this.props.recommendation;
+    $.ajax({
+      type: "POST",
+      url: "/admin/recommendations/" + rec.id + "/edit",
+      data: {
+        name: $('.name-field').val(),
+        recommendation_type: this.state.recommendationType,
+        book_ids: bookIds,
+        book_tags: JSON.stringify(this.state.bookTags),
+        project_tags: JSON.stringify(this.state.projectTags)
+      },
+      success: function (message) {
+        toastr.success("Recommendation successfully edited!");
+        viewRecommendations();
+      },
+      error: function(xhr, status, err) {
+        console.error("/admin/recommendations/add", status, err.toString(), xhr);
+        toastr.error("Error editing recommendation");
+      }.bind(this)
+    }).done(function(message) {
+      console.log("Received response " + message.message);
+    });
+  },
+  render: function () {
+    if (this.state.recommendationType == RecommendationTypes.AUTO) {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="btn-group btn-group-lg col-md-4" role="group">
+              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
+                <span className="glyphicon glyphicon-chevron-left"></span> Back
+              </div>
+              <div className="btn btn-default" onClick={this._submitRecommendation}> 
+                Done 
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="input-group input-group-lg name-input-group">
+                <input type="text" className="form-control name-field" placeholder="Enter a Name"/>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <input type="checkbox" id="recommendation-type-toggle" onSwitchChange={this._setRecommendationType} defaultChecked={this.state.recommendationType} 
+                data-on-text="Custom" data-off-text="Auto" data-on-color="info" data-off-color="success"/>
+            </div>
+          </div>
+          <div className="row top-buffer">
+            <div className="col-md-6">
+              <div className="panel">
+                <h3 className="panel-title"> Book Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationBookTagSearch setBookTags={this._setBookTags}/>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="panel">
+                <h3 className="panel-title"> Projects Tags </h3>
+                <div className="panel-boundary-bottom"/>
+                <RecommendationProjectTagSearch setProjectTags={this._setProjectTags}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return ( 
+        <div className="container">
+          <div className="row">
+            <div className="btn-group btn-group-lg col-md-4" role="group">
+              <div className="btn btn-default" onClick={this.props.viewRecommendations}> 
+                <span className="glyphicon glyphicon-chevron-left"></span> Back
+              </div>
+              <div className="btn btn-default" onClick={this._submitRecommendation}> 
                 Done 
               </div>
             </div>
