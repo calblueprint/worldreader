@@ -1,3 +1,6 @@
+$line-color-light: #ddd;
+$line-color-dark: #aaa;
+
 .topDiv {
   height: 65px;
   background: white;
@@ -102,7 +105,7 @@
 }
 
 .partner-text-information > p {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .groupContainer {
@@ -218,12 +221,12 @@
 }
 
 .boundary-line {
-  border-bottom: 2px solid #aaa;
+  border-bottom: 2px solid $line-color-dark;
   padding-top: 30px;
 }
 
 .panel-boundary-bottom {
-  border-bottom: 2px solid #aaa;
+  border-bottom: 2px solid $line-color-dark;
   margin-left: 5px;
   margin-right: 5px;
   padding-top: 5px;
@@ -241,7 +244,7 @@
 }
 
 .book-search-panel-left {
-  border-right: 1px solid #ddd;
+  border-right: 1px solid $line-color-light;
   float: left;
   margin-bottom: 5px;
   margin-top: 5px;
@@ -250,7 +253,7 @@
 }
 
 .book-search-panel-right {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid $line-color-light;
   float: left;
   margin-bottom: 5px;
   margin-left: -1px;
@@ -260,32 +263,28 @@
 }
 
 .book-search-fields {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 10px;
   width: 100%;
 }
 
 .book-search-rows {
-  margin: 0px;
+  margin: 0;
 }
 
 .book-search-list {
-  margin: 5px;
   list-style-type: none;
+  margin: 5px;
 }
 
 .book-search-li-icon {
-  color: #aaa;
+  color: $line-color-dark;
   float: right;
 }
 
 .list-padding {
   padding: 5px;
-}
-
-.recommendation_display_list {
-  list-style-type: none;
 }
 
 .tag-style {
@@ -295,5 +294,5 @@
 }
 
 .name-input-group {
-  width: 100%
+  width: 100%;
 }

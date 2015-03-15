@@ -502,20 +502,25 @@ var EditRecommendationPage = React.createClass({
     var rec = this.props.recommendation;
     $('.name-field').val(rec.name);
 
+    var extractTags = function (data, tagSource) {
+      var tags = [];
+      data.countries.map (function (country) {
+        var tag = _.findWhere(tagSource, {id: country.id, tagType:"countries"});
+        tags.push(tag);
+      });
+      data.languages.map (function (lang) {
+        var tag = _.findWhere(tagSource, {id: lang.id, tagType:"language"});
+        tags.push(tag);
+      });
+      return tags;
+    };
+
     var self = this;
     $.ajax({
       url: "/admin/recommendations/" + rec.id + "/display_proj_tags",
       dataType: 'json',
       success: function (data) {
-        var projTags = [];
-        data.countries.map (function (country) {
-          var tag = _.findWhere(gon.project_tags, {id: country.id, tagType:"countries"});
-          projTags.push(tag);
-        });
-        data.languages.map (function (lang) {
-          var tag = _.findWhere(gon.project_tags, {id: lang.id, tagType:"language"});
-          projTags.push(tag);
-        });
+        var projTags = extractTags(data, gon.project_tags);
         self.setState({projectTags: projTags});
         projTags.map (function (tag) {
           $('.project-tagbar-input').tagsinput('add', tag);
@@ -531,15 +536,7 @@ var EditRecommendationPage = React.createClass({
         url: "/admin/recommendations/" + rec.id + "/display_book_tags",
         dataType: 'json',
         success: function (data) {
-          var bookTags = [];
-          data.countries.map (function (country) {
-            var tag = _.findWhere(gon.all_tags, {id: country.id, tagType:"countries"});
-            bookTags.push(tag);
-          });
-          data.languages.map (function (lang) {
-            var tag = _.findWhere(gon.all_tags, {id: lang.id, tagType:"language"});
-            bookTags.push(tag);
-          });
+          var bookTags = extractTags(data, gon.all_tags);
           self.setState({bookTags: bookTags});
           bookTags.map ( function (tag) {
             $('.book-tagbar-input').tagsinput('add', tag);
@@ -771,7 +768,6 @@ var RecommendationBookTagSearch = React.createClass({
       type: "GET",
       url: "/api/v1/books/search",
       dataType: "json",
-      async: false,
       data: {
         tags: JSON.stringify(tags),
         term: "",
@@ -874,7 +870,6 @@ var RecommendationProjectTagSearch = React.createClass({
       type: "GET",
       url: "/api/v1/projects/search",
       dataType: "json",
-      async: false,
       data: {
         tags: JSON.stringify(tags),
         term: "",
@@ -951,7 +946,6 @@ var RecommendationBookSearch = React.createClass({
     mainSearch.on('itemRemoved', this.tagsUpdated);
   },
   tagsUpdated: function () {
-    // var tags = $(".book-tagbar-input").tagsinput("items");
     this.setState({books: [], pageNumber: 0});
     this.updateSearch();
   },
@@ -972,7 +966,6 @@ var RecommendationBookSearch = React.createClass({
       type: "GET",
       url: "/api/v1/books/search",
       dataType: "json",
-      async: false,
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
