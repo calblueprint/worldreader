@@ -6,12 +6,12 @@ var bookList = null;
 
 var CartButton = React.createClass({
   handleClick: function(event) {
-    var projects = $('.selectpicker').val();
+    var groups = $('.selectpicker').val();
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       this.props.onClick({REMOVE_BOOK_FROM_CART: this.props.book});
     } else {
-      this.props.onClick({ADD_BOOK_TO_CART: this.props.book, "projects" :
-        projects});
+      this.props.onClick({ADD_BOOK_TO_CART: this.props.book, "groups" :
+        groups});
     }
   },
   componentDidMount: function() {
@@ -63,9 +63,16 @@ var CartButton = React.createClass({
 
 var BookList = React.createClass({
   getInitialState: function() {
+    var books = [];
+    var groups = [];
+    for (var i = 0; i < this.props.books.length; i++) {
+      books.push(this.props.books[i].book);
+      groups.push(this.props.books[i].groups);
+    }
     return {cart: cart,
             user: gon.current_user,
-            books: this.props.books,
+            books: books,
+            groups: groups,
             expandedBookId: null,
             pageNumber: 0,
             searchTerm: "",
@@ -108,8 +115,8 @@ var BookList = React.createClass({
       }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
-      var projects = event.projects;
-      addBook(book, this.state.user.id, projects);
+      var groups = event.groups;
+      addBook(book, this.state.user.id, groups);
     } else if (event.SEE_MORE_CART_ITEMS) {
       this.setState({numVisibleCartItems:
                     _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
@@ -147,13 +154,16 @@ var BookList = React.createClass({
       });
     }
   },
-  generateTile: function(book) {
+  generateTile: function(index) {
+    var book = this.state.books[index];
+    var groups = this.state.groups[index];
     if (this.props.small) {
       return (
         <SmallBookTile
           user={gon.current_user}
           key={book.id}
           book={book}
+          groups={groups}
           cart={cart.get("items")}
           handleCartEvent={this.handleCartEvent} />
       )
@@ -163,6 +173,7 @@ var BookList = React.createClass({
         user={gon.current_user}
         key={book.id}
         book={book}
+        groups={groups}
         cart={cart.get("items")}
         handleClick={this.handleBookExpand}
         handleCloseButton={this.handleBookClosed}
@@ -216,8 +227,8 @@ var BookList = React.createClass({
   },
   render: function() {
     bookList = this;
-    var bookTiles = this.state.books.map(function (book) {
-      return this.generateTile(book);
+    var bookTiles = this.state.books.map(function (book, index) {
+      return this.generateTile(index);
     }.bind(this));
 
     var searchBar = (

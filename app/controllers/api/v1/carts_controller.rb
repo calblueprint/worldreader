@@ -2,8 +2,10 @@ class Api::V1::CartsController < ApplicationController
 
   def add
     book = Book.find(params[:book_id])
-    Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
-    # params[:groups].each do |groups|
+    p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
+    params[:groups].each do |group|
+      p.content_buckets << ContentBucket.find(group)
+    end
     render json: {message: "Added!"}
   end
 

@@ -95,7 +95,11 @@ class User < ActiveRecord::Base
   end
 
   def cart
-    cart_purchases.map{ |purchase| purchase.book }
+    cart_purchases.map{ |purchase|
+      {
+        book: purchase.book, groups: purchase.content_buckets
+      }
+    }
   end
 
   def cart_purchases
