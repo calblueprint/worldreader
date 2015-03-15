@@ -59,7 +59,7 @@ var removeBook = function(book, userId) {
   });
 };
 
-var addBook = function(book, userId, projects) {
+var addBook = function(book, userId, groups) {
   var cartItems = cart.get("items");
   var books = cartItems.concat([book]);
   cart.set("items", books);
@@ -70,7 +70,7 @@ var addBook = function(book, userId, projects) {
     data: {
       book_id: book.id,
       user_id: userId,
-      projects: projects
+      groups: groups
     },
     success: function(response) {
       toastr.success(book.title + " was added to your cart!");
