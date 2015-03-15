@@ -47,15 +47,19 @@ var removeBook = function(book, userId) {
     data: {
       book_id: book.id,
       user_id: userId
-    }
+    },
+    success: function(response) {
+      toastr.success(book.title + " was removed from your cart!");
+    }.bind(this),
+    error: function (xhr, status, err) {
+      console.error(this.props.url, status, err.toString());
+    }.bind(this)
   }).done(function(message) {
     console.log("Received response for book removal: " + message.message);
   });
-
-  toastr.success(book.title + " removed from your cart!");
 };
 
-var addBook = function(book, userId) {
+var addBook = function(book, userId, projects) {
   var cartItems = cart.get("items");
   var books = cartItems.concat([book]);
   cart.set("items", books);
@@ -65,12 +69,17 @@ var addBook = function(book, userId) {
     url: "/api/v1/carts/add/" + book.id,
     data: {
       book_id: book.id,
-      user_id: userId
-    }
+      user_id: userId,
+      projects: projects
+    },
+    success: function(response) {
+      toastr.success(book.title + " was added to your cart!");
+    }.bind(this),
+    error: function (xhr, status, err) {
+      console.error(this.props.url, status, err.toString());
+    }.bind(this)
   }).done(function(message) {
     console.log("Received response for book addition: " + message.message);
   });
-
-  toastr.success(book.title + " added to your cart!");
 }
 

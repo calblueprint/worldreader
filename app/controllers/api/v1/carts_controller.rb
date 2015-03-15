@@ -2,7 +2,8 @@ class Api::V1::CartsController < ApplicationController
 
   def add
     book = Book.find(params[:book_id])
-    p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
+    Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
+    # params[:groups].each do |groups|
     render json: {message: "Added!"}
   end
 
@@ -14,5 +15,4 @@ class Api::V1::CartsController < ApplicationController
     p.destroy_all
     render json: {message: "Removed!"}
   end
-
 end

@@ -6,13 +6,33 @@ var bookList = null;
 
 var CartButton = React.createClass({
   handleClick: function(event) {
+    var projects = $('.selectpicker').val();
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       this.props.onClick({REMOVE_BOOK_FROM_CART: this.props.book});
     } else {
-      this.props.onClick({ADD_BOOK_TO_CART: this.props.book});
+      this.props.onClick({ADD_BOOK_TO_CART: this.props.book, "projects" :
+        projects});
     }
   },
+  componentDidMount: function() {
+    this._updateProjectSelect();
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    this._updateProjectSelect();
+  },
+  _updateProjectSelect: function() {
+    $('.selectpicker').selectpicker({dropupAuto: false});
+    var groupIDs = gon.projects.map(function(group) {
+      return group.id;
+    });
+    $('.selectpicker').selectpicker('val', groupIDs);
+  },
   render: function() {
+    var groups = gon.groups.map(function(group) {
+      return (
+        <option value={group.id}>{group.name}</option>
+      );
+    }.bind(this));
     if (_.contains(this.props.user.past_purchase_ids, this.props.book.id)) {
       return (
         <button className="btn cart-button disabled">
@@ -20,17 +40,22 @@ var CartButton = React.createClass({
         </button>
       );
     }
-    if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
+    else if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-        Remove from Cart
+          Remove From Cart
         </button>
       );
     } else {
       return (
-        <button className="btn cart-button" onClick={this.handleClick}>
-        Add to Cart
-        </button>
+        <div>
+          <select className="selectpicker project-select dropup" title="Choose Projects" multiple data-width="200px" data-selected-text-format="count>3" data-size="3" data-actions-box="true" data-count-selected-text="{0} projects selected">
+            {groups}
+          </select>
+          <button className="btn cart-button" onClick={this.handleClick}>
+            Add to Cart
+          </button>
+        </div>
       );
     }
   }
@@ -83,7 +108,8 @@ var BookList = React.createClass({
       }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
-      addBook(book, this.state.user.id);
+      var projects = event.projects;
+      addBook(book, this.state.user.id, projects);
     } else if (event.SEE_MORE_CART_ITEMS) {
       this.setState({numVisibleCartItems:
                     _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,

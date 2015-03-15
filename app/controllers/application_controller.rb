@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_user_cart, :set_auth_token, :new_partner_info
+  before_action :set_user_cart, :set_auth_token, :new_partner_info, :user_groups
   after_action :store_location
   protect_from_forgery with: :exception
 
@@ -22,6 +22,19 @@ class ApplicationController < ActionController::Base
         id: x.id, name: x.name
       }
     }
+  end
+
+  def user_groups
+    if user_signed_in?
+      groups = current_user.projects.flat_map &:content_buckets
+      gon.groups = groups.map { |x|
+        {
+          id: x.id, name: x.name
+        }
+      }
+    else
+      gon.groups = []
+    end
   end
 
   def set_auth_token

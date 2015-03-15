@@ -16,6 +16,7 @@ class Purchase < ActiveRecord::Base
   belongs_to :flagged_user, class_name: "User"
   belongs_to :book
   scope :is_purchased, -> (t_or_f) { where is_purchased: t_or_f }
+  has_and_belongs_to_many :content_buckets
 
   CSV_COLUMNS = ["Book Name",
                  "ASIN",
