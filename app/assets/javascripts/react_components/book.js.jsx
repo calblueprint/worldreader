@@ -156,6 +156,7 @@ var BookList = React.createClass({
   },
   generateTile: function(index) {
     var book = this.state.books[index];
+    console.log(this.state.books);
     var groups = this.state.groups[index];
     if (this.props.small) {
       return (
