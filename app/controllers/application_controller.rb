@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
     country_tags = Country.uniq.select([:id, :name]).map{ |x|
       index += 1
       {
-        value: index, text: x.name, tagType: "countries", id: x.id
+        value: index, text: x.name, tagType: "country", id: x.id
       }
     }
     level_tags = Level.uniq.select([:id, :name]).map{ |x|
