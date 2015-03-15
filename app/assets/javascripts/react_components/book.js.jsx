@@ -100,6 +100,7 @@ var BookList = React.createClass({
             case 'levels':        return levelLabel;
             case 'language':      return languageLabel;
             case 'genre':         return genreLabel;
+            case 'subcategory':   return subcategoryLabel;
             case 'recommended':   return recommendedLabel;
           }
         },
@@ -149,13 +150,15 @@ var BookList = React.createClass({
   },
   tagsUpdated: function() {
     this.setState({ books: [],
-                  pageNumber: 0});
+                  pageNumber: 0,
+                  isLastPage: true});
     this.updateSearch()
   },
   search: function(event) {
     if (event.which == 13) {
       this.setState({ books: [],
-                      pageNumber: 0});
+                    pageNumber: 0,
+                    isLastPage: true});
       this.updateSearch();
     }
   },
@@ -171,7 +174,6 @@ var BookList = React.createClass({
       type: "GET",
       url: "/api/v1/books/search",
       dataType: "json",
-      async: false,
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,

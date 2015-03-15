@@ -78,6 +78,7 @@ class Book < ActiveRecord::Base
   belongs_to :language
   belongs_to :genre
   belongs_to :publisher
+  belongs_to :subcategory
   belongs_to :country, foreign_key: "origin_id"
   has_many :purchases
   has_many :users, through: :purchases
@@ -118,19 +119,29 @@ class Book < ActiveRecord::Base
   end
 
   def donated?
-    price <= 0
+    p = self[:price]
+    unless p
+      return true
+    end
+    p <= 0
+  end
+
+  def price
+    ActionController::Base.helpers.number_to_currency self[:price]
   end
 
   def as_json(options={})
     super(
       methods: [
         :genre_name,
+        :subcategory_name,
         :language_name,
         :country_name,
         :levels_name,
         :publisher_name,
         :authors_name,
         :update_status,
+        :donated?,
         :url
       ]
     )
@@ -138,6 +149,10 @@ class Book < ActiveRecord::Base
 
   def genre_name
     genre ? genre.name : ""
+  end
+
+  def subcategory_name
+    subcategory ? subcategory.name : ""
   end
 
   def language_name

@@ -11,7 +11,7 @@ var CheckoutButton = React.createClass({
     if (isPurchaseable()) {
       makePurchase();
     } else {
-      toastr.error("To complete a purchase, you need to have an equal number of paid and donated books!");
+      toastr.error("To checkout you need to have ordered at least as many paid books as free books!");
     }
   },
   render: function() {

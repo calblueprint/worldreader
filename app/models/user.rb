@@ -47,9 +47,42 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    json = super(options)
-    json[:past_purchase_ids] = purchases.map { |purchase| purchase.book.id }
-    json
+    super(
+      methods: [
+        :past_purchase_ids,
+        :country_names,
+        :language_names,
+        :project_names
+      ]
+    )
+  end
+
+  def past_purchase_ids
+    purchases.map do |purchase|
+      purchase.book.id
+    end
+  end
+
+  def country_names
+    country_set = Set.new
+    projects.each do |project|
+      country_set.add project.country.name
+    end
+    return country_set
+  end
+
+  def language_names
+    language_set = Set.new
+    projects.each do |project|
+      project.languages.each do |language|
+        language_set.add language.name
+      end
+    end
+    return language_set
+  end
+
+  def project_names
+    projects.map &:name
   end
 
   def send_welcome_mail
