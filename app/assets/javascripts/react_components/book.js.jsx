@@ -96,7 +96,7 @@ var BookList = React.createClass({
       mainSearch.tagsinput({
         tagClass: function(item) {
           switch (item.tagType) {
-            case 'country':       return countryLabel;
+            case 'countries':       return countryLabel;
             case 'levels':        return levelLabel;
             case 'language':      return languageLabel;
             case 'genre':         return genreLabel;
