@@ -256,8 +256,8 @@ ActiveRecord::Schema.define(version: 20150310231608) do
   end
 
   create_table "countries_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "user_country_id"
+    t.integer "recommendation_id",  null: false
+    t.integer "project_country_id"
     t.integer "book_country_id"
   end
 
@@ -419,8 +419,8 @@ ActiveRecord::Schema.define(version: 20150310231608) do
   add_index "languages_projects", ["project_id", "language_id"], name: "index_languages_projects_on_project_id_and_language_id", using: :btree
 
   create_table "languages_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "user_language_id"
+    t.integer "recommendation_id",   null: false
+    t.integer "project_language_id"
     t.integer "book_language_id"
   end
 
@@ -594,6 +594,7 @@ ActiveRecord::Schema.define(version: 20150310231608) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "recommendation_type"
+    t.string   "name"
   end
 
   create_table "restrictedcontinent_books", id: false, force: true do |t|
