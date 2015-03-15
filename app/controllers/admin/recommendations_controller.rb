@@ -31,7 +31,7 @@ class Admin::RecommendationsController < ApplicationController
     end
 
     recommendation.save
-    render :nothing => true
+    render nothing: true
   end
 
   def edit_recommendation
@@ -55,7 +55,7 @@ class Admin::RecommendationsController < ApplicationController
       recommendation.books = []
       recommendation.books << Book.find(params[:book_ids])
     end
-    
+
     recommendation.proj_countries = []
     recommendation.proj_languages = []
     project_tags = ActiveSupport::JSON.decode params[:project_tags]
@@ -68,8 +68,7 @@ class Admin::RecommendationsController < ApplicationController
     end
 
     recommendation.save
-    render :nothing => true
-
+    render nothing: true
   end
 
   def delete_recommendation
@@ -82,7 +81,7 @@ class Admin::RecommendationsController < ApplicationController
     render json: recommendations
   end
 
-    def display_books
+  def display_books
     recommendation = Recommendation.find(params[:id])
     books = recommendation.books
     render json: books
@@ -92,13 +91,13 @@ class Admin::RecommendationsController < ApplicationController
     recommendation = Recommendation.find(params[:id])
     countries = recommendation.book_countries
     languages = recommendation.book_languages
-    render json: {countries: countries, languages: languages}
+    render json: { countries: countries, languages: languages }
   end
 
   def display_proj_tags
     recommendation = Recommendation.find(params[:id])
     countries = recommendation.proj_countries
     languages = recommendation.proj_languages
-    render json: {countries: countries, languages: languages}
+    render json: { countries: countries, languages: languages }
   end
 end
