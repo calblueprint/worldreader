@@ -204,18 +204,18 @@ var Recommendation = React.createClass({
     if (this.props.clicked) {
       var projTags = this.state.projectTags;
       var projCountries = projTags.countries.map (function (country) {
-        return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
+        return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
       });
       var projLanguages = projTags.languages.map (function (language) {
-        return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
+        return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
       });
       if (type == RecommendationTypes.AUTO) {
         var bookTags = this.state.bookTags;
         var bookCountries = bookTags.countries.map (function (country) {
-          return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
+          return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
         });
         var bookLanguages = bookTags.languages.map (function (language) {
-          return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
+          return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
         });
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
@@ -253,7 +253,7 @@ var Recommendation = React.createClass({
         );
       } else {
         var books = this.state.books.map (function (book) {
-          return (<li>{book.title}</li>);
+          return (<li key={book.id}>{book.title}</li>);
         });
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
@@ -893,7 +893,7 @@ var RecommendationProjectTagSearch = React.createClass({
   render: function () {
     var projectList = this.state.projects.map (function (project) {
       return (
-        <li className="list-group-item"> {project.name} </li>
+        <li className="list-group-item" key={project.id}> {project.name} </li>
       );
     });
     return (
