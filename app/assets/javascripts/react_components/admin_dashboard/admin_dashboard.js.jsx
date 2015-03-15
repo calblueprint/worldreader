@@ -309,7 +309,9 @@ var AddPartnerDisplay = React.createClass({
           </div>
           <label for="newUserProjects">Projects</label>
           <div>
-            <select id="newUserProjects" className="selectpicker new-user-input" title="Select Projects" multiple data-width="300px">
+            <select id="newUserProjects" className="selectpicker new-user-input"
+              title="Select Projects" multiple data-width="300px" data-size="20"
+              data-live-search="true" data-selected-text-format="count>4">
               {projects}
             </select>
           </div>

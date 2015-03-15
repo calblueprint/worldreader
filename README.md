@@ -1,4 +1,4 @@
-Worldreader
+Worldreader [![Build Status](https://travis-ci.org/calblueprint/worldreader.svg?branch=master)](https://travis-ci.org/calblueprint/worldreader) [![Code Climate](https://codeclimate.com/github/calblueprint/worldreader/badges/gpa.svg)](https://codeclimate.com/github/calblueprint/worldreader)
 ================
 
 This application allows partners to help Worldreader deliver age-appropriate and culturally relevant e-books to students in sub-Saharan Africa.

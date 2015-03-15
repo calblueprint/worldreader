@@ -46,4 +46,5 @@ var EditRecommendationPage = React.createClass({
       console.log("Received response " + message.message);
     });
   },
+  render: function() { return null; }
 });
