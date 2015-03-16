@@ -90,7 +90,6 @@ var SmallBookTile = React.createClass({
     this.props.handleClick({bookId: this.props.book.id});
   },
   render: function() {
-    console.log(this.props.groups);
     var cartButton;
     if (this.props.user) {
       cartButton = (

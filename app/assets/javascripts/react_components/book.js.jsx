@@ -108,10 +108,10 @@ var BookList = React.createClass({
         });
       removeBook(book, this.state.user.id);
       if (this.props.small) {
-        var books = _.reject(this.state.books, function(el) {
-          return el.id == book.id;
-        });
-        this.setState({books: books});
+        var bookIndex = this.state.books.indexOf(book);
+        var books = this.state.books;
+        books.splice(books.indexOf(book), 1);
+        // this.setState({books: books});
       }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
@@ -156,7 +156,6 @@ var BookList = React.createClass({
   },
   generateTile: function(index) {
     var book = this.state.books[index];
-    console.log(this.state.books);
     var groups = this.state.groups[index];
     if (this.props.small) {
       return (
@@ -295,7 +294,6 @@ var BookList = React.createClass({
         );
       }
     }
-    console.log("got here")
     return (
       <div>
         {this.props.small ? null : searchBar}
