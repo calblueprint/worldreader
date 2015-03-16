@@ -111,7 +111,7 @@ var BookList = React.createClass({
         var bookIndex = this.state.books.indexOf(book);
         var books = this.state.books;
         books.splice(books.indexOf(book), 1);
-        // this.setState({books: books});
+        this.setState({books: books});
       }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
