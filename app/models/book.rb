@@ -142,9 +142,14 @@ class Book < ActiveRecord::Base
         :authors_name,
         :update_status,
         :donated?,
+        :updated_date,
         :url
       ]
     )
+  end
+
+  def updated_date
+    updated_at.strftime "%m/%d/%Y"
   end
 
   def genre_name
@@ -229,9 +234,9 @@ class Book < ActiveRecord::Base
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
-    results = Book.search(query: query, highlight: highlight, from: 10 * page).to_a
-    results.map! { |r| 
-      r.has_key?(:highlight) ? 
+    results = Book.search(query: query, highlight: highlight, from: Constants::PAGE_SIZE * page).to_a
+    results.map! { |r|
+      r.has_key?(:highlight) ?
         r._source.merge({highlight: r.highlight}) :
         r._source
     }
