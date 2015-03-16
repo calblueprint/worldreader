@@ -104,7 +104,7 @@ var SmallBookTile = React.createClass({
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
       );
     });
-    var groups = this.props.groups.map(function(group) {
+    var groups = this.props.book.groups.map(function(group) {
       return group.name;
     }).join(", ");
     return (
