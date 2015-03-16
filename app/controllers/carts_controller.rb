@@ -1,6 +1,7 @@
 class CartsController < ApplicationController
 
   def show
+    puts "UPDATING SHOOOOOOOOW"
     @donated_books = current_user.cart.select { |item| item[:book].donated? }
     @paid_books = current_user.cart.select { |item| !item[:book].donated? }
   end
