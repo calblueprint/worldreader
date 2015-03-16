@@ -125,7 +125,7 @@ var BookStatus = React.createClass({
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
-          {this.props.book.updated_at}
+          {this.props.book.updated_date}
         </td>
         <td>
           {status}

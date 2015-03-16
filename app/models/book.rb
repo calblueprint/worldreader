@@ -142,9 +142,14 @@ class Book < ActiveRecord::Base
         :authors_name,
         :update_status,
         :donated?,
+        :updated_date,
         :url
       ]
     )
+  end
+
+  def updated_date
+    updated_at.strftime "%m/%d/%Y"
   end
 
   def genre_name
