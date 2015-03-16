@@ -1,9 +1,12 @@
 class CartsController < ApplicationController
 
   def show
-    puts "UPDATING SHOOOOOOOOW"
-    @donated_books = current_user.cart.select { |item| item[:book].donated? }
-    @paid_books = current_user.cart.select { |item| !item[:book].donated? }
+    @donated_books, @paid_books = [], []
+    current_user.cart.each_with_index do |book, index|
+      data = book.as_json.merge(groups: current_user.cart_groups[index])
+      @donated_books << data if book.donated?
+      @paid_books << data if !book.donated?
+    end
   end
 
   def create_purchase

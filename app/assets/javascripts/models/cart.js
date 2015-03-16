@@ -1,4 +1,3 @@
-
 var Cart = Backbone.Model.extend({
   defaults : {
     items : []

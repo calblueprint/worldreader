@@ -63,16 +63,9 @@ var CartButton = React.createClass({
 
 var BookList = React.createClass({
   getInitialState: function() {
-    var books = [];
-    var groups = [];
-    for (var i = 0; i < this.props.books.length; i++) {
-      books.push(this.props.books[i].book);
-      groups.push(this.props.books[i].groups);
-    }
     return {cart: cart,
             user: gon.current_user,
-            books: books,
-            groups: groups,
+            books: this.props.books,
             expandedBookId: null,
             pageNumber: 0,
             searchTerm: "",
@@ -110,7 +103,7 @@ var BookList = React.createClass({
       if (this.props.small) {
         var bookIndex = this.state.books.indexOf(book);
         var books = this.state.books;
-        books.splice(books.indexOf(book), 1);
+        books.splice(bookIndex, 1);
         this.setState({books: books});
       }
     } else if (event.ADD_BOOK_TO_CART) {
@@ -156,14 +149,12 @@ var BookList = React.createClass({
   },
   generateTile: function(index) {
     var book = this.state.books[index];
-    var groups = this.state.groups[index];
     if (this.props.small) {
       return (
         <SmallBookTile
           user={gon.current_user}
           key={book.id}
           book={book}
-          groups={groups}
           cart={cart.get("items")}
           handleCartEvent={this.handleCartEvent} />
       )
@@ -173,7 +164,6 @@ var BookList = React.createClass({
         user={gon.current_user}
         key={book.id}
         book={book}
-        groups={groups}
         cart={cart.get("items")}
         handleClick={this.handleBookExpand}
         handleCloseButton={this.handleBookClosed}
