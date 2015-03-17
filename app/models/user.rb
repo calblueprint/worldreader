@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def past_purchase_ids
-    purchases.map do |purchase|
+    purchases.where(is_purchased: true).map do |purchase|
       purchase.book.id
     end
   end
@@ -96,6 +96,10 @@ class User < ActiveRecord::Base
 
   def cart
     cart_purchases.map{ |purchase| purchase.book }
+  end
+
+  def cart_groups
+    cart_purchases.map { |purchase| purchase.content_buckets }
   end
 
   def cart_purchases

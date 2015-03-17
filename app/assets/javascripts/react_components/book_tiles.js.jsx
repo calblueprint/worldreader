@@ -89,6 +89,9 @@ var SmallBookTile = React.createClass({
   handleClick: function() {
     this.props.handleClick({bookId: this.props.book.id});
   },
+  componentDidMount: function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  },
   render: function() {
     var cartButton;
     if (this.props.user) {
@@ -102,6 +105,15 @@ var SmallBookTile = React.createClass({
     var levels = this.props.book.levels_name.map(function (level) {
       return (
         <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
+      );
+    });
+    var groups = this.props.book.groups.map(function(group, index, arr) {
+      var isLast = (index == arr.length - 1) ? true : false;
+      return (
+        <Group group={group}
+               key={group.id}
+               last={isLast}
+               removeGroup={this._removeGroup} />
       );
     });
     return (
@@ -127,9 +139,29 @@ var SmallBookTile = React.createClass({
               <b>{this.props.book.price}</b>
             </div>
           }
+          <div className="row">
+            <div className="col-md-9 groups">
+              <b>Groups: </b>
+              {groups}
+            </div>
+            <div className="col-md-3" data-original-title="Remove from groups by clicking on their names" data-toggle="tooltip" data-placement="left">
+              <span className="glyphicon glyphicon-pencil edit-groups" aria-hidden="true"></span>
+            </div>
+          </div>
           {cartButton}
         </div>
       </div>
     )
+  }
+});
+
+var Group = React.createClass({
+  render: function() {
+    var append = (this.props.last) ? "" : ", "
+    return (
+      <div className="group-name">
+        {this.props.group.name + append}
+      </div>
+    );
   }
 });

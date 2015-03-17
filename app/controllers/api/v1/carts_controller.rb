@@ -2,8 +2,16 @@ class Api::V1::CartsController < ApplicationController
 
   def add
     book = Book.find(params[:book_id])
-    p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
-    render json: {message: "Added!"}
+    groups = params[:groups]
+    if groups.blank?
+      render json: { error: "Must select at least one group" }, status: :bad_request
+    else
+      p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
+      groups.each do |group|
+        p.content_buckets << ContentBucket.find(group)
+      end
+      render json: {message: "Added!"}
+    end
   end
 
   def remove
@@ -14,5 +22,4 @@ class Api::V1::CartsController < ApplicationController
     p.destroy_all
     render json: {message: "Removed!"}
   end
-
 end

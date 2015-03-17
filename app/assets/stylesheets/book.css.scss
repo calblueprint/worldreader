@@ -313,3 +313,17 @@ $cart-view-width: 250px;
   padding: 10px;
   background-color: white;
 }
+
+.project-select {
+  margin-right: 20px;
+}
+
+.group-name {
+  display: inline;
+}
+
+.group-name:hover {
+  color: #c0392b;
+  cursor: pointer;
+  cursor: hand;
+}
