@@ -7,7 +7,6 @@ class Api::V1::CartsController < ApplicationController
       errors = ["Must select at least one group"]
       render json: { errors: errors }, status: :bad_request
     else
-      puts "ALSO DOIGN THIS === "
       p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
       groups.each do |group|
         p.content_buckets << ContentBucket.find(group)
