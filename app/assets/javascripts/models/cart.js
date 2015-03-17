@@ -59,10 +59,6 @@ var removeBook = function(book, userId) {
 };
 
 var addBook = function(book, userId, groups) {
-  var cartItems = cart.get("items");
-  var books = cartItems.concat([book]);
-  cart.set("items", books);
-
   $.ajax({
     type: "POST",
     url: "/api/v1/carts/add/" + book.id,
@@ -72,11 +68,17 @@ var addBook = function(book, userId, groups) {
       groups: groups
     },
     success: function(response) {
+      var cartItems = cart.get("items");
+      var books = cartItems.concat([book]);
+      cart.set("items", books);
       toastr.success(book.title + " was added to your cart!");
-    }.bind(this),
-    error: function (xhr, status, err) {
-      console.error(this.props.url, status, err.toString());
-    }.bind(this)
+    },
+    error: function(xhr, status, err) {
+      var errors = xhr.responseJSON.errors;
+      for (var error of errors) {
+        toastr.error(error);
+      }
+    }
   }).done(function(message) {
     console.log("Received response for book addition: " + message.message);
   });
