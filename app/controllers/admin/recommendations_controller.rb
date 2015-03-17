@@ -96,8 +96,11 @@ class Admin::RecommendationsController < ApplicationController
     countries = recommendation.book_countries
     languages = recommendation.book_languages
     genres = recommendation.book_genres
-    render json: { countries: countries, languages: languages,
-      genres: genres }
+    render json: { 
+      countries: countries,
+      languages: languages,
+      genres: genres
+    }
   end
 
   def display_proj_tags
