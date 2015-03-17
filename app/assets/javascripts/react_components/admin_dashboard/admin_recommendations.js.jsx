@@ -82,7 +82,7 @@ var RecommendationsPage = React.createClass({
         recommendation_id: recommendationId
       },
       success: function (message) {
-        toastr.success("Deleted Recommendation: " + recommendationId);
+        toastr.success("Deleted recommendation succesfully");
         fetchRecommendations({});
       },
       error: function(xhr, status, err) {
@@ -205,21 +205,21 @@ var Recommendation = React.createClass({
     if (this.props.clicked) {
       var projTags = this.state.projectTags;
       var projCountries = projTags.countries.map (function (country) {
-        return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
+        return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
       });
       var projLanguages = projTags.languages.map (function (language) {
-        return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
+        return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
       });
       if (type == RecommendationTypes.AUTO) {
         var bookTags = this.state.bookTags;
         var bookCountries = bookTags.countries.map (function (country) {
-          return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
+          return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
         });
         var bookLanguages = bookTags.languages.map (function (language) {
-          return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
+          return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
         });
         var bookGenres = bookTags.genres.map (function (genre) {
-          return (<li className={genreLabel+" tag-style"} key={genre.id}>{genre.name}</li>);
+          return (<li className={genreLabel+" tag-style"}>{genre.name}</li>);
         });
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
