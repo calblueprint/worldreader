@@ -729,7 +729,7 @@ var RecommendationBookTagSearch = React.createClass({
     mainSearch.tagsinput({
       tagClass: function(item) {
         switch (item.tagType) {
-          case 'countries':     return countryLabel;
+          case 'country':     return countryLabel;
           case 'levels':        return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
@@ -773,16 +773,17 @@ var RecommendationBookTagSearch = React.createClass({
         page: state.pageNumber
       },
       success: function(results) {
-        self.setState({books: self.state.books.concat(results.books),
-                       isLastPage: results.books.length == 0});
+        if (tags.length != 0) {
+          self.setState({books: self.state.books.concat(results.books),
+                         isLastPage: results.books.length == 0});
+        } else {
+          self.setState({books: [], pageNumber: 0, isLastPage: true});
+        }
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-    if (tags.length == 0) {
-      this.setState({books: [], pageNumber: 0, isLastPage: true});
-    }
   },
   loadMore: function (pageToLoad) {
     this.setState({pageNumber: this.state.pageNumber + 1});
@@ -835,7 +836,7 @@ var RecommendationProjectTagSearch = React.createClass({
     mainSearch.tagsinput({
       tagClass: function(item) {
         switch (item.tagType) {
-          case 'countries':     return countryLabel;
+          case 'country':     return countryLabel;
           case 'levels':        return levelLabel;
           case 'language':      return languageLabel;
         }
@@ -874,15 +875,16 @@ var RecommendationProjectTagSearch = React.createClass({
         term: "",
       },
       success: function(results) {
-        self.setState({ projects: results.projects});
+        if (tags.length != 0) {
+          self.setState({ projects: results.projects});
+        } else {
+          self.setState({ projects: []});
+        }
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-    if (tags.length == 0) {
-      this.setState({projects: []});
-    }
   },
   render: function () {
     var projectList = this.state.projects.map (function (project) {
@@ -927,7 +929,7 @@ var RecommendationBookSearch = React.createClass({
     mainSearch.tagsinput({
       tagClass: function(item) {
         switch (item.tagType) {
-          case 'countries':     return countryLabel;
+          case 'country':     return countryLabel;
           case 'levels':        return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
