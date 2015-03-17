@@ -96,7 +96,7 @@ class Admin::RecommendationsController < ApplicationController
     countries = recommendation.book_countries
     languages = recommendation.book_languages
     genres = recommendation.book_genres
-    render json: { 
+    render json: {
       countries: countries,
       languages: languages,
       genres: genres
