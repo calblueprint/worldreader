@@ -74,10 +74,8 @@ var addBook = function(book, userId, groups) {
       toastr.success(book.title + " was added to your cart!");
     },
     error: function(xhr, status, err) {
-      var errors = xhr.responseJSON.errors;
-      for (var error of errors) {
-        toastr.error(error);
-      }
+      var error = xhr.responseJSON.error;
+      toastr.error(error);
     }
   }).done(function(message) {
     console.log("Received response for book addition: " + message.message);

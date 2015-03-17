@@ -4,8 +4,7 @@ class Api::V1::CartsController < ApplicationController
     book = Book.find(params[:book_id])
     groups = params[:groups]
     if groups.blank?
-      errors = ["Must select at least one group"]
-      render json: { errors: errors }, status: :bad_request
+      render json: { error: "Must select at least one group" }, status: :bad_request
     else
       p = Purchase.create(book_id: book.id, user_id: current_user.id, is_purchased: false)
       groups.each do |group|
