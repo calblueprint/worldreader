@@ -28,4 +28,7 @@ class Recommendation < ActiveRecord::Base
                           class_name: "Language",
                           join_table: "languages_recommendations",
                           association_foreign_key: "book_language_id"
+  has_and_belongs_to_many :book_genres,
+                          class_name: "Genre",
+                          join_table: "genres_recommendations"
 end
