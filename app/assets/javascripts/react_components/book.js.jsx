@@ -63,6 +63,9 @@ var BookList = React.createClass({
   },
   componentDidMount: function() {
     this.initTagbar();
+    $('[data-toggle="tooltip"]').tooltip({
+      title: "Search by tags, which can be reading levels, genre, countries, or language.",
+    });
   },
   handleBooksUpdate: function(event) {
     this.setState({books: event});
@@ -193,7 +196,6 @@ var BookList = React.createClass({
     var bookTiles = this.state.books.map(function (book) {
       return this.generateTile(book);
     }.bind(this));
-
     var searchBar = (
       <div className="row" id="library">
         <div id="tag-and-searchbar">
@@ -206,6 +208,7 @@ var BookList = React.createClass({
           <div className="input-group" id="book-tagbar">
             <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
             <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+            <span className="input-group-addon"><span className="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left"></span></span>
           </div>
         </div>
       </div>
@@ -257,7 +260,6 @@ var BookList = React.createClass({
         );
       }
     }
-    console.log("got here")
     return (
       <div>
         {this.props.small ? null : searchBar}

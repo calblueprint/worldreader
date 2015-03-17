@@ -288,10 +288,13 @@ $cart-view-width: 250px;
   padding: 0.5rem;
   margin-bottom: 0px;
   background-color: white;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+  border-radius: 0px;
   box-shadow: none;
   display: block;
+}
+
+.tooltip-inner {
+  font-size: 1.6rem;
 }
 
 // Icon image
