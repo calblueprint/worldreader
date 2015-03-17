@@ -16,6 +16,8 @@ class Admin::RecommendationsController < ApplicationController
           recommendation.book_countries << Country.find(book_tag["id"])
         elsif book_tag["tagType"].eql? "language"
           recommendation.book_languages << Language.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "genre"
+          recommendation.book_genres << Genre.find(book_tag["id"])
         end
       end
     else
@@ -49,6 +51,8 @@ class Admin::RecommendationsController < ApplicationController
           recommendation.book_countries << Country.find(book_tag["id"])
         elsif book_tag["tagType"].eql? "language"
           recommendation.book_languages << Language.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "genre"
+          recommendation.book_genres << Genre.find(book_tag["id"])
         end
       end
     else
@@ -91,7 +95,12 @@ class Admin::RecommendationsController < ApplicationController
     recommendation = Recommendation.find(params[:id])
     countries = recommendation.book_countries
     languages = recommendation.book_languages
-    render json: { countries: countries, languages: languages }
+    genres = recommendation.book_genres
+    render json: {
+      countries: countries,
+      languages: languages,
+      genres: genres
+    }
   end
 
   def display_proj_tags

@@ -82,10 +82,11 @@ var RecommendationsPage = React.createClass({
         recommendation_id: recommendationId
       },
       success: function (message) {
-        console.log("Recommendation succesfully deleted");
+        toastr.success("Deleted recommendation succesfully");
         fetchRecommendations({});
       },
       error: function(xhr, status, err) {
+        toastr.error("Error deleting recommendation");
         console.error("/admin/recommendations/delete", status, err.toString(), xhr);
       }.bind(this)
     }).done(function(message) {
@@ -204,18 +205,21 @@ var Recommendation = React.createClass({
     if (this.props.clicked) {
       var projTags = this.state.projectTags;
       var projCountries = projTags.countries.map (function (country) {
-        return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
+        return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
       });
       var projLanguages = projTags.languages.map (function (language) {
-        return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
+        return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
       });
       if (type == RecommendationTypes.AUTO) {
         var bookTags = this.state.bookTags;
         var bookCountries = bookTags.countries.map (function (country) {
-          return (<li className={countryLabel+" tag-style"} key={country.id}>{country.name}</li>);
+          return (<li className={countryLabel+" tag-style"}>{country.name}</li>);
         });
         var bookLanguages = bookTags.languages.map (function (language) {
-          return (<li className={languageLabel+" tag-style"} key={language.id}>{language.name}</li>);
+          return (<li className={languageLabel+" tag-style"}>{language.name}</li>);
+        });
+        var bookGenres = bookTags.genres.map (function (genre) {
+          return (<li className={genreLabel+" tag-style"}>{genre.name}</li>);
         });
         return (
           <a href="#" className="list-group-item" onClick={this.onClick}>
@@ -240,6 +244,7 @@ var Recommendation = React.createClass({
                 <ul className="recommendation-display-list">
                   {bookCountries}
                   {bookLanguages}
+                  {bookGenres}
                 </ul>
               </div>
               <div className="col-md-3">Project Tags
@@ -475,18 +480,6 @@ var CreateRecommendationPage = React.createClass({
 var EditRecommendationPage = React.createClass({
   getInitialState: function () {
     var rec = this.props.recommendation;
-    var id = rec.id;
-    $.ajax({
-      url: "/admin/recommendations/" + id + "/display_proj_tags",
-      dataType: 'json',
-      success: function (data) {
-        this.setState({projectTags: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-
     return {
       recommendationType: rec.recommendation_type,
       bookTags: [],
@@ -512,6 +505,12 @@ var EditRecommendationPage = React.createClass({
         var tag = _.findWhere(tagSource, {id: lang.id, tagType:"language"});
         tags.push(tag);
       });
+      if (data.genres != null) {
+        data.genres.map (function (genre) {
+          var tag = _.findWhere(tagSource, {id: genre.id, tagType:"genre"});
+          tags.push(tag);
+        });  
+      }
       return tags;
     };
 

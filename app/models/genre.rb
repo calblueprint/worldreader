@@ -11,4 +11,5 @@
 class Genre < ActiveRecord::Base
   has_many :books
   has_many :subcategories
+  has_and_belongs_to_many :recommendations
 end
