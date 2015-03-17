@@ -91,6 +91,11 @@ class Book < ActiveRecord::Base
   default_scope { where(in_store: true) }
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
+  # Probably want future improvement so we don't have to store it in a .yml
+  # file which will get parsed every time the model is used. We can also
+  # allow for future mapping changes by making a model mapping search tags
+  # to model tags.
+  LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../../../db/levelsConvert.yml', __FILE__)))
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -138,6 +143,7 @@ class Book < ActiveRecord::Base
         :language_name,
         :country_name,
         :levels_name,
+        :textbook_level,
         :publisher_name,
         :authors_name,
         :update_status,
@@ -168,8 +174,12 @@ class Book < ActiveRecord::Base
     country ? country.name : ""
   end
 
-  def levels_name
+  def levels_name #for fiction books.
     levels.map { |l| l.name }
+  end
+
+  def textbook_level #for nonfiction books
+    textbook_levels.map { |l| l.name }
   end
 
   def publisher_name
@@ -204,7 +214,19 @@ class Book < ActiveRecord::Base
       }
     end
     tags_dict = {}
+
+    tags_level_adjusted = []
+    levels_set = Set.new []
     tags.each do |tag|
+      if tag["tagType"] == "levels" && LEVELS_CONVERT.has_key?(tag["text"])
+        levels_set.merge(LEVELS_CONVERT[tag["text"]].to_set)
+      else
+        tags_levels_adjusted.push(tag)
+      end
+    end
+    tags_level_adjusted.concat(levels_set.to_a)
+
+    tags_level_adjusted.each do |tag|
       type = tag["tagType"]
       tag = "\"" + tag["text"] + "\""
       if tags_dict.has_key? type

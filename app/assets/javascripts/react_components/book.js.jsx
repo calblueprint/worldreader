@@ -107,7 +107,7 @@ var BookList = React.createClass({
         itemValue: 'value',
         itemText: 'text',
         typeahead: {
-          name: 'cities',
+          name: 'tags',
           displayKey: 'text',
           source: gon.all_tags
         }
