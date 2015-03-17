@@ -17,6 +17,9 @@ var InfiniteScroll = React.addons.InfiniteScroll = React.createClass({
   componentDidMount: function () {
     this.pageLoaded = this.props.pageStart;
     this.attachScrollListener();
+    $(document).scroll(function() {
+        didScroll = true;
+    });
   },
   componentDidUpdate: function () {
     this.attachScrollListener();

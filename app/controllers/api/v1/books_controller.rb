@@ -2,7 +2,7 @@ class Api::V1::BooksController < ApplicationController
 
   def index
     page = params[:page] || 1
-    books = Book.all.paginate page: page, per_page: 10
+    books = Book.all.paginate page: page, per_page: Constants::PAGE_SIZE
     render json: books
   end
 
@@ -20,7 +20,7 @@ class Api::V1::BooksController < ApplicationController
 
   def page
     page = params[:page] || 1
-    @books = Book.paginate page: page, per_page: 5
+    @books = Book.paginate page: page, per_page: Constants::PAGE_SIZE
     render json: @books
   end
 end
