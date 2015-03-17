@@ -45,6 +45,7 @@ class Admin::RecommendationsController < ApplicationController
     if recommendation_type == 0
       recommendation.book_countries = []
       recommendation.book_languages = []
+      recommendation.book_genres = []
       book_tags = ActiveSupport::JSON.decode params[:book_tags]
       book_tags.each do |book_tag|
         if book_tag["tagType"].eql? "countries"
