@@ -26,75 +26,57 @@ class Project < ActiveRecord::Base
 
   settings number_of_shards: 1 do
     mapping do
-      indexes :country_name, index: 'not_analyzed'
-      indexes :languages_name, index: 'not_analyzed'
-      indexes :levels_name, index: 'not_analyzed'
+      indexes "country.name", index: 'not_analyzed'
+      indexes "languages.name", index: 'not_analyzed'
+      indexes "levels.name", index: 'not_analyzed'
     end
   end
 
   def as_indexed_json(options={})
-    as_json(
-      methods: [
-        :country_name,
-        :languages_name,
-        :levels_name
-      ]
-    )
-  end
-
-  def country_name
-    country ? country.name : ""
-  end
-
-  def languages_name
-    languages.map { |l| l.name }
-  end
-
-  def levels_name
-    levels.map { |l| l.name }
-  end
-
-  def self.query(string, tags)
-    filtered = {}
-    if not string.empty?
-      filtered[:query] = {
-        multi_match: {
-          query: string,
-          fields: [:name],
-          fuzziness: 'AUTO'
-        }
+    as_json({
+      include: {
+        country: {only: :name},
+        languages: {only: :name},
+        levels: {only: :name}
       }
+    })
+  end
+
+  def self.query(tags)
+    filtered_query = {}
+    tags_dict = Book.extract_tags(tags)
+    if not tags_dict.empty?
+      and_filter = []
+      tags_dict.each do |type, tags|
+        and_filter.push(Project.create_or_filter(type + ".name", tags))
+      end
+      filtered_query[:filter] = {and: and_filter}
     end
+    query = {filtered: filtered_query}
+    print query
+    print "\n"
+    results = Project.search(query: query).to_a.map! { |r| r._source }
+  end
+
+  def self.create_or_filter(term, tags)
+    or_filter = []
+    tags.each do |tag|
+      or_filter.push({term: {term => tag}})
+    end
+    {or: or_filter}
+  end
+
+  def self.extract_tags(tags)
     tags_dict = {}
     tags.each do |tag|
       type = tag["tagType"]
-      tag = "\"" + tag["text"] + "\""
+      tag = tag["text"]
       if tags_dict.has_key? type
         tags_dict[type].push(tag)
       else
         tags_dict[type] = [tag]
       end
     end
-    if not tags_dict.empty?
-      and_filter = []
-      tags_dict.each do |type, tags_list|
-        query = {
-          query: {
-            query_string: {
-              default_field: type + "_name",
-              query: tags_list.join(" OR ")
-            }
-          }
-        }
-        and_filter.push(query)
-      end
-      filtered[:filter] = {
-        and: and_filter
-      }
-    end
-    query = {filtered: filtered}
-    print query
-    print "\n"
-    results = Project.search(query: query).to_a.map! { |r| r._source }
+    tags_dict
   end
 end

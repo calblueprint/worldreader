@@ -88,7 +88,18 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
 
+  settings number_of_shards: 1 do
+    mapping do
+      indexes "genre.name", index: 'not_analyzed'
+      indexes "language.name", index: 'not_analyzed'
+      indexes "country.name", index: 'not_analyzed'
+      indexes "levels.name", index: 'not_analyzed'
+    end
+  end
+
   default_scope { where(in_store: true) }
+
+  QUERY_FIELDS = [:title, :description, "authors.name", "publisher.name"]
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
 
@@ -105,19 +116,6 @@ class Book < ActiveRecord::Base
     [title, asin]
   end
 
-  settings number_of_shards: 1 do
-    mapping do
-      indexes :title, analyzer: 'english'
-      indexes :description, analyzer: 'english'
-      indexes :genre_name, index: 'not_analyzed'
-      indexes :language_name, index: 'not_analyzed'
-      indexes :country_name, index: 'not_analyzed'
-      indexes :levels_name, index: 'not_analyzed'
-      indexes :authors_name, index: 'not_analyzed'
-      indexes :publisher_name, index: 'not_analyzed'
-    end
-  end
-
   def donated?
     p = self[:price]
     unless p
@@ -131,53 +129,29 @@ class Book < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(
-      methods: [
-        :genre_name,
-        :subcategory_name,
-        :language_name,
-        :country_name,
-        :levels_name,
-        :publisher_name,
-        :authors_name,
-        :update_status,
-        :donated?,
-        :updated_date,
-        :url
-      ]
-    )
+    options[:methods] = [:subcategory_name, :update_status, :donated?, :updated_date, :url]
+    super(options)
+  end
+
+  def as_indexed_json(options={})
+    as_json({
+      include: {
+        authors: {only: :name},
+        country: {only: :name},
+        genre: {only: :name},
+        language: {only: :name},
+        levels: {only: :name},
+        publisher: {only: :name}
+      }
+    })
   end
 
   def updated_date
     updated_at.strftime "%m/%d/%Y"
   end
 
-  def genre_name
-    genre ? genre.name : ""
-  end
-
   def subcategory_name
     subcategory ? subcategory.name : ""
-  end
-
-  def language_name
-    language ? language.name : ""
-  end
-
-  def country_name
-    country ? country.name : ""
-  end
-
-  def levels_name
-    levels.map { |l| l.name }
-  end
-
-  def publisher_name
-    publisher ? publisher.name : ""
-  end
-
-  def authors_name
-    authors.map { |a| a.name }
   end
 
   def update_status
@@ -193,44 +167,19 @@ class Book < ActiveRecord::Base
   end
 
   def self.query(string, tags, page)
-    filtered = {}
+    filtered_query = {}
     if not string.empty?
-      filtered[:query] = {
-        multi_match: {
-          query: string,
-          fields: [:title, :description, :authors_name, :publisher_name],
-          fuzziness: 'AUTO'
-        }
-      }
+      filtered_query[:query] = Book.create_multi_match_query(string)
     end
-    tags_dict = {}
-    tags.each do |tag|
-      type = tag["tagType"]
-      tag = "\"" + tag["text"] + "\""
-      if tags_dict.has_key? type
-        tags_dict[type].push(tag)
-      else
-        tags_dict[type] = [tag]
-      end
-    end
+    tags_dict = Book.extract_tags(tags)
     if not tags_dict.empty?
       and_filter = []
       tags_dict.each do |type, tags|
-        query = {
-          query: {
-            query_string: {
-              default_field: type + "_name",
-              query: tags.join(" OR ")
-            }
-          }
-        }
-        and_filter.push(query)
+        and_filter.push(Book.create_or_filter(type + ".name", tags))
       end
-      filtered[:filter] = {
-        and: and_filter
-      }
+      filtered_query[:filter] = {and: and_filter}
     end
-    query = { filtered: filtered }
+    query = {filtered: filtered_query}
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
@@ -240,6 +189,38 @@ class Book < ActiveRecord::Base
         r._source.merge({highlight: r.highlight}) :
         r._source
     }
+  end
+
+  def self.create_multi_match_query(string)
+    {
+      multi_match: {
+        query: string,
+        fields: QUERY_FIELDS,
+        fuzziness: 'AUTO'
+      }
+    }
+  end
+
+  def self.create_or_filter(term, tags)
+    or_filter = []
+    tags.each do |tag|
+      or_filter.push({term: {term => tag}})
+    end
+    {or: or_filter}
+  end
+
+  def self.extract_tags(tags)
+    tags_dict = {}
+    tags.each do |tag|
+      type = tag["tagType"]
+      tag = tag["text"]
+      if tags_dict.has_key? type
+        tags_dict[type].push(tag)
+      else
+        tags_dict[type] = [tag]
+      end
+    end
+    tags_dict
   end
 
 end
