@@ -1,3 +1,6 @@
+$line-color-light: #ddd;
+$line-color-dark: #aaa;
+
 .topDiv {
   height: 65px;
   background: white;
@@ -102,7 +105,7 @@
 }
 
 .partner-text-information > p {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .groupContainer {
@@ -218,10 +221,78 @@
 }
 
 .boundary-line {
+  border-bottom: 2px solid $line-color-dark;
   padding-top: 30px;
-  border-bottom: 2px solid #aaa;
+}
+
+.panel-boundary-bottom {
+  border-bottom: 2px solid $line-color-dark;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-top: 5px;
 }
 
 .book-title-table {
   max-width: 600px;
+}
+
+.panel-title {
+  font-size: 23px;
+  margin-left: 10px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+
+.book-search-panel-left {
+  border-right: 1px solid $line-color-light;
+  float: left;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-right: 10px;
+  width: 49%;
+}
+
+.book-search-panel-right {
+  border-left: 1px solid $line-color-light;
+  float: left;
+  margin-bottom: 5px;
+  margin-left: -1px;
+  margin-top: 5px;
+  padding-right: 10px;
+  width: 49%;
+}
+
+.book-search-fields {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.book-search-rows {
+  margin: 0;
+}
+
+.book-search-list {
+  list-style-type: none;
+  margin: 5px;
+}
+
+.book-search-li-icon {
+  color: $line-color-dark;
+  float: right;
+}
+
+.list-padding {
+  padding: 5px;
+}
+
+.tag-style {
+  display: inline-block;
+  font-size: 1.4rem;
+  margin-right: 0.4rem;
+}
+
+.name-input-group {
+  width: 100%;
 }

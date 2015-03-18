@@ -88,10 +88,20 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
 
+  settings number_of_shards: 1 do
+    mapping do
+      indexes "genre.name", index: 'not_analyzed'
+      indexes "language.name", index: 'not_analyzed'
+      indexes "country.name", index: 'not_analyzed'
+      indexes "levels.name", index: 'not_analyzed'
+    end
+  end
+
   default_scope { where(in_store: true) }
 
-  CSV_COLUMNS = ["Book Name", "ASIN"]
   QUERY_FIELDS = [:title, :description, "authors.name", "publisher.name"]
+
+  CSV_COLUMNS = ["Book Name", "ASIN"]
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -106,8 +116,6 @@ class Book < ActiveRecord::Base
     [title, asin]
   end
 
-  settings index: {number_of_shards: 1}
-
   def donated?
     p = self[:price]
     unless p
@@ -121,16 +129,12 @@ class Book < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options[:methods]
-      options[:methods] += [:subcategory_name, :update_status, :donated?, :url]
-    else
-      options[:methods] = [:subcategory_name, :update_status, :donated?, :url]
-    end
+    options[:methods] = [:subcategory_name, :update_status, :donated?, :updated_date, :url]
     super(options)
   end
 
   def as_indexed_json(options={})
-    as_json({ 
+    as_json({
       include: {
         authors: {only: :name},
         country: {only: :name},
@@ -140,6 +144,10 @@ class Book < ActiveRecord::Base
         publisher: {only: :name}
       }
     })
+  end
+
+  def updated_date
+    updated_at.strftime "%m/%d/%Y"
   end
 
   def subcategory_name
@@ -159,10 +167,9 @@ class Book < ActiveRecord::Base
   end
 
   def self.query(string, tags, page)
-    print(tags)
     filtered_query = {}
     if not string.empty?
-      filtered_query = {query: create_multi_match_query(string)}
+      filtered_query[:query] = self.create_multi_match_query(string)
     end
     tags_dict = extract_tags(tags)
     if not tags_dict.empty?
@@ -176,9 +183,9 @@ class Book < ActiveRecord::Base
     print query
     print "\n"
     highlight = {fields: {description: {fragment_size: 120}}}
-    results = Book.search(query: query, highlight: highlight, from: 10 * page).to_a
-    results.map! { |r| 
-      r.has_key?(:highlight) ? 
+    results = Book.search(query: query, highlight: highlight, from: Constants::PAGE_SIZE * page).to_a
+    results.map! { |r|
+      r.has_key?(:highlight) ?
         r._source.merge({highlight: r.highlight}) :
         r._source
     }

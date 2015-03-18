@@ -5,43 +5,72 @@ class Admin::RecommendationsController < ApplicationController
 
   def add_recommendation
     recommendation = Recommendation.create()
+    recommendation_type = params[:recommendation_type].to_i
+    recommendation.recommendation_type = recommendation_type
+    recommendation.name = params[:name]
 
-    book_ids = params[:book_ids]
-    book_ids.each do |book_id|
-      recommendation.books << Book.find(book_id)
+    if recommendation_type == 0
+      book_tags = ActiveSupport::JSON.decode params[:book_tags]
+      book_tags.each do |book_tag|
+        if book_tag["tagType"].eql? "countries"
+          recommendation.book_countries << Country.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "language"
+          recommendation.book_languages << Language.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "genre"
+          recommendation.book_genres << Genre.find(book_tag["id"])
+        end
+      end
+    else
+      recommendation.books << Book.find(params[:book_ids])
     end
-
-    recommendation.recommendation_type = params[:recommendation_type]
-
-    country_ids = params[:country_ids]
-    country_ids.each do |country_id|
-      recommendation.countries << Country.find(country_id)
-    end
-
-    language_ids = params[:language_ids]
-    language_ids.each do |language_id|
-      recommendation.languages << Language.find(language_id)
+    project_tags = ActiveSupport::JSON.decode params[:project_tags]
+    project_tags.each do |proj_tag|
+      if proj_tag["tagType"].eql? "countries"
+        recommendation.proj_countries << Country.find(proj_tag["id"])
+      elsif proj_tag["tagType"].eql? "language"
+        recommendation.proj_languages << Language.find(proj_tag["id"])
+      end
     end
 
     recommendation.save
-    render :nothing => true
+    render nothing: true
   end
 
   def edit_recommendation
-    recommendation = Recommendation.find(params[:recommendation_id])
+    recommendation = Recommendation.find(params[:id])
+    recommendation_type = params[:recommendation_type].to_i
+    recommendation.recommendation_type = recommendation_type
+    recommendation.name = params[:name]
 
-    book_ids = params[:book_ids]
-    school = params[:school]
-    organization = params[:organization]
-    country = params[:country]
-
-    recommendation.books = []
-    book_ids.each do |book_id|
-      recommendation.books << Book.find(book_id)
+    if recommendation_type == 0
+      recommendation.book_countries = []
+      recommendation.book_languages = []
+      recommendation.book_genres = []
+      book_tags = ActiveSupport::JSON.decode params[:book_tags]
+      book_tags.each do |book_tag|
+        if book_tag["tagType"].eql? "countries"
+          recommendation.book_countries << Country.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "language"
+          recommendation.book_languages << Language.find(book_tag["id"])
+        elsif book_tag["tagType"].eql? "genre"
+          recommendation.book_genres << Genre.find(book_tag["id"])
+        end
+      end
+    else
+      recommendation.books = []
+      recommendation.books << Book.find(params[:book_ids])
     end
-    recommendation.school = school
-    recommendation.organization = organization
-    recommendation.country = country
+
+    recommendation.proj_countries = []
+    recommendation.proj_languages = []
+    project_tags = ActiveSupport::JSON.decode params[:project_tags]
+    project_tags.each do |proj_tag|
+      if proj_tag["tagType"].eql? "countries"
+        recommendation.proj_countries << Country.find(proj_tag["id"])
+      elsif proj_tag["tagType"].eql? "language"
+        recommendation.proj_languages << Language.find(proj_tag["id"])
+      end
+    end
 
     recommendation.save
     render nothing: true
@@ -57,22 +86,28 @@ class Admin::RecommendationsController < ApplicationController
     render json: recommendations
   end
 
-  def display_partners
-    partners = User.partners
-    render json: partners
-  end
-
-  def display_partner_categories
-    partners = User.partners
-    countries = partners.select(:country).map(&:country).uniq
-    organizations = partners.select(:organization).map(&:organization).uniq
-    schools = partners.select(:school).map(&:school).uniq
-
-    render json: {countries: countries, organizations: organizations, schools: schools}
-  end
-
   def display_books
-    books = Book.all
+    recommendation = Recommendation.find(params[:id])
+    books = recommendation.books
     render json: books
+  end
+
+  def display_book_tags
+    recommendation = Recommendation.find(params[:id])
+    countries = recommendation.book_countries
+    languages = recommendation.book_languages
+    genres = recommendation.book_genres
+    render json: {
+      countries: countries,
+      languages: languages,
+      genres: genres
+    }
+  end
+
+  def display_proj_tags
+    recommendation = Recommendation.find(params[:id])
+    countries = recommendation.proj_countries
+    languages = recommendation.proj_languages
+    render json: { countries: countries, languages: languages }
   end
 end

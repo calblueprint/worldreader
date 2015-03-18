@@ -46,15 +46,15 @@ Rails.application.routes.draw do
     end
     resources :recommendations do
       collection do
-        get "display_partners", :as => "display_partners"
-        get "display_books", :as => "display_books"
-        get "display_partner_categories", :as => "display_partner_categories"
         get "display_recommendations", :as => "display_recommendations"
         post "/add", :to => "recommendations#add_recommendation"
         post "/delete", :to => "recommendations#delete_recommendation"
       end
       member do
         post "/edit", :to => "recommendations#edit_recommendation"
+        get "display_books"
+        get "display_book_tags"
+        get "display_proj_tags"
       end
     end
   end
@@ -73,6 +73,11 @@ Rails.application.routes.draw do
           get "" => "books#index"
           get "search/" => "books#search"
           get "page" => "books#page"
+        end
+      end
+      resources :projects do
+        collection do
+          get "search/" => "projects#search"
         end
       end
     end

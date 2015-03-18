@@ -12,8 +12,23 @@
 
 class Recommendation < ActiveRecord::Base
   has_and_belongs_to_many :books
-  has_and_belongs_to_many :user_countries, class_name:"Country", foreign_key:'user_country_id'
-  has_and_belongs_to_many :book_countries, class_name:"Country", foreign_key:'book_country_id'
-  has_and_belongs_to_many :user_languages, class_name:"Language", foreign_key:'user_language_id'
-  has_and_belongs_to_many :book_languages, class_name:"Language", foreign_key:'book_language_id'
+  has_and_belongs_to_many :proj_countries,
+                          class_name: "Country",
+                          join_table: "countries_recommendations",
+                          association_foreign_key: "project_country_id"
+  has_and_belongs_to_many :book_countries,
+                          class_name: "Country",
+                          join_table: "countries_recommendations",
+                          association_foreign_key: "book_country_id"
+  has_and_belongs_to_many :proj_languages,
+                          class_name: "Language",
+                          join_table: "languages_recommendations",
+                          association_foreign_key: "project_language_id"
+  has_and_belongs_to_many :book_languages,
+                          class_name: "Language",
+                          join_table: "languages_recommendations",
+                          association_foreign_key: "book_language_id"
+  has_and_belongs_to_many :book_genres,
+                          class_name: "Genre",
+                          join_table: "genres_recommendations"
 end
