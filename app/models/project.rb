@@ -44,11 +44,11 @@ class Project < ActiveRecord::Base
 
   def self.query(tags)
     filtered_query = {}
-    tags_dict = extract_tags(tags)
+    tags_dict = Book.extract_tags(tags)
     if not tags_dict.empty?
       and_filter = []
       tags_dict.each do |type, tags|
-        and_filter.push(create_or_filter(type + ".name", tags))
+        and_filter.push(Project.create_or_filter(type + ".name", tags))
       end
       filtered_query[:filter] = {and: and_filter}
     end

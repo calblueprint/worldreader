@@ -169,13 +169,13 @@ class Book < ActiveRecord::Base
   def self.query(string, tags, page)
     filtered_query = {}
     if not string.empty?
-      filtered_query[:query] = self.create_multi_match_query(string)
+      filtered_query[:query] = Book.create_multi_match_query(string)
     end
-    tags_dict = extract_tags(tags)
+    tags_dict = Book.extract_tags(tags)
     if not tags_dict.empty?
       and_filter = []
       tags_dict.each do |type, tags|
-        and_filter.push(create_or_filter(type + ".name", tags))
+        and_filter.push(Book.create_or_filter(type + ".name", tags))
       end
       filtered_query[:filter] = {and: and_filter}
     end
