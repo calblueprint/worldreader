@@ -2,8 +2,9 @@
 
 var tabs = {
   VIEWINFO: 1,
-  RECOMMEND: 2,
-  VIEWBOOKS: 3,
+  BASE_LISTS: 2,
+  RECOMMEND: 3,
+  VIEWBOOKS: 4,
 };
 
 var DashboardTabs = React.createClass({
@@ -18,6 +19,9 @@ var DashboardTabs = React.createClass({
   },
   clickRecommend: function () {
     this.setState({currentTab: tabs.RECOMMEND});
+  },
+  clickBaselists: function () {
+    this.setState({currentTab: tabs.BASE_LISTS});
   },
   clickViewBooks: function () {
     this.setState({currentTab: tabs.VIEWBOOKS});
@@ -39,6 +43,7 @@ var DashboardTabs = React.createClass({
             <div className="collapse navbar-collapse">
               <ul className="nav nav-pills centered nav-pills admin-nav-tabs">
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Partners</a></li>
+                <li><a data-toggle="tab" href="#" onClick={this.clickBaselists}>Base Booklists</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>Books</a></li>
               </ul>
@@ -58,6 +63,10 @@ var DashboardTabDisplay = React.createClass({
     if (this.props.type == tabs.VIEWINFO) {
       return (
         <ManagePartnerInfo />
+      );
+    } else if (this.props.type == tabs.BASE_LISTS) {
+      return (
+        <BaseLists />
       );
     } else if (this.props.type == tabs.RECOMMEND) {
       return (
