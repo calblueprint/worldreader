@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317213504) do
+ActiveRecord::Schema.define(version: 20150319231430) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -97,6 +97,18 @@ ActiveRecord::Schema.define(version: 20150317213504) do
   end
 
   add_index "authors_books", ["book_id", "author_id"], name: "index_authors_books_on_book_id_and_author_id", using: :btree
+
+  create_table "book_lists", force: true do |t|
+    t.string   "name"
+    t.boolean  "published"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "book_lists_books", id: false, force: true do |t|
+    t.integer "book_id"
+    t.integer "book_list_id"
+  end
 
   create_table "book_statuses", force: true do |t|
     t.string   "name"

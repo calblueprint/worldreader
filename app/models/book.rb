@@ -87,6 +87,8 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :content_buckets
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :recommendations
+  has_and_belongs_to_many :book_lists
+
 
   settings number_of_shards: 1 do
     mapping do
