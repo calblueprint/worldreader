@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   has_many :books, through: :purchases
   has_many :purchases
   has_and_belongs_to_many :projects, foreign_key: 'admin_user_id'
+  has_and_belongs_to_many :book_lists, foreign_key: 'admin_user_id'
 
   scope :partners, -> { where role: :user }
   scope :partners_new_purchases, -> { partners.joins(:purchases).where(
