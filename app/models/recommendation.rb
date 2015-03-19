@@ -8,6 +8,7 @@
 #  created_at          :datetime
 #  updated_at          :datetime
 #  recommendation_type :integer
+#  name                :string(255)
 #
 
 class Recommendation < ActiveRecord::Base
