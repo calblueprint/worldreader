@@ -1,35 +1,5 @@
 /** @jsx React.DOM */
 
-var MainDisplay = React.createClass({
-  render: function() {
-    if (this.props.type == displays.INFORMATION) {
-      return (
-        <div className="display">
-          <InformationDisplay partnerId={this.props.partnerId} />
-        </div>
-      );
-    } else if (this.props.type == displays.OLD_PURCHASES) {
-      return (
-        <div className="display">
-          <PurchaseDisplay  partnerId={this.props.partnerId}
-                            refreshPurchases={this.props.refreshPurchases}
-                            purchaseDisplayOptions={purchaseDisplayOptions.OLD}
-                            key={1}/>
-        </div>
-      );
-    } else if (this.props.type == displays.NEW_PURCHASES) {
-      return (
-        <div className="display">
-          <PurchaseDisplay  partnerId={this.props.partnerId}
-                            refreshPurchases={this.props.refreshPurchases}
-                            purchaseDisplayOptions={purchaseDisplayOptions.NEW}
-                            key={2}/>
-        </div>
-      );
-    }
-  }
-});
-
 var tabs = {
   VIEWINFO: 1,
   RECOMMEND: 2,
