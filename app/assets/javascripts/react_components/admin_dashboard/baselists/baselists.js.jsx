@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var baselistViews = {
+var baseListViews = {
   BASELISTS: 1,
   CREATE_BASELISTS: 2,
   EDIT_BASELISTS: 3
@@ -10,11 +10,11 @@ var baselistViews = {
  * This is the class that outside users of this file should view. */
 var BaseListView = React.createClass({
   getInitialState: function() {
-    return {view: baselistViews.BASELISTS};
+    return {view: baseListViews.BASELISTS};
   },
   viewBaseLists: function() {
     this.setState({view: baseListView.BASELISTS});
-  }
+  },
   viewCreateBookLists: function() {
     this.setState({view: baseListViews.CREATE_BASELISTS});
   },
@@ -25,7 +25,7 @@ var BaseListView = React.createClass({
     if (this.state.view == baseListViews.BASELISTS) {
       return (
         <BaseLists  viewCreateBookLists={this.viewCreateBookLists}
-          viewEditBookLists={this.viewEditBookLists} />
+                    viewEditBookLists={this.viewEditBookLists} />
       );
     } else if (this.state.view == baseListViews.CREATE_BASELISTS) {
       return (
@@ -40,11 +40,75 @@ var BaseListView = React.createClass({
 });
 
 var BaseLists = React.createClass({
+  getInitialState: function() {
+    return {baseLists: [],
+      selectedBaselist: null};
+  },
+  componentDidMount: function() {
+    this._fetchBaseLists();
+  },
+  _fetchBaseLists: function() {
+    $.ajax({
+      url: "/api/v1/base_lists/",
+      dataType: "json",
+      success: function(data) {
+        this.setState({baseLists: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  _selectBaselist: function(id) {
+    if (id == this.state.selectedBaselist) {
+      this.setState({selectedBaselist: null});
+    } else {
+      this.setState({selectedBaselist: id});
+    }
+  },
+  _createBaseList: function() {
+    this.props.viewCreateBookLists();
+  },
   render: function() {
+    var self = this;
+    var pills = this.state.baseLists.map(function(baselist) {
+      return (
+        <BaseList baselist={baselist}
+          clicked={_.isEqual(self.state.selectedBaselist, baselist.id)}
+          selectBaselist={self._selectBaselist}
+          editBaseList={self.props.viewEditBookLists} />
+      );
+    });
     return (
-      <div>
-        hi
+      <div className="container">
+        <div className="panel panel-primary">
+          <div className="panel-heading">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="btn btn-default pull-right" onClick={this._createBaseList}><span className="glyphicon glyphicon-plus"/></div>
+              </div>
+            </div>
+          </div>
+          <div className="panel-body">
+            <div className="list-group">
+              {pills}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 });
+
+var BaseList = React.createClass({
+  onClick: function() {
+    this.props.selectBaselist(this.props.baselist.id);
+  },
+  render: function() {
+    return (
+      <a href="#" className="list-group-item" onClick={this.onClick}>
+        {this.props.baselist.name}
+      </a>
+    );
+  }
+})

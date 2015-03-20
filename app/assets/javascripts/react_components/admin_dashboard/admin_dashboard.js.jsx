@@ -66,7 +66,7 @@ var DashboardTabDisplay = React.createClass({
       );
     } else if (this.props.type == tabs.BASE_LISTS) {
       return (
-        <BaseLists />
+        <BaseListView />
       );
     } else if (this.props.type == tabs.RECOMMEND) {
       return (

@@ -75,6 +75,7 @@ Rails.application.routes.draw do
           get "page" => "books#page"
         end
       end
+      resources :base_lists
       resources :projects do
         collection do
           get "search/" => "projects#search"
