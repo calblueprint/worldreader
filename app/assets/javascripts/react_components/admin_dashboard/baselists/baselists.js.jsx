@@ -101,6 +101,21 @@ var BaseLists = React.createClass({
 });
 
 var BaseList = React.createClass({
+  componentDidMount: function() {
+    this._bookList();
+  },
+  _bookList: function() {
+    $.ajax({
+      url: "/api/v1/base_lists/" + this.props.baselist.id + "/books",
+      dataType: "json",
+      success: function(data) {
+        this.setState({books: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   _publishedStar: function() {
     if (this.props.baselist.published) {
       return (
@@ -112,13 +127,42 @@ var BaseList = React.createClass({
     this.props.selectBaselist(this.props.baselist.id);
   },
   render: function() {
-    return (
-      <div className="list-group-item">
-        <a href="#" onClick={this.onClick}>
+    if (this.props.clicked) {
+      var books = this.state.books.map(function(book) {
+        return (
+          <li>
+            {book.title}
+          </li>
+        );
+      });
+      return (
+        <div className="list-group-item cursor" onClick={this.onClick}>
           {this.props.baselist.name}
-        </a>
-        {this._publishedStar()}
-      </div>
-    );
+          <div className="btn-group pull-right">
+            <button type="button" className="btn btn-default" onClick={this._editBaselist}>
+              Edit
+            </button>
+            <button type="button" className="btn btn-default" 
+              onClick={this._removeBaselist}>
+              <div className="glyphicon glyphicon-remove"/>
+            </button>
+          </div>
+          <p></p>
+            Books
+            <ul>
+              {books}
+            </ul>
+        </div>
+      );
+    } else {
+      return (
+        <div className="list-group-item">
+          <a href="#" onClick={this.onClick}>
+            {this.props.baselist.name}
+          </a>
+          {this._publishedStar()}
+        </div>
+      );
+    }
   }
 })

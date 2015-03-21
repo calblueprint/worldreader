@@ -12,6 +12,10 @@ class Api::V1::BaseListsController < ApplicationController
     end
   end
 
+  def books
+    render json: BookList.find(params[:id]).books
+  end
+
   private
 
   def base_list_params
