@@ -13,7 +13,7 @@ var BaseListView = React.createClass({
     return {view: baseListViews.BASELISTS};
   },
   viewBaseLists: function() {
-    this.setState({view: baseListView.BASELISTS});
+    this.setState({view: baseListViews.BASELISTS});
   },
   viewCreateBookLists: function() {
     this.setState({view: baseListViews.CREATE_BASELISTS});
@@ -29,11 +29,11 @@ var BaseListView = React.createClass({
       );
     } else if (this.state.view == baseListViews.CREATE_BASELISTS) {
       return (
-        <CreateBaseList viewBookList={this.viewBaseLists} />
+        <CreateBaseList viewBaseLists={this.viewBaseLists} />
       );
     } else if (this.state.view == baseListViews.EDIT_BASELISTS) {
       return (
-        <EditBaseList viewBookList={this.viewBaseLists} />
+        <EditBaseList viewBaseLists={this.viewBaseLists} />
       );
     }
   }
