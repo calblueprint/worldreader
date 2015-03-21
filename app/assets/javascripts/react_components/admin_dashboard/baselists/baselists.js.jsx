@@ -101,14 +101,24 @@ var BaseLists = React.createClass({
 });
 
 var BaseList = React.createClass({
+  _publishedStar: function() {
+    if (this.props.baselist.published) {
+      return (
+        <span className="label label-primary pull-right">Published</span>
+      );
+    }
+  },
   onClick: function() {
     this.props.selectBaselist(this.props.baselist.id);
   },
   render: function() {
     return (
-      <a href="#" className="list-group-item" onClick={this.onClick}>
-        {this.props.baselist.name}
-      </a>
+      <div className="list-group-item">
+        <a href="#" onClick={this.onClick}>
+          {this.props.baselist.name}
+        </a>
+        {this._publishedStar()}
+      </div>
     );
   }
 })
