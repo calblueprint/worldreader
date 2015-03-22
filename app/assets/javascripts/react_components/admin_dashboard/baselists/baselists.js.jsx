@@ -119,7 +119,7 @@ var BaseList = React.createClass({
   _publishedStar: function() {
     if (this.props.baselist.published) {
       return (
-        <span className="label label-primary pull-right">Published</span>
+        <span className="label label-primary">Published</span>
       );
     }
   },
@@ -136,7 +136,8 @@ var BaseList = React.createClass({
         );
       });
       return (
-        <div className="list-group-item cursor" onClick={this.onClick}>
+        <div className="list-group-item" onClick={this.onClick}>
+          {this._publishedStar()}
           {this.props.baselist.name}
           <div className="btn-group pull-right">
             <button type="button" className="btn btn-default" onClick={this._editBaselist}>
@@ -147,11 +148,9 @@ var BaseList = React.createClass({
               <div className="glyphicon glyphicon-remove"/>
             </button>
           </div>
-          <p></p>
-            Books
-            <ul>
-              {books}
-            </ul>
+          <ul>
+            {books}
+          </ul>
         </div>
       );
     } else {

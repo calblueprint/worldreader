@@ -101,7 +101,7 @@ class Book < ActiveRecord::Base
 
   default_scope { where(in_store: true) }
 
-  QUERY_FIELDS = [:title, :description, "authors.name", "publisher.name"]
+  QUERY_FIELDS = [:title, :description, :asin, "authors.name", "publisher.name"]
 
   CSV_COLUMNS = ["Book Name", "ASIN"]
 
@@ -131,7 +131,7 @@ class Book < ActiveRecord::Base
   end
 
   def as_json(options={})
-    options[:methods] = [:subcategory_name, :update_status, :donated?, :updated_date, :url]
+    options[:methods] = [:subcategory_name, :levels_name, :update_status, :donated?, :updated_date, :url]
     super(options)
   end
 
@@ -154,6 +154,10 @@ class Book < ActiveRecord::Base
 
   def subcategory_name
     subcategory ? subcategory.name : ""
+  end
+
+  def levels_name
+    levels.map { |level| level.name }
   end
 
   def update_status
