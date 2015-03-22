@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317213504) do
+ActiveRecord::Schema.define(version: 20150319233508) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -42,6 +42,11 @@ ActiveRecord::Schema.define(version: 20150317213504) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_admin_notes_on_resource_type_and_resource_id", using: :btree
 
+  create_table "admin_user_book_list", force: true do |t|
+    t.integer "admin_user_id"
+    t.integer "book_list_id"
+  end
+
   create_table "admin_users", force: true do |t|
     t.string   "email",                              null: false
     t.string   "encrypted_password",                 null: false
@@ -67,6 +72,11 @@ ActiveRecord::Schema.define(version: 20150317213504) do
   add_index "admin_users", ["country_id"], name: "index_admin_users_on_country_id", using: :btree
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "admin_users_book_lists", force: true do |t|
+    t.integer "admin_user_id"
+    t.integer "book_list_id"
+  end
 
   create_table "admin_users_projects", id: false, force: true do |t|
     t.integer "admin_user_id"
@@ -97,6 +107,18 @@ ActiveRecord::Schema.define(version: 20150317213504) do
   end
 
   add_index "authors_books", ["book_id", "author_id"], name: "index_authors_books_on_book_id_and_author_id", using: :btree
+
+  create_table "book_lists", force: true do |t|
+    t.string   "name"
+    t.boolean  "published"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "book_lists_books", id: false, force: true do |t|
+    t.integer "book_id"
+    t.integer "book_list_id"
+  end
 
   create_table "book_statuses", force: true do |t|
     t.string   "name"
