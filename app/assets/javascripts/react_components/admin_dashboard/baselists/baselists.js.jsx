@@ -136,16 +136,15 @@ var BaseList = React.createClass({
         );
       });
       return (
-        <div className="list-group-item" onClick={this.onClick}>
+        <div className="list-group-item cursor" onClick={this.onClick}>
           {this.props.baselist.name}
           {this._published()}
           <div className="btn-group pull-right">
             <button type="button" className="btn btn-default" onClick={this._editBaselist}>
               Edit
             </button>
-            <button type="button" className="btn btn-default" 
-              onClick={this._removeBaselist}>
-              <div className="glyphicon glyphicon-remove"/>
+            <button type="button" className="btn btn-default" onClick={this.removeBaselist}>
+              Delete
             </button>
           </div>
           <ul>
@@ -155,10 +154,8 @@ var BaseList = React.createClass({
       );
     } else {
       return (
-        <div className="list-group-item">
-          <a href="#" onClick={this.onClick}>
-            {this.props.baselist.name}
-          </a>
+        <div className="list-group-item cursor" onClick={this.onClick}>
+          {this.props.baselist.name}
           {this._published()}
         </div>
       );
