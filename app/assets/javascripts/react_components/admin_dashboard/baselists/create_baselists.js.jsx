@@ -5,8 +5,18 @@ var CreateBaseList = React.createClass({
     return {
       bookTags: [],
       selectedBooks: [],
-      name: ""
+      name: "",
+      published: 0
     }
+  },
+  componentDidMount: function() {
+    $('#baselist-toggle').bootstrapSwitch();
+    $('#baselist-toggle').on('switchChange.bootstrapSwitch', this._togglePublished);
+    $('.bootstrap-switch').css("float", "right");
+  },
+  _togglePublished: function(event, state) {
+    this.setState({published: state});
+    $('#baselist-toggle').bootstrapSwitch();
   },
   _setBookTags: function(tags) {
     this.setState({bookTags: tags});
@@ -46,7 +56,8 @@ var CreateBaseList = React.createClass({
       data: {
         base_list: {
           name: name,
-          book_ids: bookIds
+          book_ids: bookIds,
+          published: this.state.published
         }
       },
       success: function() {
@@ -75,6 +86,16 @@ var CreateBaseList = React.createClass({
             <div className="input-group input-group-lg name-input-group">
               <input type="text" className="form-control name-field" placeholder="Enter a Baselist name"/>
             </div>
+          </div>
+          <div className="col-md-4">
+            <input  type="checkbox"
+                    id="baselist-toggle"
+                    defaultChecked={this.state.published}
+                    onSwitchChange={this._togglePublished}
+                    data-on-text="Published"
+                    data-off-text="Private"
+                    data-on-color="success"
+                    data-off-color="default"/>
           </div>
         </div>
         <div className="row top-buffer">
