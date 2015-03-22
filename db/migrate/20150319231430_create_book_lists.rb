@@ -6,7 +6,6 @@ class CreateBookLists < ActiveRecord::Migration
       t.timestamps
     end
 
-
     create_table :book_lists_books, id: false do |t|
       t.belongs_to :book, index: false
       t.belongs_to :book_list, index: false

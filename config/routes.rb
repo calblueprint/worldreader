@@ -77,7 +77,7 @@ Rails.application.routes.draw do
       end
       resources :base_lists do
         member do
-          get "books/"  => "base_lists#books"
+          get "books/" => "base_lists#books"
         end
       end
       resources :projects do
