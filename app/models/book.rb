@@ -103,7 +103,7 @@ class Book < ActiveRecord::Base
 
   QUERY_FIELDS = [:title, :description, :asin, "authors.name", "publisher.name"]
 
-  CSV_COLUMNS = ["Book Name", "ASIN"]
+  CSV_COLUMNS = ["Book Name", "ASIN", "Publisher"]
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -115,7 +115,7 @@ class Book < ActiveRecord::Base
   end
 
   def to_csv
-    [title, asin]
+    [title, asin, publisher.name]
   end
 
   def donated?

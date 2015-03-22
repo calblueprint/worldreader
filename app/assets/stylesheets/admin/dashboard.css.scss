@@ -297,8 +297,11 @@ $line-color-dark: #aaa;
   width: 100%;
 }
 
-.glyphicon-star {
-  color: #428bca;
+.published-tag {
+  display: inline-block;
+  margin-left: 0.6rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.4rem;
 }
 
 .cursor {
