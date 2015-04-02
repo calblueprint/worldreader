@@ -142,6 +142,16 @@ def make_subcategories
   end
 end
 
+def make_booklists
+  b = BookList.create! name: "booklist1",
+                       published: false
+  b.users << User.find(2)
+  1.upto(5) do |n|
+    b.books << Book.find(n)
+  end
+  b.save
+end
+
 make_books
 make_countries
 make_levels
@@ -155,3 +165,4 @@ make_projects
 make_users
 make_content_buckets
 make_purchases
+make_booklists

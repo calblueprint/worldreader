@@ -42,11 +42,6 @@ ActiveRecord::Schema.define(version: 20150319233508) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_admin_notes_on_resource_type_and_resource_id", using: :btree
 
-  create_table "admin_user_book_list", force: true do |t|
-    t.integer "admin_user_id"
-    t.integer "book_list_id"
-  end
-
   create_table "admin_users", force: true do |t|
     t.string   "email",                              null: false
     t.string   "encrypted_password",                 null: false
@@ -271,6 +266,14 @@ ActiveRecord::Schema.define(version: 20150319233508) do
 
   add_index "content_buckets_homerooms", ["content_bucket_id", "homeroom_id"], name: "content_bucket_homeroom_index", unique: true, using: :btree
 
+  create_table "content_buckets_purchases", id: false, force: true do |t|
+    t.integer "content_bucket_id"
+    t.integer "purchase_id"
+  end
+
+  add_index "content_buckets_purchases", ["content_bucket_id"], name: "index_content_buckets_purchases_on_content_bucket_id", using: :btree
+  add_index "content_buckets_purchases", ["purchase_id"], name: "index_content_buckets_purchases_on_purchase_id", using: :btree
+
   create_table "continents", force: true do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -368,13 +371,6 @@ ActiveRecord::Schema.define(version: 20150319233508) do
   end
 
   add_index "grades_books", ["book_id", "origin_grade_id"], name: "index_grades_books_on_book_id_and_origin_grade_id", using: :btree
-
-  create_table "groups", force: true do |t|
-    t.integer "user_id"
-    t.string  "name"
-    t.string  "country"
-    t.string  "description"
-  end
 
   create_table "homerooms", force: true do |t|
     t.string   "name"
