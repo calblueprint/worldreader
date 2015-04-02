@@ -32,6 +32,11 @@ class UsersController < ApplicationController
     redirect_to users_path, notice: "User deleted."
   end
 
+  def booklists
+    user = User.find(params[:user_id])
+    @booklists = user.book_lists
+  end
+
   private
 
   def admin_only

@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     delete 'users/sign_out' => 'devise/sessions#destroy', as: 'destroy_user_session'
   end
 
-  resources :users
+  resources :users do
+    get "booklists"
+  end
 
   # post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
 
