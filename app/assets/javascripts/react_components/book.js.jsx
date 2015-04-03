@@ -23,13 +23,13 @@ var CartButton = React.createClass({
     if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-        Remove from Cart
+          Remove from Booklist
         </button>
       );
     } else {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-        Add to Cart
+          Add to Booklists
         </button>
       );
     }
@@ -64,6 +64,7 @@ var BookList = React.createClass({
   componentDidMount: function() {
     this.initTagbar();
     $('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker('val', this.props.booklist);
   },
   handleBooksUpdate: function(event) {
     this.setState({books: event});
@@ -84,7 +85,7 @@ var BookList = React.createClass({
       }
     } else if (event.ADD_BOOK_TO_CART) {
       var book = event.ADD_BOOK_TO_CART;
-      addBook(book, this.state.user.id);
+      this.addBook(book);
     } else if (event.SEE_MORE_CART_ITEMS) {
       this.setState({numVisibleCartItems:
                     _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
@@ -188,6 +189,31 @@ var BookList = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  addBook: function(book) {
+    var booklist_ids = $('.selectpicker').val();
+    if (booklist_ids == null) {
+      toastr.error("At least one booklist must be selected");
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "/api/v1/book_lists/add/" + book.id,
+        dataType: "json",
+        data: {
+          booklist_ids: $('.selectpicker').val(),
+        },
+        success: function(response) {
+          toastr.success(book.title + " was successfully added to your booklists!");
+        }.bind(this),
+        error: function(xhr, status, err) {
+          var errors = xhr.responseJSON.errors;
+          for (var error of errors) {
+            toastr.error(book.title + " is already in " + error);
+          }
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    }
   },
   render: function() {
     bookList = this;

@@ -80,6 +80,11 @@ Rails.application.routes.draw do
           get "books/" => "base_lists#books"
         end
       end
+      resources :book_lists do
+        collection do
+          post "add/:book_id" => "book_lists#add"
+        end
+      end
       resources :projects do
         collection do
           get "search/" => "projects#search"
