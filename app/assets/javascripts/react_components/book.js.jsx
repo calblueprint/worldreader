@@ -63,6 +63,7 @@ var BookList = React.createClass({
   },
   componentDidMount: function() {
     this.initTagbar();
+    $('.selectpicker').selectpicker();
   },
   handleBooksUpdate: function(event) {
     this.setState({books: event});
@@ -193,19 +194,40 @@ var BookList = React.createClass({
     var bookTiles = this.state.books.map(function (book) {
       return this.generateTile(book);
     }.bind(this));
-
+    var booklists = gon.booklists.map(function(booklist) {
+      return (
+        <option value={booklist.id}>{booklist.name}</option>
+      );
+    }.bind(this));
     var searchBar = (
       <div className="row" id="library">
         <div id="tag-and-searchbar">
-          <div className="input-group" id="book-searchbar">
-            <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
-            <span className="input-group-btn">
-              <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
-            </span>
+          <div className="row">
+            <div className="col-md-10 col-md-offset-1">
+              <div className="input-group" id="book-searchbar">
+                <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
+                <span className="input-group-btn">
+                  <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="input-group" id="book-tagbar">
-            <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
-            <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+          <div className="row tagbar-booklists">
+            <div className="col-md-8 col-md-offset-1">
+              <div className="input-group" id="book-tagbar">
+                <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
+                <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="booklists-select">
+                <select className="selectpicker booklists" title="Select a Booklist"
+                  data-width="100%" multiple data-size="20" data-live-search="true"
+                  data-selected-text-format="count>4">
+                  {booklists}
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -257,7 +279,6 @@ var BookList = React.createClass({
         );
       }
     }
-    console.log("got here")
     return (
       <div>
         {this.props.small ? null : searchBar}
