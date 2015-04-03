@@ -49,7 +49,7 @@ var BaseLists = React.createClass({
   },
   _fetchBaseLists: function() {
     $.ajax({
-      url: "/api/v1/base_lists/",
+      url: "/api/v1/book_lists/",
       dataType: "json",
       success: function(data) {
         this.setState({baseLists: data});
@@ -106,7 +106,7 @@ var BaseList = React.createClass({
   },
   _bookList: function() {
     $.ajax({
-      url: "/api/v1/base_lists/" + this.props.baselist.id + "/books",
+      url: "/api/v1/book_lists/" + this.props.baselist.id + "/books",
       dataType: "json",
       success: function(data) {
         this.setState({books: data});
