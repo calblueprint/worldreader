@@ -145,12 +145,12 @@ end
 def make_booklists
   1.upto(2) do |n|
     b = BookList.create! name: "booklist#{n}",
-                           published: false
-    b.users << User.find(n*2)
+                         published: false
+    b.users << User.find(n * 2)
   end
   1.upto(5) do |n|
     BookList.find(1).books << Book.find(n)
-    BookList.find(2).books << Book.find(n+5)
+    BookList.find(2).books << Book.find(n + 5)
   end
 end
 
