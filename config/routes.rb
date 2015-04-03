@@ -79,8 +79,9 @@ Rails.application.routes.draw do
       end
       resources :book_lists do
         member do
-          get "books/" => "book_lists#books"
+          get "books" => "book_lists#books"
           get "csv"
+          delete "remove/:book_id" => "book_lists#remove"
         end
       end
       resources :projects do

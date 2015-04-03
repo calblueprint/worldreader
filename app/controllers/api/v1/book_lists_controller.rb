@@ -22,6 +22,16 @@ class Api::V1::BookListsController < ApplicationController
       :disposition => "attachment;books.csv"
   end
 
+  def remove
+    booklist = BookList.find(params[:id])
+    book = Book.find(params[:book_id])
+    if booklist.books.delete book
+      render json: booklist.books
+    else
+      render json: { message: "Failed to remove book!" }
+    end
+  end
+
   private
 
   def book_list_params

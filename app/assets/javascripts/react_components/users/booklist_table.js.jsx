@@ -22,7 +22,7 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
-  downloadList: function() {
+  _downloadList: function() {
     $.ajax({
       url: "/api/v1/book_lists/" + this.props.booklist + "/csv",
       type: "GET",
@@ -35,10 +35,27 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
+  _removeBook: function(bookId) {
+    $.ajax({
+      url: "/api/v1/book_lists/" + this.props.booklist + "/remove/" + bookId,
+      type: "DELETE",
+      dataType: "json",
+      success: function(data) {
+        toastr.success("Book removed.");
+        this.setState({books: data});
+      }.bind(this),
+      error: function(xhr, status, error) {
+        toastr.error("There was an error removing the book.");
+        console.error(this.props.url, status, err.toString());
+      }
+    });
+  },
   render: function() {
+    var self = this;
     var books = this.state.books.map(function (book) {
       return (
         <BookListRow book={book}
+                     removeBook={self._removeBook}
                      key={book.id} />
       );
     });
@@ -48,7 +65,7 @@ var BookListTable = React.createClass({
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-12">
-                <div className="btn btn-default pull-right" onClick={this.downloadList}>
+                <div className="btn btn-default pull-right" onClick={this._downloadList}>
                   <span className="glyphicon glyphicon-download-alt"/>
                 </div>
               </div>
@@ -84,9 +101,13 @@ var BookListTable = React.createClass({
 
 /*
  * @prop book - the book in JSON
+ * @prop removeBook - a callback for when the remove button is clicked
  * @prop key - UNUSED
  */
 var BookListRow = React.createClass({
+  _removeBook: function() {
+    this.props.removeBook(this.props.book.id);
+  },
   render: function() {
     return (
       <tr>
@@ -110,6 +131,9 @@ var BookListRow = React.createClass({
         </td>
         <td>
           Unknown
+        </td>
+        <td>
+          <button type="button" className="btn btn-danger" onClick={this._removeBook}>Remove</button>
         </td>
       </tr>
     );
