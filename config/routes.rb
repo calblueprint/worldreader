@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       resources :book_lists do
         member do
           get "books/" => "book_lists#books"
+          get "csv"
         end
       end
       resources :projects do

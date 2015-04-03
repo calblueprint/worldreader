@@ -22,11 +22,24 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
+  downloadList: function() {
+    $.ajax({
+      url: "/api/v1/book_lists/" + this.props.booklist + "/csv",
+      type: "GET",
+      success: function(data) {
+        window.open("data:text/csv;charset=utf-8," + escape(data));
+      }.bind(this),
+      error: function(xhr, status, error) {
+        toastr.error("There was an error while generating the report");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     var books = this.state.books.map(function (book) {
       return (
-        <BookListRow  book={book}
-                      key={book.id} />
+        <BookListRow book={book}
+                     key={book.id} />
       );
     });
     return (
