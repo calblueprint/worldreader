@@ -93,6 +93,7 @@ class Book < ActiveRecord::Base
   settings number_of_shards: 1 do
     mapping do
       indexes "genre.name", index: 'not_analyzed'
+      indexes "subcategory.name", index: 'not_analyzed'
       indexes "language.name", index: 'not_analyzed'
       indexes "country.name", index: 'not_analyzed'
       indexes "levels.name", index: 'not_analyzed'
@@ -152,6 +153,7 @@ class Book < ActiveRecord::Base
         authors: {only: :name},
         country: {only: :name},
         genre: {only: :name},
+        subcategory: {only: :name},
         language: {only: :name},
         levels: {only: :name},
         publisher: {only: :name}
