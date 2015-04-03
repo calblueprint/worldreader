@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_only, except: [:show]
+  before_action :admin_only, except: [:show, :booklists]
 
   def index
     @users = User.all
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params[:user_id])
     gon.cart = @user.cart
     unless current_user.admin?
       unless @user == current_user
