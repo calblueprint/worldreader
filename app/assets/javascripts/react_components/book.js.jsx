@@ -29,7 +29,7 @@ var CartButton = React.createClass({
     } else {
       return (
         <button className="btn cart-button" onClick={this.handleClick}>
-          Add to Booklists
+          Add to Booklist
         </button>
       );
     }

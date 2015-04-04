@@ -12,6 +12,24 @@ class Api::V1::BookListsController < ApplicationController
     end
   end
 
+  def add
+    book = Book.find(params[:book_id])
+    errors = []
+    params[:booklist_ids].each do |id|
+      booklist = BookList.find(id)
+      if booklist.books.include?(book)
+        errors << booklist.name
+      else
+        booklist.books << book
+      end
+    end
+    if errors.empty?
+      render json: { message: "Book successfully added" }, status: :ok
+    else
+      render json: { errors: errors }, status: :error
+    end
+  end
+
   def books
     render json: BookList.find(params[:id]).books
   end
