@@ -18,7 +18,7 @@ class Api::V1::BookListsController < ApplicationController
     params[:booklist_ids].each do |id|
       booklist = BookList.find(id)
       if booklist.books.include?(book)
-        errors << booklist.name
+        errors << book.title + " is already in " + booklist.name
       else
         booklist.books << book
       end

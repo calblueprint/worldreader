@@ -208,7 +208,7 @@ var BookList = React.createClass({
         error: function(xhr, status, err) {
           var errors = xhr.responseJSON.errors;
           for (var error of errors) {
-            toastr.error(book.title + " is already in " + error);
+            toastr.error(error);
           }
           console.error(this.props.url, status, err.toString());
         }.bind(this)
@@ -225,7 +225,7 @@ var BookList = React.createClass({
         <option value={booklist.id}>{booklist.name}</option>
       );
     }.bind(this));
-    var tagbar_width = (gon.current_user == null) ? "col-md-10" : "col-md-8";
+    var tagbarWidth = (gon.current_user == null) ? "col-md-10" : "col-md-8";
     var searchBar = (
       <div className="row" id="library">
         <div id="tag-and-searchbar">
@@ -240,7 +240,7 @@ var BookList = React.createClass({
             </div>
           </div>
           <div className="row tagbar-booklists">
-            <div className={tagbar_width + " col-md-offset-1"}>
+            <div className={tagbarWidth + " col-md-offset-1"}>
               <div className="input-group" id="book-tagbar">
                 <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
                 <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
