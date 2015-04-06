@@ -266,14 +266,6 @@ ActiveRecord::Schema.define(version: 20150319233508) do
 
   add_index "content_buckets_homerooms", ["content_bucket_id", "homeroom_id"], name: "content_bucket_homeroom_index", unique: true, using: :btree
 
-  create_table "content_buckets_purchases", id: false, force: true do |t|
-    t.integer "content_bucket_id"
-    t.integer "purchase_id"
-  end
-
-  add_index "content_buckets_purchases", ["content_bucket_id"], name: "index_content_buckets_purchases_on_content_bucket_id", using: :btree
-  add_index "content_buckets_purchases", ["purchase_id"], name: "index_content_buckets_purchases_on_purchase_id", using: :btree
-
   create_table "continents", force: true do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -371,6 +363,13 @@ ActiveRecord::Schema.define(version: 20150319233508) do
   end
 
   add_index "grades_books", ["book_id", "origin_grade_id"], name: "index_grades_books_on_book_id_and_origin_grade_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.integer "user_id"
+    t.string  "name"
+    t.string  "country"
+    t.string  "description"
+  end
 
   create_table "homerooms", force: true do |t|
     t.string   "name"

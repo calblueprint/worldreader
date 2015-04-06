@@ -200,7 +200,7 @@ var BookList = React.createClass({
         url: "/api/v1/book_lists/add/" + book.id,
         dataType: "json",
         data: {
-          booklist_ids: $('.selectpicker').val(),
+          booklist_ids: booklist_ids,
         },
         success: function(response) {
           toastr.success(book.title + " was successfully added to your booklists!");
