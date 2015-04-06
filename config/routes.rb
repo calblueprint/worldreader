@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     delete 'users/sign_out' => 'devise/sessions#destroy', as: 'destroy_user_session'
   end
 
-  resources :users
+  resources :users do
+    get "booklists"
+  end
 
   # post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
 
@@ -75,9 +77,14 @@ Rails.application.routes.draw do
           get "page" => "books#page"
         end
       end
-      resources :base_lists do
+      resources :book_lists do
         member do
-          get "books/" => "base_lists#books"
+          get "books" => "book_lists#books"
+          get "csv"
+          delete "remove/:book_id" => "book_lists#remove"
+        end
+        collection do
+          post "add/:book_id" => "book_lists#add"
         end
       end
       resources :projects do

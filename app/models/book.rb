@@ -140,6 +140,10 @@ class Book < ActiveRecord::Base
   def as_json(options={})
     options[:methods] = [:subcategory_name,
                          :levels_name,
+                         :language_name,
+                         :publisher_name,
+                         :country_name,
+                         :genre_name,
                          :update_status,
                          :donated?,
                          :updated_date,
@@ -167,6 +171,22 @@ class Book < ActiveRecord::Base
 
   def subcategory_name
     subcategory ? subcategory.name : ""
+  end
+
+  def publisher_name
+    publisher.name || ""
+  end
+
+  def language_name
+    language.name || ""
+  end
+
+  def country_name
+    country.name || ""
+  end
+
+  def genre_name
+    genre.name || ""
   end
 
   def levels_name

@@ -7,4 +7,5 @@
 
 #library.row
   #booklist.col-md-10.col-md-offset-1
-    = react_component 'BookList', {books: @books, searchTerm: "", tags: []}
+    = react_component 'BookList', {books: @books, searchTerm: "", tags: [],
+        booklist: @booklist}
