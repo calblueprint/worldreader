@@ -83,6 +83,9 @@ Rails.application.routes.draw do
           get "csv"
           delete "remove/:book_id" => "book_lists#remove"
         end
+        collection do
+          post "add/:book_id" => "book_lists#add"
+        end
       end
       resources :projects do
         collection do

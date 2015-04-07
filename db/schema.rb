@@ -42,11 +42,6 @@ ActiveRecord::Schema.define(version: 20150319233508) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_admin_notes_on_resource_type_and_resource_id", using: :btree
 
-  create_table "admin_user_book_list", force: true do |t|
-    t.integer "admin_user_id"
-    t.integer "book_list_id"
-  end
-
   create_table "admin_users", force: true do |t|
     t.string   "email",                              null: false
     t.string   "encrypted_password",                 null: false
