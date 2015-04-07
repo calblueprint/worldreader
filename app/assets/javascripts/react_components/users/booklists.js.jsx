@@ -22,7 +22,7 @@ var BookLists = React.createClass({
     });
     return (
       <div className="container">
-        <div className="dropdown" id="booklist-select">
+        <div className="dropdown booklist-select">
           <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
             {this.state.selectedBookList.name}
             <span className="caret"></span>
