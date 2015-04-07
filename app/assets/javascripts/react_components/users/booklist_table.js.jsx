@@ -10,8 +10,14 @@ var BookListTable = React.createClass({
     };
   },
   componentDidMount: function() {
+    this.getBooks(this.props.booklist);
+  },
+  componentWillReceiveProps: function (nextProps) {
+    this.getBooks(nextProps.booklist);
+  },
+  getBooks: function (booklistId) {
     $.ajax({
-      url: "/api/v1/book_lists/" + this.props.booklist + "/books",
+      url: "/api/v1/book_lists/" + booklistId + "/books",
       type: "GET",
       success: function(data) {
         this.setState({books: data});
@@ -60,7 +66,7 @@ var BookListTable = React.createClass({
       );
     });
     return (
-      <div  className="container">
+      <div>
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
