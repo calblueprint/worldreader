@@ -10,21 +10,14 @@ var BookListTable = React.createClass({
     };
   },
   componentDidMount: function() {
-    $.ajax({
-      url: "/api/v1/book_lists/" + this.props.booklist + "/books",
-      type: "GET",
-      success: function(data) {
-        this.setState({books: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        toastr.error("There was an error retrieving the book data.");
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+    this.getBooks(this.props.booklist);
   },
   componentWillReceiveProps: function (nextProps) {
-      $.ajax({
-      url: "/api/v1/book_lists/" + nextProps.booklist + "/books",
+    this.getBooks(nextProps.booklist);
+  },
+  getBooks: function (booklistId) {
+    $.ajax({
+      url: "/api/v1/book_lists/" + booklistId + "/books",
       type: "GET",
       success: function(data) {
         this.setState({books: data});
