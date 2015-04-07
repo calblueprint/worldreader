@@ -22,6 +22,19 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
+  componentWillReceiveProps: function (nextProps) {
+      $.ajax({
+      url: "/api/v1/book_lists/" + nextProps.booklist + "/books",
+      type: "GET",
+      success: function(data) {
+        this.setState({books: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        toastr.error("There was an error retrieving the book data.");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   _downloadList: function() {
     $.ajax({
       url: "/api/v1/book_lists/" + this.props.booklist + "/csv",
@@ -60,7 +73,7 @@ var BookListTable = React.createClass({
       );
     });
     return (
-      <div  className="container">
+      <div>
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
