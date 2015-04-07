@@ -52,7 +52,7 @@ var CreateBaseList = React.createClass({
 
     $.ajax({
       type: "POST",
-      url: "/api/v1/base_lists/",
+      url: "/api/v1/book_lists/",
       data: {
         base_list: {
           name: name,
