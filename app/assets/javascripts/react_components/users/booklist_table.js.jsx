@@ -71,6 +71,12 @@ var BookListTable = React.createClass({
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-12">
+                <a href={"/?booklist=" + this.props.booklist}>
+                  <div className="btn btn-default pull-left">
+                    <span className="glyphicon glyphicon-plus"/>
+                    <span>Add to Booklist</span>
+                  </div>
+                </a>
                 <div className="btn btn-default pull-right" onClick={this._downloadList}>
                   <span className="glyphicon glyphicon-download-alt"/>
                 </div>
