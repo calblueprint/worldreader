@@ -244,6 +244,9 @@ var BookList = React.createClass({
               <div className="input-group" id="book-tagbar">
                 <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
                 <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+                <span className="input-group-btn">
+                  <button className="btn btn-default" id="search-button" type="button" data-toggle="modal" data-target="#HelpModal"><span className="glyphicon glyphicon-question-sign"></span></button>
+                </span>
               </div>
             </div>
             <div className="select-container">
