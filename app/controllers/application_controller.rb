@@ -17,11 +17,15 @@ class ApplicationController < ActionController::Base
   end
 
   def new_partner_info
-    gon.projects = Project.uniq.all.map { |x|
-      {
-        id: x.id, name: x.name
-      }
-    }
+    gon.countries = Country.uniq.all.map { |x|
+      {id: x.id, name: x.name}
+    }.sort_by { |x| x[:name] }
+    gon.languages = Language.uniq.all.map { |x|
+      {id: x.id, name: x.name}
+    }.sort_by { |x| x[:name] }
+    # gon.booklists = Booklist.uniq.all.map { |x|
+    #   {id: x.id, name: x.name}
+    # }
   end
 
   def set_auth_token
@@ -85,4 +89,5 @@ class ApplicationController < ActionController::Base
       subcategory_tags
     gon.project_tags = country_tags + level_tags + language_tags
   end
+
 end
