@@ -290,12 +290,12 @@ var AddPartnerDisplay = React.createClass({
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
       password_confirmation: $('#newUserConfirmPassword').val(),
-      booklists: $('#booklists').val(),
+      book_list_ids: $('#booklists').val()
     };
     var project = {
       name: $('#projectName').val(),
-      languages: $('#projectLanguage').val(),
-      country: $('#projectCountry').val(),
+      origin_id: $('#projectCountry').val(),
+      language_ids: $('#projectLanguage').val()
     }
     $.ajax({
       type: "POST",

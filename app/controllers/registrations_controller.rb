@@ -5,18 +5,16 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    project = Project.create(name: project_params[:name])
-    project.country = Country.find(project_params[:country])
-    language_ids = Array(project_params[:languages])
-    language_ids.each do |language_id|
-      project.languages << Language.find(language_id)
-    end
+    project = Project.new(project_params)
+    # project.country = Country.find(project_params[:country])
+    
+    # language_ids = Array(project_params[:languages])
+    # project.languages << Language.find(language_ids)
+    
     resource.projects << project
 
-    booklist_ids = Array(user_params[:booklists])
-    booklist_ids.each do |booklist_id|
-      resource.book_lists << BookList.find(booklist_id)
-    end
+    # booklist_ids = Array(user_params[:booklists])
+    # resource.book_lists << BookList.find(booklist_ids)
 
     if project.valid? and resource.valid?
       project.save
@@ -33,18 +31,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u|
-      u.permit(:email, :password, :password_confirmation, :booklists)
+      u.permit(:email, :password, :password_confirmation, :book_list_ids)
     }
   end
 
   private
 
-  def user_params
-    params.require(:user).permit(booklists: [])
-  end
-
-
   def project_params
-    params.require(:project).permit(:name, :country, languages: [])
+    params.require(:project).permit(:name, :origin_id, language_ids: [])
   end
 end
