@@ -123,9 +123,6 @@ var BaseList = React.createClass({
       );
     }
   },
-  _editBaselist: function() {
-
-  },
   onClick: function() {
     this.props.selectBaselist(this.props.baselist.id);
   },
