@@ -75,13 +75,13 @@ class ApplicationController < ActionController::Base
         value: index, text: x.name, tagType: "genre", id: x.id
       }
     end
-    @subcategory_tags = Subcategory.uniq.pluck(:name).map  do |x|
+    @subcategory_tags = Subcategory.uniq.pluck(:name).map do |x|
       index += 1
       {
         value: index, text: x, tagType: "subcategory"
       }
     end
-    gon.all_tags = @country_tags + @level_tags + @language_tags + @genre_tags + 
+    gon.all_tags = @country_tags + @level_tags + @language_tags + @genre_tags +
       @subcategory_tags
     gon.project_tags = @country_tags + @level_tags + @language_tags
   end
