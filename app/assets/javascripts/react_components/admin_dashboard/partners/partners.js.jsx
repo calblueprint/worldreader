@@ -302,7 +302,8 @@ var AddPartnerDisplay = React.createClass({
       url: "/users",
       data: {
         authenticity_token: gon.auth_token,
-        user: user
+        user: user,
+        project: project,
       },
       success: function (data) {
         toastr.success(data.message);
@@ -330,11 +331,11 @@ var AddPartnerDisplay = React.createClass({
         <option value={languages.id}>{languages.name}</option>
       );
     }.bind(this));
-    // var booklists = gon.booklists.map(function(booklist) {
-    //   return (
-    //     <option value={booklist.id}>{booklist.name}</option>
-    //   );
-    // }.bind(this));
+    var booklists = gon.booklists.map(function(booklist) {
+      return (
+        <option value={booklist.id}>{booklist.name}</option>
+      );
+    }.bind(this));
     return (
       <div className="add-partner-display height-100">
         <div className="header">Add a new partner</div>
@@ -357,7 +358,7 @@ var AddPartnerDisplay = React.createClass({
             <select id="booklists" className="selectpicker new-user-input"
               title="Select recommended booklists" multiple data-size="20"
               data-live-search="true" data-selected-text-format="count>4">
-              {languages}
+              {booklists}
             </select>
           </div>
         </div>

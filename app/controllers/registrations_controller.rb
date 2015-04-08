@@ -5,16 +5,31 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    project_ids = Array(user_params[:projects])
-    project_ids.each do |project_id|
-      resource.projects << Project.find(project_id)
+    print user_params
+    print "\n"
+    print project_params
+    print "\n"
+
+    project = Project.create(name: project_params[:name])
+    project.country = Country.find(project_params[:country])
+    language_ids = Array(project_params[:languages])
+    language_ids.each do |language_id|
+      project.languages << Language.find(language_id)
+    end
+    resource.projects << project
+
+    booklist_ids = Array(user_params[:booklists])
+    booklist_ids.each do |booklist_id|
+      resource.book_lists << BookList.find(booklist_id)
     end
 
-    if resource.save
+    if project.valid? and resource.valid?
+      project.save
+      resource.save
       render json: { message: "User created!", user: resource }
     else
       clean_up_passwords resource
-      errors = resource.errors.full_messages
+      errors = resource.errors.full_messages + project.errors.full_messages
       render json: { message: "User could not be created!", errors: errors }, status: :forbidden
     end
   end
@@ -23,17 +38,18 @@ class RegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u|
-      u.permit(:email,
-               :first_name,
-               :last_name,
-               :password,
-               :password_confirmation)
+      u.permit(:email, :password, :password_confirmation, :booklists)
     }
   end
 
   private
 
   def user_params
-    params.require(:user).permit(projects: [])
+    params.require(:user).permit(booklists: [])
+  end
+
+
+  def project_params
+    params.require(:project).permit(:name, :country, languages: [])
   end
 end

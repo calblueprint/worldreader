@@ -23,9 +23,9 @@ class ApplicationController < ActionController::Base
     gon.languages = Language.uniq.all.map { |x|
       {id: x.id, name: x.name}
     }.sort_by { |x| x[:name] }
-    # gon.booklists = Booklist.uniq.all.map { |x|
-    #   {id: x.id, name: x.name}
-    # }
+    gon.booklists = BookList.uniq.all.map { |x|
+      {id: x.id, name: x.name}
+    }.sort_by { |x| x[:name] }
   end
 
   def set_auth_token
