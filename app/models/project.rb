@@ -18,6 +18,10 @@
 class Project < ActiveRecord::Base
     include Elasticsearch::Model
 
+  validates :name, presence: true, uniqueness: true
+  validates :country, presence: true
+  validate :has_languages
+
   belongs_to :country, foreign_key: 'origin_id'
   has_many :content_buckets
   has_and_belongs_to_many :languages
@@ -78,5 +82,9 @@ class Project < ActiveRecord::Base
       end
     end
     tags_dict
+  end
+
+  def has_languages
+    errors.add(:languages, 'can\'t be blank') if languages.blank?
   end
 end
