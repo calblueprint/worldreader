@@ -52,7 +52,7 @@ var InformationDisplay = React.createClass({
         </div>
         <div className="partner-text-information col-6">
           <p><b>Projects </b>{this.renderField("project_names")}</p>
-          <p><b><a href={"/user/"+this.props.partnerId+"/booklists"}>BookLists</a></b></p>
+          <p><b><a href={"/users/"+this.props.partnerId+"/booklists"}>BookLists</a></b></p>
         </div>
         <div className="boundary-line col-md-offset-3 col-md-6">
         </div>
