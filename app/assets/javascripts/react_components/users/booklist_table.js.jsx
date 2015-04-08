@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-/* 
+/*
  * @prop booklist - the id of the booklist to display.
  * @prop editable - boolean for if this table is editable
  */
@@ -12,7 +12,7 @@ var BookListTable = React.createClass({
   },
   _renderValidationHeader: function() {
     return (
-      this.props.editable ? 
+      this.props.editable ?
         <div className="row">
           <div className="col-md-3">
             Total #: {totalCount}
@@ -29,6 +29,19 @@ var BookListTable = React.createClass({
         </div>
       :
       null
+    );
+  },
+  _renderAddButton: function() {
+    return (
+      this.props.editable ?
+        <a href={"/?booklist=" + this.props.booklist}>
+          <div className="btn btn-default pull-left">
+            <span className="glyphicon glyphicon-plus"/>
+            <span>Add to Booklist</span>
+          </div>
+        </a>
+      :
+        null
     );
   },
   componentDidMount: function() {
@@ -99,12 +112,6 @@ var BookListTable = React.createClass({
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-12">
-                <a href={"/?booklist=" + this.props.booklist}>
-                  <div className="btn btn-default pull-left">
-                    <span className="glyphicon glyphicon-plus"/>
-                    <span>Add to Booklist</span>
-                  </div>
-                </a>
                 <div className="btn btn-default pull-right" onClick={this._downloadList}>
                   <span className="glyphicon glyphicon-download-alt"/>
                 </div>
@@ -151,7 +158,7 @@ var BookListRow = React.createClass({
   },
   _renderRemove: function() {
     return (
-      this.props.editable ? 
+      this.props.editable ?
         <td>
           <button type="button" className="btn btn-danger" onClick={this._removeBook}>Remove</button>
         </td>
