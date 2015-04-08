@@ -6,7 +6,7 @@
 var PublishedBookLists = React.createClass({
   getInitialState: function() {
     return {
-      selectedList: this.props.booklists[0]
+      selectedList: null
     };
   },
   _selectBooklist: function(booklist) {
@@ -35,9 +35,12 @@ var PublishedBookLists = React.createClass({
       if (shouldAddTable) {
         shouldAddTable = false;
         booklistItems.push(
-          <BookListTable
-            booklist={self.state.selectedList.id}
-          />
+          <div className="booklist-table-prospective">
+            <BookListTable
+              booklist={self.state.selectedList.id}
+              editable={false}
+            />
+          </div>
         );
       }
       if (booklist == _.last(this.props.booklists)) {

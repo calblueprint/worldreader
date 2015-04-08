@@ -31,7 +31,10 @@ var BookLists = React.createClass({
             {booklists}
           </ul>
         </div>
-        <BookListTable booklist={this.state.selectedBookList.id}/>
+        <BookListTable 
+          booklist={this.state.selectedBookList.id}
+          editable={true}
+        />
       </div>
     );
   }

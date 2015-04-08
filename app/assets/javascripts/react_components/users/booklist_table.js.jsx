@@ -10,6 +10,27 @@ var BookListTable = React.createClass({
       books: []
     };
   },
+  _renderValidationHeader: function() {
+    return (
+      this.props.editable ? 
+        <div className="row">
+          <div className="col-md-3">
+            Total #: {totalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            International #: {internationalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            African #: {africanCount}
+          </div>
+          <div className="col-md-3">
+            Flagged #: {flaggedCount}
+          </div>
+        </div>
+      :
+      null
+    );
+  },
   componentDidMount: function() {
     this.getBooks(this.props.booklist);
   },
@@ -63,6 +84,7 @@ var BookListTable = React.createClass({
       return (
         <BookListRow book={book}
                      removeBook={self._removeBook}
+                     editable={self.props.editable}
                      key={book.id} />
       );
     });
@@ -72,20 +94,7 @@ var BookListTable = React.createClass({
     var flaggedCount;
     return (
       <div>
-        <div className="row">
-          <div className="col-md-3">
-            Total #: {totalCount}
-          </div>
-          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
-            International #: {internationalCount}
-          </div>
-          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
-            African #: {africanCount}
-          </div>
-          <div className="col-md-3">
-            Flagged #: {flaggedCount}
-          </div>
-        </div>
+        {this._renderValidationHeader()}
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
@@ -133,11 +142,22 @@ var BookListTable = React.createClass({
 /*
  * @prop book - the book in JSON
  * @prop removeBook - a callback for when the remove button is clicked
+ * @prop editable - a boolean for if the row should be editable
  * @prop key - UNUSED
  */
 var BookListRow = React.createClass({
   _removeBook: function() {
     this.props.removeBook(this.props.book.id);
+  },
+  _renderRemove: function() {
+    return (
+      this.props.editable ? 
+        <td>
+          <button type="button" className="btn btn-danger" onClick={this._removeBook}>Remove</button>
+        </td>
+      :
+      null
+    );
   },
   render: function() {
     return (
@@ -162,9 +182,6 @@ var BookListRow = React.createClass({
         </td>
         <td>
           Unknown
-        </td>
-        <td>
-          <button type="button" className="btn btn-danger" onClick={this._removeBook}>Remove</button>
         </td>
       </tr>
     );
