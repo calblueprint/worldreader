@@ -274,22 +274,22 @@ $cart-view-width: 250px;
   margin-bottom: 1rem;
   margin-left: auto;
   margin-right: auto;
-  width: 83.3333333333%;
 }
 
 #book-tagbar{
   margin-bottom: 1rem;
   margin-left: auto;
   margin-right: auto;
-  width: 83.3333333333%;
 }
 
 .bootstrap-tagsinput{
   padding: 0.5rem;
   margin-bottom: 0px;
   background-color: white;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   box-shadow: none;
   display: block;
 }

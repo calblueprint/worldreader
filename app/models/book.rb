@@ -93,6 +93,7 @@ class Book < ActiveRecord::Base
   settings number_of_shards: 1 do
     mapping do
       indexes "genre.name", index: 'not_analyzed'
+      indexes "subcategory.name", index: 'not_analyzed'
       indexes "language.name", index: 'not_analyzed'
       indexes "country.name", index: 'not_analyzed'
       indexes "levels.name", index: 'not_analyzed'
@@ -139,6 +140,10 @@ class Book < ActiveRecord::Base
   def as_json(options={})
     options[:methods] = [:subcategory_name,
                          :levels_name,
+                         :language_name,
+                         :publisher_name,
+                         :country_name,
+                         :genre_name,
                          :update_status,
                          :donated?,
                          :updated_date,
@@ -152,6 +157,7 @@ class Book < ActiveRecord::Base
         authors: {only: :name},
         country: {only: :name},
         genre: {only: :name},
+        subcategory: {only: :name},
         language: {only: :name},
         levels: {only: :name},
         publisher: {only: :name}
@@ -165,6 +171,22 @@ class Book < ActiveRecord::Base
 
   def subcategory_name
     subcategory ? subcategory.name : ""
+  end
+
+  def publisher_name
+    publisher.name || ""
+  end
+
+  def language_name
+    language.name || ""
+  end
+
+  def country_name
+    country.name || ""
+  end
+
+  def genre_name
+    genre.name || ""
   end
 
   def levels_name

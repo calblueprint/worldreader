@@ -4,6 +4,9 @@ var BookTile = React.createClass({
   handleClick: function() {
     this.props.handleClick({bookId: this.props.book.id});
   },
+  _renderImage: function() {
+    return this.props.book.image == null ? "/assets/null_image.png" : this.props.book.image
+  },
   render: function() {
     var content;
     if (this.props.isExpanded) {
@@ -37,7 +40,7 @@ var BookTile = React.createClass({
       <div key={this.props.book.id + "-expanded"} className="expanded-book-tile">
         <div className="close book-tile-close" onClick={this.props.handleCloseButton}>&times;</div>
         <div className="expanded-book-img-box pull-left">
-          <img className="expanded-book-img" src={this.props.book.image} />
+          <img className="expanded-book-img" src={this._renderImage()} />
         </div>
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.title}</h3>
@@ -74,7 +77,7 @@ var BookTile = React.createClass({
       <div key={this.props.book.id + "-collapsed"} className="collapsed-book-tile"
           onClick={this.handleClick}>
         <div className="collapsed-book-img-box pull-left">
-          <img className="collapsed-book-img" src={this.props.book.image} />
+          <img className="collapsed-book-img" src={this._renderImage()} />
         </div>
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.title}</h3>
@@ -107,7 +110,7 @@ var SmallBookTile = React.createClass({
     return (
       <div key={this.props.book.id + "-expanded"} className="icon-book-tile">
         <div className="icon-book-img-box pull-left">
-          <img className="icon-book-img" src={this.props.book.image} />
+          <img className="icon-book-img" src={this._renderImage()} />
         </div>
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.title}</h3>
