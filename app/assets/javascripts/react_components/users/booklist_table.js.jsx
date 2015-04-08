@@ -71,7 +71,7 @@ var BookListTable = React.createClass({
         var index = books.indexOf(book);
         book.flagged_user_email = data.email;
         book.flagged_user_role = data.role;
-        books.splice(index, 0, book);
+        books.splice(index, 1, book);
         this.setState({books: books});
       }.bind(this),
       error: function(xhr, status, error) {
