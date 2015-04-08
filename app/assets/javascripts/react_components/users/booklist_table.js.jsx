@@ -41,14 +41,16 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
-  _removeBook: function(bookId) {
+  _removeBook: function(book) {
     $.ajax({
-      url: "/api/v1/book_lists/" + this.props.booklist + "/remove/" + bookId,
+      url: "/api/v1/book_lists/" + this.props.booklist + "/remove/" + book.id,
       type: "DELETE",
       dataType: "json",
       success: function(data) {
-        toastr.success("Book removed.");
-        this.setState({books: data});
+        var books = this.state.books;
+        books.splice(books.indexOf(book), 1);
+        this.setState({books: books});
+        toastr.success(book.title + " was successfully removed.");
       }.bind(this),
       error: function(xhr, status, error) {
         toastr.error("There was an error removing the book.");
@@ -177,7 +179,7 @@ var BookListRow = React.createClass({
     }
   },
   _removeBook: function() {
-    this.props.removeBook(this.props.book.id);
+    this.props.removeBook(this.props.book);
   },
   _toggleFlag: function() {
     this.props.toggleFlag(this.props.book, !this.props.flagged);

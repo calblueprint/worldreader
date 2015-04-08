@@ -59,7 +59,7 @@ class Api::V1::BookListsController < ApplicationController
     booklist = BookList.find(params[:id])
     book = Book.find(params[:book_id])
     if booklist.books.delete book
-      render json: booklist.books
+      render json: { message: "Book successfully removed" }
     else
       render json: { message: "Failed to remove book!" }
     end
