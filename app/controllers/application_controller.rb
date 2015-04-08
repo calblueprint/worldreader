@@ -89,5 +89,4 @@ class ApplicationController < ActionController::Base
       @subcategory_tags
     gon.project_tags = @country_tags + @level_tags + @language_tags
   end
-
 end

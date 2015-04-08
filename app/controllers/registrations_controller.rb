@@ -4,20 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
-
     project = Project.new(project_params)
-    # project.country = Country.find(project_params[:country])
-    
-    # language_ids = Array(project_params[:languages])
-    # project.languages << Language.find(language_ids)
-    
-    resource.projects << project
-
-    # booklist_ids = Array(user_params[:booklists])
-    # resource.book_lists << BookList.find(booklist_ids)
-
     if project.valid? and resource.valid?
       project.save
+      resource.projects << project
       resource.save
       render json: { message: "User created!", user: resource }
     else
