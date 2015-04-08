@@ -39,6 +39,7 @@ $line-color-dark: #aaa;
   font-size: medium;
 }
 
+
 .add-partner-display {
   background: #ffffff;
   overflow: scroll;
@@ -48,9 +49,12 @@ $line-color-dark: #aaa;
   padding: 20px;
 }
 
-.new-user-input {
+.add-partner-form-div {
   margin-bottom: 20px;
-  width: 50%;
+}
+
+.submit-user-button {
+  padding: 5px;
 }
 
 .header {

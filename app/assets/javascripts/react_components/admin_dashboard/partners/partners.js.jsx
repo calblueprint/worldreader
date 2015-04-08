@@ -290,14 +290,20 @@ var AddPartnerDisplay = React.createClass({
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
       password_confirmation: $('#newUserConfirmPassword').val(),
-      projects: $('#newUserProjects').val()
+      book_list_ids: $('#booklists').val()
     };
+    var project = {
+      name: $('#projectName').val(),
+      origin_id: $('#projectCountry').val(),
+      language_ids: $('#projectLanguage').val()
+    }
     $.ajax({
       type: "POST",
       url: "/users",
       data: {
         authenticity_token: gon.auth_token,
-        user: user
+        user: user,
+        project: project,
       },
       success: function (data) {
         toastr.success(data.message);
@@ -315,41 +321,72 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    var projects = gon.projects.map(function(project) {
+    var countries = gon.countries.map(function(countries) {
       return (
-        <option value={project.id}>{project.name}</option>
+        <option value={countries.id}>{countries.name}</option>
+      );
+    }.bind(this));
+    var languages = gon.languages.map(function(languages) {
+      return (
+        <option value={languages.id}>{languages.name}</option>
+      );
+    }.bind(this));
+    var booklists = gon.booklists.map(function(booklist) {
+      return (
+        <option value={booklist.id}>{booklist.name}</option>
       );
     }.bind(this));
     return (
       <div className="add-partner-display height-100">
-        <div className="header">
-          Add a New Partner
-        </div>
-        <div className="add-partner-form">
+        <div className="header">Add a new partner</div>
+        <div className="add-partner-form col-md-6" >
           <input type="hidden" name="authenticity_token" value={gon.auth_token} />
-          <label for="newUserEmail">Email</label>
-          <div>
+          <div className="add-partner-form-div">
+            <label for="newUserEmail">Email</label><br/>
             <input id="newUserEmail" type="text" className="form-control new-user-input" />
           </div>
-          <label for="newUserPassword">Password</label>
-          <div>
+          <div className="add-partner-form-div">
+            <label for="newUserPassword">Password</label><br/>
             <input id="newUserPassword" type="password" className="form-control new-user-input" />
           </div>
-          <label for="newUserConfirmPassword">Confirm Password</label>
-          <div>
+          <div className="add-partner-form-div">
+            <label for="newUserConfirmPassword">Confirm Password</label><br/>
             <input id="newUserConfirmPassword" type="password" className="form-control new-user-input" />
           </div>
-          <label for="newUserProjects">Projects</label>
-          <div>
-            <select id="newUserProjects" className="selectpicker new-user-input"
-              title="Select Projects" multiple data-width="300px" data-size="20"
+          <div className="add-partner-form-div">
+            <label for="booklists">Recommended Booklists</label><br/>
+            <select id="booklists" className="selectpicker new-user-input"
+              title="Select recommended booklists" multiple data-size="20"
               data-live-search="true" data-selected-text-format="count>4">
-              {projects}
+              {booklists}
             </select>
           </div>
-          <div className="newUserButton">
-            <button type="button" className="btn btn-default" onClick={this.createUser}>
-              Make Partner
+        </div>
+        <div className="add-partner-form col-md-6">
+          <div className="add-partner-form-div">
+            <label for="projectName">Project Name</label><br/>
+            <input id="projectName" type="text" className="form-control new-user-input" />
+          </div>
+          <div className="add-partner-form-div">
+            <label for="projectLanguage">Project Languages</label><br/>
+            <select id="projectLanguage" className="selectpicker new-user-input"
+              title="select languages" multiple data-size="20"
+              data-live-search="true" data-selected-text-format="count>4">
+              {languages}
+            </select>
+          </div>
+          <div className="add-partner-form-div">
+            <label for="projectCountry">Project Country</label><br/>
+            <select id="projectCountry" className="selectpicker new-user-input"
+              title="Select country" data-size="20"
+              data-live-search="true" data-selected-text-format="count>4">
+              {countries}
+            </select>
+          </div>
+          <div className="add-partner-form-div">
+            <label>&nbsp;</label><br/>
+            <button type="button" className="btn btn-primary" onClick={this.createUser}>
+              Create Partner and Project
             </button>
           </div>
         </div>

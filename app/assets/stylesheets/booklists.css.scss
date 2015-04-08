@@ -1,3 +1,5 @@
+$red-color: #d9534f;
+
 .booklist-select {
   margin-bottom: 10px;
 }
@@ -38,10 +40,13 @@ img.flagged {
 .remove {
   color: #ff6969;
   margin-right: 10px;
-  margin-top: 3px;
 }
 
 .remove:hover {
   cursor: pointer;
   cursor: hand;
+}
+
+.booklist-info-red {
+  color: $red-color;
 }

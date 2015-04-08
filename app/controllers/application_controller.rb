@@ -17,11 +17,12 @@ class ApplicationController < ActionController::Base
   end
 
   def new_partner_info
-    gon.projects = Project.uniq.all.map { |x|
-      {
-        id: x.id, name: x.name
-      }
-    }
+    gon.countries = Country.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.countries.sort_by { |x| x[:name] }
+    gon.languages = Language.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.languages.sort_by { |x| x[:name] }
+    gon.booklists = BookList.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.booklists.sort_by { |x| x[:name] }
   end
 
   def set_auth_token
@@ -51,38 +52,38 @@ class ApplicationController < ActionController::Base
 
   def search_tags
     index = 0
-    country_tags = Country.uniq.select([:id, :name]).map{ |x|
+    @country_tags = Country.uniq.select([:id, :name]).map do |x|
       index += 1
       {
         value: index, text: x.name, tagType: "country", id: x.id
       }
-    }
-    level_tags = Level.uniq.select([:id, :name]).map{ |x|
+    end
+    @level_tags = Level.uniq.select([:id, :name]).map do |x|
       index += 1
       {
         value: index, text: x.name, tagType: "levels", id: x.id
       }
-    }
-    language_tags = Language.uniq.select([:id, :name]).map{ |x|
+    end
+    @language_tags = Language.uniq.select([:id, :name]).map do |x|
       index += 1
       {
         value: index, text: x.name, tagType: "language", id: x.id
       }
-    }
-    genre_tags = Genre.uniq.select([:id, :name]).map{ |x|
+    end
+    @genre_tags = Genre.uniq.select([:id, :name]).map do |x|
       index += 1
       {
         value: index, text: x.name, tagType: "genre", id: x.id
       }
-    }
-    subcategory_tags = Subcategory.uniq.pluck(:name).map { |x|
+    end
+    @subcategory_tags = Subcategory.uniq.pluck(:name).map do |x|
       index += 1
       {
         value: index, text: x, tagType: "subcategory"
       }
-    }
-    gon.all_tags = country_tags + level_tags + language_tags + genre_tags + 
-      subcategory_tags
-    gon.project_tags = country_tags + level_tags + language_tags
+    end
+    gon.all_tags = @country_tags + @level_tags + @language_tags + @genre_tags +
+      @subcategory_tags
+    gon.project_tags = @country_tags + @level_tags + @language_tags
   end
 end

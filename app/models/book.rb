@@ -147,7 +147,8 @@ class Book < ActiveRecord::Base
                          :update_status,
                          :donated?,
                          :updated_date,
-                         :url]
+                         :url,
+                         :book_type]
     super(options)
   end
 
@@ -203,6 +204,10 @@ class Book < ActiveRecord::Base
 
   def asin
     self[:asin] || ""
+  end
+
+  def book_type
+    publisher.free == "paid"
   end
 
   def self.query(string, tags, page)
