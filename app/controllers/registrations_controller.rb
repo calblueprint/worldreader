@@ -5,11 +5,6 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    print user_params
-    print "\n"
-    print project_params
-    print "\n"
-
     project = Project.create(name: project_params[:name])
     project.country = Country.find(project_params[:country])
     language_ids = Array(project_params[:languages])
