@@ -33,6 +33,6 @@ var BookLists = React.createClass({
         </div>
         <BookListTable booklist={this.state.selectedBookList.id}/>
       </div>
-      );
+    );
   }
 });

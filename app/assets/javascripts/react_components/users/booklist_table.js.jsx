@@ -1,7 +1,8 @@
 /** @jsx React.DOM */
 
 /* 
- * @prop booklist - the id of the booklist to display. 
+ * @prop booklist - the id of the booklist to display.
+ * @prop editable - boolean for if this table is editable
  */
 var BookListTable = React.createClass({
   getInitialState: function() {
