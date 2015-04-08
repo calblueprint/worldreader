@@ -31,7 +31,13 @@ class Api::V1::BookListsController < ApplicationController
   end
 
   def books
-    render json: BookList.find(params[:id]).books
+    book_data = []
+    BookList.find(params[:id]).book_list_entries.each do |entry|
+      flag_info = { flagged_user_email: entry.flagged_user.try(:email),
+                    flagged_user_role: entry.flagged_user.try(:role) }
+      book_data << entry.book.as_json.merge(flag_info)
+    end
+    render json: book_data
   end
 
   def csv
@@ -47,6 +53,19 @@ class Api::V1::BookListsController < ApplicationController
       render json: booklist.books
     else
       render json: { message: "Failed to remove book!" }
+    end
+  end
+
+  def toggle_flag
+    list = BookList.find(params[:id])
+    flagged_user = User.find(params[:user_id]) if params[:flagged] == "true"
+    book_list_entry = list.book_list_entries.where(book_id: params[:book_id]).first
+    book_list_entry.flagged_user = flagged_user
+    if book_list_entry.save
+      render json: { email: flagged_user.try(:email),
+                     role: flagged_user.try(:role) }, status: :ok
+    else
+      render json: { message: "Error toggling flag" }, status: :error
     end
   end
 

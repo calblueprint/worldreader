@@ -1,3 +1,47 @@
 .booklist-select {
   margin-bottom: 10px;
 }
+
+.booklist-title {
+  font-weight: bold;
+  font-size: x-large;
+  text-align: center;
+}
+
+.add-books {
+  padding-left: 5px;
+}
+
+.flag {
+  height: 30px;
+  opacity: 0.15;
+  width: 30px;
+}
+
+.flag:hover {
+  cursor: pointer;
+  cursor: hand;
+}
+
+tr.flagged-admin {
+  background-color: #fbff97;
+}
+
+tr.flagged-vip {
+  background-color: #ffe7e7;
+}
+
+img.flagged {
+  opacity: 1;
+}
+
+.remove {
+  color: #ff6969;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.remove:hover {
+  cursor: pointer;
+  cursor: hand;
+}

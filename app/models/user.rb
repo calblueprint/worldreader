@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   belongs_to :country
   has_many :books, through: :purchases
   has_many :purchases
+  has_many :book_list_entries
   has_and_belongs_to_many :projects, foreign_key: 'admin_user_id'
   has_and_belongs_to_many :book_lists, foreign_key: 'admin_user_id'
 
