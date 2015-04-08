@@ -30,6 +30,15 @@ class Api::V1::BookListsController < ApplicationController
     end
   end
 
+  def update
+    booklist = BookList.find(params[:id])
+    if booklist.update book_list_params
+      render json: { booklist: booklist }, status: :ok
+    else
+      render json: { message: "Failed to edit booklist" }, status: :error
+    end
+  end
+
   def books
     render json: BookList.find(params[:id]).books
   end
