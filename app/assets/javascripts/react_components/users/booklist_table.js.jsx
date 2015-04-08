@@ -6,7 +6,7 @@
 var BookListTable = React.createClass({
   getInitialState: function() {
     return {
-      books: [],
+      books: []
     };
   },
   componentDidMount: function() {
