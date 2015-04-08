@@ -5,7 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
     project = Project.new(project_params)
-    if project.valid? and resource.valid?
+    if project.valid? && resource.valid?
       project.save
       resource.projects << project
       resource.save
