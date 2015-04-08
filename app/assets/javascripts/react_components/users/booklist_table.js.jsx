@@ -65,8 +65,26 @@ var BookListTable = React.createClass({
                      key={book.id} />
       );
     });
+    var totalCount = this.state.books.length;
+    var internationalCount = _.where(this.state.books, {book_type:false}).length;
+    var africanCount = _.where(this.state.books, {book_type:true}).length;
+    var flaggedCount;
     return (
       <div>
+        <div className="row">
+          <div className="col-md-3">
+            Total #: {totalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            International #: {internationalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            African #: {africanCount}
+          </div>
+          <div className="col-md-3">
+            Flagged #: {flaggedCount}
+          </div>
+        </div>
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
@@ -133,7 +151,7 @@ var BookListRow = React.createClass({
           {this.props.book.genre_name}
         </td>
         <td>
-          Unknown
+          {this.props.book.book_type ? "African" : "International"}
         </td>
         <td>
           {this.props.book.language_name}
