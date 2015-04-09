@@ -18,8 +18,8 @@ var BaseListView = React.createClass({
   viewCreateBookLists: function() {
     this.setState({view: baseListViews.CREATE_BASELISTS});
   },
-  viewEditBookLists: function() {
-    this.setState({view: baseListViews.EDIT_BASELISTS});
+  viewEditBookLists: function(baselist) {
+    this.setState({view: baseListViews.EDIT_BASELISTS, baselist: baselist});
   },
   render: function() {
     if (this.state.view == baseListViews.BASELISTS) {
@@ -33,7 +33,7 @@ var BaseListView = React.createClass({
       );
     } else if (this.state.view == baseListViews.EDIT_BASELISTS) {
       return (
-        <EditBaseList viewBaseLists={this.viewBaseLists} />
+        <EditBaseList viewBaseLists={this.viewBaseLists} baselist={this.state.baselist}/>
       );
     }
   }
@@ -127,6 +127,7 @@ var BaseList = React.createClass({
     this.props.selectBaselist(this.props.baselist.id);
   },
   render: function() {
+    var self = this;
     if (this.props.clicked) {
       var books = this.state.books.map(function(book) {
         return (
@@ -135,12 +136,15 @@ var BaseList = React.createClass({
           </li>
         );
       });
+      var _editBaselist = function () {
+        self.props.editBaseList (self.props.baselist);
+      }
       return (
         <div className="list-group-item cursor" onClick={this.onClick}>
           {this.props.baselist.name}
           {this._published()}
           <div className="btn-group pull-right">
-            <button type="button" className="btn btn-default" onClick={this._editBaselist}>
+            <button type="button" className="btn btn-default" onClick={_editBaselist}>
               Edit
             </button>
             <button type="button" className="btn btn-default" onClick={this.removeBaselist}>

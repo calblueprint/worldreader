@@ -143,12 +143,12 @@ def make_subcategories
 end
 
 def make_booklists
-  0.upto(1) do |i|
+  0.upto(4) do |i|
     b = BookList.new name: "booklist#{i}",
                      published: false
-    b.users << User.find((i + 1) * 2)
+    b.users << User.find(i)
     1.upto(5) do |j|
-      b.books << Book.find(5 * i + j)
+      b.books << Book.first(:order => "RANDOM()")
     end
     b.save
   end

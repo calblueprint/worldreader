@@ -74,11 +74,20 @@ FactoryGirl.define do
     role 0
     after(:build) { |user|
       user.projects = [create(:project)]
+      user.book_lists = [create(:book_list)]
+    }
+  end
+
+  factory :book_list do
+    name "MyString"
+    after(:build) { |book_list|
+      book_list.books = [create(:book)]
     }
   end
 
   factory :book do
-    name "Day by Day"
+    title "Day by Day"
     description "The tale of team with nothing left to lose"
   end
+
 end
