@@ -5,9 +5,9 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
     project = Project.new(project_params)
+    resource.projects << project
     if project.valid? && resource.valid?
       project.save
-      resource.projects << project
       resource.save
       render json: { message: "User created!", user: resource }
     else

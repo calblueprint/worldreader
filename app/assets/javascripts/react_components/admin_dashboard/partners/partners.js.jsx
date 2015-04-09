@@ -370,7 +370,7 @@ var AddPartnerDisplay = React.createClass({
           <div className="add-partner-form-div">
             <label for="projectLanguage">Project Languages</label><br/>
             <select id="projectLanguage" className="selectpicker new-user-input"
-              title="select languages" multiple data-size="20"
+              title="Select languages" multiple data-size="20"
               data-live-search="true" data-selected-text-format="count>4">
               {languages}
             </select>
