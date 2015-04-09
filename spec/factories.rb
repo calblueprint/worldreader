@@ -1,6 +1,10 @@
 FactoryGirl.define do
   factory :project do
     name "super cool project"
+    after(:build) { |project|
+      project.country = create(:country)
+      project.languages = [create(:language)]
+    }
   end
 
   factory :content_bucket, :class => 'ContentBuckets' do

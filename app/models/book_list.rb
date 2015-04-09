@@ -10,14 +10,13 @@
 #
 
 class BookList < ActiveRecord::Base
-
   validates :name, presence: true
-  validate :has_books
+  validate :has_books?
 
   has_and_belongs_to_many :books
   has_and_belongs_to_many :users, association_foreign_key: 'admin_user_id'
 
-  def has_books
+  def has_books?
     errors.add(:books, 'can\'t be blank') if books.blank?
   end
 end
