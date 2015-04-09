@@ -78,7 +78,7 @@ var BookListTable = React.createClass({
       }.bind(this),
       error: function(xhr, status, error) {
         toastr.error("There was an error flagging the book.");
-        console.error(this.props.url, status, err.toString());
+        console.error(this.props.url, status, error.toString());
       }
     });
   },
