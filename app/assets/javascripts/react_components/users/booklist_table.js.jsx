@@ -13,12 +13,12 @@ var BookListTable = React.createClass({
   _renderAddButton: function() {
     return (
       this.props.editable ?
-        <a href={"/?booklist=" + this.props.booklist}>
-          <div className="btn btn-default pull-left">
-            <span className="glyphicon glyphicon-plus"/>
-            <span>Add to Booklist</span>
-          </div>
-        </a>
+          <a href={"/?booklist=" + this.props.booklist}>
+            <div className="btn btn-default">
+              <span className="glyphicon glyphicon-plus"/>
+              <span className="add-books">Add Books</span>
+            </div>
+          </a>
       :
         null
     );
@@ -96,24 +96,13 @@ var BookListTable = React.createClass({
       }
     });
   },
-  render: function() {
-    var self = this;
-    var books = this.state.books.map(function (book) {
-      return (
-        <BookListRow book={book}
-                     removeBook={self._removeBook}
-                     editable={self.props.editable}
-                     flagged={book.flagged_user_email != null}
-                     toggleFlag={self._toggleFlag}
-                     key={book.id} />
-      );
-    });
+  _renderValidationHeader: function() {
     var totalCount = this.state.books.length;
     var internationalCount = _.where(this.state.books, {book_type:false}).length;
     var africanCount = _.where(this.state.books, {book_type:true}).length;
     var notFlaggedCount = _.where(this.state.books, {flagged_user_email:null}).length;
     return (
-      <div>
+      this.props.editable ?
         <div className="row">
           <div className="col-md-3">
             Total #: {totalCount}
@@ -128,16 +117,30 @@ var BookListTable = React.createClass({
             Flagged #: {this.state.books.length - notFlaggedCount}
           </div>
         </div>
+      :
+      null
+    );
+  },
+  render: function() {
+    var self = this;
+    var books = this.state.books.map(function (book) {
+      return (
+        <BookListRow book={book}
+                     removeBook={self._removeBook}
+                     editable={self.props.editable}
+                     flagged={book.flagged_user_email != null}
+                     toggleFlag={self._toggleFlag}
+                     key={book.id} />
+      );
+    });
+    return (
+      <div>
+      {this._renderValidationHeader()}
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-2">
-                <a href={"/?booklist=" + this.props.booklist}>
-                  <div className="btn btn-default">
-                    <span className="glyphicon glyphicon-plus"/>
-                    <span className="add-books">Add Books</span>
-                  </div>
-                </a>
+                {this._renderAddButton()}
               </div>
               <div className="col-md-8 booklist-title">
                 {this.props.name}
@@ -203,11 +206,21 @@ var BookListRow = React.createClass({
   _renderRemove: function() {
     return (
       this.props.editable ?
-        <td>
-          <button type="button" className="btn btn-danger" onClick={this._removeBook}>Remove</button>
-        </td>
+        <span className="glyphicon glyphicon-remove remove" onClick={this._removeBook} />
       :
       null
+    );
+  },
+  _renderFlag: function() {
+    return (
+      this.props.editable ?
+        <td data-placement="left" onClick={toggleFlag}
+          data-toggle={this.props.flagged ? "tooltip" : ""}
+          data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
+          <img className={"flag " + flaggedClass} src="/assets/flag.png" />
+        </td>
+      :
+        null
     );
   },
   render: function() {
@@ -217,7 +230,7 @@ var BookListRow = React.createClass({
     return (
       <tr className={rowFlaggedClass}>
         <td className="book-title-table">
-          <span className="glyphicon glyphicon-remove remove" onClick={this._removeBook} />
+          {this._renderRemove()}
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
@@ -237,11 +250,6 @@ var BookListRow = React.createClass({
         </td>
         <td>
           Unknown
-        </td>
-        <td data-placement="left" onClick={toggleFlag}
-          data-toggle={this.props.flagged ? "tooltip" : ""}
-          data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
-          <img className={"flag " + flaggedClass} src="/assets/flag.png" />
         </td>
       </tr>
     );
