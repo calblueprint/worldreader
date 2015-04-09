@@ -289,21 +289,25 @@ var AddPartnerDisplay = React.createClass({
     var user = {
       email: $('#newUserEmail').val(),
       password: $('#newUserPassword').val(),
-      password_confirmation: $('#newUserConfirmPassword').val(),
-      book_list_ids: $('#booklists').val()
+      password_confirmation: $('#newUserConfirmPassword').val()
     };
+    var booklist = {
+      name: $('#booklistName').val(),
+      book_list_ids: $('#booklists').val()
+    }
     var project = {
       name: $('#projectName').val(),
       origin_id: $('#projectCountry').val(),
       language_ids: $('#projectLanguage').val()
-    }
+    };
     $.ajax({
       type: "POST",
       url: "/users",
       data: {
         authenticity_token: gon.auth_token,
         user: user,
-        project: project,
+        booklist: booklist,
+        project: project
       },
       success: function (data) {
         toastr.success(data.message);
@@ -354,12 +358,8 @@ var AddPartnerDisplay = React.createClass({
             <input id="newUserConfirmPassword" type="password" className="form-control new-user-input" />
           </div>
           <div className="add-partner-form-div">
-            <label for="booklists">Recommended Booklists</label><br/>
-            <select id="booklists" className="selectpicker new-user-input"
-              title="Select recommended booklists" multiple data-size="20"
-              data-live-search="true" data-selected-text-format="count>4">
-              {booklists}
-            </select>
+            <label for="booklistName">Booklist Name</label><br/>
+            <input id="booklistName" type="text" className="form-control new-user-input" />
           </div>
         </div>
         <div className="add-partner-form col-md-6">
@@ -370,7 +370,7 @@ var AddPartnerDisplay = React.createClass({
           <div className="add-partner-form-div">
             <label for="projectLanguage">Project Languages</label><br/>
             <select id="projectLanguage" className="selectpicker new-user-input"
-              title="select languages" multiple data-size="20"
+              title="Select languages" multiple data-size="20"
               data-live-search="true" data-selected-text-format="count>4">
               {languages}
             </select>
@@ -381,6 +381,14 @@ var AddPartnerDisplay = React.createClass({
               title="Select country" data-size="20"
               data-live-search="true" data-selected-text-format="count>4">
               {countries}
+            </select>
+          </div>
+          <div className="add-partner-form-div">
+            <label for="booklists">Base Booklists</label><br/>
+            <select id="booklists" className="selectpicker new-user-input"
+              title="Select base booklists" multiple data-size="20"
+              data-live-search="true" data-selected-text-format="count>4">
+              {booklists}
             </select>
           </div>
           <div className="add-partner-form-div">
