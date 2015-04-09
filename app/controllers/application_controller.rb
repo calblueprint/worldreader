@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_cart
+    gon.current_user = current_user || User.new
     if user_signed_in?
-      gon.current_user = current_user
       gon.cart = current_user.cart
     else
       gon.cart = []
