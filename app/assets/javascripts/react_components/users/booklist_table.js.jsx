@@ -10,27 +10,6 @@ var BookListTable = React.createClass({
       books: []
     };
   },
-  _renderValidationHeader: function() {
-    return (
-      this.props.editable ?
-        <div className="row">
-          <div className="col-md-3">
-            Total #: {totalCount}
-          </div>
-          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
-            International #: {internationalCount}
-          </div>
-          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
-            African #: {africanCount}
-          </div>
-          <div className="col-md-3">
-            Flagged #: {flaggedCount}
-          </div>
-        </div>
-      :
-      null
-    );
-  },
   _renderAddButton: function() {
     return (
       this.props.editable ?
@@ -76,18 +55,44 @@ var BookListTable = React.createClass({
       }.bind(this)
     });
   },
-  _removeBook: function(bookId) {
+  _removeBook: function(book) {
     $.ajax({
-      url: "/api/v1/book_lists/" + this.props.booklist + "/remove/" + bookId,
+      url: "/api/v1/book_lists/" + this.props.booklist + "/remove/" + book.id,
       type: "DELETE",
       dataType: "json",
       success: function(data) {
-        toastr.success("Book removed.");
-        this.setState({books: data});
+        var books = this.state.books;
+        books.splice(books.indexOf(book), 1);
+        this.setState({books: books});
+        toastr.success(book.title + " was successfully removed.");
       }.bind(this),
       error: function(xhr, status, error) {
         toastr.error("There was an error removing the book.");
-        console.error(this.props.url, status, err.toString());
+        console.error(this.props.url, status, error.toString());
+      }
+    });
+  },
+  _toggleFlag: function(book, isFlagged) {
+    $.ajax({
+      url: "/api/v1/book_lists/" + this.props.booklist + "/toggle_flag/",
+      type: "POST",
+      dataType: "json",
+      data: {
+        book_id: book.id,
+        flagged: isFlagged,
+        user_id: gon.current_user.id,
+      },
+      success: function(data) {
+        var books = this.state.books;
+        var index = books.indexOf(book);
+        book.flagged_user_email = data.email;
+        book.flagged_user_role = data.role;
+        books.splice(index, 1, book);
+        this.setState({books: books});
+      }.bind(this),
+      error: function(xhr, status, error) {
+        toastr.error("There was an error flagging the book.");
+        console.error(this.props.url, status, error.toString());
       }
     });
   },
@@ -98,20 +103,46 @@ var BookListTable = React.createClass({
         <BookListRow book={book}
                      removeBook={self._removeBook}
                      editable={self.props.editable}
+                     flagged={book.flagged_user_email != null}
+                     toggleFlag={self._toggleFlag}
                      key={book.id} />
       );
     });
     var totalCount = this.state.books.length;
     var internationalCount = _.where(this.state.books, {book_type:false}).length;
     var africanCount = _.where(this.state.books, {book_type:true}).length;
-    var flaggedCount;
+    var notFlaggedCount = _.where(this.state.books, {flagged_user_email:null}).length;
     return (
       <div>
-        {this._renderValidationHeader()}
+        <div className="row">
+          <div className="col-md-3">
+            Total #: {totalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            International #: {internationalCount}
+          </div>
+          <div className={"col-md-3" + ((internationalCount == africanCount) ? "" : " booklist-info-red")}>
+            African #: {africanCount}
+          </div>
+          <div className="col-md-3">
+            Flagged #: {this.state.books.length - notFlaggedCount}
+          </div>
+        </div>
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-2">
+                <a href={"/?booklist=" + this.props.booklist}>
+                  <div className="btn btn-default">
+                    <span className="glyphicon glyphicon-plus"/>
+                    <span className="add-books">Add Books</span>
+                  </div>
+                </a>
+              </div>
+              <div className="col-md-8 booklist-title">
+                {this.props.name}
+              </div>
+              <div className="col-md-2">
                 <div className="btn btn-default pull-right" onClick={this._downloadList}>
                   <span className="glyphicon glyphicon-download-alt"/>
                 </div>
@@ -131,6 +162,7 @@ var BookListTable = React.createClass({
                       <th>Language</th>
                       <th>Country</th>
                       <th>Restricted</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -153,8 +185,20 @@ var BookListTable = React.createClass({
  * @prop key - UNUSED
  */
 var BookListRow = React.createClass({
+  componentDidMount: function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps.flagged != this.props.flagged) {
+      $('[data-placement="left"]').tooltip("destroy");
+      $('[data-toggle="tooltip"]').tooltip();
+    }
+  },
   _removeBook: function() {
-    this.props.removeBook(this.props.book.id);
+    this.props.removeBook(this.props.book);
+  },
+  _toggleFlag: function() {
+    this.props.toggleFlag(this.props.book, !this.props.flagged);
   },
   _renderRemove: function() {
     return (
@@ -167,9 +211,13 @@ var BookListRow = React.createClass({
     );
   },
   render: function() {
+    var flaggedClass = this.props.flagged ? "flagged" : "";
+    var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+    var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
     return (
-      <tr>
+      <tr className={rowFlaggedClass}>
         <td className="book-title-table">
+          <span className="glyphicon glyphicon-remove remove" onClick={this._removeBook} />
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
@@ -189,6 +237,11 @@ var BookListRow = React.createClass({
         </td>
         <td>
           Unknown
+        </td>
+        <td data-placement="left" onClick={toggleFlag}
+          data-toggle={this.props.flagged ? "tooltip" : ""}
+          data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
+          <img className={"flag " + flaggedClass} src="/assets/flag.png" />
         </td>
       </tr>
     );

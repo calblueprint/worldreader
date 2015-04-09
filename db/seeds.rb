@@ -143,14 +143,16 @@ def make_subcategories
 end
 
 def make_booklists
-  1.upto(2) do |n|
-    b = BookList.create! name: "booklist#{n}",
-                         published: false
-    b.users << User.find(n * 2)
-  end
-  1.upto(5) do |n|
-    BookList.find(1).books << Book.find(n)
-    BookList.find(2).books << Book.find(n + 5)
+  1.upto(5) do |i|
+    b = BookList.new name: "booklist#{i}",
+                     published: false
+    b.users << User.find(i)
+    books = Set.new
+    1.upto(5) do
+      books << Book.find(1 + rand(Book.count))
+    end
+    b.books << books.to_a
+    b.save
   end
 end
 
