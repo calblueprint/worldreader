@@ -96,7 +96,7 @@ var BookListTable = React.createClass({
     var totalCount = this.state.books.length;
     var internationalCount = _.where(this.state.books, {book_type:false}).length;
     var africanCount = _.where(this.state.books, {book_type:true}).length;
-    var flaggedCount;
+    var notFlaggedCount = _.where(this.state.books, {flagged_user_email:null}).length;
     return (
       <div>
         <div className="row">
@@ -110,7 +110,7 @@ var BookListTable = React.createClass({
             African #: {africanCount}
           </div>
           <div className="col-md-3">
-            Flagged #: {flaggedCount}
+            Flagged #: {this.state.books.length - notFlaggedCount}
           </div>
         </div>
         <div className="panel panel-primary">
