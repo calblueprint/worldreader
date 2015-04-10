@@ -185,6 +185,7 @@ var BookListTable = React.createClass({
  * @prop book - the book in JSON
  * @prop removeBook - a callback for when the remove button is clicked
  * @prop editable - a boolean for if the row should be editable
+ * @prop toggleFlag - a function to call when the flag is clicked for this row.
  * @prop key - UNUSED
  */
 var BookListRow = React.createClass({
@@ -212,6 +213,9 @@ var BookListRow = React.createClass({
     );
   },
   _renderFlag: function() {
+    var flaggedClass = this.props.flagged ? "flagged" : "";
+    var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+    var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
     return (
       this.props.editable ?
         <td data-placement="left" onClick={toggleFlag}
@@ -226,7 +230,6 @@ var BookListRow = React.createClass({
   render: function() {
     var flaggedClass = this.props.flagged ? "flagged" : "";
     var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
-    var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
     return (
       <tr className={rowFlaggedClass}>
         <td className="book-title-table">
@@ -251,6 +254,7 @@ var BookListRow = React.createClass({
         <td>
           Unknown
         </td>
+        {this._renderFlag()}
       </tr>
     );
   }
