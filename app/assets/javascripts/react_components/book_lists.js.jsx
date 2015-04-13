@@ -10,9 +10,15 @@ var PublishedBookLists = React.createClass({
     };
   },
   _selectBooklist: function(booklist) {
-    this.setState({
-      selectedList: booklist
-    });
+    if (this.state.selectedList == booklist) {
+      this.setState({
+        selectedList: booklist
+      });
+    } else {
+      this.setState({
+        selectedList: booklist
+      });
+    }
   },
   render: function() {
     var self = this;
@@ -69,7 +75,7 @@ var BookListItem = React.createClass({
   },
   render: function() {
     return (
-      <div className={"media " + this._renderSelection()} onClick={this._onClick}>
+      <div className={"media booklist " + this._renderSelection()} onClick={this._onClick}>
           <img className="media-object booklist-img pull-left"
             src={this.props.booklist.image} />
         <div className="media-body booklist-body">
