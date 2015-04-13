@@ -29,6 +29,6 @@ class BookList < ActiveRecord::Base
   end
 
   def image
-    books.first.image
+    books.last.image
   end
 end

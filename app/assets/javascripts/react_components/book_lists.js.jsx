@@ -80,7 +80,7 @@ var BookListItem = React.createClass({
             src={this.props.booklist.image} />
         <div className="media-body booklist-body">
           <h4 className="media-heading">{this.props.booklist.name}</h4>
-          <span>A short description of the booklist's contents</span>
+          <span>{this.props.booklist.description}</span>
         </div>
       </div>
     );
