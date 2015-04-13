@@ -2,11 +2,12 @@
 #
 # Table name: book_lists
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  published  :boolean
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  published   :boolean
+#  created_at  :datetime
+#  updated_at  :datetime
+#  description :string(255)
 #
 
 class BookList < ActiveRecord::Base

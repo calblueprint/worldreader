@@ -35,6 +35,7 @@ var CreateBaseList = React.createClass({
   _addBaseList: function() {
     var bookIds = _.pluck(this.state.selectedBooks, "id");
     var name = $('.name-field').val();
+    var description = $("#description-field").val();
     this.setState({name: name});
 
     // Client Side validations
@@ -57,6 +58,7 @@ var CreateBaseList = React.createClass({
         base_list: {
           name: name,
           book_ids: bookIds,
+          description: description,
           published: this.state.published
         }
       },
@@ -206,18 +208,23 @@ var BaseBookListSearch = React.createClass({
     return (
       <div>
         <div className="row book-search-fields">
-          <div id="book-searchbar" className="input-group">
+          <div className="input-group input-bar">
             <input className="input-block-level form-control book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
             <span className="input-group-btn">
               <button className="btn btn-default" id="search-button" onClick={this.updateSearch} type="button"><span className="glyphicon glyphicon-search"></span></button>
             </span>
           </div>
-          <div id="book-tagbar" className="input-group">
+          <div className="input-group input-bar">
             <span className="input-group-addon">
               <span className="glyphicon glyphicon-tag"/>
             </span>
-            <input className="book-tagbar-input input-block-level typeahead form-control" placeholder="Add a Tag" type="text"/>
+            <input className="book-tagbar-input input-block-level typeahead form-control"
+              placeholder="Add a Tag" type="text"/>
           </div>
+        </div>
+        <div className="input-group input-bar">
+          <input id="description-field" className="input-block-level form-control book-searchbar-input"
+            placeholder="Add a short description" type="text" />
         </div>
         <div className="row book-search-rows">
           <div className="book-search-panel-left">
