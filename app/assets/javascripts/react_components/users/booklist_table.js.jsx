@@ -234,7 +234,7 @@ var BookListRow = React.createClass({
       <tr className={rowFlaggedClass}>
         <td className="book-title-table">
           {this._renderRemove()}
-          <a href={this.props.book.url}>{this.props.book.title}</a>
+          <a href={this.props.book.url} target="_blank">{this.props.book.title}</a>
         </td>
         <td>
           {this.props.book.publisher_name}
