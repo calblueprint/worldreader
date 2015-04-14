@@ -97,14 +97,6 @@ class User < ActiveRecord::Base
     self.role ||= :user
   end
 
-  def cart
-    cart_purchases.map{ |purchase| purchase.book }
-  end
-
-  def cart_purchases
-    purchases.where(is_purchased: false)
-  end
-
   def self.partners_no_new_purchases
     if (partners_new_purchases.empty?)
       partners

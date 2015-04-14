@@ -1,19 +1,10 @@
 class ApplicationController < ActionController::Base
-  before_action :set_user_cart, :set_auth_token, :new_partner_info, :search_tags
+  before_action :set_auth_token, :new_partner_info, :search_tags
   after_action :store_location
   protect_from_forgery with: :exception
 
   def after_sign_in_path_for(user)
     session[:previous_url] || root_path
-  end
-
-  def set_user_cart
-    if user_signed_in?
-      gon.current_user = current_user
-      gon.cart = current_user.cart
-    else
-      gon.cart = []
-    end
   end
 
   def new_partner_info
