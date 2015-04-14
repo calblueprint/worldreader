@@ -14,8 +14,6 @@ Rails.application.routes.draw do
     get "booklists"
   end
 
-  # post "/add_to_cart/:book_id" => "carts#add", :as => "add_to_cart"
-
   resources :books
 
   resources :carts do
@@ -25,6 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/booklists" => "book_lists#index"
 
   namespace :admin do
     resources :dashboard do

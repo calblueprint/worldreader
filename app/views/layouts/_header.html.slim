@@ -11,6 +11,8 @@
     .navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
         li
+          = link_to "Popular Booklists", booklists_path
+        li
           a href="/"  Library
         li#cart-item
           - if !current_user.nil?

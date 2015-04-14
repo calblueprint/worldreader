@@ -1,13 +1,27 @@
 /** @jsx React.DOM */
 
-/* 
- * @prop booklist - the id of the booklist to display. 
+/*
+ * @prop booklist - the id of the booklist to display.
+ * @prop editable - boolean for if this table is editable
  */
 var BookListTable = React.createClass({
   getInitialState: function() {
     return {
       books: []
     };
+  },
+  _renderAddButton: function() {
+    return (
+      this.props.editable ?
+          <a href={"/?booklist=" + this.props.booklist}>
+            <div className="btn btn-default">
+              <span className="glyphicon glyphicon-plus"/>
+              <span className="add-books">Add Books</span>
+            </div>
+          </a>
+      :
+        null
+    );
   },
   componentDidMount: function() {
     this.getBooks(this.props.booklist);
@@ -82,23 +96,13 @@ var BookListTable = React.createClass({
       }
     });
   },
-  render: function() {
-    var self = this;
-    var books = this.state.books.map(function (book) {
-      return (
-        <BookListRow book={book}
-                     removeBook={self._removeBook}
-                     flagged={book.flagged_user_email != null}
-                     toggleFlag={self._toggleFlag}
-                     key={book.id} />
-      );
-    });
+  _renderValidationHeader: function() {
     var totalCount = this.state.books.length;
     var internationalCount = _.where(this.state.books, {book_type:false}).length;
     var africanCount = _.where(this.state.books, {book_type:true}).length;
     var notFlaggedCount = _.where(this.state.books, {flagged_user_email:null}).length;
     return (
-      <div>
+      this.props.editable ?
         <div className="row">
           <div className="col-md-3">
             Total #: {totalCount}
@@ -113,16 +117,30 @@ var BookListTable = React.createClass({
             Flagged #: {this.state.books.length - notFlaggedCount}
           </div>
         </div>
+      :
+      null
+    );
+  },
+  render: function() {
+    var self = this;
+    var books = this.state.books.map(function (book) {
+      return (
+        <BookListRow book={book}
+                     removeBook={self._removeBook}
+                     editable={self.props.editable}
+                     flagged={book.flagged_user_email != null}
+                     toggleFlag={self._toggleFlag}
+                     key={book.id} />
+      );
+    });
+    return (
+      <div>
+      {this._renderValidationHeader()}
         <div className="panel panel-primary">
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-2">
-                <a href={"/?booklist=" + this.props.booklist}>
-                  <div className="btn btn-default">
-                    <span className="glyphicon glyphicon-plus"/>
-                    <span className="add-books">Add Books</span>
-                  </div>
-                </a>
+                {this._renderAddButton()}
               </div>
               <div className="col-md-8 booklist-title">
                 {this.props.name}
@@ -166,6 +184,8 @@ var BookListTable = React.createClass({
 /*
  * @prop book - the book in JSON
  * @prop removeBook - a callback for when the remove button is clicked
+ * @prop editable - a boolean for if the row should be editable
+ * @prop toggleFlag - a function to call when the flag is clicked for this row.
  * @prop key - UNUSED
  */
 var BookListRow = React.createClass({
@@ -184,14 +204,36 @@ var BookListRow = React.createClass({
   _toggleFlag: function() {
     this.props.toggleFlag(this.props.book, !this.props.flagged);
   },
-  render: function() {
+  _renderRemove: function() {
+    return (
+      this.props.editable ?
+        <span className="glyphicon glyphicon-remove remove" onClick={this._removeBook} />
+      :
+      null
+    );
+  },
+  _renderFlag: function() {
     var flaggedClass = this.props.flagged ? "flagged" : "";
     var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
     var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
     return (
+      this.props.editable ?
+        <td data-placement="left" onClick={toggleFlag}
+          data-toggle={this.props.flagged ? "tooltip" : ""}
+          data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
+          <img className={"flag " + flaggedClass} src="/assets/flag.png" />
+        </td>
+      :
+        null
+    );
+  },
+  render: function() {
+    var flaggedClass = this.props.flagged ? "flagged" : "";
+    var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+    return (
       <tr className={rowFlaggedClass}>
         <td className="book-title-table">
-          <span className="glyphicon glyphicon-remove remove" onClick={this._removeBook} />
+          {this._renderRemove()}
           <a href={this.props.book.url}>{this.props.book.title}</a>
         </td>
         <td>
@@ -212,11 +254,7 @@ var BookListRow = React.createClass({
         <td>
           Unknown
         </td>
-        <td data-placement="left" onClick={toggleFlag}
-          data-toggle={this.props.flagged ? "tooltip" : ""}
-          data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
-          <img className={"flag " + flaggedClass} src="/assets/flag.png" />
-        </td>
+        {this._renderFlag()}
       </tr>
     );
   }

@@ -8,12 +8,12 @@ class ApplicationController < ActionController::Base
   end
 
   def new_partner_info
-    gon.countries = Country.uniq.all.map { |x| { id: x.id, name: x.name } }
-    gon.countries.sort_by { |x| x[:name] }
-    gon.languages = Language.uniq.all.map { |x| { id: x.id, name: x.name } }
-    gon.languages.sort_by { |x| x[:name] }
-    gon.booklists = BookList.uniq.all.map { |x| { id: x.id, name: x.name } }
-    gon.booklists.sort_by { |x| x[:name] }
+    countries = Country.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.countries = countries.sort_by { |x| x[:name] }
+    languages = Language.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.languages = languages.sort_by { |x| x[:name] }
+    booklists = BookList.uniq.all.map { |x| { id: x.id, name: x.name } }
+    gon.booklists = booklists.sort_by { |x| x[:name] }
   end
 
   def set_auth_token
