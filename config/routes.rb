@@ -16,13 +16,6 @@ Rails.application.routes.draw do
 
   resources :books
 
-  resources :carts do
-    member do
-      post :remove
-      post :create_purchase
-    end
-  end
-
   get "/booklists" => "book_lists#index"
 
   namespace :admin do
@@ -63,12 +56,6 @@ Rails.application.routes.draw do
   # API routes for react updates
   namespace :api do
     namespace :v1 do
-      resources :carts do
-        collection do
-          post "add/:book_id" => "carts#add"
-          post "remove/:book_id" => "carts#remove"
-        end
-      end
       resources :books do
         collection do
           get "" => "books#index"
