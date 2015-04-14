@@ -15,7 +15,6 @@ class BooksController < ApplicationController
     else
       gon.booklists = []
     end
-    gon.current_user = current_user
     gon.books = @books
   end
 
