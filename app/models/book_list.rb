@@ -2,11 +2,12 @@
 #
 # Table name: book_lists
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  published  :boolean
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  published   :boolean
+#  created_at  :datetime
+#  updated_at  :datetime
+#  description :string(255)
 #
 
 class BookList < ActiveRecord::Base
@@ -20,5 +21,14 @@ class BookList < ActiveRecord::Base
   scope :published, -> { where published: true }
   def has_books?
     errors.add(:books, 'can\'t be blank') if books.blank?
+  end
+
+  def as_json(options = {})
+    options[:methods] = [:image]
+    super(options)
+  end
+
+  def image
+    books.last.image
   end
 end

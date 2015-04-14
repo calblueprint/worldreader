@@ -81,6 +81,6 @@ class Api::V1::BookListsController < ApplicationController
   private
 
   def book_list_params
-    params.require(:base_list).permit(:name, :published, book_ids: [])
+    params.require(:base_list).permit(:name, :published, :description, book_ids: [])
   end
 end
