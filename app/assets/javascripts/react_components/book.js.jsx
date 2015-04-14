@@ -4,42 +4,9 @@ var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var bookList = null;
 
-var CartButton = React.createClass({
-  handleClick: function(event) {
-    if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
-      this.props.onClick({REMOVE_BOOK_FROM_CART: this.props.book});
-    } else {
-      this.props.onClick({ADD_BOOK_TO_CART: this.props.book});
-    }
-  },
-  render: function() {
-    if (_.contains(this.props.user.past_purchase_ids, this.props.book.id)) {
-      return (
-        <button className="btn cart-button disabled">
-          You have already purchased this book!
-        </button>
-      );
-    }
-    if (_.findWhere(this.props.cart, {id: this.props.book.id})) {
-      return (
-        <button className="btn cart-button" onClick={this.handleClick}>
-          Remove from Booklist
-        </button>
-      );
-    } else {
-      return (
-        <button className="btn cart-button" onClick={this.handleClick}>
-          Add to Booklist
-        </button>
-      );
-    }
-  }
-});
-
 var BookList = React.createClass({
   getInitialState: function() {
-    return {cart: cart,
-            user: gon.current_user,
+    return {user: gon.current_user,
             books: this.props.books,
             expandedBookId: null,
             pageNumber: 0,
@@ -56,10 +23,6 @@ var BookList = React.createClass({
   },
   componentWillMount: function() {
     this._boundForceUpdate = this.forceUpdate.bind(this, null);
-    cart.on("change", this._boundForceUpdate, this);
-  },
-  componentWillUnmount: function() {
-    cart.off("change", this._boundForceUpdate);
   },
   componentDidMount: function() {
     this.initTagbar();
@@ -69,80 +32,69 @@ var BookList = React.createClass({
   handleBooksUpdate: function(event) {
     this.setState({books: event});
   },
-  handleCartEvent: function(event) {
-    if (event.REMOVE_BOOK_FROM_CART) {
-      var book = event.REMOVE_BOOK_FROM_CART;
-      this.setState(
-        {numVisibleCartItems:
-          _.min([NUM_VISIBLE_CART_ITEMS, cart.get("items").length])
-        });
-      removeBook(book, this.state.user.id);
-      if (this.props.small) {
-        var books = _.reject(this.state.books, function(el) {
-          return el.id == book.id;
-        });
-        this.setState({books: books});
-      }
-    } else if (event.ADD_BOOK_TO_CART) {
-      var book = event.ADD_BOOK_TO_CART;
-      this.addBook(book);
-    } else if (event.SEE_MORE_CART_ITEMS) {
-      this.setState({numVisibleCartItems:
-                    _.min([this.state.numVisibleCartItems + NUM_VISIBLE_CART_ITEMS,
-                          cart.get("items").length])});
+  addBook: function(book) {
+    var booklist_ids = $('.selectpicker').val();
+    if (booklist_ids == null) {
+      toastr.error("At least one booklist must be selected");
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "/api/v1/book_lists/add/" + book.id,
+        dataType: "json",
+        data: {
+          booklist_ids: booklist_ids,
+        },
+        success: function(response) {
+          toastr.success(book.title + " was successfully added to your booklists!");
+        }.bind(this),
+        error: function(xhr, status, err) {
+          var errors = xhr.responseJSON.errors;
+          for (var error of errors) {
+            toastr.error(error);
+          }
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
     }
   },
   initTagbar: function() {
-    if (!this.props.small) {
-      var mainSearch = $('#book-tagbar-input');
-      mainSearch.tagsinput({
-        tagClass: function(item) {
-          switch (item.tagType) {
-            case 'country':       return countryLabel;
-            case 'levels':        return levelLabel;
-            case 'language':      return languageLabel;
-            case 'genre':         return genreLabel;
-            case 'subcategory':   return subcategoryLabel;
-            case 'recommended':   return recommendedLabel;
-          }
-        },
-        itemValue: 'value',
-        itemText: 'text',
-        typeahead: {
-          name: 'cities',
-          displayKey: 'text',
-          source: gon.all_tags
+    var mainSearch = $('#book-tagbar-input');
+    mainSearch.tagsinput({
+      tagClass: function(item) {
+        switch (item.tagType) {
+          case 'country':       return countryLabel;
+          case 'levels':        return levelLabel;
+          case 'language':      return languageLabel;
+          case 'genre':         return genreLabel;
+          case 'subcategory':   return subcategoryLabel;
+          case 'recommended':   return recommendedLabel;
         }
-      });
-      mainSearch.on('itemAdded', this.tagsUpdated);
-      mainSearch.on('itemRemoved', this.tagsUpdated);
-      $('#tag-and-searchbar').affix({
-          offset: {
-            top: $('#index-image').height()
-          }
-      });
-    }
+      },
+      itemValue: 'value',
+      itemText: 'text',
+      typeahead: {
+        name: 'cities',
+        displayKey: 'text',
+        source: gon.all_tags
+      }
+    });
+    mainSearch.on('itemAdded', this.tagsUpdated);
+    mainSearch.on('itemRemoved', this.tagsUpdated);
+    $('#tag-and-searchbar').affix({
+        offset: {
+          top: $('#index-image').height()
+        }
+    });
   },
   generateTile: function(book) {
-    if (this.props.small) {
-      return (
-        <SmallBookTile
-          user={gon.current_user}
-          key={book.id}
-          book={book}
-          cart={cart.get("items")}
-          handleCartEvent={this.handleCartEvent} />
-      )
-    }
     return (
       <BookTile
         user={gon.current_user}
         key={book.id}
         book={book}
-        cart={cart.get("items")}
         handleClick={this.handleBookExpand}
         handleCloseButton={this.handleBookClosed}
-        handleCartEvent={this.handleCartEvent}
+        addBook={this.addBook}
         isExpanded={this.state.expandedBookId === book.id} />
     );
   },
@@ -189,31 +141,6 @@ var BookList = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
-  },
-  addBook: function(book) {
-    var booklist_ids = $('.selectpicker').val();
-    if (booklist_ids == null) {
-      toastr.error("At least one booklist must be selected");
-    } else {
-      $.ajax({
-        type: "POST",
-        url: "/api/v1/book_lists/add/" + book.id,
-        dataType: "json",
-        data: {
-          booklist_ids: booklist_ids,
-        },
-        success: function(response) {
-          toastr.success(book.title + " was successfully added to your booklists!");
-        }.bind(this),
-        error: function(xhr, status, err) {
-          var errors = xhr.responseJSON.errors;
-          for (var error of errors) {
-            toastr.error(error);
-          }
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
-    }
   },
   render: function() {
     bookList = this;
@@ -269,54 +196,41 @@ var BookList = React.createClass({
     );
     if (bookTiles.length) {
       var results = ""
-      if (!this.props.small) {
-        var searchString = " " + this.state.searchTerm;
-        var tagsArray = this.state.tags;
-        var tagText = [];
-        for (var i = 0; i < tagsArray.length; i++) {
-          tagText.push(tagsArray[i].text);
-        }
-        var tagString = "";
-        if (tagText.length != 0){
-          tagString = " with tags " + tagText.join(', ');
-        }
-        results = "Found results:" + searchString + tagString + ".";
-        return (
-          <div>
-            {searchBar}
-            <div className="search-results">
-              <h4 className="current-search text-center">
-                {results}
-              </h4>
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={this.loadMore}
-                hasMore={!this.state.isLastPage}
-                threshold={250}
-                loader={<div className="loader">Loading...</div>}>
-                  <div className="media-list">
-                    {bookTiles}
-                  </div>
-              </InfiniteScroll>
-            </div>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            <div className="search-results">
-              <h4 className="current-search text-center">
-                {results}
-              </h4>
-              {bookTiles}
-            </div>
-          </div>
-        );
+      var searchString = " " + this.state.searchTerm;
+      var tagsArray = this.state.tags;
+      var tagText = [];
+      for (var i = 0; i < tagsArray.length; i++) {
+        tagText.push(tagsArray[i].text);
       }
+      var tagString = "";
+      if (tagText.length != 0){
+        tagString = " with tags " + tagText.join(', ');
+      }
+      results = "Found results:" + searchString + tagString + ".";
+      return (
+        <div>
+          {searchBar}
+          <div className="search-results">
+            <h4 className="current-search text-center">
+              {results}
+            </h4>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadMore}
+              hasMore={!this.state.isLastPage}
+              threshold={250}
+              loader={<div className="loader">Loading...</div>}>
+                <div className="media-list">
+                  {bookTiles}
+                </div>
+            </InfiniteScroll>
+          </div>
+        </div>
+      );
     }
     return (
       <div>
-        {this.props.small ? null : searchBar}
+        {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
             No books found. Search for a title or add a tag to continue.

@@ -20,14 +20,16 @@ var BookTile = React.createClass({
       </ReactCSSTransitionGroup>
     )
   },
+  addBook: function() {
+    this.props.addBook(this.props.book);
+  },
   renderExpanded: function() {
-    var cartButton;
+    var addButton;
     if (this.props.user) {
-      cartButton = (
-        <CartButton user={this.props.user}
-                    onClick={this.props.handleCartEvent}
-                    cart={this.props.cart}
-                    book={this.props.book} />
+      addButton = (
+        <button className="btn add-book-button" onClick={this.addBook}>
+          Add to Booklist
+        </button>
       )
     }
     var levels = this.props.book.levels_name.map(function (level) {
@@ -67,7 +69,7 @@ var BookTile = React.createClass({
             <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
             <span className={"book-tag expanded-book-subcategory " + subcategoryLabel}>{this.props.book.subcategory_name}</span>
           </div>
-          {cartButton}
+          {addButton}
         </div>
       </div>
     );
@@ -82,55 +84,6 @@ var BookTile = React.createClass({
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.title}</h3>
           <span className="collapsed-book-desc">{this.props.book.description}</span>
-        </div>
-      </div>
-    )
-  }
-});
-
-var SmallBookTile = React.createClass({
-  handleClick: function() {
-    this.props.handleClick({bookId: this.props.book.id});
-  },
-  render: function() {
-    var cartButton;
-    if (this.props.user) {
-      cartButton = (
-        <CartButton user={this.props.user}
-                    onClick={this.props.handleCartEvent}
-                    cart={this.props.cart}
-                    book={this.props.book} />
-      )
-    }
-    var levels = this.props.book.levels_name.map(function (level) {
-      return (
-        <span className={"book-tag expanded-book-level " + levelLabel}>{level}</span>
-      );
-    });
-    return (
-      <div key={this.props.book.id + "-expanded"} className="icon-book-tile">
-        <div className="icon-book-img-box pull-left">
-          <img className="icon-book-img" src={this._renderImage()} />
-        </div>
-        <div className="media-body">
-          <h3 className="media-heading">{this.props.book.title}</h3>
-          <div className="book-tags">
-            {levels}
-            <span className={"book-tag expanded-book-country " + countryLabel}>{this.props.book.country_name}</span>
-            <span className={"book-tag expanded-book-language " + languageLabel}>{this.props.book.language_name}</span>
-            <span className={"book-tag expanded-book-genre " + genreLabel}>{this.props.book.genre_name}</span>
-            <span className={"book-tag expanded-book-subcategory " + subcategoryLabel}>{this.props.book.subcategory_name}</span>
-          </div>
-          {this.props.book["donated?"] ?
-            <div className="price">
-              <b>Free</b>
-            </div>
-            :
-            <div className="price">
-              <b>{this.props.book.price}</b>
-            </div>
-          }
-          {cartButton}
         </div>
       </div>
     )

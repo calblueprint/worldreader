@@ -11,5 +11,4 @@
 //= require backbone
 //= require toastr
 //= require_tree ./plugins
-//= require_tree ./models
 //= require_tree .
