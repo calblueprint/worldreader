@@ -37,8 +37,11 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'foreman'
+  gem 'guard-rubocop'
+  gem 'guard-livereload'
   gem 'quiet_assets'
   gem 'rails_layout'
+  gem 'rubocop'
   gem 'spring'
 end
 group :development, :test do
@@ -46,6 +49,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'guard-rspec'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'railroady'
