@@ -23,7 +23,7 @@ class BookList < ActiveRecord::Base
     errors.add(:books, 'can\'t be blank') if books.blank?
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options[:methods] = [:image]
     super(options)
   end
