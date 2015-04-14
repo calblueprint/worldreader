@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_auth_token, :new_partner_info, :search_tags
+  before_action :set_current_user, :set_auth_token, :new_partner_info, :search_tags
   after_action :store_location
   protect_from_forgery with: :exception
 
@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
 
   def set_auth_token
     gon.auth_token = form_authenticity_token
+  end
+
+  def set_current_user
+    gon.current_user = current_user || User.new
   end
 
   def store_location

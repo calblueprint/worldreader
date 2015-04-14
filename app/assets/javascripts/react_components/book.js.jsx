@@ -6,7 +6,7 @@ var bookList = null;
 
 var BookList = React.createClass({
   getInitialState: function() {
-    return { user: gon.current_user,
+    return {user: gon.current_user,
             books: this.props.books,
             expandedBookId: null,
             pageNumber: 0,
