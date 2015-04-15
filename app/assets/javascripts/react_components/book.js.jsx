@@ -12,7 +12,8 @@ var BookList = React.createClass({
             pageNumber: 0,
             searchTerm: "",
             tags: JSON.parse(this.props.tags),
-            isLastPage: false};
+            isLastPage: false
+          };
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
