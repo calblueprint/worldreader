@@ -529,6 +529,11 @@ ActiveRecord::Schema.define(version: 20150413201126) do
 
   add_index "projects", ["origin_id", "model_id"], name: "index_projects_on_origin_id_and_model_id", using: :btree
 
+  create_table "projects_recommendations", id: false, force: true do |t|
+    t.integer "recommendation_id", null: false
+    t.integer "project_id",        null: false
+  end
+
   create_table "pub_contacts", force: true do |t|
     t.string   "name"
     t.string   "email",        limit: 35

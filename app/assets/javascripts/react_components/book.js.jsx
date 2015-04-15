@@ -11,7 +11,7 @@ var BookList = React.createClass({
             expandedBookId: null,
             pageNumber: 0,
             searchTerm: "",
-            tags: [],
+            tags: JSON.parse(this.props.tags),
             isLastPage: false};
   },
   handleBookExpand: function(event) {
@@ -84,6 +84,9 @@ var BookList = React.createClass({
         offset: {
           top: $('#index-image').height()
         }
+    });
+    this.state.tags.map (function (tag) {
+      mainSearch.tagsinput('add', tag);
     });
   },
   generateTile: function(book) {
