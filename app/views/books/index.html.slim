@@ -5,36 +5,9 @@
       h1.index-image-text Welcome to the Worldreader Extranet
       p.index-image-text Here, partners can find and purchase books for use with Worldreader e-readers and tablets.
 
-#HelpModal.modal.fade
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close aria-hidden="true" data-dismiss="modal" type="button"  ×
-        h4.modal-title Tag Help
-
-      .modal-body
-        .container-fluid
-          .row
-            p Our books are associated with tags, including reading level, country, language, and genre. You can add these tags in this input bar, and the list will automatically update. Below is a list of our tags:
-            h4 Levels:
-            - @level_tags.each do |tag|
-              span class="book-tag expanded-book-country label label-primary"
-                | #{tag[:text]}
-            h4 Countries:
-            - @country_tags.each do |tag|
-              span class="book-tag expanded-book-country label label-success"
-                | #{tag[:text]}
-            h4 Languages:
-            - @language_tags.each do |tag|
-              span class="book-tag expanded-book-country label label-warning"
-                | #{tag[:text]}
-            h4 Genres:
-            - @genre_tags.each do |tag|
-              span class="book-tag expanded-book-country label label-info"
-                | #{tag[:text]}
-
+= react_component "TagModalContent", { level_tags: @level_tags, country_tags: @country_tags, language_tags: @language_tags, genre_tags: @genre_tags }
 
 #library.row
   #booklist.col-md-10.col-md-offset-1
-    = react_component 'BookList', {books: @books, searchTerm: "", tags: [],
+    = react_component 'BookList', {books: @books, searchTerm: "", tags: @tags,
         booklist: @booklist}
