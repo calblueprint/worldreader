@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413201126) do
+ActiveRecord::Schema.define(version: 20150421211643) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -528,11 +528,6 @@ ActiveRecord::Schema.define(version: 20150413201126) do
   end
 
   add_index "projects", ["origin_id", "model_id"], name: "index_projects_on_origin_id_and_model_id", using: :btree
-
-  create_table "projects_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "project_id",        null: false
-  end
 
   create_table "pub_contacts", force: true do |t|
     t.string   "name"

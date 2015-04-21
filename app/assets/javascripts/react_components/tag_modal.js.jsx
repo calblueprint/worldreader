@@ -101,7 +101,7 @@ var TagModalContent = React.createClass({
                   {genreTags}
                 </div>
                 <div className="row">
-                  <h4>Selected Tags</h4>
+                  {selectedTags.length != 0 ? <h4>Selected Tags</h4> : <i className="modal-search-btn">Select above tags for Search</i>}
                   {selectedTags}
                 </div>
                 <div className="row">
