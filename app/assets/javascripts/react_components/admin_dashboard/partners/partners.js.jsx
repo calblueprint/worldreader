@@ -2,62 +2,20 @@
 
 var MainDisplay = React.createClass({
   render: function() {
-    if (this.props.type == displays.INFORMATION) {
-      return (
-        <div className="display">
-          <InformationDisplay partnerId={this.props.partnerId} />
-        </div>
-      );
-    } else if (this.props.type == displays.OLD_PURCHASES) {
-      return (
-        <div className="display">
-          <PurchaseDisplay  partnerId={this.props.partnerId}
-                            refreshPurchases={this.props.refreshPurchases}
-                            purchaseDisplayOptions={purchaseDisplayOptions.OLD}
-                            key={1}/>
-        </div>
-      );
-    } else if (this.props.type == displays.NEW_PURCHASES) {
-      return (
-        <div className="display">
-          <PurchaseDisplay  partnerId={this.props.partnerId}
-                            refreshPurchases={this.props.refreshPurchases}
-                            purchaseDisplayOptions={purchaseDisplayOptions.NEW}
-                            key={2}/>
-        </div>
-      );
-    }
+    return (
+      <div className="display">
+        <InformationDisplay partnerId={this.props.partnerId} />
+      </div>
+    );
   }
 });
 
-
-
 var ManagePartnerInfo = React.createClass({
   getInitialState: function () {
-    return {partners: [], partnersNewPurchases: [],
-      selectedPartner: null, numNewPurchases: {}, showAddPartner: false};
+    return {partners: [], selectedPartner: null, showAddPartner: false};
   },
   componentDidMount: function () {
     this._fetchPartners({});
-  },
-  _refreshNewPurchases: function (id) {
-    $.ajax({
-      url: "/admin/dashboard/" + id + "/get_number_purchases",
-      dataType: "text",
-      success: function (response) {
-        var updatedNumNewPurchases = this.state.numNewPurchases;
-        if (response > 0) {
-          updatedNumNewPurchases[id] = response;
-          this.setState({numNewPurchases: updatedNumNewPurchases});
-        } else {
-          updatedNumNewPurchases[id] = "";
-          this.setState({numNewPurchases: updatedNumNewPurchases});
-        }
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
   },
   _fetchPartners: function () {
     $.ajax({
@@ -65,20 +23,6 @@ var ManagePartnerInfo = React.createClass({
       dataType: 'json',
       success: function (data) {
         this.setState({partners: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-    $.ajax({
-      url: "/admin/dashboard/display_partners_new_purchases",
-      dataType: 'json',
-      success: function (data) {
-        var newIds = _.pluck(data, "id");
-        for (var i = 0; i < newIds.length; i++) {
-          this._refreshNewPurchases(newIds[i]);
-        }
-        this.setState({partnersNewPurchases: data});
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -110,17 +54,14 @@ var ManagePartnerInfo = React.createClass({
                 <PartnerSearch addPartner={this._addPartner} />
               </div>
               <PartnerList partners={this.state.partners}
-                partnersNewPurchases={this.state.partnersNewPurchases}
                 selectPartner={this._selectPartner}
-                selectedPartner={this.state.selectedPartner}
-                numNewPurchases={this.state.numNewPurchases} />
+                selectedPartner={this.state.selectedPartner} />
             </div>
           </div>
           <div className="col-md-8 height-100">
             <div className="mainScreen height-100">
-              {!this.state.showAddPartner ? 
-                <PartnerDisplay partnerId={this.state.selectedPartner}
-                  refreshPurchases={this._refreshNewPurchases} />
+              {!this.state.showAddPartner ?
+                <PartnerDisplay partnerId={this.state.selectedPartner} />
                : <AddPartnerDisplay success={this._addPartnerSuccess} />
               }
             </div>
@@ -159,30 +100,17 @@ var PartnerList = React.createClass({
   render: function () {
     var selectPartner = this.props.selectPartner;
     var selectedPartner = this.props.selectedPartner;
-    var numNewPurchases = this.props.numNewPurchases;
     var allPartners = this.props.partners.map (function (partner) {
       return (
         <Partner  partner={partner}
                   selectPartner={selectPartner}
                   partnerId={partner["id"]}
                   selectedPartner={selectedPartner}
-                  numNewPurchases={numNewPurchases[partner["id"]]}
-                  key={partner["id"]} />
-      );
-    });
-    var partnersNewPurchases = this.props.partnersNewPurchases.map (function (partner) {
-      return (
-        <Partner  partner={partner}
-                  selectPartner={selectPartner}
-                  partnerId={partner["id"]}
-                  selectedPartner={selectedPartner}
-                  numNewPurchases={numNewPurchases[partner["id"]]}
                   key={partner["id"]} />
       );
     });
     return (
       <ul className="nav nav-pills nav-stacked" role="tablist">
-        {partnersNewPurchases}
         {allPartners}
       </ul>
     );
@@ -199,33 +127,12 @@ var Partner = React.createClass({
     return (
         <li role="presentation" onClick={this.onClick} className={is_active}><a href="#">
           {this.props.partner["email"]}
-          <span className="badge">{this.props.numNewPurchases}</span></a></li>
+        </a></li>
     );
   }
 });
 
-var displays = {
-  INFORMATION: 1,
-  NEW_PURCHASES: 2,
-  OLD_PURCHASES: 3,
-};
-
 var PartnerDisplay = React.createClass({
-  getInitialState: function () {
-    return {selectedPage: displays.INFORMATION};
-  },
-  componentWillReceiveProps: function (nextProps) {
-    this.setState({selectedPage: displays.INFORMATION});
-  },
-  clickInformation: function () {
-    this.setState({selectedPage: displays.INFORMATION});
-  },
-  clickNewPurchases: function () {
-    this.setState({selectedPage: displays.NEW_PURCHASES});
-  },
-  clickOldPurchases: function () {
-    this.setState({selectedPage: displays.OLD_PURCHASES});
-  },
   render: function () {
     var selectedPartner = this.props.partnerId;
     if (selectedPartner == null) {
@@ -234,49 +141,15 @@ var PartnerDisplay = React.createClass({
           Select a partner to begin.
         </div>
       )
-    }
-    var infoClass = "";
-    var newPurchasesClass = "";
-    var oldPurchasesClass = "";
-    switch (this.state.selectedPage) {
-      case displays.INFORMATION:
-        infoClass += "underline";
-        break;
-      case displays.NEW_PURCHASES:
-        newPurchasesClass += "underline";
-        break;
-      case displays.OLD_PURCHASES:
-        oldPurchasesClass += "underline";
-        break;
-    }
-    return (
-      <div className="partnerDisplay height-100">
-        <div className="mainDisplay">
-          <nav className="navbar navbar-default" role="navigation">
-            <div className="container-fluid">
-              <div className="navbar-header">
-                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
-                  data-target="#bs-example-navbar-collapse-1">
-                  <span className="sr-only">Toggle navigation</span>
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
-                </button>
-              </div>
-              <div className="collapse navbar-collapse">
-                <ul className="nav navbar-nav" id="admin-dashboard-nav">
-                  <li id="information" className={infoClass}><a href="#" onClick={this.clickInformation}>Information</a></li>
-                  <li id="newPurchases" className={newPurchasesClass}><a href="#" onClick={this.clickNewPurchases}>New Purchases</a></li>
-                  <li id="oldPurchases" className={oldPurchasesClass}><a href="#" onClick={this.clickOldPurchases}>Old Purchases</a></li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-          <MainDisplay type={this.state.selectedPage} partnerId={this.props.partnerId}
-            refreshPurchases={this.props.refreshPurchases} className="height-100"/>
+    } else {
+      return (
+        <div className="partnerDisplay height-100">
+          <div className="mainDisplay">
+            <MainDisplay partnerId={this.props.partnerId} className="height-100"/>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 });
 

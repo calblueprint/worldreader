@@ -590,17 +590,6 @@ ActiveRecord::Schema.define(version: 20150413201126) do
     t.text     "comments"
   end
 
-  create_table "purchases", force: true do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "book_id",         null: false
-    t.date     "purchased_on"
-    t.boolean  "is_purchased"
-    t.boolean  "is_approved"
-    t.datetime "approved_on"
-    t.boolean  "flagged"
-    t.integer  "flagged_user_id"
-  end
-
   create_table "pushes", force: true do |t|
     t.integer  "book_id"
     t.integer  "content_bucket_id"

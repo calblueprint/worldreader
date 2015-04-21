@@ -13,7 +13,6 @@ class UsersController < ApplicationController
         redirect_to :back, alert: "Access denied."
       end
     end
-    @purchases = current_user.purchases.is_purchased(true)
   end
 
   def update
