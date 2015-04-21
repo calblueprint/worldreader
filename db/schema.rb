@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413201126) do
+ActiveRecord::Schema.define(version: 20150421231742) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -588,17 +588,6 @@ ActiveRecord::Schema.define(version: 20150413201126) do
     t.date     "warranty_end_date"
     t.integer  "project_id"
     t.text     "comments"
-  end
-
-  create_table "purchases", force: true do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "book_id",         null: false
-    t.date     "purchased_on"
-    t.boolean  "is_purchased"
-    t.boolean  "is_approved"
-    t.datetime "approved_on"
-    t.boolean  "flagged"
-    t.integer  "flagged_user_id"
   end
 
   create_table "pushes", force: true do |t|

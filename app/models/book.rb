@@ -80,8 +80,6 @@ class Book < ActiveRecord::Base
   belongs_to :publisher
   belongs_to :subcategory
   belongs_to :country, foreign_key: "origin_id"
-  has_many :purchases
-  has_many :users, through: :purchases
   has_one :failed_update
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :content_buckets
