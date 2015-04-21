@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_user
-    gon.current_user = current_user
+    gon.current_user = current_user || User.new
   end
 
   def store_location
