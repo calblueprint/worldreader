@@ -20,7 +20,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def display_groups
-    groups = User.find(params[:id]).projects.flat_map &:content_buckets
+    groups = User.find(params[:id]).projects.flat_map(&:content_buckets)
     render json: groups
   end
 
@@ -35,9 +35,9 @@ class Admin::DashboardController < ApplicationController
       is_approved = nil
     end
     purchases = Purchase.where(user_id: params[:id], is_approved: is_approved, is_purchased: true)
-    purchases.collect! { |purchase|
+    purchases.collect! do |purchase|
       purchase.as_json.merge(flagged_user_email: purchase.flagged_user.try(:email))
-    }
+    end
     render json: purchases
   end
 
@@ -53,8 +53,8 @@ class Admin::DashboardController < ApplicationController
 
   def generate_csv
     send_data Purchase.to_csv(Purchase.find(params[:purchases])),
-      :type => 'text/csv; charset=iso-8859-1; header=present',
-      :disposition => "attachment;purchases.csv"
+              type: 'text/csv; charset=iso-8859-1; header=present',
+              disposition: 'attachment;purchases.csv'
   end
 
   def convert_purchases
