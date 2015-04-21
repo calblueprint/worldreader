@@ -10,7 +10,7 @@ levelsConvert:
       - 'Primary'
       - 'Beginning Readers'
       - 'Lower Primary'
-    'Nonfiction':
+    'Non-fiction':
       - 'Pre-Primary'
       - 'Primary 1 (Ghana)'
       - 'Primary 2 (Ghana)'
@@ -39,7 +39,7 @@ levelsConvert:
       - 'Primary'
       - 'Beginning Readers'
       - 'Lower Primary'
-    'Nonfiction':
+    'Non-fiction':
       - 'Primary 1 (Ghana)'
       - 'Primary 2 (Ghana)'
       - 'Primary 3 (Ghana)'
@@ -75,7 +75,7 @@ levelsConvert:
       - 'Junior High School'
       - 'Chapter Books'
       - 'Upper Primary'
-    'Nonfiction':
+    'Non-fiction':
       - 'Primary 1 (Ghana)'
       - 'Primary 2 (Ghana)'
       - 'Primary 3 (Ghana)'
@@ -118,7 +118,7 @@ levelsConvert:
       - 'Secondary'
       - 'Chapter Books'
       - 'Upper Primary'
-    'Nonfiction':
+    'Non-fiction':
       - 'Primary 1 (Ghana)'
       - 'Primary 2 (Ghana)'
       - 'Primary 3 (Ghana)'
@@ -159,7 +159,7 @@ levelsConvert:
       - 'Form 4'
       - 'Secondary'
       - 'Young Adult'
-    'Nonfiction':
+    'Non-fiction':
       - 'JHS 1 (Ghana)'
       - 'JHS 2 (Ghana)'
       - 'JHS 3 (Ghana)'
@@ -183,7 +183,7 @@ levelsConvert:
       - 'Secondary'
       - 'Young Adult'
       - 'Adult'
-    'Nonfiction':
+    'Non-fiction':
       - 'JHS 1 (Ghana)'
       - 'JHS 2 (Ghana)'
       - 'JHS 3 (Ghana)'
