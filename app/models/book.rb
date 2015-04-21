@@ -97,8 +97,6 @@ class Book < ActiveRecord::Base
     end
   end
 
-  after_create :add_levels_tags
-
   default_scope { where(in_store: true) }
 
   QUERY_FIELDS = [:title,
@@ -110,8 +108,6 @@ class Book < ActiveRecord::Base
   CSV_COLUMNS = ["Book Name",
                  "ASIN",
                  "Publisher"]
-
-  LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../../../db/levelsConvert.yml', __FILE__)))
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -208,18 +204,6 @@ class Book < ActiveRecord::Base
 
   def book_type
     publisher.free == "paid"
-  end
-
-  def add_levels_tags
-    levels_to_add = Set.new
-    levels.each do |level|
-      corresp_levels = LEVELS_CONVERT["levelsConvert"][level.name][genre.name]
-      corresp_levels.each do |level_to_add|
-        lv = Level.create(name:level_to_add)
-        levels_to_add.add(lv)
-      end
-    end
-    levels.concat levels_to_add.to_a
   end
 
   def self.query(string, tags, page)
