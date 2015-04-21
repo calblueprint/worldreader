@@ -33,10 +33,6 @@ FactoryGirl.define do
     name "MyString"
   end
 
-  factory :recommendation do
-    # TODO create recommendation
-  end
-
   factory :books_country, :class => 'BooksCountries' do
     country_id 1
     book_id 1

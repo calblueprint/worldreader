@@ -86,7 +86,6 @@ class Book < ActiveRecord::Base
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :content_buckets
   has_and_belongs_to_many :levels
-  has_and_belongs_to_many :recommendations
   has_many :book_list_entries
   has_many :book_lists, through: :book_list_entries
 
