@@ -68,7 +68,6 @@ var BookList = React.createClass({
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
-          case 'recommended':   return recommendedLabel;
         }
       },
       itemValue: 'value',

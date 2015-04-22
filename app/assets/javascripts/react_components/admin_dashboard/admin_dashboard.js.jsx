@@ -3,8 +3,7 @@
 var tabs = {
   VIEWINFO: 1,
   BASE_LISTS: 2,
-  RECOMMEND: 3,
-  VIEWBOOKS: 4,
+  VIEWBOOKS: 3,
 };
 
 var DashboardTabs = React.createClass({
@@ -16,9 +15,6 @@ var DashboardTabs = React.createClass({
   },
   clickViewInfo: function () {
     this.setState({currentTab: tabs.VIEWINFO});
-  },
-  clickRecommend: function () {
-    this.setState({currentTab: tabs.RECOMMEND});
   },
   clickBaselists: function () {
     this.setState({currentTab: tabs.BASE_LISTS});
@@ -44,7 +40,6 @@ var DashboardTabs = React.createClass({
               <ul className="nav nav-pills centered nav-pills admin-nav-tabs">
                 <li className="active"><a data-toggle="tab" href="#" onClick={this.clickViewInfo}>Partners</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickBaselists}>Base Booklists</a></li>
-                <li><a data-toggle="tab" href="#" onClick={this.clickRecommend}>Recommendations</a></li>
                 <li><a data-toggle="tab" href="#" onClick={this.clickViewBooks}>Books</a></li>
               </ul>
             </div>
@@ -67,10 +62,6 @@ var DashboardTabDisplay = React.createClass({
     } else if (this.props.type == tabs.BASE_LISTS) {
       return (
         <BaseListView />
-      );
-    } else if (this.props.type == tabs.RECOMMEND) {
-      return (
-        <RecommendationViews />
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (
