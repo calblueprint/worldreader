@@ -17,6 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
       project.save
       booklist.save
       resource.save
+      UserNotifier.send_signup_email(
       render json: { message: "User created!", user: resource }
     else
       clean_up_passwords resource
