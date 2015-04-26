@@ -84,12 +84,6 @@ $line-color-dark: #aaa;
     border-bottom: 4px solid #000000;
 }
 
-#newPurchases {
-  float: right;
-  text-align: center;
-  width: 33%;
-}
-
 .name {
   font-weight: bold;
   font-size: x-large;
@@ -128,11 +122,6 @@ $line-color-dark: #aaa;
   overflow-x: hidden;
 }
 
-.purchaseDisplay {
-  padding-left: 50px;
-  padding-right: 50px;
-}
-
 .admin-dash-container {
   padding-bottom: 15px;
 }
@@ -165,18 +154,6 @@ $line-color-dark: #aaa;
 
 .badge {
   float: right;
-}
-
-#downloadPurchaseButton {
-  background-color: #5cb85c;
-}
-
-#disapproveButton {
-  background-color: #d9534f;
-}
-
-#downloadButton {
-  background-color: #A9D0F5;
 }
 
 .action {
