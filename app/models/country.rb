@@ -8,7 +8,6 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-
 class Country < ActiveRecord::Base
 
   self.table_name = "origins"

@@ -23,7 +23,6 @@
 #  country_id             :integer
 #  organization           :string(255)
 #
-
 class User < ActiveRecord::Base
 
   validate :projects?
