@@ -31,4 +31,12 @@ class BookList < ActiveRecord::Base
   def image
     books.last.image
   end
+
+  def self.tags(index = 0)
+    book_lists = BookList.uniq.select([:id, :name]).map do |resource|
+      index += 1
+      { value: index, text: resource.name, tagType: "booklist", id: resource.id }
+    end
+    book_lists.sort_by { |resource| resource[:name] }
+  end
 end

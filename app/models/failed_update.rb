@@ -16,7 +16,7 @@ class FailedUpdate < ActiveRecord::Base
     if failure
       failure.touch
     else
-      failure = FailedUpdate.create! book_id: book.id
+      FailedUpdate.create! book_id: book.id
     end
   end
 end

@@ -139,7 +139,7 @@ var BaseBookListSearch = React.createClass({
       itemValue: 'value',
       itemText: 'text',
       typeahead: {
-        name: 'recommendations',
+        name: 'base_booklists',
         displayKey: 'text',
         source: gon.all_tags
       }

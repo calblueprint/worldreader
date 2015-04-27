@@ -73,20 +73,17 @@
 #
 
 class Book < ActiveRecord::Base
-    include Elasticsearch::Model
+  include Elasticsearch::Model
 
   belongs_to :language
   belongs_to :genre
   belongs_to :publisher
   belongs_to :subcategory
   belongs_to :country, foreign_key: "origin_id"
-  has_many :purchases
-  has_many :users, through: :purchases
   has_one :failed_update
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :content_buckets
   has_and_belongs_to_many :levels
-  has_and_belongs_to_many :recommendations
   has_many :book_list_entries
   has_many :book_lists, through: :book_list_entries
 
@@ -137,7 +134,7 @@ class Book < ActiveRecord::Base
     ActionController::Base.helpers.number_to_currency self[:price]
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options[:methods] = [:subcategory_name,
                          :levels_name,
                          :language_name,
@@ -152,18 +149,17 @@ class Book < ActiveRecord::Base
     super(options)
   end
 
-  def as_indexed_json(options={})
-    as_json({
+  def as_indexed_json(_options = {})
+    as_json(
       include: {
-        authors: {only: :name},
-        country: {only: :name},
-        genre: {only: :name},
-        subcategory: {only: :name},
-        language: {only: :name},
-        levels: {only: :name},
-        publisher: {only: :name}
-      }
-    })
+        authors: { only: :name },
+        country: { only: :name },
+        genre: { only: :name },
+        subcategory: { only: :name },
+        language: { only: :name },
+        levels: { only: :name },
+        publisher: { only: :name }
+      })
   end
 
   def updated_date
@@ -191,7 +187,7 @@ class Book < ActiveRecord::Base
   end
 
   def levels_name
-    levels.map &:name
+    levels.map(&:name)
   end
 
   def update_status
@@ -212,27 +208,27 @@ class Book < ActiveRecord::Base
 
   def self.query(string, tags, page)
     filtered_query = {}
-    if not string.empty?
+    unless string.empty?
       filtered_query[:query] = Book.create_multi_match_query(string)
     end
     tags_dict = Book.extract_tags(tags)
-    if not tags_dict.empty?
+    unless tags_dict.empty?
       and_filter = []
-      tags_dict.each do |type, tags|
-        and_filter.push(Book.create_or_filter(type + ".name", tags))
+      tags_dict.each do |type, book_tags|
+        and_filter.push(Book.create_or_filter(type + ".name", book_tags))
       end
-      filtered_query[:filter] = {and: and_filter}
+      filtered_query[:filter] = { and: and_filter }
     end
-    query = {filtered: filtered_query}
-    print query
-    print "\n"
-    highlight = {fields: {description: {fragment_size: 120}}}
+    query = { filtered: filtered_query }
+    highlight = { fields: { description: { fragment_size: 120 } } }
     results = Book.search(query: query, highlight: highlight, from: Constants::PAGE_SIZE * page).to_a
-    results.map! { |r|
-      r.has_key?(:highlight) ?
-        r._source.merge({highlight: r.highlight}) :
+    results.map! do |r|
+      if r.key?(:highlight)
+        r._source.merge(highlight: r.highlight)
+      else
         r._source
-    }
+      end
+    end
   end
 
   def self.create_multi_match_query(string)
@@ -248,9 +244,9 @@ class Book < ActiveRecord::Base
   def self.create_or_filter(term, tags)
     or_filter = []
     tags.each do |tag|
-      or_filter.push({term: {term => tag}})
+      or_filter.push(term: { term => tag })
     end
-    {or: or_filter}
+    { or: or_filter }
   end
 
   def self.extract_tags(tags)
@@ -258,7 +254,7 @@ class Book < ActiveRecord::Base
     tags.each do |tag|
       type = tag["tagType"]
       tag = tag["text"]
-      if tags_dict.has_key? type
+      if tags_dict.key? type
         tags_dict[type].push(tag)
       else
         tags_dict[type] = [tag]
@@ -266,5 +262,4 @@ class Book < ActiveRecord::Base
     end
     tags_dict
   end
-
 end

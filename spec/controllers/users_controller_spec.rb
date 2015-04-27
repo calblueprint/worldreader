@@ -3,7 +3,6 @@ require "users_controller"
 
 describe UsersController do
   describe "#index" do
-
     before(:each) do
       request.env["HTTP_REFERER"] = "http://www.example.com/"
     end
