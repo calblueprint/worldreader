@@ -16,6 +16,7 @@ class BooksController < ApplicationController
       gon.booklists = []
     end
     gon.books = @books
+    @tags = params[:tags] || "[]"
   end
 
   def show

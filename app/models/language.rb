@@ -10,6 +10,13 @@
 
 class Language < ActiveRecord::Base
   has_many :books
-  has_and_belongs_to_many :recommendations
   has_and_belongs_to_many :users
+
+  def self.tags(index = 0)
+    languages = Language.uniq.select([:id, :name]).map do |resource|
+      index += 1
+      { value: index, text: resource.name, tagType: "language", id: resource.id }
+    end
+    languages.sort_by { |resource| resource[:name] }
+  end
 end

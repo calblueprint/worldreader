@@ -11,8 +11,9 @@ var BookList = React.createClass({
             expandedBookId: null,
             pageNumber: 0,
             searchTerm: "",
-            tags: [],
-            isLastPage: false};
+            tags: JSON.parse(this.props.tags),
+            isLastPage: false
+          };
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
@@ -67,7 +68,6 @@ var BookList = React.createClass({
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
-          case 'recommended':   return recommendedLabel;
         }
       },
       itemValue: 'value',
@@ -84,6 +84,9 @@ var BookList = React.createClass({
         offset: {
           top: $('#index-image').height()
         }
+    });
+    this.state.tags.map (function (tag) {
+      mainSearch.tagsinput('add', tag);
     });
   },
   generateTile: function(book) {
