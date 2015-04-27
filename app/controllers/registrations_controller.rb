@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  before_filter :configure_permitted_parameters, :only => [:create]
+  before_filter :configure_permitted_parameters, only: [:create]
   skip_before_filter :require_no_authentication
 
   def create
@@ -30,9 +30,9 @@ class RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u|
+    devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:email, :password, :password_confirmation)
-    }
+    end
   end
 
   private

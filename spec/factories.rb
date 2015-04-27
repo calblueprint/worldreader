@@ -7,7 +7,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :content_bucket, :class => 'ContentBuckets' do
+  factory :content_bucket, class: 'ContentBuckets' do
   end
 
   factory :subcategory do
@@ -20,7 +20,7 @@ FactoryGirl.define do
     book_id 1
   end
 
-  factory :authors_book, :class => 'AuthorsBooks' do
+  factory :authors_book, class: 'AuthorsBooks' do
     book_id 1
     author_id 1
   end
@@ -33,12 +33,12 @@ FactoryGirl.define do
     name "MyString"
   end
 
-  factory :books_country, :class => 'BooksCountries' do
+  factory :books_country, class: 'BooksCountries' do
     country_id 1
     book_id 1
   end
 
-  factory :books_level, :class => 'BooksLevels' do
+  factory :books_level, class: 'BooksLevels' do
     book_id 1
     level_id 1
   end
@@ -68,22 +68,21 @@ FactoryGirl.define do
     sequence(:email) { |n| "email#{n}@example.com" }
     password "password"
     role 0
-    after(:build) { |user|
+    after(:build) do |user|
       user.projects = [create(:project)]
       user.book_lists = [create(:book_list)]
-    }
+    end
   end
 
   factory :book_list do
     name "MyString"
-    after(:build) { |book_list|
+    after(:build) do |book_list|
       book_list.books = [create(:book)]
-    }
+    end
   end
 
   factory :book do
     title "Day by Day"
     description "The tale of team with nothing left to lose"
   end
-
 end

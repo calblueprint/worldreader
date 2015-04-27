@@ -6,13 +6,13 @@ class CreateRecommendationJoinTables < ActiveRecord::Migration
     remove_column :recommendations, :country, :string
 
     create_table :countries_recommendations, id: false do |t|
-      t.references :country, :null => false
-      t.references :recommendation, :null => false
+      t.references :country, null: false
+      t.references :recommendation, null: false
     end
 
     create_table :languages_recommendations, id: false do |t|
-      t.references :language, :null => false
-      t.references :recommendation, :null => false
+      t.references :language, null: false
+      t.references :recommendation, null: false
     end
   end
 end

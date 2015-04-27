@@ -26,12 +26,12 @@
 
 class User < ActiveRecord::Base
 
-  validate :has_projects
+  validate :projects?
 
   self.table_name = "admin_users"
 
   enum role: [:user, :admin, :vip]
-  after_initialize :set_default_role, :if => :new_record?
+  after_initialize :set_default_role, if: :new_record?
   after_create :send_welcome_mail
 
   belongs_to :country
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
     role == "admin" || role == "vip"
   end
 
-  def as_json(options={})
+  def as_json(_options = {})
     super(
       methods: [
         :country_names,
@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     projects.each do |project|
       country_set.add project.country.name
     end
-    return country_set
+    country_set
   end
 
   def language_names
@@ -70,11 +70,11 @@ class User < ActiveRecord::Base
         language_set.add language.name
       end
     end
-    return language_set
+    language_set
   end
 
   def project_names
-    projects.map &:name
+    projects.map(&:name)
   end
 
   def send_welcome_mail
@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
 
   private
 
-  def has_projects
+  def projects?
     errors.add(:projects, 'can\'t be blank') if projects.blank?
   end
 end

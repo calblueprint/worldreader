@@ -25,14 +25,14 @@ gem 'nokogiri'
 gem 'rails', '4.1.5'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'sass-rails', '~> 4.0.3'
-gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'sdoc', '~> 0.4.0',            group: :doc
 gem 'slim'
 gem 'toastr-rails'
 gem 'turbolinks'
 gem 'underscore-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'will_paginate'
-gem 'whenever', :require => false
+gem 'whenever', require: false
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

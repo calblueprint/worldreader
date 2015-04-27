@@ -16,11 +16,11 @@
 #
 
 class Project < ActiveRecord::Base
-    include Elasticsearch::Model
+  include Elasticsearch::Model
 
   validates :name, presence: true, uniqueness: true
   validates :country, presence: true
-  validate :has_languages
+  validate :languages?
 
   belongs_to :country, foreign_key: 'origin_id'
   has_many :content_buckets
@@ -36,38 +36,36 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def as_indexed_json(options={})
-    as_json({
+  def as_indexed_json(_options = {})
+    as_json(
       include: {
-        country: {only: :name},
-        languages: {only: :name},
-        levels: {only: :name}
+        country: { only: :name },
+        languages: { only: :name },
+        levels: { only: :name }
       }
-    })
+    )
   end
 
   def self.query(tags)
     filtered_query = {}
     tags_dict = Book.extract_tags(tags)
-    if not tags_dict.empty?
+    unless tags_dict.empty?
       and_filter = []
-      tags_dict.each do |type, tags|
-        and_filter.push(Project.create_or_filter(type + ".name", tags))
+      tags_dict.each do |type, project_tags|
+        and_filter.push(Project.create_or_filter(type + ".name", project_tags))
       end
-      filtered_query[:filter] = {and: and_filter}
+      filtered_query[:filter] = { and: and_filter }
     end
-    query = {filtered: filtered_query}
-    print query
-    print "\n"
-    results = Project.search(query: query).to_a.map! { |r| r._source }
+    query = { filtered: filtered_query }
+    Project.search(query: query).to_a.map!(&:_source)
   end
 
   def self.create_or_filter(term, tags)
     or_filter = []
     tags.each do |tag|
-      or_filter.push({term: {term => tag}})
+      or_filter.push(term: { term => tag })
     end
-    {or: or_filter}
+    { or: or_filter }
   end
 
   def self.extract_tags(tags)
@@ -75,7 +73,7 @@ class Project < ActiveRecord::Base
     tags.each do |tag|
       type = tag["tagType"]
       tag = tag["text"]
-      if tags_dict.has_key? type
+      if tags_dict.key? type
         tags_dict[type].push(tag)
       else
         tags_dict[type] = [tag]
@@ -84,7 +82,7 @@ class Project < ActiveRecord::Base
     tags_dict
   end
 
-  def has_languages
+  def languages?
     errors.add(:languages, 'can\'t be blank') if languages.blank?
   end
 end

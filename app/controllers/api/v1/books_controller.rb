@@ -1,5 +1,4 @@
 class Api::V1::BooksController < ApplicationController
-
   def index
     page = params[:page] || 1
     books = Book.all.paginate page: page, per_page: Constants::PAGE_SIZE
@@ -12,10 +11,10 @@ class Api::V1::BooksController < ApplicationController
     results = []
     page = params[:page].to_i || 1
     books = Book.query(term, tags, page)
-    books.each_with_index do |x, i|
+    books.each do |x|
       results.push(x.as_json)
     end
-    render json: {books: results}
+    render json: { books: results }
   end
 
   def page
