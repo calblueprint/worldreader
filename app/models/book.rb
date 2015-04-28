@@ -224,14 +224,16 @@ class Book < ActiveRecord::Base
     results = Book.search(query: query,
                           highlight: highlight,
                           from: Constants::PAGE_SIZE * page,
-                          size: Constants::PAGE_SIZE).to_a
-    results.map! do |r|
+                          size: Constants::PAGE_SIZE).results
+    count = results.total
+    books = results.to_a.map do |r|
       if r.key?(:highlight)
         r._source.merge(highlight: r.highlight)
       else
         r._source
       end
     end
+    [books, count]
   end
 
   def self.create_multi_match_query(string)
