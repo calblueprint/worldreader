@@ -5,10 +5,12 @@
 //= require bootstrap-tagsinput
 //= require bootstrap-select
 //= require turbolinks
-//= require react
-//= require react_ujs
 //= require underscore
 //= require backbone
 //= require toastr
 //= require_tree ./plugins
-//= require_tree .
+//= require components
+//= require book
+//= require bootstrap3-typeahead.min
+//= require header
+//= require bloodhound.min

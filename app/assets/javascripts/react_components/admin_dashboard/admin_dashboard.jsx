@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var tabs = {
   VIEWINFO: 1,
   BASE_LISTS: 2,
@@ -79,3 +81,5 @@ var DashboardTabDisplay = React.createClass({
     }
   }
 });
+
+module.exports = DashboardTabs;

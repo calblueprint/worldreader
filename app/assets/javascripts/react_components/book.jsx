@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var React = require('react');
 
 var bookList = null;
 
@@ -244,3 +244,5 @@ var BookList = React.createClass({
     );
   }
 });
+
+module.exports = BookList;

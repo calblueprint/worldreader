@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 /**
  * @prop booklists - the list of booklists
  */
@@ -57,7 +59,7 @@ var PublishedBookLists = React.createClass({
     return (
       <div>
         <h2 className="text-center">Popular Book lists</h2>
-        <h5 className="text-center">Check out some of Worldreader's most popular book lists!</h5>
+        <h5 className="text-center">Check out some of Worldreader&#39;s most popular book lists!</h5>
         <div className="col-md-offset-1 col-md-10 media-list">
           {booklistItems}
         </div>
@@ -86,3 +88,5 @@ var BookListItem = React.createClass({
     );
   }
 });
+
+module.exports = PublishedBookLists;

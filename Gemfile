@@ -23,7 +23,7 @@ gem 'jquery-rails'
 gem 'mysql2'
 gem 'nokogiri'
 gem 'rails', '4.1.5'
-gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'react-rails', '~> 1.0.0', github: 'reactjs/react-rails'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'slim'
@@ -55,6 +55,7 @@ group :development, :test do
   gem 'railroady'
   gem 'rspec-rails'
   gem 'launchy'
+  gem 'browserify-rails', '~>0.5'
 end
 group :production do
   gem 'bonsai-elasticsearch-rails'

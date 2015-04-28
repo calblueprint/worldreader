@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var TagModalContent = React.createClass({
   getInitialState: function() {
     return {
@@ -119,3 +121,5 @@ var TagModalContent = React.createClass({
     );
   }
 });
+
+module.exports = TagModalContent;

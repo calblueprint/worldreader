@@ -1,32 +1,20 @@
 /** @jsx React.DOM */
 
-var EditBaseList = React.createClass({
+var React = require('react');
+
+var CreateBaseList = React.createClass({
   getInitialState: function() {
-    var baselist = this.props.baselist;
     return {
       bookTags: [],
       selectedBooks: [],
-      name: baselist.name,
-      published: baselist.published
+      name: "",
+      published: 0
     }
   },
   componentDidMount: function() {
     $('#baselist-toggle').bootstrapSwitch();
     $('#baselist-toggle').on('switchChange.bootstrapSwitch', this._togglePublished);
     $('.bootstrap-switch').css("float", "right");
-    $('.name-field').val(this.state.name);
-
-    $.ajax({
-      url: "/api/v1/book_lists/" + this.props.baselist.id + "/books",
-      type: "GET",
-      success: function(data) {
-        this.setState({selectedBooks: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        toastr.error("There was an error retrieving the book data.");
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
   },
   _togglePublished: function(event, state) {
     this.setState({published: state});
@@ -46,9 +34,10 @@ var EditBaseList = React.createClass({
     var bookList = _.without(this.state.selectedBooks, book);
     this.setState({selectedBooks: bookList});
   },
-  _editBaseList: function() {
+  _addBaseList: function() {
     var bookIds = _.pluck(this.state.selectedBooks, "id");
     var name = $('.name-field').val();
+    var description = $("#description-field").val();
     this.setState({name: name});
 
     // Client Side validations
@@ -65,22 +54,23 @@ var EditBaseList = React.createClass({
     if (errors) return;
 
     $.ajax({
-      type: "PATCH",
-      url: "/api/v1/book_lists/"+this.props.baselist.id,
+      type: "POST",
+      url: "/api/v1/book_lists/",
       data: {
         base_list: {
           name: name,
           book_ids: bookIds,
+          description: description,
           published: this.state.published
         }
       },
       success: function() {
-        toastr.success("Baselist succesfully edited.");
+        toastr.success("Baselist created.");
         this.props.viewBaseLists();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
-        toastr.error("Error editing baselist.");
+        toastr.error("Error creating baselist.");
       }.bind(this)
     });
   },
@@ -92,7 +82,7 @@ var EditBaseList = React.createClass({
             <div className="btn btn-default" onClick={this.props.viewBaseLists}>
               <span className="glyphicon glyphicon-chevron-left"></span> Back
             </div>
-            <div className="btn btn-default" onClick={this._editBaseList}>
+            <div className="btn btn-default" onClick={this._addBaseList}>
               Done
             </div>
           </div>
@@ -125,3 +115,5 @@ var EditBaseList = React.createClass({
     );
   }
 });
+
+module.exports = CreateBaseList;

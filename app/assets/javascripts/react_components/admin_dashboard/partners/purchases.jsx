@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var purchaseDisplayOptions= {
   OLD: 1,
   NEW: 2,
@@ -249,3 +251,5 @@ var Purchase = React.createClass( {
     );
   }
 });
+
+module.exports = PurchaseDisplay;

@@ -1,3 +1,5 @@
+var React = require('react');
+
 function topPosition(domElt) {
   if (!domElt) {
     return 0;
@@ -60,3 +62,5 @@ var InfiniteScroll = React.addons.InfiniteScroll = React.createClass({
 InfiniteScroll.setDefaultLoader = function (loader) {
   InfiniteScroll._defaultLoader = loader;
 };
+
+module.exports = InfiniteScroll;

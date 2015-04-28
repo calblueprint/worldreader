@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var InformationDisplay = React.createClass({
   getInitialState: function () {
     var initPartner = {
@@ -66,3 +68,5 @@ var InformationDisplay = React.createClass({
     );
   }
 });
+
+module.exports = InformationDisplay;

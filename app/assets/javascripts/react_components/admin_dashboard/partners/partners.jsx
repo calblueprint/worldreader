@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var MainDisplay = React.createClass({
   render: function() {
     if (this.props.type == displays.INFORMATION) {
@@ -402,3 +404,5 @@ var AddPartnerDisplay = React.createClass({
     );
   }
 });
+
+module.exports = ManagePartnerInfo;

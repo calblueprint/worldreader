@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var BookLists = React.createClass({
   getInitialState: function () {
     return {
@@ -39,3 +41,5 @@ var BookLists = React.createClass({
     );
   }
 });
+
+module.exports = BookLists;
