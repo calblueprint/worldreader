@@ -10,4 +10,13 @@
 
 class FailedUpdate < ActiveRecord::Base
   belongs_to :book
+
+  def self.create_or_update(book)
+    failure = FailedUpdate.where(book_id: book.id).first
+    if failure
+      failure.touch
+    else
+      FailedUpdate.create! book_id: book.id
+    end
+  end
 end

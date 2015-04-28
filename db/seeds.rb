@@ -42,6 +42,78 @@ def make_levels
   Level.create! name: "B"
   Level.create! name: "C"
   Level.create! name: "D"
+  Level.create! name: "Primary 1"
+  Level.create! name: "Standard 1"
+  Level.create! name: "Primary 2"
+  Level.create! name: "Standard 2"
+  Level.create! name: "Primary 3"
+  Level.create! name: "Standard 3"
+  Level.create! name: "Primary 4"
+  Level.create! name: "Standard 4"
+  Level.create! name: "Primary 5"
+  Level.create! name: "Standard 5"
+  Level.create! name: "Primary 6"
+  Level.create! name: "Standard 6"
+  Level.create! name: "Primary 7"
+  Level.create! name: "Standard 7"
+  Level.create! name: "Primary 8"
+  Level.create! name: "Standard 8"
+  Level.create! name: "JHS 1"
+  Level.create! name: "JHS 2"
+  Level.create! name: "JHS 3"
+  Level.create! name: "SHS 1"
+  Level.create! name: "SHS 2"
+  Level.create! name: "SHS 3"
+  Level.create! name: "Form 1"
+  Level.create! name: "Form 2"
+  Level.create! name: "Form 3"
+  Level.create! name: "Form 4"
+  Level.create! name: "Primary"
+  Level.create! name: "Junior High School"
+  Level.create! name: "Secondary"
+  Level.create! name: "Beginning Readers"
+  Level.create! name: "Chapter Books"
+  Level.create! name: "Young Adult"
+  Level.create! name: "Adult"
+  Level.create! name: "Lower Primary"
+  Level.create! name: "Upper Primary"
+  Level.create! name: "Pre-Primary"
+  Level.create! name: "Primary 1 (Ghana)"
+  Level.create! name: "Standard 1 (Kenya Primary)"
+  Level.create! name: "Standard 1 (Tanzania)"
+  Level.create! name: "Primary 2 (Ghana)"
+  Level.create! name: "Standard 2 (Kenya Primary)"
+  Level.create! name: "Standard 2 (Tanzania)"
+  Level.create! name: "Primary 3 (Ghana)"
+  Level.create! name: "Standard 3 (Kenya Primary)"
+  Level.create! name: "Standard 3 (Tanzania)"
+  Level.create! name: "Primary 4 (Ghana)"
+  Level.create! name: "Standard 4 (Kenya Primary)"
+  Level.create! name: "Standard 4 (Tanzania)"
+  Level.create! name: "Primary 5 (Ghana)"
+  Level.create! name: "Standard 5 (Kenya Primary)"
+  Level.create! name: "Standard 5 (Tanzania)"
+  Level.create! name: "Primary 6 (Ghana)"
+  Level.create! name: "Standard 6 (Kenya Primary)"
+  Level.create! name: "Standard 6 (Tanzania)"
+  Level.create! name: "Standard 7 (Kenya Primary)"
+  Level.create! name: "JHS 1 (Ghana)"
+  Level.create! name: "Standard 7 (Tanzania)"
+  Level.create! name: "Standard 8 (Kenya Primary)"
+  Level.create! name: "JHS 2 (Ghana)"
+  Level.create! name: "Standard 8 (Tanzania)"
+  Level.create! name: "Form 1 (Kenya SHS)"
+  Level.create! name: "Form 1 (Malawi SHS)"
+  Level.create! name: "JHS 3 (Ghana)"
+  Level.create! name: "Form 2 (Kenya SHS)"
+  Level.create! name: "Form 2 (Malawi SHS)"
+  Level.create! name: "SHS 1 (Ghana)"
+  Level.create! name: "Form 3 (Kenya SHS)"
+  Level.create! name: "Form 3 (Malawi SHS)"
+  Level.create! name: "SHS 2 (Ghana)"
+  Level.create! name: "Form 4 (Kenya SHS)"
+  Level.create! name: "Form 4 (Malawi SHS)"
+  Level.create! name: "SHS 3 (Ghana)"
 end
 
 def make_languages
@@ -101,39 +173,6 @@ def make_content_buckets
   end
 end
 
-def make_purchases
-  User.all.each do |user|
-    4.upto(6) do |n|
-      Purchase.create!  user_id: user.id,
-                        book_id: n,
-                        purchased_on: DateTime.new(2014, 3, 2),
-                        is_purchased: true,
-                        is_approved: true
-    end
-  end
-
-  1.upto(3) do |n|
-    Purchase.create!  user_id: 1,
-                      book_id: n,
-                      purchased_on: DateTime.new(2014, 3, 2),
-                      is_purchased: true
-  end
-
-  1.upto(3) do |n|
-    Purchase.create!  user_id: 2,
-                      book_id: n,
-                      purchased_on: DateTime.new(2014, 3, 2),
-                      is_purchased: true
-  end
-
-  1.upto(3) do |n|
-    Purchase.create!  user_id: 3,
-                      book_id: n,
-                      purchased_on: DateTime.new(2014, 3, 2),
-                      is_purchased: true
-  end
-end
-
 def make_subcategories
   names = ["Science Fiction", "Historical Fiction", "Fantasy"]
   1.upto(3) do |n|
@@ -168,5 +207,4 @@ make_book_tags
 make_projects
 make_users
 make_content_buckets
-make_purchases
 make_booklists

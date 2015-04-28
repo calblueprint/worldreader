@@ -215,23 +215,26 @@ var BookListRow = React.createClass({
     );
   },
   _renderFlag: function() {
-    var flaggedClass = this.props.flagged ? "flagged" : "";
-    var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
-    var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
-    return (
-      this.props.editable ?
+    if (!this.props.editable) {
+      return null;
+    } else {
+      var flaggedClass = this.props.flagged ? "flagged" : "";
+      var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+      var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
+      return (
         <td data-placement="left" onClick={toggleFlag}
           data-toggle={this.props.flagged ? "tooltip" : ""}
           data-original-title={"Flagged by: " + this.props.book.flagged_user_email} >
           <img className={"flag " + flaggedClass} src="/assets/flag.png" />
         </td>
-      :
-        null
-    );
+      );
+    }
   },
   render: function() {
-    var flaggedClass = this.props.flagged ? "flagged" : "";
-    var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+    if (this.props.editable) {
+      var flaggedClass = this.props.flagged ? "flagged" : "";
+      var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
+    }
     return (
       <tr className={rowFlaggedClass}>
         <td className="book-title-table">

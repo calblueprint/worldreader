@@ -11,5 +11,12 @@
 class Genre < ActiveRecord::Base
   has_many :books
   has_many :subcategories
-  has_and_belongs_to_many :recommendations
+
+  def self.tags(index = 0)
+    genres = Genre.uniq.select([:id, :name]).map do |resource|
+      index += 1
+      { value: index, text: resource.name, tagType: "genre", id: resource.id }
+    end
+    genres.sort_by { |resource| resource[:name] }
+  end
 end

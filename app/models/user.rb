@@ -23,36 +23,29 @@
 #  country_id             :integer
 #  organization           :string(255)
 #
-
 class User < ActiveRecord::Base
-
-  validate :has_projects
+  validate :projects?
 
   self.table_name = "admin_users"
 
   enum role: [:user, :admin, :vip]
-  after_initialize :set_default_role, :if => :new_record?
+  after_initialize :set_default_role, if: :new_record?
   after_create :send_welcome_mail
 
   belongs_to :country
-  has_many :books, through: :purchases
-  has_many :purchases
   has_many :book_list_entries
   has_and_belongs_to_many :projects, foreign_key: 'admin_user_id'
   has_and_belongs_to_many :book_lists, foreign_key: 'admin_user_id'
 
   scope :partners, -> { where role: :user }
-  scope :partners_new_purchases, -> { partners.joins(:purchases).where(
-    'purchases.is_purchased = ? and purchases.is_approved is null', true).uniq }
 
   def admin?
     role == "admin" || role == "vip"
   end
 
-  def as_json(options={})
+  def as_json(_options = {})
     super(
       methods: [
-        :past_purchase_ids,
         :country_names,
         :language_names,
         :project_names
@@ -60,18 +53,12 @@ class User < ActiveRecord::Base
     )
   end
 
-  def past_purchase_ids
-    purchases.map do |purchase|
-      purchase.book.id
-    end
-  end
-
   def country_names
     country_set = Set.new
     projects.each do |project|
       country_set.add project.country.name
     end
-    return country_set
+    country_set
   end
 
   def language_names
@@ -81,11 +68,11 @@ class User < ActiveRecord::Base
         language_set.add language.name
       end
     end
-    return language_set
+    language_set
   end
 
   def project_names
-    projects.map &:name
+    projects.map(&:name)
   end
 
   def send_welcome_mail
@@ -97,14 +84,6 @@ class User < ActiveRecord::Base
     self.role ||= :user
   end
 
-  def self.partners_no_new_purchases
-    if (partners_new_purchases.empty?)
-      partners
-    else
-      partners.where("id not in (?)", partners_new_purchases.pluck(:id))
-    end
-  end
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -112,7 +91,7 @@ class User < ActiveRecord::Base
 
   private
 
-  def has_projects
+  def projects?
     errors.add(:projects, 'can\'t be blank') if projects.blank?
   end
 end

@@ -5,9 +5,9 @@ class Api::V1::ProjectsController < ApplicationController
     tags = ActiveSupport::JSON.decode params[:tags]
     results = []
     projects = Project.query(term, tags)
-    projects.each_with_index do |x, i|
+    projects.each do |x|
       results.push(x.as_json)
     end
-    render json: {projects: results}
+    render json: { projects: results }
   end
 end

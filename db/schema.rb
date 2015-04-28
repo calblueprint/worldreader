@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421211643) do
+ActiveRecord::Schema.define(version: 20150427090912) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 20150421211643) do
     t.string   "pricingmodel",                             limit: 4
     t.string   "textguide_book_id",                        limit: 45
     t.string   "image"
+    t.boolean  "level_tags_added",                                                             default: false
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], name: "index_books_on_book_status_id_and_appstatus_id", using: :btree
@@ -247,13 +248,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
 
   add_index "books_publishing_rights", ["book_id", "publishing_right_id"], name: "book_publishing_right_index", unique: true, using: :btree
 
-  create_table "books_recommendations", id: false, force: true do |t|
-    t.integer "book_id",           null: false
-    t.integer "recommendation_id", null: false
-  end
-
-  add_index "books_recommendations", ["book_id", "recommendation_id"], name: "index_books_recommendations_on_book_id_and_recommendation_id", using: :btree
-
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -279,12 +273,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "countries_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id",  null: false
-    t.integer "project_country_id"
-    t.integer "book_country_id"
   end
 
   create_table "delayed_jobs", force: true do |t|
@@ -352,11 +340,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "genres_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id", null: false
-    t.integer "genre_id",          null: false
   end
 
   create_table "geographies", force: true do |t|
@@ -448,12 +431,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
 
   add_index "languages_projects", ["language_id", "project_id"], name: "index_languages_projects_on_language_id_and_project_id", using: :btree
   add_index "languages_projects", ["project_id", "language_id"], name: "index_languages_projects_on_project_id_and_language_id", using: :btree
-
-  create_table "languages_recommendations", id: false, force: true do |t|
-    t.integer "recommendation_id",   null: false
-    t.integer "project_language_id"
-    t.integer "book_language_id"
-  end
 
   create_table "levels", force: true do |t|
     t.string   "name"
@@ -590,17 +567,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
     t.text     "comments"
   end
 
-  create_table "purchases", force: true do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "book_id",         null: false
-    t.date     "purchased_on"
-    t.boolean  "is_purchased"
-    t.boolean  "is_approved"
-    t.datetime "approved_on"
-    t.boolean  "flagged"
-    t.integer  "flagged_user_id"
-  end
-
   create_table "pushes", force: true do |t|
     t.integer  "book_id"
     t.integer  "content_bucket_id"
@@ -617,15 +583,6 @@ ActiveRecord::Schema.define(version: 20150421211643) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "recommendations", force: true do |t|
-    t.string   "organization"
-    t.string   "school"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "recommendation_type"
-    t.string   "name"
   end
 
   create_table "restrictedcontinent_books", id: false, force: true do |t|

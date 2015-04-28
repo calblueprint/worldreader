@@ -1,11 +1,8 @@
-# Add your own tasks in files placed in lib/tasks ending in .rake,
-# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
-
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-task :scrape_amazon, [:asin] => :environment do |t, args|
+task :scrape_amazon, [:asin] => :environment do |_t, args|
   require 'nokogiri'
   require 'open-uri'
 
@@ -34,20 +31,25 @@ task update_books: :environment do
         Rake::Task["scrape_amazon"].reenable
         done = true
       rescue OpenURI::HTTPError => e
-          if e.message == '404 Not Found'
-            # No longer available on Amazon
-            failure = FailedUpdate.where(book_id: book.id).first
-            if failure
-              failure.touch
-            else
-              failure = FailedUpdate.create! book_id: book.id
-            end
-          else
-            # Amazon failed us
-            Rake::Task["scrape_amazon"].reenable
-            $done = false
-          end
+        if e.message == '404 Not Found'
+          # No longer available on Amazon
+          FailedUpdate.create_or_update(book)
+        else
+          # Amazon failed us
+          Rake::Task["scrape_amazon"].reenable
+          done = false
+        end
       end
     end while done == false && i < 5
+  end
+end
+
+LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../db/levelsConvert.yml', __FILE__)))
+
+task add_level_tags: :environment do
+  puts "Adding human-readable level tags"
+
+  Book.where(level_tags_added: false).each do |book|
+    book.add_level_tags(LEVELS_CONVERT)
   end
 end

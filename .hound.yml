@@ -1,9 +1,14 @@
-Style/LineLength:
-  Description: 'Limit lines to 130 characters.'
-  Max: 130
+ruby:
+  enabled: true
+  config_file: ./.rubocop.yml
 
 java_script:
   enabled: true
-  config_file: config/hound_js.json
+  ignore_file: ./.jshint_ignore
 
+scss:
+  enabled: true
+  config_file: ./.scss.yml
+
+# Show cop names by default; can commment out if needed
 ShowCopNames: true
