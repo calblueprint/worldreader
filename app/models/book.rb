@@ -179,11 +179,11 @@ class Book < ActiveRecord::Base
   end
 
   def country_name
-    country.name || ""
+    country ? country.name : ""
   end
 
   def genre_name
-    genre.name || ""
+    genre ? genre.name : ""
   end
 
   def levels_name
@@ -221,7 +221,10 @@ class Book < ActiveRecord::Base
     end
     query = { filtered: filtered_query }
     highlight = { fields: { description: { fragment_size: 120 } } }
-    results = Book.search(query: query, highlight: highlight, from: Constants::PAGE_SIZE * page).to_a
+    results = Book.search(query: query,
+                          highlight: highlight,
+                          from: Constants::PAGE_SIZE * page,
+                          size: Constants::PAGE_SIZE).to_a
     results.map! do |r|
       if r.key?(:highlight)
         r._source.merge(highlight: r.highlight)
