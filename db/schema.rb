@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421231922) do
+ActiveRecord::Schema.define(version: 20150427090912) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 20150421231922) do
     t.string   "pricingmodel",                             limit: 4
     t.string   "textguide_book_id",                        limit: 45
     t.string   "image"
+    t.boolean  "level_tags_added",                                                             default: false
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], name: "index_books_on_book_status_id_and_appstatus_id", using: :btree

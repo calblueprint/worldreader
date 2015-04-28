@@ -43,3 +43,13 @@ task update_books: :environment do
     end while done == false && i < 5
   end
 end
+
+LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../db/levelsConvert.yml', __FILE__)))
+
+task add_level_tags: :environment do
+  puts "Adding human-readable level tags"
+
+  Book.where(level_tags_added: false).each do |book|
+    book.add_level_tags(LEVELS_CONVERT)
+  end
+end

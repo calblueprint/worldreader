@@ -231,6 +231,19 @@ class Book < ActiveRecord::Base
     end
   end
 
+  def add_level_tags(levels_convert)
+    levels_to_add = Set.new
+    levels.each do |level|
+      corresp_levels = levels_convert["levelsConvert"][level.name][genre.name]
+      corresp_levels.each do |level_to_add|
+        levels_to_add.add(Level.find_by_name(level_to_add))
+      end
+    end
+    levels.concat levels_to_add.to_a
+    self.level_tags_added = true
+    save
+  end
+
   def self.create_multi_match_query(string)
     {
       multi_match: {
