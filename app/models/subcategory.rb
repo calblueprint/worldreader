@@ -17,7 +17,7 @@ class Subcategory < ActiveRecord::Base
   def self.tags(index = 0)
     subcategories = Subcategory.uniq.select([:id, :name]).map do |resource|
       index += 1
-      { value: index, text: resource.name, tagType: "subcategories", id: resource.id }
+      { value: index, text: resource.name, tagType: "subcategory", id: resource.id }
     end
     subcategories.sort_by { |resource| resource[:name] }
   end
