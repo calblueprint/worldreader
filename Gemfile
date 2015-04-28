@@ -27,6 +27,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sdoc', '~> 0.4.0',            group: :doc
 gem 'slim'
+gem 'sucker_punch', '~> 1.0'
 gem 'toastr-rails'
 gem 'turbolinks'
 gem 'underscore-rails'
