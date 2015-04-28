@@ -1,5 +1,4 @@
 namespace :book_levels do
-
   LEVELS_CONVERT = YAML.load(File.read(File.expand_path('../../../db/levelsConvert.yml', __FILE__)))
 
   desc "Adds human-readable level tags to books."

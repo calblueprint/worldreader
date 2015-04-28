@@ -1,7 +1,6 @@
 namespace :amazon do
-
   desc "Scrapes amazon for book data."
-  task :scrape_amazon, [:asin] => :environment do |_t, args|
+  task :scrape, [:asin] => :environment do |_t, args|
     require 'nokogiri'
     require 'open-uri'
 
@@ -24,11 +23,11 @@ namespace :amazon do
     Book.all.each do |book|
       done = false
       i = 0
-      begin
+      loop do
         i += 1
         begin
-          Rake::Task["scrape_amazon"].invoke(book.asin)
-          Rake::Task["scrape_amazon"].reenable
+          Rake::Task["amazon:scrape"].invoke(book.asin)
+          Rake::Task["amazon:scrape"].reenable
           done = true
         rescue OpenURI::HTTPError => e
           if e.message == '404 Not Found'
@@ -36,11 +35,12 @@ namespace :amazon do
             FailedUpdate.create_or_update(book)
           else
             # Amazon failed us
-            Rake::Task["scrape_amazon"].reenable
+            Rake::Task["amazon:scrape"].reenable
             done = false
           end
         end
-      end while done == false && i < 5
+        break if done == true || i >= 5
+      end
     end
   end
 end
