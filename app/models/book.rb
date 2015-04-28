@@ -171,19 +171,19 @@ class Book < ActiveRecord::Base
   end
 
   def publisher_name
-    publisher.name || ""
+    publisher ? publisher.name : ""
   end
 
   def language_name
-    language.name || ""
+    language ? language.name : ""
   end
 
   def country_name
-    country.name || ""
+    country ? country.name : ""
   end
 
   def genre_name
-    genre.name || ""
+    genre ? genre.name : ""
   end
 
   def levels_name
