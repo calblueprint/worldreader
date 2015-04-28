@@ -200,17 +200,17 @@ var AddPartnerDisplay = React.createClass({
   render: function () {
     var countries = gon.countries.map(function(countries) {
       return (
-        <option value={countries.id}>{countries.name}</option>
+        <option value={countries.id}>{countries.text}</option>
       );
     }.bind(this));
     var languages = gon.languages.map(function(languages) {
       return (
-        <option value={languages.id}>{languages.name}</option>
+        <option value={languages.id}>{languages.text}</option>
       );
     }.bind(this));
     var booklists = gon.booklists.map(function(booklist) {
       return (
-        <option value={booklist.id}>{booklist.name}</option>
+        <option value={booklist.id}>{booklist.text}</option>
       );
     }.bind(this));
     return (

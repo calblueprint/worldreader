@@ -24,7 +24,6 @@
 #  organization           :string(255)
 #
 class User < ActiveRecord::Base
-
   validate :projects?
 
   self.table_name = "admin_users"

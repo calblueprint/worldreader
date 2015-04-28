@@ -4,8 +4,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
-    puts "SIGN UP PARAMS ======= "
-    puts sign_up_params
     project = Project.new(project_params)
     resource.projects << project
     book_lists = []
@@ -19,7 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
       project.save
       booklist.save
       resource.save
-      UserNotifier.send_signup_email(sign_up_params)
+      NewUserJob.new.async.perform(sign_up_params)
       render json: { message: "User created!", user: resource }
     else
       clean_up_passwords resource
