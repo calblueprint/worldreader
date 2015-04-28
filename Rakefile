@@ -50,17 +50,6 @@ task add_level_tags: :environment do
   puts "Adding human-readable level tags"
 
   Book.where(level_tags_added: false).each do |book|
-    if book.levels.length == 1 && ['A', 'B', 'C', 'D', 'E'].include?(book.levels[0].name)
-      #just checking again to make sure other levels not added
-      levels_to_add = Set.new
-      book.levels.each do |level|
-        corresp_levels = LEVELS_CONVERT["levelsConvert"][book.levels[0].name][book.genre.name]
-        corresp_levels.each do |level_to_add|
-          levels_to_add.add(Level.find_by_name(level_to_add))
-        end
-      end
-      book.levels.concat levels_to_add.to_a
-    end
-    book.level_tags_added = true
+    book.add_level_tags(LEVELS_CONVERT)
   end
 end
