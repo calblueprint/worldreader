@@ -64,7 +64,7 @@ var BookList = React.createClass({
       tagClass: function(item) {
         switch (item.tagType) {
           case 'country':       return countryLabel;
-          case 'levels':        return levelLabel;
+          case 'level':         return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
