@@ -223,7 +223,7 @@ class Book < ActiveRecord::Base
     highlight = { fields: { description: { fragment_size: 120 } } }
     results = Book.search(query: query,
                           highlight: highlight,
-                          from: Constants::PAGE_SIZE * page
+                          from: Constants::PAGE_SIZE * page,
                           size: Constants::PAGE_SIZE).to_a
     results.map! do |r|
       if r.key?(:highlight)
