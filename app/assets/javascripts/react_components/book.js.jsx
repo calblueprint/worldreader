@@ -122,6 +122,7 @@ var BookList = React.createClass({
   updateSearch: function() {
     var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
+    if (!searchTerm && tags.length == 0) return;
     this.setState({ searchTerm: searchTerm,
                     tags: tags});
     var self = this;
