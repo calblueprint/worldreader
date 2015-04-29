@@ -50,7 +50,7 @@ var BookList = React.createClass({
         }.bind(this),
         error: function(xhr, status, err) {
           var errors = xhr.responseJSON.errors;
-          for (var error of errors) {
+          for (var error in errors) {
             toastr.error(error);
           }
           console.error(this.props.url, status, err.toString());

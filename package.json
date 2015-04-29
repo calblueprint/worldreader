@@ -5,7 +5,22 @@
     "browserify-incremental": "^1.4.0",
     "reactify": "^0.17.1",
     "react": "^0.12.0",
-    "react-tools": "^0.12.1"
+    "react-tools": "^0.12.1",
+    "jest-cli": "^0.2.0",
+    "jquery": "^2.1.1"
+  },
+  "scripts": {
+    "test": "node ./node_modules/jest-cli/bin/jest.js"
+  },
+  "jest": {
+    "rootDir": "./app/assets/javascripts/react_components",
+    "scriptPreprocessor": "<rootDir>/__tests__/preprocessor.js",
+    "moduleFileExtensions": [ "js", "jsx"],
+    "unmockedModulePathPatterns": [
+      "react"
+    ],
+    "testFileExtensions": ["js", "jsx"],
+    "testPathIgnorePatterns": [ "preprocessor.js" ]
   },
   "engines": {
     "node": ">=0.10.0"
