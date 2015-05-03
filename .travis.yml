@@ -6,3 +6,4 @@ before_script:
   - mysql -e 'create database worldreader_dev;'
 script:
   - bundle exec rake --trace db:reset db:seed && bundle exec rspec spec
+  - npm install
