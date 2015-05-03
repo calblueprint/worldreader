@@ -8,5 +8,6 @@ namespace :book_levels do
     Book.where(level_tags_added: false).each do |book|
       book.add_level_tags(LEVELS_CONVERT)
     end
+    Book.import
   end
 end
