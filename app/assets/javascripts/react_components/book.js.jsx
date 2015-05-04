@@ -152,7 +152,7 @@ var BookList = React.createClass({
     var bookTiles = this.state.books.map(function (book) {
       return this.generateTile(book);
     }.bind(this));
-    var booklists = gon.booklists.map(function(booklist) {
+    var booklists = gon.user_booklists.map(function(booklist) {
       return (
         <option value={booklist.id}>{booklist.name}</option>
       );

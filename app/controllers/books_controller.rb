@@ -7,7 +7,7 @@ class BooksController < ApplicationController
       id = params[:booklist].to_i if params[:booklist]
       booklist = current_user.user? ? current_user.book_lists : BookList.all
       @booklist = booklist.map(&:id).include?(id) ? id : booklist.first.id
-      gon.booklists = booklist.map{ |x|
+      gon.user_booklists = booklist.map{ |x|
         {
           id: x.id, name: x.name
         }
