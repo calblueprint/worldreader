@@ -15,7 +15,8 @@
         li
           a href="/"  Library
         li
-          = link_to "My Booklists", user_booklists_path(current_user.id)
+          - if current_user && current_user.user?
+            = link_to "My Booklists", user_booklists_path(current_user.id)
         li.end
           - if current_user.nil?
             a data-target="#LoginModal" data-toggle="modal" href="#LoginModal"  Log in
