@@ -13,7 +13,7 @@ class BooksController < ApplicationController
         }
       }
     else
-      gon.booklists = []
+      gon.user_booklists = []
     end
     gon.books = @books
     @tags = params[:tags] || "[]"
