@@ -64,7 +64,7 @@ var BookList = React.createClass({
       tagClass: function(item) {
         switch (item.tagType) {
           case 'country':       return countryLabel;
-          case 'level':         return levelLabel;
+          case 'levels':         return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
@@ -152,7 +152,7 @@ var BookList = React.createClass({
     var bookTiles = this.state.books.map(function (book) {
       return this.generateTile(book);
     }.bind(this));
-    var booklists = gon.user_booklists.map(function(booklist) {
+    var booklists = gon.booklists.map(function(booklist) {
       return (
         <option value={booklist.id}>{booklist.name}</option>
       );
