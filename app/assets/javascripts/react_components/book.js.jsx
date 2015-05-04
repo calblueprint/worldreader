@@ -64,7 +64,7 @@ var BookList = React.createClass({
       tagClass: function(item) {
         switch (item.tagType) {
           case 'country':       return countryLabel;
-          case 'levels':        return levelLabel;
+          case 'level':         return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
@@ -122,6 +122,7 @@ var BookList = React.createClass({
   updateSearch: function() {
     var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
+    if (!searchTerm && tags.length == 0) return;
     this.setState({ searchTerm: searchTerm,
                     tags: tags});
     var self = this;
@@ -138,7 +139,8 @@ var BookList = React.createClass({
       },
       success: function(results) {
         self.setState({books: state.books.concat(results.books),
-                       isLastPage: results.books.length == 0});
+                       isLastPage: results.books.length == 0,
+                       count: results.count});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -209,7 +211,7 @@ var BookList = React.createClass({
       if (tagText.length != 0){
         tagString = " with tags " + tagText.join(', ');
       }
-      results = "Found results:" + searchString + tagString + ".";
+      results = "Found " + this.state.count + " results:" + searchString + tagString + ".";
       return (
         <div>
           {searchBar}

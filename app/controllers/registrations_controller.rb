@@ -17,6 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
       project.save
       booklist.save
       resource.save
+      NewUserJob.new.async.perform(sign_up_params)
       render json: { message: "User created!", user: resource }
     else
       clean_up_passwords resource
