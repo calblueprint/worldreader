@@ -15,6 +15,7 @@ var EditBaseList = React.createClass({
     $('#baselist-toggle').on('switchChange.bootstrapSwitch', this._togglePublished);
     $('.bootstrap-switch').css("float", "right");
     $('.name-field').val(this.state.name);
+    $("#description-field").val(this.props.baselist.description);
 
     $.ajax({
       url: "/api/v1/book_lists/" + this.props.baselist.id + "/books",
@@ -49,6 +50,7 @@ var EditBaseList = React.createClass({
   _editBaseList: function() {
     var bookIds = _.pluck(this.state.selectedBooks, "id");
     var name = $('.name-field').val();
+    var description = $("#description-field").val();
     this.setState({name: name});
 
     // Client Side validations
@@ -71,6 +73,7 @@ var EditBaseList = React.createClass({
         base_list: {
           name: name,
           book_ids: bookIds,
+          description: description,
           published: this.state.published
         }
       },
@@ -117,7 +120,11 @@ var EditBaseList = React.createClass({
             <div className="panel">
               <h3 className="panel-title"> Book Tags </h3>
               <div className="panel-boundary-bottom"/>
-              <BaseBookListSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+              <BaseBookListSearch
+                selectBook={this._selectBook}
+                unselectBook={this._unselectBook}
+                selectedBooks={this.state.selectedBooks}
+                baselist={this.props.baselist} />
             </div>
           </div>
         </div>
