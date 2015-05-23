@@ -47,8 +47,8 @@ var BookTile = React.createClass({
         <div className="media-body">
           <h3 className="media-heading">{this.props.book.title}</h3>
           <h5>{_.reduce(
-                  this.props.book.authors_name,
-                  function(memo, author) {return memo + " " + author},
+                  this.props.book.authors,
+                  function(memo, author) { return memo + " " + author.name},
                   ""
             )}</h5>
           <h5>{this.props.book.publisher_name}</h5>
