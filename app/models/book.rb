@@ -112,7 +112,7 @@ class Book < ActiveRecord::Base
                  "Genre",
                  "Subject",
                  "Reading Level",
-                 "Descripiton"]
+                 "Description"]
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -126,10 +126,10 @@ class Book < ActiveRecord::Base
   def to_csv
     [asin,
     title,
-    publisher.name,
-    author.name,
-    genre.name,
-    level.name,
+    publisher_name,
+    authors_name,
+    genre_name,
+    levels_name,
     description]
   end
 
