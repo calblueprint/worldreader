@@ -52,15 +52,6 @@ var BookTile = React.createClass({
                   ""
             )}</h5>
           <h5>{this.props.book.publisher_name}</h5>
-          {this.props.book["donated?"] ?
-            <div className="price">
-              <b>Free</b>
-            </div>
-            :
-            <div className="price">
-              <b>{this.props.book.price}</b>
-            </div>
-          }
           <span className="expanded-book-desc">{this.props.book.description}</span>
           <div className="book-tags">
             {levels}
