@@ -243,7 +243,7 @@ var AddPartnerDisplay = React.createClass({
           <div className="add-partner-form-div">
             <label for="projectLanguage">Project Languages</label><br/>
             <select id="projectLanguage" className="selectpicker new-user-input"
-              title="Select languages" multiple data-size="20"
+              title="Select languages" multiple data-size="20" data-dropup-auto="false"
               data-live-search="true" data-selected-text-format="count>4">
               {languages}
             </select>
@@ -251,7 +251,7 @@ var AddPartnerDisplay = React.createClass({
           <div className="add-partner-form-div">
             <label for="projectCountry">Project Country</label><br/>
             <select id="projectCountry" className="selectpicker new-user-input"
-              title="Select country" data-size="20"
+              title="Select country" data-size="20" data-dropup-auto="false"
               data-live-search="true" data-selected-text-format="count>4">
               {countries}
             </select>
@@ -260,7 +260,8 @@ var AddPartnerDisplay = React.createClass({
             <label for="booklists">Base Booklists</label><br/>
             <select id="booklists" className="selectpicker new-user-input"
               title="Select base booklists" multiple data-size="20"
-              data-live-search="true" data-selected-text-format="count>4">
+              data-live-search="true" data-dropup-auto="false"
+              data-selected-text-format="count>4">
               {booklists}
             </select>
           </div>
