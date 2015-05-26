@@ -125,13 +125,15 @@ class Book < ActiveRecord::Base
   end
 
   def to_csv
-    [asin,
-    title,
-    publisher_name,
-    authors_name,
-    genre_name,
-    levels_name,
-    description]
+    [
+      asin,
+      title,
+      publisher_name,
+      authors_name,
+      genre_name,
+      levels_name,
+      description
+    ]
   end
 
   def as_json(options = {})
