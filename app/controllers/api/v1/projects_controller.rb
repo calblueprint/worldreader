@@ -1,5 +1,4 @@
 class Api::V1::ProjectsController < ApplicationController
-
   def search
     term = params[:term]
     tags = ActiveSupport::JSON.decode params[:tags]
