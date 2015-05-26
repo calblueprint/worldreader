@@ -70,6 +70,7 @@
 #  pricingmodel                             :string(4)
 #  textguide_book_id                        :string(45)
 #  image                                    :string(255)
+#  level_tags_added                         :boolean          default(FALSE)
 #
 
 class Book < ActiveRecord::Base
