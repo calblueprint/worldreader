@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var MainDisplay = React.createClass({
   render: function() {
     return (
@@ -275,3 +277,5 @@ var AddPartnerDisplay = React.createClass({
     );
   }
 });
+
+module.exports = ManagePartnerInfo;

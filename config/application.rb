@@ -22,6 +22,8 @@ module Worldreader
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.browserify_rails.commandline_options = "--transform reactify --extension=\".jsx\""
+
     config.react.addons = true
     # Don't generate extra files when generating models and controllers
     config.generators do |generate|

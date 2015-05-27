@@ -1,1 +1,2 @@
-app/assets/javascript/vendor/**.js
+app/assets/javascripts/vendor/**.js
+app/assets/javascripts/components.js

@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var GroupDisplay = React.createClass({
   getInitialState: function () {
     var initGroup = {
@@ -116,3 +118,5 @@ var GroupBookList = React.createClass({
     );
   }
 });
+
+module.exports = GroupDisplay;

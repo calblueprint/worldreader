@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var BookStatusView = React.createClass({
   getInitialState: function() {
     return {
@@ -134,3 +136,5 @@ var BookStatus = React.createClass({
     );
   }
 });
+
+module.exports = BookStatusView;
