@@ -4,6 +4,6 @@ rvm:
 before_script:
   - cp config/database.travis.yml config/database.yml
   - mysql -e 'create database worldreader_dev;'
+  - npm install
 script:
   - bundle exec rake --trace db:reset db:seed && bundle exec rspec spec
-  - npm install
