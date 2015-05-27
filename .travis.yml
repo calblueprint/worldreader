@@ -7,3 +7,4 @@ before_script:
   - npm install
 script:
   - bundle exec rake --trace db:reset db:seed && bundle exec rspec spec
+  - npm test
