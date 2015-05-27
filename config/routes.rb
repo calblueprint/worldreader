@@ -4,11 +4,10 @@ Rails.application.routes.draw do
     get "/login" => "devise/sessions#new"
   end
 
-  devise_for :users, skip: [:sessions], controllers: { registrations: "registrations" }
-  as :user do
-    post 'users/sign_in' => 'devise/sessions#create', as: 'user_session'
-    delete 'users/sign_out' => 'devise/sessions#destroy', as: 'destroy_user_session'
-  end
+  devise_for :users, controllers: {
+    registrations: "registrations",
+    passwords: "passwords"
+  }
 
   resources :users do
     get "booklists"
