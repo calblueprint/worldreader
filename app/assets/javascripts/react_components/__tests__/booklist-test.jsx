@@ -11,6 +11,7 @@ describe('BookList', function() {
     var $ = require('jquery');
 
     var BookList = require('../book');
+    // TODO move gon dependencies to slim files in all react components
     // var bookList = TestUtils.renderIntoDocument(<BookList/>);
     // expect(demoComponent.getDOMNode().textContent).toBe('Demo Component');
   });

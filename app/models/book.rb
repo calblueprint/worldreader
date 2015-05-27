@@ -70,6 +70,7 @@
 #  pricingmodel                             :string(4)
 #  textguide_book_id                        :string(45)
 #  image                                    :string(255)
+#  level_tags_added                         :boolean          default(FALSE)
 #
 
 class Book < ActiveRecord::Base
@@ -105,9 +106,14 @@ class Book < ActiveRecord::Base
                   "authors.name",
                   "publisher.name"]
 
-  CSV_COLUMNS = ["Book Name",
-                 "ASIN",
-                 "Publisher"]
+  CSV_COLUMNS = ["ASIN",
+                 "Title",
+                 "Publisher",
+                 "Author",
+                 "Genre",
+                 "Subject",
+                 "Reading Level",
+                 "Description"]
 
   def self.to_csv(books)
     CSV.generate do |csv|
@@ -119,19 +125,15 @@ class Book < ActiveRecord::Base
   end
 
   def to_csv
-    [title, asin, publisher.name]
-  end
-
-  def donated?
-    p = self[:price]
-    unless p
-      return true
-    end
-    p <= 0
-  end
-
-  def price
-    ActionController::Base.helpers.number_to_currency self[:price]
+    [
+      asin,
+      title,
+      publisher_name,
+      authors_name,
+      genre_name,
+      levels_name,
+      description
+    ]
   end
 
   def as_json(options = {})
@@ -142,7 +144,6 @@ class Book < ActiveRecord::Base
                          :country_name,
                          :genre_name,
                          :update_status,
-                         :donated?,
                          :updated_date,
                          :url,
                          :book_type]

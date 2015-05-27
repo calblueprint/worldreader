@@ -14,7 +14,7 @@ var PublishedBookLists = React.createClass({
   _selectBooklist: function(booklist) {
     if (this.state.selectedList == booklist) {
       this.setState({
-        selectedList: booklist
+        selectedList: null
       });
     } else {
       this.setState({
