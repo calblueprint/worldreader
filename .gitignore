@@ -80,3 +80,6 @@ pickle-email-*.html
 .env
 .env_*
 .powenv
+
+# Node Modules
+/node_modules

@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var React = require('react');
 
 var bookList = null;
 
@@ -52,7 +52,7 @@ var BookList = React.createClass({
         }.bind(this),
         error: function(xhr, status, err) {
           var errors = xhr.responseJSON.errors;
-          for (var error of errors) {
+          for (var error in errors) {
             toastr.error(error);
           }
           console.error(this.props.url, status, err.toString());
@@ -264,3 +264,5 @@ var BookList = React.createClass({
     );
   }
 });
+
+module.exports = BookList;

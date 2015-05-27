@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 /*
  * @prop booklist - the id of the booklist to display.
  * @prop editable - boolean for if this table is editable
@@ -262,3 +264,5 @@ var BookListRow = React.createClass({
     );
   }
 });
+
+module.exports = BookListTable;

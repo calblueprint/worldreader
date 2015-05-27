@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var EditBaseList = React.createClass({
   getInitialState: function() {
     var baselist = this.props.baselist;
@@ -132,3 +134,5 @@ var EditBaseList = React.createClass({
     );
   }
 });
+
+module.exports = EditBaseList;

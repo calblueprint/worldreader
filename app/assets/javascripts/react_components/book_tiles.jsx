@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var React = require('react');
+
 var BookTile = React.createClass({
   handleClick: function() {
     this.props.handleClick({bookId: this.props.book.id});
@@ -80,3 +82,5 @@ var BookTile = React.createClass({
     )
   }
 });
+
+module.exports = BookTile;
