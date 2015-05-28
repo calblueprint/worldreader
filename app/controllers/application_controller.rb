@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_current_user, :set_auth_token, :search_tags
+  before_action :set_auth_token, :search_tags
   after_action :store_location
   protect_from_forgery with: :exception
 
@@ -8,11 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_auth_token
-    gon.auth_token = form_authenticity_token
-  end
-
-  def set_current_user
-    gon.current_user = current_user
+    @auth_token = form_authenticity_token
   end
 
   def store_location
@@ -47,9 +43,8 @@ class ApplicationController < ActionController::Base
     @genre_tags = Genre.tags(index)
     index += @genre_tags.count
     @subcategory_tags = Subcategory.tags(index)
-    gon.all_tags = @country_tags + @level_tags + @language_tags + @genre_tags +
+    all_tags = @country_tags + @level_tags + @language_tags + @genre_tags +
       @subcategory_tags
     @all_tags = gon.all_tags
-    gon.project_tags = @country_tags + @level_tags + @language_tags
   end
 end
