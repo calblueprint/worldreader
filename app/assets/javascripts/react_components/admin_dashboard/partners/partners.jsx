@@ -185,7 +185,7 @@ var AddPartnerDisplay = React.createClass({
       type: "POST",
       url: "/users",
       data: {
-        authenticity_token: gon.auth_token,
+        authenticity_token: this.props.auth_token,
         user: user,
         booklist: booklist,
         project: project

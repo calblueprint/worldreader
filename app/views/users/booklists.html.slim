@@ -1,4 +1,7 @@
 h1.text-center Booklists
 
 section
-  = react_component 'BookLists', {booklists: @booklists}
+  = react_component 'BookLists', {  \
+      booklists: @booklists,        \
+      current_user: @current_user   \
+    }

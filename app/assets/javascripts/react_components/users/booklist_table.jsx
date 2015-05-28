@@ -82,7 +82,7 @@ var BookListTable = React.createClass({
       data: {
         book_id: book.id,
         flagged: isFlagged,
-        user_id: gon.current_user.id,
+        user_id: this.props.current_user.id,
       },
       success: function(data) {
         var books = this.state.books;
@@ -132,7 +132,8 @@ var BookListTable = React.createClass({
                      editable={self.props.editable}
                      flagged={book.flagged_user_email != null}
                      toggleFlag={self._toggleFlag}
-                     key={book.id} />
+                     key={book.id}
+                     current_user={self.props.current_user} />
       );
     });
     return (
@@ -220,7 +221,7 @@ var BookListRow = React.createClass({
     } else {
       var flaggedClass = this.props.flagged ? "flagged" : "";
       var rowFlaggedClass = flaggedClass + "-" + this.props.book.flagged_user_role;
-      var toggleFlag = gon.current_user.role != "user" ? this._toggleFlag : null;
+      var toggleFlag = this.props.current_user.role != "user" ? this._toggleFlag : null;
       return (
         <td data-placement="left" onClick={toggleFlag}
           data-toggle={this.props.flagged ? "tooltip" : ""}

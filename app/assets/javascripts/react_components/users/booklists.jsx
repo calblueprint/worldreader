@@ -36,6 +36,7 @@ var BookLists = React.createClass({
         <BookListTable booklist={this.state.selectedBookList.id}
                        name={this.state.selectedBookList.name}
                        editable={true}
+                       current_user={this.props.current_user}
         />
       </div>
     );
