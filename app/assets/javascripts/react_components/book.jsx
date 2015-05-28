@@ -6,14 +6,14 @@ var bookList = null;
 
 var BookList = React.createClass({
   getInitialState: function() {
-    return {user: this.props.current_user,
-            books: this.props.books,
-            expandedBookId: null,
-            pageNumber: 0,
-            searchTerm: "",
-            tags: JSON.parse(this.props.tags),
-            isLastPage: false
-          };
+    return {
+      books: this.props.books,
+      expandedBookId: null,
+      pageNumber: 0,
+      searchTerm: "",
+      tags: JSON.parse(this.props.tags),
+      isLastPage: false
+    };
   },
   handleBookExpand: function(event) {
     var expandedBookId = event.bookId;
