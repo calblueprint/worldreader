@@ -1,5 +1,6 @@
 class Admin::DashboardController < ApplicationController
   before_filter :verify_admin
+  before_action :new_partner_info
 
   def index
   end
@@ -40,5 +41,11 @@ class Admin::DashboardController < ApplicationController
   def verify_admin
     redirect_to root_url unless
       current_user.try(:admin?) || current_user.try(:vip?)
+  end
+
+  def new_partner_info
+    @countries = Country.tags
+    @languages = Language.tags
+    @booklists = BookList.tags
   end
 end

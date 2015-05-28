@@ -7,12 +7,6 @@ class ApplicationController < ActionController::Base
     session[:previous_url] || root_path
   end
 
-  def new_partner_info
-    gon.countries = Country.tags
-    gon.languages = Language.tags
-    gon.booklists = BookList.tags
-  end
-
   def set_auth_token
     gon.auth_token = form_authenticity_token
   end
