@@ -29,7 +29,7 @@ var BaseBookListSearch = React.createClass({
       typeahead: {
         name: 'base_booklists',
         displayKey: 'text',
-        source: gon.all_tags
+        source: this.props.allTags
       }
     });
     mainSearch.on('itemAdded', this.tagsUpdated);

@@ -45,6 +45,6 @@ class ApplicationController < ActionController::Base
     @subcategory_tags = Subcategory.tags(index)
     all_tags = @country_tags + @level_tags + @language_tags + @genre_tags +
       @subcategory_tags
-    @all_tags = gon.all_tags
+    @all_tags = all_tags
   end
 end

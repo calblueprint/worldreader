@@ -31,7 +31,8 @@ var BaseListView = React.createClass({
       );
     } else if (this.state.view == baseListViews.CREATE_BASELISTS) {
       return (
-        <CreateBaseList viewBaseLists={this.viewBaseLists} />
+        <CreateBaseList viewBaseLists={this.viewBaseLists}
+                        allTags={this.props.allTags} />
       );
     } else if (this.state.view == baseListViews.EDIT_BASELISTS) {
       return (

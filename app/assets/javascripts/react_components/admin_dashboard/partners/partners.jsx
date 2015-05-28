@@ -66,6 +66,7 @@ var ManagePartnerInfo = React.createClass({
                 <PartnerDisplay partnerId={this.state.selectedPartner} />
                : <AddPartnerDisplay
                   success={this._addPartnerSuccess}
+                  auth_token={this.props.auth_token}
                   countries={this.props.countries}
                   languages={this.props.languages}
                   booklists={this.props.booklists}
@@ -224,7 +225,7 @@ var AddPartnerDisplay = React.createClass({
       <div className="add-partner-display height-100">
         <div className="header">Add a new partner</div>
         <div className="add-partner-form col-md-6" >
-          <input type="hidden" name="authenticity_token" value={gon.auth_token} />
+          <input type="hidden" name="authenticity_token" value={this.props.auth_token} />
           <div className="add-partner-form-div">
             <label for="newUserEmail">Email</label><br/>
             <input id="newUserEmail" type="text" className="form-control new-user-input" />
