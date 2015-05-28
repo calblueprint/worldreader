@@ -5,4 +5,8 @@ section
   / header
   /   .page-header.h1 Manage Partners
 
-  = react_component 'DashboardTabs', {}
+  = react_component 'DashboardTabs', {  \
+      countries: @countries,            \
+      languages: @languages,            \
+      booklists: @booklists             \
+    }

@@ -64,7 +64,12 @@ var ManagePartnerInfo = React.createClass({
             <div className="mainScreen height-100">
               {!this.state.showAddPartner ?
                 <PartnerDisplay partnerId={this.state.selectedPartner} />
-               : <AddPartnerDisplay success={this._addPartnerSuccess} />
+               : <AddPartnerDisplay
+                  success={this._addPartnerSuccess}
+                  countries={this.props.countries}
+                  languages={this.props.languages}
+                  booklists={this.props.booklists}
+                />
               }
             </div>
           </div>
@@ -200,17 +205,17 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    var countries = gon.countries.map(function(countries) {
+    var countries = this.props.countries.map(function(countries) {
       return (
         <option value={countries.id}>{countries.text}</option>
       );
     }.bind(this));
-    var languages = gon.languages.map(function(languages) {
+    var languages = this.props.languages.map(function(languages) {
       return (
         <option value={languages.id}>{languages.text}</option>
       );
     }.bind(this));
-    var booklists = gon.booklists.map(function(booklist) {
+    var booklists = this.props.booklists.map(function(booklist) {
       return (
         <option value={booklist.id}>{booklist.text}</option>
       );

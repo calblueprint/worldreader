@@ -48,7 +48,12 @@ var DashboardTabs = React.createClass({
           </div>
         </nav>
         <div className="tabDisplay">
-          <DashboardTabDisplay type={this.state.currentTab}/>
+          <DashboardTabDisplay
+            type={this.state.currentTab}
+            countries={this.props.countries}
+            languages={this.props.languages}
+            booklists={this.props.booklists}
+          />
         </div>
       </div>
     );
@@ -59,7 +64,11 @@ var DashboardTabDisplay = React.createClass({
   render: function() {
     if (this.props.type == tabs.VIEWINFO) {
       return (
-        <ManagePartnerInfo />
+        <ManagePartnerInfo
+          countries={this.props.countries}
+          languages={this.props.languages}
+          booklists={this.props.booklists}
+        />
       );
     } else if (this.props.type == tabs.BASE_LISTS) {
       return (
