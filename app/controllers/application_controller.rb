@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_current_user, :set_auth_token, :new_partner_info, :search_tags
+  before_action :set_current_user, :set_auth_token, :search_tags
   after_action :store_location
   protect_from_forgery with: :exception
 

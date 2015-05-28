@@ -160,7 +160,6 @@ var BookList = React.createClass({
       );
     }.bind(this));
     var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
-    debugger;
     var searchBar = (
       <div className="row" id="library">
         <div id="tag-and-searchbar">
