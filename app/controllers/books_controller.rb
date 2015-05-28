@@ -7,15 +7,12 @@ class BooksController < ApplicationController
       id = params[:booklist].to_i if params[:booklist]
       booklist = current_user.user? ? current_user.book_lists : BookList.all
       @booklist = booklist.map(&:id).include?(id) ? id : booklist.first.id
-      gon.user_booklists = booklist.map{ |x|
-        {
-          id: x.id, name: x.name
-        }
-      }
+      @user_booklists = booklist.map do |resource| # TODO replace with BookList.tags
+        { id: resource.id, name: resource.name }
+      end
     else
-      gon.user_booklists = []
+      @user_booklists = []
     end
-    gon.books = @books
     @tags = params[:tags] || "[]"
   end
 

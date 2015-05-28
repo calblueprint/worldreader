@@ -6,7 +6,7 @@ var bookList = null;
 
 var BookList = React.createClass({
   getInitialState: function() {
-    return {user: gon.current_user,
+    return {user: this.props.current_user,
             books: this.props.books,
             expandedBookId: null,
             pageNumber: 0,
@@ -75,7 +75,7 @@ var BookList = React.createClass({
       typeahead: {
         name: 'cities',
         displayKey: 'text',
-        source: gon.all_tags
+        source: this.props.all_tags
       }
     });
     mainSearch.on('itemAdded', this.tagsUpdated);
@@ -92,7 +92,7 @@ var BookList = React.createClass({
   generateTile: function(book) {
     return (
       <BookTile
-        user={gon.current_user}
+        user={this.props.current_user}
         key={book.id}
         book={book}
         handleClick={this.handleBookExpand}
@@ -152,12 +152,13 @@ var BookList = React.createClass({
     var bookTiles = this.state.books.map(function (book) {
       return this.generateTile(book);
     }.bind(this));
-    var booklists = gon.user_booklists.map(function(booklist) {
+    var booklists = this.props.user_booklists.map(function(booklist) {
       return (
         <option value={booklist.id}>{booklist.name}</option>
       );
     }.bind(this));
-    var tagbarWidth = (gon.current_user == null) ? "col-md-10" : "col-md-8";
+    var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
+    debugger;
     var searchBar = (
       <div className="row" id="library">
         <div id="tag-and-searchbar">
@@ -182,7 +183,7 @@ var BookList = React.createClass({
               </div>
             </div>
             <div className="select-container">
-              {gon.current_user != null ?
+              {this.props.current_user != null ?
                 <div className="col-md-2">
                   <div className="booklists-select">
                     <select className="selectpicker booklists" title="Select a Booklist"
