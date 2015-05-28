@@ -13,6 +13,7 @@ var BookList = React.createClass({
       searchTerm: "",
       tags: JSON.parse(this.props.tags),
       isLastPage: false
+      isFirstLoad: true
     };
   },
   handleBookExpand: function(event) {
@@ -124,7 +125,8 @@ var BookList = React.createClass({
     var tags = $("#book-tagbar-input").tagsinput("items");
     if (!searchTerm && tags.length == 0) return;
     this.setState({ searchTerm: searchTerm,
-                    tags: tags});
+                    tags: tags,
+                    isFirstLoad: false});
     var self = this;
     var state = this._pendingState == null || this._pendingState == this.state ?
       this.state : this._pendingState;
@@ -165,9 +167,16 @@ var BookList = React.createClass({
           <div className="row">
             <div className="col-md-10 col-md-offset-1">
               <div className="input-group" id="book-searchbar">
-                <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for books" type="text" />
+                <input className="input-block-level form-control"
+                  id="book-searchbar-input"
+                  onKeyUp={this.search}
+                  placeholder="Search for books" type="text" />
                 <span className="input-group-btn">
-                  <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
+                  <button className="btn btn-default"
+                    id="search-button" onClick={this.search}
+                    type="button">
+                    <span className="glyphicon glyphicon-search"></span>
+                  </button>
                 </span>
               </div>
             </div>
@@ -200,6 +209,15 @@ var BookList = React.createClass({
         </div>
       </div>
     );
+    var emptyText = this.state.isFirstLoad ?
+                      "Begin by entering your search terms in the \
+                      Search for books or Add tag field above. \
+                      For a list of tags, click the question mark." :
+                      "No books found. Continue by entering your \
+                      search terms in the Search for books or \
+                      Add tag field above. For a list of tags, \
+                      click the question mark.";
+
     if (bookTiles.length) {
       var results = ""
       var searchString = " " + this.state.searchTerm;
@@ -239,7 +257,7 @@ var BookList = React.createClass({
         {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
-            No books found. Search for a title or add a tag to continue.
+            {emptyText}
           </h3>
         </div>
       </div>

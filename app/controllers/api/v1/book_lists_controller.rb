@@ -12,6 +12,15 @@ class Api::V1::BookListsController < ApplicationController
     end
   end
 
+  def destroy
+    book_list = BookList.find(params[:id])
+    if book_list.destroy
+      render json: BookList.all, status: :ok
+    else
+      render json: { messsage: "Error deleting list." }, status: :error
+    end
+  end
+
   def add
     book = Book.find(params[:book_id])
     errors = []

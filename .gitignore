@@ -21,6 +21,7 @@ db/*.sqlite3
 /log/*
 /tmp/*
 *.sql
+*.log
 
 # various artifacts
 **.war

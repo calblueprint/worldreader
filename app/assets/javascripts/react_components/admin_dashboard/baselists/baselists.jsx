@@ -32,6 +32,19 @@ var BaseLists = React.createClass({
   _createBaseList: function() {
     this.props.viewCreateBookLists();
   },
+  _deleteBaseList: function(id) {
+    $.ajax({
+      url: "/api/v1/book_lists/" + id,
+      method: "DELETE",
+      dataType: "json",
+      success: function(data) {
+        this.setState({baseLists: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     var self = this;
     var pills = this.state.baseLists.map(function(baselist) {
@@ -39,7 +52,8 @@ var BaseLists = React.createClass({
         <BaseList baselist={baselist}
           clicked={_.isEqual(self.state.selectedBaselist, baselist.id)}
           selectBaselist={self._selectBaselist}
-          editBaseList={self.props.viewEditBookLists} />
+          editBaseList={self.props.viewEditBookLists}
+          deleteBaseList={self._deleteBaseList} />
       );
     });
     return (
@@ -48,7 +62,10 @@ var BaseLists = React.createClass({
           <div className="panel-heading">
             <div className="row">
               <div className="col-md-12">
-                <div className="btn btn-default pull-right" onClick={this._createBaseList}><span className="glyphicon glyphicon-plus"/></div>
+                <div className="btn btn-default pull-right"
+                     onClick={this._createBaseList}>
+                     <span className="glyphicon glyphicon-plus"/>
+                </div>
               </div>
             </div>
           </div>
@@ -86,6 +103,12 @@ var BaseList = React.createClass({
       );
     }
   },
+  _editBaselist: function() {
+    this.props.editBaseList(this.props.baselist);
+  },
+  _deleteBaselist: function() {
+    this.props.deleteBaseList(this.props.baselist.id);
+  },
   onClick: function() {
     this.props.selectBaselist(this.props.baselist.id);
   },
@@ -99,18 +122,19 @@ var BaseList = React.createClass({
           </li>
         );
       });
-      var _editBaselist = function () {
-        self.props.editBaseList (self.props.baselist);
-      }
       return (
         <div className="list-group-item cursor" onClick={this.onClick}>
           {this.props.baselist.name}
           {this._published()}
           <div className="btn-group pull-right">
-            <button type="button" className="btn btn-default" onClick={_editBaselist}>
+            <button type="button"
+                    className="btn btn-default"
+                    onClick={this._editBaselist}>
               Edit
             </button>
-            <button type="button" className="btn btn-default" onClick={this.removeBaselist}>
+            <button type="button"
+                    className="btn btn-default"
+                    onClick={this._deleteBaselist}>
               Delete
             </button>
           </div>
