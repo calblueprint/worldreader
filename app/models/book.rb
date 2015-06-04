@@ -163,6 +163,10 @@ class Book < ActiveRecord::Base
       })
   end
 
+  def authors_name
+    authors.map(&:name)
+  end
+
   def updated_date
     updated_at.strftime "%m/%d/%Y"
   end
