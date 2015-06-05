@@ -19,10 +19,13 @@ var ManagePartnerInfo = React.createClass({
   componentDidMount: function () {
     this._fetchPartners({});
   },
-  _fetchPartners: function () {
+  _fetchPartners: function (query) {
     $.ajax({
-      url: "/admin/dashboard/display_all_partners",
+      url: "/admin/dashboard/partners",
       dataType: 'json',
+      data: {
+        query: query
+      },
       success: function (data) {
         this.setState({partners: data});
       }.bind(this),
@@ -31,8 +34,8 @@ var ManagePartnerInfo = React.createClass({
       }.bind(this)
     });
   },
-  _handleOnSearchSubmit: function (search) {
-    this._fetchPartners({search_data: search});
+  _handleOnSearchSubmit: function (query) {
+    this._fetchPartners(query);
   },
   _selectPartner: function (partnerId) {
     this.setState({selectedPartner: partnerId, showAddPartner: false});
@@ -53,7 +56,8 @@ var ManagePartnerInfo = React.createClass({
           <div className="col-md-4 height-100">
             <div className="row listPartners height-100">
               <div className="topDiv">
-                <PartnerSearch addPartner={this._addPartner} />
+                <PartnerSearch  addPartner={this._addPartner}
+                                search={this._handleOnSearchSubmit} />
               </div>
               <PartnerList partners={this.state.partners}
                 selectPartner={this._selectPartner}
@@ -82,14 +86,16 @@ var ManagePartnerInfo = React.createClass({
 
 var PartnerSearch = React.createClass({
   search: function (e) {
-    e.preventDefault()
+    this.props.search($("#book-searchbar-input").val());
   },
   render: function () {
     var addPartner = this.props.addPartner;
     return (
       <form className="navbar-form navbar-left" role="search">
         <div className="input-group" id="book-searchbar">
-          <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for partners" type="text" />
+          <input className="input-block-level form-control"
+            id="book-searchbar-input"
+            placeholder="Search for partners" type="text" />
           <span className="input-group-btn">
             <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
           </span>

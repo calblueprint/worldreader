@@ -5,13 +5,12 @@ class Admin::DashboardController < ApplicationController
   def index
   end
 
-  def display_all_partners
-    render json: User.partners
-  end
-
-  def partner_information
-    user = User.find(params[:id])
-    render json: user
+  def partners
+    if params[:query].to_s != ""
+      render json: User.query(params[:query])
+    else
+      render json: User.partners
+    end
   end
 
   def display_groups

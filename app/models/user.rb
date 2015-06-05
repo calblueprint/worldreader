@@ -24,6 +24,7 @@
 #  organization           :string(255)
 #
 class User < ActiveRecord::Base
+  include Elasticsearch::Model
   validate :projects?
 
   self.table_name = "admin_users"
@@ -36,8 +37,11 @@ class User < ActiveRecord::Base
   has_many :book_list_entries
   has_and_belongs_to_many :projects, foreign_key: 'admin_user_id'
   has_and_belongs_to_many :book_lists, foreign_key: 'admin_user_id'
-
   scope :partners, -> { where role: :user }
+
+  def self.query(query)
+    User.partners.search(query).to_a.map(&:_source)
+  end
 
   def admin?
     role == "admin" || role == "vip"

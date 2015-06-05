@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboard do
       collection do
-        get "display_all_partners", as: "display_all_partners"
+        get "partners", as: "partners"
         post '/csv', to: 'dashboard#generate_csv'
         get "/failed_report", to: "dashboard#generate_failed_report"
       end
