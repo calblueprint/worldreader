@@ -107,7 +107,9 @@ var CreateBaseList = React.createClass({
             <div className="panel">
               <h3 className="panel-title"> Book Tags </h3>
               <div className="panel-boundary-bottom"/>
-              <BaseBookListSearch selectBook={this._selectBook} unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}/>
+              <BaseBookListSearch
+                selectBook={this._selectBook}             unselectBook={this._unselectBook} selectedBooks={this.state.selectedBooks}
+                allTags={this.props.allTags}/>
             </div>
           </div>
         </div>

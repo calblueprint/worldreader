@@ -48,7 +48,14 @@ var DashboardTabs = React.createClass({
           </div>
         </nav>
         <div className="tabDisplay">
-          <DashboardTabDisplay type={this.state.currentTab}/>
+          <DashboardTabDisplay
+            type={this.state.currentTab}
+            auth_token={this.props.auth_token}
+            countries={this.props.countries}
+            languages={this.props.languages}
+            booklists={this.props.booklists}
+            allTags={this.props.allTags}
+          />
         </div>
       </div>
     );
@@ -59,11 +66,16 @@ var DashboardTabDisplay = React.createClass({
   render: function() {
     if (this.props.type == tabs.VIEWINFO) {
       return (
-        <ManagePartnerInfo />
+        <ManagePartnerInfo
+          auth_token={this.props.auth_token}
+          countries={this.props.countries}
+          languages={this.props.languages}
+          booklists={this.props.booklists}
+        />
       );
     } else if (this.props.type == tabs.BASE_LISTS) {
       return (
-        <BaseListView />
+        <BaseListView allTags={this.props.allTags} />
       );
     } else if (this.props.type == tabs.VIEWBOOKS) {
       return (

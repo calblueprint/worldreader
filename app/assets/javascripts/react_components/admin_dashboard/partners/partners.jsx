@@ -19,10 +19,13 @@ var ManagePartnerInfo = React.createClass({
   componentDidMount: function () {
     this._fetchPartners({});
   },
-  _fetchPartners: function () {
+  _fetchPartners: function (query) {
     $.ajax({
-      url: "/admin/dashboard/display_all_partners",
+      url: "/admin/dashboard/partners",
       dataType: 'json',
+      data: {
+        query: query
+      },
       success: function (data) {
         this.setState({partners: data});
       }.bind(this),
@@ -31,8 +34,8 @@ var ManagePartnerInfo = React.createClass({
       }.bind(this)
     });
   },
-  _handleOnSearchSubmit: function (search) {
-    this._fetchPartners({search_data: search});
+  _handleOnSearchSubmit: function (query) {
+    this._fetchPartners(query);
   },
   _selectPartner: function (partnerId) {
     this.setState({selectedPartner: partnerId, showAddPartner: false});
@@ -53,7 +56,8 @@ var ManagePartnerInfo = React.createClass({
           <div className="col-md-4 height-100">
             <div className="row listPartners height-100">
               <div className="topDiv">
-                <PartnerSearch addPartner={this._addPartner} />
+                <PartnerSearch  addPartner={this._addPartner}
+                                search={this._handleOnSearchSubmit} />
               </div>
               <PartnerList partners={this.state.partners}
                 selectPartner={this._selectPartner}
@@ -64,7 +68,13 @@ var ManagePartnerInfo = React.createClass({
             <div className="mainScreen height-100">
               {!this.state.showAddPartner ?
                 <PartnerDisplay partnerId={this.state.selectedPartner} />
-               : <AddPartnerDisplay success={this._addPartnerSuccess} />
+               : <AddPartnerDisplay
+                  success={this._addPartnerSuccess}
+                  auth_token={this.props.auth_token}
+                  countries={this.props.countries}
+                  languages={this.props.languages}
+                  booklists={this.props.booklists}
+                />
               }
             </div>
           </div>
@@ -76,14 +86,16 @@ var ManagePartnerInfo = React.createClass({
 
 var PartnerSearch = React.createClass({
   search: function (e) {
-    e.preventDefault()
+    this.props.search($("#book-searchbar-input").val());
   },
   render: function () {
     var addPartner = this.props.addPartner;
     return (
       <form className="navbar-form navbar-left" role="search">
         <div className="input-group" id="book-searchbar">
-          <input className="input-block-level form-control" id="book-searchbar-input" onKeyUp={this.search} placeholder="Search for partners" type="text" />
+          <input className="input-block-level form-control"
+            id="book-searchbar-input"
+            placeholder="Search for partners" type="text" />
           <span className="input-group-btn">
             <button className="btn btn-default" id="search-button" onClick={this.search} type="button"><span className="glyphicon glyphicon-search"></span></button>
           </span>
@@ -179,7 +191,7 @@ var AddPartnerDisplay = React.createClass({
       type: "POST",
       url: "/users",
       data: {
-        authenticity_token: gon.auth_token,
+        authenticity_token: this.props.auth_token,
         user: user,
         booklist: booklist,
         project: project
@@ -200,17 +212,17 @@ var AddPartnerDisplay = React.createClass({
     });
   },
   render: function () {
-    var countries = gon.countries.map(function(countries) {
+    var countries = this.props.countries.map(function(countries) {
       return (
         <option value={countries.id}>{countries.text}</option>
       );
     }.bind(this));
-    var languages = gon.languages.map(function(languages) {
+    var languages = this.props.languages.map(function(languages) {
       return (
         <option value={languages.id}>{languages.text}</option>
       );
     }.bind(this));
-    var booklists = gon.booklists.map(function(booklist) {
+    var booklists = this.props.booklists.map(function(booklist) {
       return (
         <option value={booklist.id}>{booklist.text}</option>
       );
@@ -219,7 +231,7 @@ var AddPartnerDisplay = React.createClass({
       <div className="add-partner-display height-100">
         <div className="header">Add a new partner</div>
         <div className="add-partner-form col-md-6" >
-          <input type="hidden" name="authenticity_token" value={gon.auth_token} />
+          <input type="hidden" name="authenticity_token" value={this.props.auth_token} />
           <div className="add-partner-form-div">
             <label for="newUserEmail">Email</label><br/>
             <input id="newUserEmail" type="text" className="form-control new-user-input" />

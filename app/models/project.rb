@@ -28,60 +28,6 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :users, association_foreign_key: 'admin_user_id'
 
-  settings number_of_shards: 1 do
-    mapping do
-      indexes "country.name", index: 'not_analyzed'
-      indexes "languages.name", index: 'not_analyzed'
-      indexes "levels.name", index: 'not_analyzed'
-    end
-  end
-
-  def as_indexed_json(_options = {})
-    as_json(
-      include: {
-        country: { only: :name },
-        languages: { only: :name },
-        levels: { only: :name }
-      }
-    )
-  end
-
-  def self.query(tags)
-    filtered_query = {}
-    tags_dict = Book.extract_tags(tags)
-    unless tags_dict.empty?
-      and_filter = []
-      tags_dict.each do |type, project_tags|
-        and_filter.push(Project.create_or_filter(type + ".name", project_tags))
-      end
-      filtered_query[:filter] = { and: and_filter }
-    end
-    query = { filtered: filtered_query }
-    Project.search(query: query).to_a.map!(&:_source)
-  end
-
-  def self.create_or_filter(term, tags)
-    or_filter = []
-    tags.each do |tag|
-      or_filter.push(term: { term => tag })
-    end
-    { or: or_filter }
-  end
-
-  def self.extract_tags(tags)
-    tags_dict = {}
-    tags.each do |tag|
-      type = tag["tagType"]
-      tag = tag["text"]
-      if tags_dict.key? type
-        tags_dict[type].push(tag)
-      else
-        tags_dict[type] = [tag]
-      end
-    end
-    tags_dict
-  end
-
   def languages?
     errors.add(:languages, 'can\'t be blank') if languages.blank?
   end

@@ -45,6 +45,7 @@ var PublishedBookLists = React.createClass({
         booklistItems.push(
           <div className="booklist-table-prospective">
             <BookListTable
+              current_user={this.props.current_user}
               booklist={self.state.selectedList.id}
               editable={false}
             />

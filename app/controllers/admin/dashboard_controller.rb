@@ -1,16 +1,16 @@
 class Admin::DashboardController < ApplicationController
   before_filter :verify_admin
+  before_action :new_partner_info
 
   def index
   end
 
-  def display_all_partners
-    render json: User.partners
-  end
-
-  def partner_information
-    user = User.find(params[:id])
-    render json: user
+  def partners
+    if params[:query].to_s != ""
+      render json: User.query(params[:query])
+    else
+      render json: User.partners
+    end
   end
 
   def display_groups
@@ -40,5 +40,11 @@ class Admin::DashboardController < ApplicationController
   def verify_admin
     redirect_to root_url unless
       current_user.try(:admin?) || current_user.try(:vip?)
+  end
+
+  def new_partner_info
+    @countries = Country.tags
+    @languages = Language.tags
+    @booklists = BookList.tags
   end
 end

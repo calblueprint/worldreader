@@ -5,4 +5,10 @@ section
   / header
   /   .page-header.h1 Manage Partners
 
-  = react_component 'DashboardTabs', {}
+  = react_component 'DashboardTabs', {  \
+      auth_token: @auth_token,          \
+      allTags: @all_tags,               \
+      countries: @countries,            \
+      languages: @languages,            \
+      booklists: @booklists             \
+    }
