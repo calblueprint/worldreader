@@ -12,7 +12,6 @@ describe UsersController do
       sign_in user
       get :index
       expect(response.status).to eq(302)
-      expect(flash[:alert]).to eq("Access denied.")
     end
   end
 end
