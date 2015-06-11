@@ -98,8 +98,6 @@ class Book < ActiveRecord::Base
     end
   end
 
-  default_scope { where(in_store: true) }
-
   QUERY_FIELDS = [:title,
                   :description,
                   :asin,
