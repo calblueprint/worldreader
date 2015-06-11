@@ -31,7 +31,6 @@ class User < ActiveRecord::Base
 
   enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, if: :new_record?
-  after_create :send_welcome_mail
 
   belongs_to :country
   has_many :book_list_entries
@@ -79,18 +78,13 @@ class User < ActiveRecord::Base
     projects.map(&:name)
   end
 
-  def send_welcome_mail
-    UserMailer.welcome(self).deliver
-  end
-  handle_asynchronously :send_welcome_mail
-
   def set_default_role
     self.role ||= :user
   end
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :async, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   private

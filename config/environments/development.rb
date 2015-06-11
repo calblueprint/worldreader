@@ -25,13 +25,13 @@ Rails.application.configure do
   config.assets.debug = true
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.mailgun.org",
+    address: "smtp.gmail.com",
+    domain: "worldreader.org",
     port: 587,
-    domain: ENV["MAILGUN_DOMAIN"],
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: ENV["MAILGUN_USERNAME"],
-    password: ENV["MAILGUN_PASSWORD"]
+    user_name: ENV["EMAIL_USERNAME"],
+    password: ENV["EMAIl_PASSWORD"]
   }
   # ActionMailer Config
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
