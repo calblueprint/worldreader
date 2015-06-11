@@ -110,8 +110,8 @@ class Book < ActiveRecord::Base
                  "Title",
                  "Publisher",
                  "Author",
+                 "Section",
                  "Genre",
-                 "Subject",
                  "Reading Level",
                  "Description"]
 
@@ -131,6 +131,7 @@ class Book < ActiveRecord::Base
       publisher_name,
       authors_name,
       genre_name,
+      subcategory_name,
       levels_name,
       description
     ]
