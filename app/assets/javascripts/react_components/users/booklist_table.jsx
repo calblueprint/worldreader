@@ -162,6 +162,7 @@ var BookListTable = React.createClass({
                   <thead>
                     <tr>
                       <th>Book Name</th>
+                      <th>ASIN</th>
                       <th>Publisher</th>
                       <th>Genre</th>
                       <th>Book Type</th>
@@ -241,6 +242,9 @@ var BookListRow = React.createClass({
         <td className="book-title-table">
           {this._renderRemove()}
           <a href={this.props.book.url} target="_blank">{this.props.book.title}</a>
+        </td>
+        <td>
+          {this.props.book.asin}
         </td>
         <td>
           {this.props.book.publisher_name}
