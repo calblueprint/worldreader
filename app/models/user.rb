@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
 
   enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, if: :new_record?
+  after_create :send_welcome_mail
 
   belongs_to :country
   has_many :book_list_entries
@@ -76,6 +77,10 @@ class User < ActiveRecord::Base
 
   def project_names
     projects.map(&:name)
+  end
+
+  def send_welcome_mail
+    self.send_reset_password_instructions
   end
 
   def set_default_role
