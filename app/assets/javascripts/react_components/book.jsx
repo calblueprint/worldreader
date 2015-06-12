@@ -112,13 +112,18 @@ var BookList = React.createClass({
                   isLastPage: true});
     this.updateSearch()
   },
-  search: function(event) {
+  keyboardSearchHandler: function(event) {
     if (event.which == 13) {
-      this.setState({ books: [],
-                    pageNumber: 0,
-                    isLastPage: true});
-      this.updateSearch();
+      this.search();
     }
+  },
+  search: function() {
+    this.setState({
+      books: [],
+      pageNumber: 0,
+      isLastPage: true
+    });
+    this.updateSearch();
   },
   updateSearch: function() {
     var searchTerm = $("#book-searchbar-input").val();
@@ -168,7 +173,7 @@ var BookList = React.createClass({
               <div className="input-group" id="book-searchbar">
                 <input className="input-block-level form-control"
                   id="book-searchbar-input"
-                  onKeyUp={this.search}
+                  onKeyUp={this.keyboardSearchHandler}
                   placeholder="Search for books" type="text" />
                 <span className="input-group-btn">
                   <button className="btn btn-default"

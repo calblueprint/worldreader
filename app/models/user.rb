@@ -80,9 +80,8 @@ class User < ActiveRecord::Base
   end
 
   def send_welcome_mail
-    UserMailer.welcome(self).deliver
+    send_reset_password_instructions
   end
-  handle_asynchronously :send_welcome_mail
 
   def set_default_role
     self.role ||= :user
@@ -90,7 +89,7 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :async, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   private

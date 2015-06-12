@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427090912) do
+ActiveRecord::Schema.define(version: 20150611200915) do
 
   create_table "accounts", force: true do |t|
     t.string   "acc_number"
@@ -197,7 +197,6 @@ ActiveRecord::Schema.define(version: 20150427090912) do
     t.string   "geo_restrictedby"
     t.string   "pricingmodel",                             limit: 4
     t.string   "textguide_book_id",                        limit: 45
-    t.string   "image"
     t.boolean  "level_tags_added",                                                             default: false
   end
 

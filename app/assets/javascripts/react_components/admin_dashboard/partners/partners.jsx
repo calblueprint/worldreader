@@ -70,8 +70,7 @@ var ManagePartnerInfo = React.createClass({
                 <PartnerDisplay partnerId={this.state.selectedPartner} />
                : <AddPartnerDisplay
                   success={this._addPartnerSuccess}
-                  auth_token={this.props.auth_token}
-                  countries={this.props.countries}
+                  auth_token={this.props.auth_token}                  countries={this.props.countries}
                   languages={this.props.languages}
                   booklists={this.props.booklists}
                 />

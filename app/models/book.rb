@@ -69,7 +69,6 @@
 #  geo_restrictedby                         :string(255)
 #  pricingmodel                             :string(4)
 #  textguide_book_id                        :string(45)
-#  image                                    :string(255)
 #  level_tags_added                         :boolean          default(FALSE)
 #
 
@@ -98,8 +97,6 @@ class Book < ActiveRecord::Base
     end
   end
 
-  default_scope { where(in_store: true) }
-
   QUERY_FIELDS = [:title,
                   :description,
                   :asin,
@@ -110,8 +107,8 @@ class Book < ActiveRecord::Base
                  "Title",
                  "Publisher",
                  "Author",
+                 "Section",
                  "Genre",
-                 "Subject",
                  "Reading Level",
                  "Description"]
 
@@ -131,6 +128,7 @@ class Book < ActiveRecord::Base
       publisher_name,
       authors_name,
       genre_name,
+      subcategory_name,
       levels_name,
       description
     ]
@@ -146,6 +144,7 @@ class Book < ActiveRecord::Base
                          :update_status,
                          :updated_date,
                          :url,
+                         :image,
                          :book_type]
     super(options)
   end
@@ -201,6 +200,10 @@ class Book < ActiveRecord::Base
 
   def url
     "http://www.amazon.com/dp/" + asin
+  end
+
+  def image
+    "http://images.amazon.com/images/P/#{asin}"
   end
 
   def asin
