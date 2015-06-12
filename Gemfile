@@ -7,6 +7,7 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'bootstrap-switch-rails', '~> 3.3.1'
 gem 'bootstrap-tagsinput-rails'
 gem 'bootstrap-select-rails'
+gem 'browserify-rails', '~>0.5'
 gem 'cancancan', '~> 1.9'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'delayed_job_active_record'
@@ -56,7 +57,6 @@ group :development, :test do
   gem 'railroady'
   gem 'rspec-rails'
   gem 'launchy'
-  gem 'browserify-rails', '~>0.5'
 end
 group :production do
   gem 'bonsai-elasticsearch-rails'
