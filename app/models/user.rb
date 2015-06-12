@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   end
 
   def send_welcome_mail
-    self.send_reset_password_instructions
+    send_reset_password_instructions
   end
 
   def set_default_role
