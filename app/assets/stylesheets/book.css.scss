@@ -256,18 +256,17 @@ sub.beta-subscript{
 }
 
 #tag-and-searchbar{
+  position: absolute;
   padding-top: 2rem;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: -108px;
 }
 
 #tag-and-searchbar.affix{
   position: fixed;
-  top: 50px;
   background-color: #f0f0f0;
   z-index: 1;
+  top: 50px;
   margin-top: 0px;
   left: 0;
 }

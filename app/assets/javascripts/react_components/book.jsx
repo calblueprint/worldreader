@@ -154,6 +154,17 @@ var BookList = React.createClass({
       }.bind(this)
     });
   },
+  renderSortBy: function() {
+    return (
+        <div className="col-md-2">
+          Sort by:
+          <select className="selectpicker booklists"
+            data-width="100%">
+            <option value="1">Relevance</option>
+            </select>
+        </div>
+    )
+  },
   render: function() {
     bookList = this;
     var bookTiles = this.state.books.map(function (book) {
@@ -166,9 +177,7 @@ var BookList = React.createClass({
     }.bind(this));
     var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
     var searchBar = (
-      <div className="row" id="library">
         <div id="tag-and-searchbar">
-          <div className="row">
             <div className="col-md-10 col-md-offset-1">
               <div className="input-group" id="book-searchbar">
                 <input className="input-block-level form-control"
@@ -183,9 +192,8 @@ var BookList = React.createClass({
                   </button>
                 </span>
               </div>
-            </div>
           </div>
-          <div className="row tagbar-booklists">
+          <div className="tagbar-booklists">
             <div className={tagbarWidth + " col-md-offset-1"}>
               <div className="input-group" id="book-tagbar">
                 <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
@@ -198,20 +206,17 @@ var BookList = React.createClass({
             <div className="select-container">
               {this.props.current_user != null ?
                 <div className="col-md-2">
-                  <div className="booklists-select">
-                    <select className="selectpicker booklists" title="Select a Booklist"
-                      data-width="100%" multiple data-size="20" data-live-search="true"
-                      data-selected-text-format="count>4">
-                      {booklists}
-                    </select>
-                  </div>
+                  <select className="selectpicker booklists" title="Select a Booklist"
+                    data-width="100%" multiple data-size="20" data-live-search="true"
+                    data-selected-text-format="count>4">
+                    {booklists}
+                  </select>
                 </div>
                : null
               }
             </div>
           </div>
         </div>
-      </div>
     );
     var emptyText = this.state.isFirstLoad ?
                       "Begin by entering your search terms in the \
@@ -239,19 +244,24 @@ var BookList = React.createClass({
         <div>
           {searchBar}
           <div className="search-results">
+            <div className="col-md-offset-1">
+              {this.renderSortBy()}
+            </div>
             <h4 className="current-search text-center">
               {results}
             </h4>
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadMore}
-              hasMore={!this.state.isLastPage}
-              threshold={250}
-              loader={<div className="loader">Loading...</div>}>
+            <div className="col-md-10 col-md-offset-1">
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadMore}
+                hasMore={!this.state.isLastPage}
+                threshold={250}
+                loader={<div className="loader">Loading...</div>}>
                 <div className="media-list">
                   {bookTiles}
                 </div>
-            </InfiniteScroll>
+              </InfiniteScroll>
+            </div>
           </div>
         </div>
       );
