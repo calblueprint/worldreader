@@ -177,46 +177,46 @@ var BookList = React.createClass({
     }.bind(this));
     var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
     var searchBar = (
-        <div id="tag-and-searchbar">
-            <div className="col-md-10 col-md-offset-1">
-              <div className="input-group" id="book-searchbar">
-                <input className="input-block-level form-control"
-                  id="book-searchbar-input"
-                  onKeyUp={this.keyboardSearchHandler}
-                  placeholder="Search for books" type="text" />
-                <span className="input-group-btn">
-                  <button className="btn btn-default"
-                    id="search-button" onClick={this.search}
-                    type="button">
-                    <span className="glyphicon glyphicon-search"></span>
-                  </button>
-                </span>
-              </div>
-          </div>
-          <div className="tagbar-booklists">
-            <div className={tagbarWidth + " col-md-offset-1"}>
-              <div className="input-group" id="book-tagbar">
-                <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
-                <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
-                <span className="input-group-btn">
-                  <button className="btn btn-default" id="search-button" type="button" data-toggle="modal" data-target="#HelpModal"><span className="glyphicon glyphicon-question-sign"></span></button>
-                </span>
-              </div>
-            </div>
-            <div className="select-container">
-              {this.props.current_user != null ?
-                <div className="col-md-2">
-                  <select className="selectpicker booklists" title="Select a Booklist"
-                    data-width="100%" multiple data-size="20" data-live-search="true"
-                    data-selected-text-format="count>4">
-                    {booklists}
-                  </select>
-                </div>
-               : null
-              }
-            </div>
+      <div id="tag-and-searchbar">
+        <div className="col-md-10 col-md-offset-1">
+          <div className="input-group" id="book-searchbar">
+            <input className="input-block-level form-control"
+              id="book-searchbar-input"
+              onKeyUp={this.keyboardSearchHandler}
+              placeholder="Search for books" type="text" />
+            <span className="input-group-btn">
+              <button className="btn btn-default"
+                id="search-button" onClick={this.search}
+                type="button">
+                <span className="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
           </div>
         </div>
+        <div className="tagbar-booklists">
+          <div className={tagbarWidth + " col-md-offset-1"}>
+            <div className="input-group" id="book-tagbar">
+              <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
+              <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+              <span className="input-group-btn">
+                <button className="btn btn-default" id="search-button" type="button" data-toggle="modal" data-target="#HelpModal"><span className="glyphicon glyphicon-question-sign"></span></button>
+              </span>
+            </div>
+          </div>
+          <div className="select-container">
+            {this.props.current_user != null ?
+              <div className="col-md-2">
+                <select className="selectpicker booklists" title="Select a Booklist"
+                  data-width="100%" multiple data-size="20" data-live-search="true"
+                  data-selected-text-format="count>4">
+                  {booklists}
+                </select>
+              </div>
+              : null
+            }
+          </div>
+        </div>
+      </div>
     );
     var emptyText = this.state.isFirstLoad ?
                       "Begin by entering your search terms in the \
