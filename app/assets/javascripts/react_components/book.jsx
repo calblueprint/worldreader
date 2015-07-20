@@ -185,21 +185,38 @@ var BookList = React.createClass({
   renderSortBy: function() {
     if (this.state.books.length > 0 || this.state.searching) {
       return (
-        <div className="row sort-by">
-          <div className="col-md-4">
+        <div className="sort-by">
+          <div className="col-md-12">
             Sort by: &nbsp;
             <select id="sort-filter" className="selectpicker">
               <option value="_score">Relevance</option>
               <option value="title">Title</option>
               <option value="levels_name">Reading Level</option>
               <option value="country_name">Country</option>
-              <option value="language_name">Language</option>
+              <option value="langu  age_name">Language</option>
             </select>
           </div>
         </div>
       );
     }
-    debugger;
+  },
+  renderBooklistButton: function() {
+    return (
+      <button className="btn btn-default pull-right"
+        id="search-button" onClick={this.search}
+        type="button">
+        Booklist
+      </button>
+    );
+  },
+  renderDownloadCsv: function() {
+    return (
+      <button className="btn btn-default"
+        id="search-button" onClick={this.search}
+        type="button">
+        Download
+      </button>
+    )
   },
   render: function() {
     bookList = this;
@@ -213,47 +230,57 @@ var BookList = React.createClass({
     }.bind(this));
     var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
     var searchBar = (
-      <div id="tag-and-searchbar">
-        <div className="col-md-10 col-md-offset-1">
-          <div className="input-group" id="book-searchbar">
-            <input className="input-block-level form-control"
-              id="book-searchbar-input"
-              onKeyUp={this.keyboardSearchHandler}
-              placeholder="Search for books" type="text" />
-            <span className="input-group-btn">
-              <button className="btn btn-default"
-                id="search-button" onClick={this.search}
-                type="button">
-                <span className="glyphicon glyphicon-search"></span>
-              </button>
-            </span>
-          </div>
-        </div>
-        <div className="tagbar-booklists">
-          <div className={tagbarWidth + " col-md-offset-1"}>
-            <div className="input-group" id="book-tagbar">
-              <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
-              <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+      <div>
+        <div id="tag-and-searchbar">
+          <div className="col-md-10 col-md-offset-1">
+            <div className="input-group" id="book-searchbar">
+              <input className="input-block-level form-control"
+                id="book-searchbar-input"
+                onKeyUp={this.keyboardSearchHandler}
+                placeholder="Search for books" type="text" />
               <span className="input-group-btn">
-                <button className="btn btn-default" id="search-button" type="button" data-toggle="modal" data-target="#HelpModal"><span className="glyphicon glyphicon-question-sign"></span></button>
+                <button className="btn btn-default"
+                  id="search-button" onClick={this.search}
+                  type="button">
+                  <span className="glyphicon glyphicon-search"></span>
+                </button>
               </span>
             </div>
           </div>
-          <div className="select-container">
-            {this.props.current_user != null ?
-              <div className="col-md-2">
-                <select className="selectpicker booklists" id="booklists-picker" title="Select a Booklist"
-                  data-width="100%" multiple data-size="20" data-live-search="true"
-                  data-selected-text-format="count>4">
-                  {booklists}
-                </select>
+          <div className="tagbar-booklists">
+            <div className={tagbarWidth + " col-md-offset-1"}>
+              <div className="input-group" id="book-tagbar">
+                <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
+                <input className="input-block-level typeahead form-control" id="book-tagbar-input" placeholder="Add tag" type="text" />
+                <span className="input-group-btn">
+                  <button className="btn btn-default" id="search-button" type="button" data-toggle="modal" data-target="#HelpModal"><span className="glyphicon glyphicon-question-sign"></span></button>
+                </span>
               </div>
-              : null
-            }
+            </div>
+            <div className="select-container">
+              {this.props.current_user != null ?
+                <div className="col-md-2">
+                  <select className="selectpicker booklists" id="booklists-picker" title="Select a Booklist"
+                    data-width="100%" multiple data-size="20" data-live-search="true"
+                    data-selected-text-format="count>4">
+                    {booklists}
+                  </select>
+                </div>
+                : null
+              }
+            </div>
           </div>
-        </div>
-        <div className="row col-md-offset-1">
-          {this.renderSortBy()}
+          <div className="row">
+            <div className="col-md-offset-1 col-md-4">
+              {this.renderSortBy()}
+            </div>
+            <div className="col-md-1 col-md-offset-4">
+              {this.renderDownloadCsv()}
+            </div>
+            <div className="col-md-1">
+              {this.renderBooklistButton()}
+            </div>
+          </div>
         </div>
       </div>
     );
