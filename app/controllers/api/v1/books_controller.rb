@@ -15,7 +15,6 @@ class Api::V1::BooksController < ApplicationController
                               tags: tags,
                               page: page,
                               sort: params[:sort])
-    sleep 5
     books.each do |x|
       results.push(x.as_json)
     end
