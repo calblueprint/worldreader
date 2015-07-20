@@ -13,7 +13,9 @@ var BookList = React.createClass({
       searchTerm: "",
       tags: JSON.parse(this.props.tags),
       isLastPage: false,
-      isFirstLoad: true
+      isFirstLoad: true,
+      sortFilter: "_score",
+      searching: false
     };
   },
   handleBookExpand: function(event) {
@@ -29,7 +31,11 @@ var BookList = React.createClass({
   componentDidMount: function() {
     this.initTagbar();
     $('.selectpicker').selectpicker();
-    $('.selectpicker').selectpicker('val', this.props.booklist);
+    $('#booklists-picker').selectpicker('val', this.props.booklist);
+  },
+  componentDidUpdate: function() {
+    $('.selectpicker').selectpicker();
+    $('#sort-filter').on('change', this.filterChanged);
   },
   handleBooksUpdate: function(event) {
     this.setState({books: event});
@@ -103,66 +109,87 @@ var BookList = React.createClass({
     );
   },
   loadMore: function(pageToLoad) {
-    this.setState({pageNumber: this.state.pageNumber + 1});
-    this.updateSearch();
+    if (!this.state.searching) {
+      this.setState({pageNumber: this.state.pageNumber + 1});
+      this.updateSearch(false);
+    }
   },
   tagsUpdated: function() {
     this.setState({ books: [],
                   pageNumber: 0,
                   isLastPage: true});
-    this.updateSearch()
+    this.updateSearch(true)
   },
   keyboardSearchHandler: function(event) {
     if (event.which == 13) {
-      this.search();
+      this.updateSearch(true)
     }
   },
   search: function() {
-    this.setState({
-      books: [],
-      pageNumber: 0,
-      isLastPage: true
-    });
-    this.updateSearch();
+    this.updateSearch(true)
   },
-  updateSearch: function() {
+  updateSearch: function(resetSearch) {
     var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
+    if (tags.itemsArray) tags = tags.itemsArray;
     if (!searchTerm && tags.length == 0) return;
     this.setState({ searchTerm: searchTerm,
                     tags: tags,
-                    isFirstLoad: false});
+                    isFirstLoad: false,
+                    searching: resetSearch});
     var self = this;
-    var state = this._pendingState == null || this._pendingState == this.state ?
-      this.state : this._pendingState;
+    var state = this.state;
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
       dataType: "json",
+      context: this,
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
-        page: state.pageNumber
+        page: this.state.pageNumber,
+        sort: this.state.sortFilter
       },
       success: function(results) {
-        self.setState({books: state.books.concat(results.books),
-                       isLastPage: results.books.length == 0,
-                       count: results.count});
-      }.bind(this),
+        this.setState({
+            isLastPage: results.books.length == 0,
+            count: results.count,
+            searching: false
+        });
+        if (resetSearch) {
+          this.setState({ books: results.books,
+                          pageNumber: 0});
+        }
+        else {
+          this.setState({books: this.state.books.concat(results.books)});
+        }
+      },
       error: function(xhr, status, err) {
+        this.setState({searching: false});
         console.error(this.props.url, status, err.toString());
-      }.bind(this)
+      }
     });
+  },
+  filterChanged: function() {
+    if (!this.state.searching) {
+      this.setState({sortFilter: $("#sort-filter").val()});
+      this.updateSearch(true);
+    }
   },
   renderSortBy: function() {
     return (
-        <div className="col-md-2">
+      <div className="row sort-by">
+        <div className="col-md-4">
           Sort by:
-          <select className="selectpicker booklists"
-            data-width="100%">
-            <option value="1">Relevance</option>
+          <select id="sort-filter" className="selectpicker">
+            <option value="_score">Relevance</option>
+            <option value="title">Title</option>
+            <option value="levels_name">Reading Level</option>
+            <option value="country_name">Country</option>
+            <option value="language_name">Language</option>
             </select>
         </div>
+      </div>
     )
   },
   render: function() {
@@ -206,7 +233,7 @@ var BookList = React.createClass({
           <div className="select-container">
             {this.props.current_user != null ?
               <div className="col-md-2">
-                <select className="selectpicker booklists" title="Select a Booklist"
+                <select className="selectpicker booklists" id="booklists-picker" title="Select a Booklist"
                   data-width="100%" multiple data-size="20" data-live-search="true"
                   data-selected-text-format="count>4">
                   {booklists}
@@ -218,7 +245,7 @@ var BookList = React.createClass({
         </div>
       </div>
     );
-    var emptyText = this.state.isFirstLoad ?
+    var altView = this.state.isFirstLoad ?
                       "Begin by entering your search terms in the \
                       Search for books or Add tag field above. \
                       For a list of tags, click the question mark." :
@@ -227,7 +254,8 @@ var BookList = React.createClass({
                       Add tag field above. For a list of tags, \
                       click the question mark.";
 
-    if (bookTiles.length) {
+    altView = this.state.searching ? <LoadingIndicator /> : altView;
+    if (bookTiles.length && !this.state.searching) {
       var results = ""
       var searchString = " " + this.state.searchTerm;
       var tagsArray = this.state.tags;
@@ -256,7 +284,7 @@ var BookList = React.createClass({
                 loadMore={this.loadMore}
                 hasMore={!this.state.isLastPage}
                 threshold={250}
-                loader={<div className="loader">Loading...</div>}>
+                loader={<LoadingIndicator />}>
                 <div className="media-list">
                   {bookTiles}
                 </div>
@@ -271,7 +299,7 @@ var BookList = React.createClass({
         {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
-            {emptyText}
+            {altView}
           </h3>
         </div>
       </div>
