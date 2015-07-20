@@ -230,6 +230,7 @@ class Book < ActiveRecord::Base
     query = { filtered: filtered_query }
     highlight = { fields: { description: { fragment_size: 120 } } }
     sort = query_params[:sort] || :_score
+    puts sort
     results = Book.search(query: query,
                           highlight: highlight,
                           from: Constants::PAGE_SIZE * query_params[:page],
