@@ -128,17 +128,23 @@ var BookList = React.createClass({
   search: function() {
     this.updateSearch(true)
   },
+  resetSearch: function() {
+    this.setState({
+      searching: true,
+      books: [],
+      isLastPage: true,
+      pageNumber: 0
+    });
+  },
   updateSearch: function(resetSearch) {
     var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
     if (tags.itemsArray) tags = tags.itemsArray;
     if (!searchTerm && tags.length == 0) return;
+    if (resetSearch) this.resetSearch();
     this.setState({ searchTerm: searchTerm,
                     tags: tags,
-                    isFirstLoad: false,
-                    searching: resetSearch});
-    var self = this;
-    var state = this.state;
+                    isFirstLoad: false});
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
@@ -151,11 +157,6 @@ var BookList = React.createClass({
         sort: this.state.sortFilter
       },
       success: function(results) {
-        this.setState({
-            isLastPage: results.books.length == 0,
-            count: results.count,
-            searching: false
-        });
         if (resetSearch) {
           this.setState({ books: results.books,
                           pageNumber: 0});
@@ -163,6 +164,11 @@ var BookList = React.createClass({
         else {
           this.setState({books: this.state.books.concat(results.books)});
         }
+        this.setState({
+            isLastPage: results.books.length == 0,
+            count: results.count,
+            searching: false
+        });
       },
       error: function(xhr, status, err) {
         this.setState({searching: false});
@@ -177,20 +183,23 @@ var BookList = React.createClass({
     }
   },
   renderSortBy: function() {
-    return (
-      <div className="row sort-by">
-        <div className="col-md-4">
-          Sort by:
-          <select id="sort-filter" className="selectpicker">
-            <option value="_score">Relevance</option>
-            <option value="title">Title</option>
-            <option value="levels_name">Reading Level</option>
-            <option value="country_name">Country</option>
-            <option value="language_name">Language</option>
+    if (this.state.books.length > 0 || this.state.searching) {
+      return (
+        <div className="row sort-by">
+          <div className="col-md-4">
+            Sort by: &nbsp;
+            <select id="sort-filter" className="selectpicker">
+              <option value="_score">Relevance</option>
+              <option value="title">Title</option>
+              <option value="levels_name">Reading Level</option>
+              <option value="country_name">Country</option>
+              <option value="language_name">Language</option>
             </select>
+          </div>
         </div>
-      </div>
-    )
+      );
+    }
+    debugger;
   },
   render: function() {
     bookList = this;
@@ -243,6 +252,9 @@ var BookList = React.createClass({
             }
           </div>
         </div>
+        <div className="row col-md-offset-1">
+          {this.renderSortBy()}
+        </div>
       </div>
     );
     var altView = this.state.isFirstLoad ?
@@ -269,12 +281,9 @@ var BookList = React.createClass({
       }
       results = "Found " + this.state.count + " results:" + searchString + tagString + ".";
       return (
-        <div>
+        <div className="bars-and-books">
           {searchBar}
           <div className="search-results">
-            <div className="col-md-offset-1">
-              {this.renderSortBy()}
-            </div>
             <h4 className="current-search text-center">
               {results}
             </h4>
@@ -295,7 +304,7 @@ var BookList = React.createClass({
       );
     }
     return (
-      <div>
+      <div className="bars-and-books">
         {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">

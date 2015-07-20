@@ -255,11 +255,14 @@ sub.beta-subscript{
   color: white;
 }
 
-#tag-and-searchbar{
+.bars-and-books {
   position: absolute;
-  padding-top: 2rem;
   width: 100%;
   margin-top: -108px;
+}
+
+#tag-and-searchbar {
+  padding: 2rem 0 2rem 0;
 }
 
 #tag-and-searchbar.affix{
