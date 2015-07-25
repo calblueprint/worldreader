@@ -41,7 +41,7 @@ var BookList = React.createClass({
     this.setState({books: event});
   },
   addBook: function(book) {
-    var booklist_ids = $('.selectpicker').val();
+    var booklist_ids = $('#booklists-picker').val();
     if (booklist_ids == null) {
       toastr.error("At least one booklist must be selected");
     } else {
@@ -71,7 +71,7 @@ var BookList = React.createClass({
       tagClass: function(item) {
         switch (item.tagType) {
           case 'country':       return countryLabel;
-          case 'levels':         return levelLabel;
+          case 'levels':        return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
@@ -200,19 +200,42 @@ var BookList = React.createClass({
       );
     }
   },
+  goToBooklist: function() {
+    var booklist_id = $('#booklists-picker').val()[0];
+    console.log(booklist_id)
+    window.location.href = '/book_lists/' + booklist_id;
+  },
   renderBooklistButton: function() {
     return (
       <button className="btn btn-default pull-right"
-        id="search-button" onClick={this.search}
+        id="download-button" onClick={this.goToBooklist}
         type="button">
         Booklist
       </button>
     );
   },
+  downloadCsv: function() {
+    $.ajax({
+      url: "/api/v1/books/csv",
+      type: "POST",
+      dataType: "json",
+      data: {
+        books: _.pluck(this.state.books, "id")
+      },
+      success: function(data) {
+        console.log("success")
+        window.open("data:text/csv;charset=utf-8," + escape(data));
+      }.bind(this),
+      error: function(xhr, status, err) {
+        toastr.error("There was an error while downloading the csv");
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   renderDownloadCsv: function() {
     return (
       <button className="btn btn-default"
-        id="search-button" onClick={this.search}
+        id="search-button" onClick={this.downloadCsv}
         type="button">
         Download
       </button>
