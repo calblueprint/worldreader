@@ -182,8 +182,11 @@ var BookList = React.createClass({
       this.updateSearch(true);
     }
   },
+  isSortable: function() {
+    return this.state.books.length > 0 || this.state.searching;
+  },
   renderSortBy: function() {
-    if (this.state.books.length > 0 || this.state.searching) {
+    if (this.isSortable()) {
       return (
         <div className="sort-by">
           <div className="col-md-12">
@@ -202,17 +205,18 @@ var BookList = React.createClass({
   },
   goToBooklist: function() {
     var booklist_id = $('#booklists-picker').val()[0];
-    console.log(booklist_id)
     window.location.href = '/book_lists/' + booklist_id;
   },
   renderBooklistButton: function() {
-    return (
-      <button className="btn btn-default pull-right"
-        id="download-button" onClick={this.goToBooklist}
-        type="button">
-        Booklist
-      </button>
-    );
+    if (this.isSortable()) {
+      return (
+        <button className="btn btn-default pull-right"
+          id="download-button" onClick={this.goToBooklist}
+          type="button">
+          Booklist
+        </button>
+      );
+    }
   },
   downloadCsv: function() {
     $.ajax({
@@ -233,13 +237,15 @@ var BookList = React.createClass({
     });
   },
   renderDownloadCsv: function() {
-    return (
-      <button className="btn btn-default"
-        id="search-button" onClick={this.downloadCsv}
-        type="button">
-        Download
-      </button>
-    )
+    if (this.isSortable()) {
+      return (
+        <button className="btn btn-default"
+          id="search-button" onClick={this.downloadCsv}
+          type="button">
+          Download
+        </button>
+      )
+    }
   },
   render: function() {
     bookList = this;
