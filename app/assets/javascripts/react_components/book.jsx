@@ -176,6 +176,9 @@ var BookList = React.createClass({
       }
     });
   },
+  isAdmin: function() {
+    return this.props.current_user && _.contains(["vip", "admin"], this.props.current_user.role);
+  },
   filterChanged: function() {
     if (!this.state.searching) {
       this.setState({sortFilter: $("#sort-filter").val()});
@@ -183,7 +186,7 @@ var BookList = React.createClass({
     }
   },
   isSortable: function() {
-    return this.state.books.length > 0 || this.state.searching;
+    return this.isAdmin() && (this.state.books.length > 0 || this.state.searching);
   },
   renderSortBy: function() {
     if (this.isSortable()) {
@@ -226,7 +229,6 @@ var BookList = React.createClass({
         books: _.pluck(this.state.books, "id")
       },
       success: function(data) {
-        console.log("success")
         window.open("data:text/csv;charset=utf-8," + escape(data));
       }.bind(this),
       error: function(xhr, status, err) {
