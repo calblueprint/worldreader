@@ -222,7 +222,6 @@ var BookList = React.createClass({
     $.ajax({
       url: "/api/v1/books/csv",
       type: "POST",
-      dataType: "json",
       data: {
         books: _.pluck(this.state.books, "id")
       },
