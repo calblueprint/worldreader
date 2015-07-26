@@ -18,7 +18,6 @@ class Api::V1::BooksController < ApplicationController
     tags = ActiveSupport::JSON.decode params[:tags]
     results = []
     page = params[:page].to_i || 1
-    puts params
     books, count = Book.query(term: term,
                               tags: tags,
                               page: page,
