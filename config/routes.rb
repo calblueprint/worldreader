@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :books
 
   get "/booklists" => "book_lists#index"
+  resources :book_lists, only: [:show]
 
   namespace :admin do
     resources :dashboard do
@@ -53,8 +54,9 @@ Rails.application.routes.draw do
       resources :books do
         collection do
           get "" => "books#index"
-          get "search/" => "books#search"
+          get "search" => "books#search"
           get "page" => "books#page"
+          post "csv"
         end
       end
       resources :book_lists do

@@ -5,12 +5,23 @@ class Api::V1::BooksController < ApplicationController
     render json: books
   end
 
+  def csv
+    books = Book.find(params[:books])
+    puts Book.to_csv(books)
+    send_data Book.to_csv(books),
+                type:         "text/csv; charset=iso-8859-1; header=present",
+                disposition:  "attachment;books.csv"
+  end
+
   def search
     term = params[:term]
     tags = ActiveSupport::JSON.decode params[:tags]
     results = []
     page = params[:page].to_i || 1
-    books, count = Book.query(term, tags, page)
+    books, count = Book.query(term: term,
+                              tags: tags,
+                              page: page,
+                              sort: params[:sort])
     books.each do |x|
       results.push(x.as_json)
     end

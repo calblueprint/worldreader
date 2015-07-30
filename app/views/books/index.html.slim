@@ -9,15 +9,13 @@
 
 = react_component "TagModalContent", { level_tags: @level_tags, country_tags: @country_tags, language_tags: @language_tags, genre_tags: @genre_tags }
 
-#library.row
-  #booklist.col-md-10.col-md-offset-1
-    = react_component 'BookList', {       \
-        current_user: @current_user,      \
-        books: @books,                    \
-        searchTerm: "",                   \
-        tags: @tags,                      \
-        booklist: @booklist,              \
-        user_booklists: @user_booklists,  \
-        all_tags: @all_tags               \
-      }
-      
+#library
+  = react_component 'BookList', {       \
+      current_user: @current_user,      \
+      books: @books,                    \
+      searchTerm: "",                   \
+      tags: @tags,                      \
+      booklist: @booklist,              \
+      user_booklists: @user_booklists,  \
+      all_tags: @all_tags               \
+    }

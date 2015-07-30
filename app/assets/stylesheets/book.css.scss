@@ -255,19 +255,21 @@ sub.beta-subscript{
   color: white;
 }
 
-#tag-and-searchbar{
-  padding-top: 2rem;
+.bars-and-books {
+  position: absolute;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: -108px;
+}
+
+#tag-and-searchbar {
+  padding: 2rem 0 2rem 0;
 }
 
 #tag-and-searchbar.affix{
   position: fixed;
-  top: 50px;
   background-color: #f0f0f0;
   z-index: 1;
+  top: 50px;
   margin-top: 0px;
   left: 0;
 }
@@ -330,4 +332,12 @@ sub.beta-subscript{
 .modal-search-btn {
   float: left;
   margin-top: 5px;
+}
+
+.sort-by {
+  margin: 0px;
+}
+
+.row {
+  margin: inherit;
 }

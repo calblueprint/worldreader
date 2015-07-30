@@ -214,12 +214,12 @@ class Book < ActiveRecord::Base
     publisher.free == "paid"
   end
 
-  def self.query(string, tags, page)
+  def self.query(query_params = {})
     filtered_query = {}
-    unless string.empty?
-      filtered_query[:query] = Book.create_multi_match_query(string)
+    unless query_params[:term].empty?
+      filtered_query[:query] = Book.create_multi_match_query(query_params[:term])
     end
-    tags_dict = Book.extract_tags(tags)
+    tags_dict = Book.extract_tags(query_params[:tags])
     unless tags_dict.empty?
       and_filter = []
       tags_dict.each do |type, book_tags|
@@ -229,9 +229,11 @@ class Book < ActiveRecord::Base
     end
     query = { filtered: filtered_query }
     highlight = { fields: { description: { fragment_size: 120 } } }
+    sort = query_params[:sort] || :_score
     results = Book.search(query: query,
                           highlight: highlight,
-                          from: Constants::PAGE_SIZE * page,
+                          from: Constants::PAGE_SIZE * query_params[:page],
+                          sort: sort,
                           size: Constants::PAGE_SIZE).results
     count = results.total
     books = results.to_a.map do |r|

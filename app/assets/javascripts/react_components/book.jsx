@@ -13,7 +13,9 @@ var BookList = React.createClass({
       searchTerm: "",
       tags: JSON.parse(this.props.tags),
       isLastPage: false,
-      isFirstLoad: true
+      isFirstLoad: true,
+      sortFilter: "_score",
+      searching: false
     };
   },
   handleBookExpand: function(event) {
@@ -29,13 +31,17 @@ var BookList = React.createClass({
   componentDidMount: function() {
     this.initTagbar();
     $('.selectpicker').selectpicker();
-    $('.selectpicker').selectpicker('val', this.props.booklist);
+    $('#booklists-picker').selectpicker('val', this.props.booklist);
+  },
+  componentDidUpdate: function() {
+    $('.selectpicker').selectpicker();
+    $('#sort-filter').on('change', this.filterChanged);
   },
   handleBooksUpdate: function(event) {
     this.setState({books: event});
   },
   addBook: function(book) {
-    var booklist_ids = $('.selectpicker').val();
+    var booklist_ids = $('#booklists-picker').val();
     if (booklist_ids == null) {
       toastr.error("At least one booklist must be selected");
     } else {
@@ -65,7 +71,7 @@ var BookList = React.createClass({
       tagClass: function(item) {
         switch (item.tagType) {
           case 'country':       return countryLabel;
-          case 'levels':         return levelLabel;
+          case 'levels':        return levelLabel;
           case 'language':      return languageLabel;
           case 'genre':         return genreLabel;
           case 'subcategory':   return subcategoryLabel;
@@ -103,56 +109,144 @@ var BookList = React.createClass({
     );
   },
   loadMore: function(pageToLoad) {
-    this.setState({pageNumber: this.state.pageNumber + 1});
-    this.updateSearch();
+    if (!this.state.searching) {
+      this.setState({pageNumber: this.state.pageNumber + 1});
+      this.updateSearch(false);
+    }
   },
   tagsUpdated: function() {
     this.setState({ books: [],
                   pageNumber: 0,
                   isLastPage: true});
-    this.updateSearch()
+    this.updateSearch(true)
   },
   keyboardSearchHandler: function(event) {
     if (event.which == 13) {
-      this.search();
+      this.updateSearch(true)
     }
   },
   search: function() {
-    this.setState({
-      books: [],
-      pageNumber: 0,
-      isLastPage: true
-    });
-    this.updateSearch();
+    this.updateSearch(true)
   },
-  updateSearch: function() {
+  resetSearch: function() {
+    this.setState({
+      searching: true,
+      books: [],
+      isLastPage: true,
+      pageNumber: 0
+    });
+  },
+  updateSearch: function(resetSearch) {
     var searchTerm = $("#book-searchbar-input").val();
     var tags = $("#book-tagbar-input").tagsinput("items");
+    if (tags.itemsArray) tags = tags.itemsArray;
     if (!searchTerm && tags.length == 0) return;
+    if (resetSearch) this.resetSearch();
     this.setState({ searchTerm: searchTerm,
                     tags: tags,
                     isFirstLoad: false});
-    var self = this;
-    var state = this._pendingState == null || this._pendingState == this.state ?
-      this.state : this._pendingState;
     $.ajax({
       type: "GET",
       url: "/api/v1/books/search",
       dataType: "json",
+      context: this,
       data: {
         tags: JSON.stringify(tags),
         term: searchTerm,
-        page: state.pageNumber
+        page: this.state.pageNumber,
+        sort: this.state.sortFilter
       },
       success: function(results) {
-        self.setState({books: state.books.concat(results.books),
-                       isLastPage: results.books.length == 0,
-                       count: results.count});
+        if (resetSearch) {
+          this.setState({ books: results.books,
+                          pageNumber: 0});
+        }
+        else {
+          this.setState({books: this.state.books.concat(results.books)});
+        }
+        this.setState({
+            isLastPage: results.books.length == 0,
+            count: results.count,
+            searching: false
+        });
+      },
+      error: function(xhr, status, err) {
+        this.setState({searching: false});
+        console.error(this.props.url, status, err.toString());
+      }
+    });
+  },
+  isAdmin: function() {
+    return this.props.current_user && _.contains(["vip", "admin"], this.props.current_user.role);
+  },
+  filterChanged: function() {
+    if (!this.state.searching) {
+      this.setState({sortFilter: $("#sort-filter").val()});
+      this.updateSearch(true);
+    }
+  },
+  isSortable: function() {
+    return this.isAdmin() && (this.state.books.length > 0 || this.state.searching);
+  },
+  renderSortBy: function() {
+    if (this.isSortable()) {
+      return (
+        <div className="sort-by">
+          <div className="col-md-12">
+            Sort by: &nbsp;
+            <select id="sort-filter" className="selectpicker">
+              <option value="_score">Relevance</option>
+              <option value="title">Title</option>
+              <option value="levels_name">Reading Level</option>
+              <option value="country_name">Country</option>
+              <option value="langu  age_name">Language</option>
+            </select>
+          </div>
+        </div>
+      );
+    }
+  },
+  goToBooklist: function() {
+    var booklist_id = $('#booklists-picker').val()[0];
+    window.location.href = '/book_lists/' + booklist_id;
+  },
+  renderBooklistButton: function() {
+    if (this.isSortable()) {
+      return (
+        <button className="btn btn-default pull-right"
+          id="download-button" onClick={this.goToBooklist}
+          type="button">
+          Booklist
+        </button>
+      );
+    }
+  },
+  downloadCsv: function() {
+    $.ajax({
+      url: "/api/v1/books/csv",
+      type: "POST",
+      data: {
+        books: _.pluck(this.state.books, "id")
+      },
+      success: function(data) {
+        window.open("data:text/csv;charset=utf-8," + escape(data));
       }.bind(this),
       error: function(xhr, status, err) {
+        toastr.error("There was an error while downloading the csv");
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  renderDownloadCsv: function() {
+    if (this.isSortable()) {
+      return (
+        <button className="btn btn-default"
+          id="search-button" onClick={this.downloadCsv}
+          type="button">
+          Download
+        </button>
+      )
+    }
   },
   render: function() {
     bookList = this;
@@ -166,26 +260,24 @@ var BookList = React.createClass({
     }.bind(this));
     var tagbarWidth = (this.props.current_user == null) ? "col-md-10" : "col-md-8";
     var searchBar = (
-      <div className="row" id="library">
+      <div>
         <div id="tag-and-searchbar">
-          <div className="row">
-            <div className="col-md-10 col-md-offset-1">
-              <div className="input-group" id="book-searchbar">
-                <input className="input-block-level form-control"
-                  id="book-searchbar-input"
-                  onKeyUp={this.keyboardSearchHandler}
-                  placeholder="Search for books" type="text" />
-                <span className="input-group-btn">
-                  <button className="btn btn-default"
-                    id="search-button" onClick={this.search}
-                    type="button">
-                    <span className="glyphicon glyphicon-search"></span>
-                  </button>
-                </span>
-              </div>
+          <div className="col-md-10 col-md-offset-1">
+            <div className="input-group" id="book-searchbar">
+              <input className="input-block-level form-control"
+                id="book-searchbar-input"
+                onKeyUp={this.keyboardSearchHandler}
+                placeholder="Search for books" type="text" />
+              <span className="input-group-btn">
+                <button className="btn btn-default"
+                  id="search-button" onClick={this.search}
+                  type="button">
+                  <span className="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
             </div>
           </div>
-          <div className="row tagbar-booklists">
+          <div className="tagbar-booklists">
             <div className={tagbarWidth + " col-md-offset-1"}>
               <div className="input-group" id="book-tagbar">
                 <span className="input-group-addon"><span className="glyphicon glyphicon-tag"></span></span>
@@ -198,22 +290,31 @@ var BookList = React.createClass({
             <div className="select-container">
               {this.props.current_user != null ?
                 <div className="col-md-2">
-                  <div className="booklists-select">
-                    <select className="selectpicker booklists" title="Select a Booklist"
-                      data-width="100%" multiple data-size="20" data-live-search="true"
-                      data-selected-text-format="count>4">
-                      {booklists}
-                    </select>
-                  </div>
+                  <select className="selectpicker booklists" id="booklists-picker" title="Select a Booklist"
+                    data-width="100%" multiple data-size="20" data-live-search="true"
+                    data-selected-text-format="count>4">
+                    {booklists}
+                  </select>
                 </div>
-               : null
+                : null
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-offset-1 col-md-4">
+              {this.renderSortBy()}
+            </div>
+            <div className="col-md-1 col-md-offset-4">
+              {this.renderDownloadCsv()}
+            </div>
+            <div className="col-md-1">
+              {this.renderBooklistButton()}
             </div>
           </div>
         </div>
       </div>
     );
-    var emptyText = this.state.isFirstLoad ?
+    var altView = this.state.isFirstLoad ?
                       "Begin by entering your search terms in the \
                       Search for books or Add tag field above. \
                       For a list of tags, click the question mark." :
@@ -222,7 +323,8 @@ var BookList = React.createClass({
                       Add tag field above. For a list of tags, \
                       click the question mark.";
 
-    if (bookTiles.length) {
+    altView = this.state.searching ? <LoadingIndicator /> : altView;
+    if (bookTiles.length && !this.state.searching) {
       var results = ""
       var searchString = " " + this.state.searchTerm;
       var tagsArray = this.state.tags;
@@ -236,32 +338,34 @@ var BookList = React.createClass({
       }
       results = "Found " + this.state.count + " results:" + searchString + tagString + ".";
       return (
-        <div>
+        <div className="bars-and-books">
           {searchBar}
           <div className="search-results">
             <h4 className="current-search text-center">
               {results}
             </h4>
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadMore}
-              hasMore={!this.state.isLastPage}
-              threshold={250}
-              loader={<div className="loader">Loading...</div>}>
+            <div className="col-md-10 col-md-offset-1">
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadMore}
+                hasMore={!this.state.isLastPage}
+                threshold={250}
+                loader={<LoadingIndicator />}>
                 <div className="media-list">
                   {bookTiles}
                 </div>
-            </InfiniteScroll>
+              </InfiniteScroll>
+            </div>
           </div>
         </div>
       );
     }
     return (
-      <div>
+      <div className="bars-and-books">
         {searchBar}
         <div className="media-list col-md-8 col-md-offset-2">
           <h3 className="text-center">
-            {emptyText}
+            {altView}
           </h3>
         </div>
       </div>

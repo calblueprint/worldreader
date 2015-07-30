@@ -33,3 +33,6 @@ BaseBookListSearch = require('./react_components/admin_dashboard/baselists/base_
 GroupDisplay = require('./react_components/admin_dashboard/partners/groups');
 InformationDisplay = require('./react_components/admin_dashboard/partners/information');
 ManagePartnerInfo = require('./react_components/admin_dashboard/partners/partners');
+
+/* Global */
+LoadingIndicator = require('./react_components/loading_indicator');
